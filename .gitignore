@@ -5,5 +5,8 @@
 /composer.lock
 /composer.phar
 /vendor
+/build
 /bin/phpunit
+/tests/build
+/tests/tmp/
 phpunit.xml

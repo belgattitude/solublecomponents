@@ -1,6 +1,6 @@
 <?php
 return array(
-    'tablemanager' => array(
+    'Soluble\Normalist' => array(
 		'metadata_cache' => array(
 			'adapter' => 'filesystem',
 			'options' => array(
