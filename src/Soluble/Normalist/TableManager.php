@@ -20,7 +20,7 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class Table implements AdapterAwareInterface {
+class TableManager implements AdapterAwareInterface {
 
 /**
  * all()

@@ -1,6 +1,6 @@
 <?php
 namespace Soluble\Normalist;
-use Soluble\Normalist\Table;
+use Soluble\Normalist\TableManager;
 use Zend\Db\Adapter\Adapter;
 use ArrayAccess;
 
@@ -20,9 +20,9 @@ class Record implements ArrayAccess {
 	
 	/**
 	 *
-	 * @var \Soluble\Normalist\Table
+	 * @var \Soluble\Normalist\TableManager
 	 */
-	protected $tableModel;
+	protected $tableManager;
 	
 	
 	/**
@@ -39,16 +39,16 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * 
-	 * @param \Soluble\Normalist\Table $tableModel
+	 * @param \Soluble\Normalist\TableManager $tableManager
 	 * @param string $tableName
 	 * @param array $data
 	 */
-	function __construct(Table $tableModel, $tableName, $data) {
+	function __construct(TableManager $tableManager, $tableName, $data) {
 		$this->data  = new \ArrayObject($data);
 		$this->clean = true;
 		$this->tableName = $tableName;
-		$this->primaryKey = $tableModel->getPrimaryKey($tableName);
-		$this->tableModel = $tableModel;
+		$this->primaryKey = $tableManager->getPrimaryKey($tableName);
+		$this->tableManager = $tableManager;
 	}
 
 	/**
@@ -68,10 +68,10 @@ class Record implements ArrayAccess {
 		$primary = $this->primaryKey;
 		if ($this[$primary] != '') {
 			// update
-			$record = $this->tableModel->update($this->tableName, $this->toArray(), $this[$primary]);
+			$record = $this->tableManager->update($this->tableName, $this->toArray(), $this[$primary]);
 		} else {
 			// insert
-			$record = $this->tableModel->insert($this->tableName, $this->toArray());
+			$record = $this->tableManager->insert($this->tableName, $this->toArray());
 		}
 		
 		$this->data = new \ArrayObject($record->toArray());
@@ -88,7 +88,7 @@ class Record implements ArrayAccess {
 		if (!$this->clean) {
 			throw new \Exception("Cannot delete record '$id', it is not in clean state (not in saved in database state)");
 		}
-		return $this->tableModel->delete($this->tableName, $id);
+		return $this->tableManager->delete($this->tableName, $id);
 	}
 	
 	/**
@@ -151,7 +151,7 @@ class Record implements ArrayAccess {
 	 */
 	function getParent($parent_table) {
 		
-		$relations = $this->tableModel->getRelations($this->tableName);
+		$relations = $this->tableManager->getRelations($this->tableName);
 
 		$rels = array();
 		foreach($relations as $column => $parent) {
@@ -159,7 +159,7 @@ class Record implements ArrayAccess {
 				// @todo, check the case when 
 				// table has many relations to the same parent
 				// we'll have to throw an exception 
-				$record = $this->tableModel->findOneBy($parent_table, array(
+				$record = $this->tableManager->findOneBy($parent_table, array(
 					$parent['column_name'] => $this->get($column)
 				));
 				return $record;
