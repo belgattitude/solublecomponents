@@ -1,6 +1,6 @@
 <?php
-namespace Smart\Model;
-use Smart\Model\Table;
+namespace Soluble\Normalist;
+use Soluble\Normalist\Table;
 use Zend\Db\Adapter\Adapter;
 use ArrayAccess;
 
@@ -20,7 +20,7 @@ class Record implements ArrayAccess {
 	
 	/**
 	 *
-	 * @var \Smart\Model\Table
+	 * @var \Soluble\Normalist\Table
 	 */
 	protected $tableModel;
 	
@@ -39,7 +39,7 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * 
-	 * @param \Smart\Model\Table $tableModel
+	 * @param \Soluble\Normalist\Table $tableModel
 	 * @param string $tableName
 	 * @param array $data
 	 */
@@ -62,7 +62,7 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * @throws \Exception
-	 * @return \Smart\Model\Record
+	 * @return \Soluble\Normalist\Record
 	 */
 	function save() {
 		$primary = $this->primaryKey;
@@ -80,7 +80,7 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * @throws \Exception
-	 * @return \Smart\Model\Record
+	 * @return \Soluble\Normalist\Record
 	 */
 	function delete() {
 		$primary = $this->primaryKey;
@@ -127,7 +127,7 @@ class Record implements ArrayAccess {
 	 * 
 	 * @param string $offset
 	 * @param mixed $value
-	 * @return \Smart\Model\Record
+	 * @return \Soluble\Normalist\Record
 	 */
 	function offsetSet($offset, $value) {
 		$this->clean = false;
@@ -138,7 +138,7 @@ class Record implements ArrayAccess {
 	/**
 	 * 
 	 * @param string $offset
-	 * @return \Smart\Model\Record
+	 * @return \Soluble\Normalist\Record
 	 */
 	function offsetUnset($offset) {
 		$this->data->offsetUnset($offset);

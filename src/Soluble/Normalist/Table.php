@@ -4,18 +4,18 @@ namespace Soluble\Normalist;
 
 use Soluble\Normalist\Record;
 use Soluble\Normalist\Exception;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Select;
-//use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Where;
-use Zend\Db\Sql\Predicate;
-use Zend\Cache\StorageFactory;
-use Zend\Db\Adapter\AdapterAwareInterface;
-
-use Soluble\Db\Metadata\Cache\CacheAwareInterface;
+use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
 
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
+use Zend\Db\Sql\Predicate;
+
+//use Zend\Cache\StorageFactory;
+use Zend\Db\Adapter\AdapterAwareInterface;
+
+//use Soluble\Db\Metadata\Cache\CacheAwareInterface;
 
 
 use ArrayObject;
@@ -53,28 +53,17 @@ class Table implements AdapterAwareInterface {
 		$this->setDbAdapter($adapter);
 	}
 
-	/**
-	 * Return prefixed table anme
-	 * @param string $table
-	 * @return string
-	 * @throws Exception\InvalidArgumentException
-	 */
-	function getTableName($table) {
-		if (!is_string($table)) throw new Exception\InvalidArgumentException("Table name must be a string");
-		if (trim($table) == '') throw new Exception\InvalidArgumentException("Table name is empty");
-		return $this->tablePrefix . $table;
-	}
 
 	
 	/**
 	 * 
 	 * @param string $table
 	 * @param string $table_alias
-	 * @return \Zend\Db\Sql\Select
+	 * @return \Soluble\Db\Sql\Select
 	 */
 	function select($table, $table_alias=null) {
 
-		$prefixed_table = $this->getTableName($table);
+		$prefixed_table = $this->prefixTable($table);
 		$select = new Select();
 		if ($table_alias === null) {
 			$table_spec = $prefixed_table;
@@ -88,28 +77,28 @@ class Table implements AdapterAwareInterface {
 	
 	/**
 	 * Find a record
+	 * 
 	 * @param string $table
 	 * @param int $id
-	 * @return array|false 
-	 * @throws Exception\RecordNotFoundException
 	 * @throws Exception\InvalidArgumentException	 
+	 * @return Record|false 
 	 */
 	function find($table, $id) {
-		$prefixed_table = $this->getTableName($table);
-		$primary = $this->metadata->getPrimaryKey($prefixed_table);
+		$prefixed_table = $this->prefixTable($table);
+		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
 		$record =  $this->findOneBy($table, array($primary => $id));
-		if (!$record) throw new Exception\RecordNotFoundException("Cannot find a record with id '$primary=$id' on table '$prefixed_table'");
 		return $record;	
 	}
 	
 	/**
 	 * Fetch all records in a table
+	 * 
 	 * @param string $table
 	 * @param array|string|null $columns
 	 * @return array
 	 */
 	function fetchAll($table, $columns=null) {
-		$table = $this->getTableName($table);
+		$table = $this->prefixTable($table);
 		$sql = new Sql($this->adapter);
 		$select = new Select();
 		$select->from($table);
@@ -117,9 +106,7 @@ class Table implements AdapterAwareInterface {
 			$columns = (array) $columns;
 			$select->columns($columns);
 		}
-		$sql_string = $sql->getSqlStringForSqlObject($select);
-		$results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE)->toArray();		
-		return $results;
+		return $select->execute();
 	}
 	
 	/**
@@ -132,7 +119,7 @@ class Table implements AdapterAwareInterface {
 	 */
 	function findOneBy($table, $predicate, $combination=Predicate\PredicateSet::OP_AND) {
 		
-		$prefixed_table = $this->getTableName($table);
+		$prefixed_table = $this->prefixTable($table);
 		$sql = new Sql($this->adapter);
 		$select = new Select();
 		$select->from($prefixed_table);
@@ -143,17 +130,6 @@ class Table implements AdapterAwareInterface {
 		if (count($results) > 1) throw new Exception\UnexpectedValueException("Find one by return more than one record");
 		return $this->makeRecord($table, $results[0]);
 	}
-	
-	/**
-	 * 
-	 * @param string $table
-	 * @param array $data
-	 * @return \Soluble\Normalist\Record
-	 */
-	protected function makeRecord($table, $data) {
-		$record = new Record($this, $table, $data);
-		return $record;
-	} 
 	
 	
 	/**
@@ -178,8 +154,8 @@ class Table implements AdapterAwareInterface {
 			return false;
 		}
 		
-		$prefixed_table = $this->getTableName($table);
-		$primary = $this->metadata->getPrimaryKey($prefixed_table);		
+		$prefixed_table = $this->prefixTable($table);
+		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		
 		$platform = $this->adapter->platform;		
 		$sql = new Sql($this->adapter);
@@ -199,16 +175,13 @@ class Table implements AdapterAwareInterface {
 	 * @return \Soluble\Normalist\Record
 	 */
 	function insert($table, $data) {
-		$prefixed_table = $this->getTableName($table);
-		$primary = $this->metadata->getPrimaryKey($prefixed_table);		
-
-		
+		$prefixed_table = $this->prefixTable($table);
+		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		if ($data instanceOf ArrayObject) {
 			$d = (array) $data;
 		} else {
 			$d = $data;
 		}
-		
 		$sql = new Sql($this->adapter);
 		$insert = $sql->insert($prefixed_table);
 		$insert->values($data);
@@ -242,8 +215,8 @@ class Table implements AdapterAwareInterface {
 	function insertOnDuplicateKey($table, $data, $duplicate_exclude=array()) {
 		
 		$platform = $this->adapter->platform;
-		$prefixed_table = $this->getTableName($table);
-		$primary = $this->metadata->getPrimaryKey($prefixed_table);		
+		$prefixed_table = $this->prefixTable($table);
+		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		
 		if ($data instanceOf ArrayObject) {
 			$d = (array) $data;
@@ -281,7 +254,7 @@ class Table implements AdapterAwareInterface {
 			} else {
 				// if the id was not generated, we have to guess on which key
 				// the duplicate has been fired
-				$unique_keys = $this->metadata->getUniqueKeys($prefixed_table);
+				$unique_keys = $this->getMetadata()->getUniqueKeys($prefixed_table);
 				$data_columns = array_keys($data);
 				$found = false;
 				foreach($unique_keys as $index_name => $unique_columns) {
@@ -328,8 +301,8 @@ class Table implements AdapterAwareInterface {
 	function update($table, $data, $where) {
 		
 		$platform = $this->adapter->platform;
-		$prefixed_table = $this->getTableName($table);
-		$primary = $this->metadata->getPrimaryKey($prefixed_table);		
+		$prefixed_table = $this->prefixTable($table);
+		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		
 		
 		if ($data instanceOf ArrayObject) {
@@ -351,6 +324,17 @@ class Table implements AdapterAwareInterface {
 		
 	}
 	
+
+	/**
+	 * 
+	 * @param string $table
+	 * @param array $data
+	 * @return \Soluble\Normalist\Record
+	 */
+	protected function makeRecord($table, $data) {
+		$record = new Record($this, $table, $data);
+		return $record;
+	} 
 	
 
 
@@ -360,8 +344,8 @@ class Table implements AdapterAwareInterface {
 	 * @return array
 	 */
 	function getRelations($table) {
-		$prefixed_table = $this->getTableName($table);
-		$rel = $this->metadata->getRelations($prefixed_table);
+		$prefixed_table = $this->prefixTable($table);
+		$rel = $this->getMetadata()->getRelations($prefixed_table);
 		return $rel;
 	}
 	
@@ -372,8 +356,8 @@ class Table implements AdapterAwareInterface {
 	 * @return array
 	 */
 	function getColumnsInformation($table) {
-		$prefixed_table = $this->getTableName($table);
-		return $this->metadata->getColumnsInformation($prefixed_table);
+		$prefixed_table = $this->prefixTable($table);
+		return $this->getMetadata()->getColumnsInformation($prefixed_table);
 	}
 
 	/**
@@ -382,8 +366,8 @@ class Table implements AdapterAwareInterface {
 	 * @return array
 	 */
 	function getPrimaryKeys($table) {
-		$prefixed_table = $this->getTableName($table);
-		return $this->metadata->getPrimaryKeys($prefixed_table);
+		$prefixed_table = $this->prefixTable($table);
+		return $this->getMetadata()->getPrimaryKeys($prefixed_table);
 	}
 
 	/**
@@ -393,33 +377,19 @@ class Table implements AdapterAwareInterface {
 	 * @return int|string
 	 */
 	function getPrimaryKey($table) {
-		$prefixed_table = $this->getTableName($table);
-		return $this->metadata->getPrimaryKey($prefixed_table);
+		$prefixed_table = $this->prefixTable($table);
+		return $this->getMetadata()->getPrimaryKey($prefixed_table);
 	}
 
-	/**
-	 * 
-	 * @param Adapter $adapter
-	 * @throws \Exception
-	 */
-	protected function loadMetadata(Adapter $adapter) {
-		if ($this->metadata === null) {
-			$adapterName = $adapter->getPlatform()->getName(); 
-			switch (strtolower($adapterName)) {
-				case 'mysql':
-					$this->metadata = new Source\MysqlISMetadata($adapter);
-					break;
-				default :
-					throw new \Exception("Cannot load metadata source from adapter '$adapterName', it's not supported.");		
-			}
-		}
-	}
 	
 	/**
 	 * 
 	 * @return \Soluble\Db\Metadata\Source\AbstractSource
 	 */
 	public function getMetadata() {
+		if ($this->metadata === null) {
+			$this->metadata = $this->getDefaultMetadata();
+		}
 		return $this->metadata;
 	}
 	
@@ -430,9 +400,38 @@ class Table implements AdapterAwareInterface {
 	 */
 	public function setDbAdapter(Adapter $adapter) {
 		$this->adapter = $adapter;
-		$this->loadMetadata($adapter);
 		return $this;
 	}
+	
+	/**
+	 * 
+	 * @param Adapter $adapter
+	 * @throws \Exception
+	 */
+	protected function getDefaultMetadata(Adapter $adapter) {
+		
+		$adapterName = $adapter->getPlatform()->getName(); 
+		switch (strtolower($adapterName)) {
+			case 'mysql':
+				$this->metadata = new Source\MysqlISMetadata($adapter);
+				break;
+			default :
+				throw new \Exception("Cannot load metadata source from adapter '$adapterName', it's not supported.");		
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param \Soluble\Db\Metadata\Source\AbstractSource $metadata
+	 * @return \Soluble\Normalist\Table
+	 */
+	public function setMetadata(Source\AbstractSource $metadata) {
+		$this->metadata = $metadata;
+		return $this;
+	}
+	
+	
 	
 	/**
 	 * 
@@ -443,6 +442,19 @@ class Table implements AdapterAwareInterface {
 		$this->tablePrefix = $tablePrefix;
 		return $this;
 	}
-	
 
+	
+	/**
+	 * Return prefixed table anme
+	 * 
+	 * @param string $table
+	 * @return string
+	 * @throws Exception\InvalidArgumentException
+	 */
+	protected function prefixTable($table) {
+		if (!is_string($table)) throw new Exception\InvalidArgumentException("Table name must be a string");
+		if (trim($table) == '') throw new Exception\InvalidArgumentException("Table name is empty");
+		return $this->tablePrefix . $table;
+	}
+	
 }
