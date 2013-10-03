@@ -22,7 +22,25 @@ use ArrayObject;
 
 class Table implements AdapterAwareInterface {
 
-
+/**
+ * all()
+ * find()
+ * findOrFail()
+ * where('votes', '>', 100)->take(10)->get() -> array
+ * where('votes', '>', 100)->count()
+ * whereRaw('age > ? and votes=100', array(25))->get()
+ * delete()
+ * touch()
+ * hasOne - User::find(1)->phone
+ * hasMany - User::find(1)->comments
+ * Many2Many - User::find(1)->roles
+ * Post::has('comments')->get()
+ * Post::has('comments', '>=', 3)->get()
+ * User->toJson()
+ * User->roles->each(function($role) {})
+ * User->sortBy
+ * 
+ */
 	/**
 	 *
 	 * @param \Zend\Db\Adapter\Adapter $adapter
@@ -62,9 +80,9 @@ class Table implements AdapterAwareInterface {
 	 * @return \Soluble\Db\Sql\Select
 	 */
 	function select($table, $table_alias=null) {
-
 		$prefixed_table = $this->prefixTable($table);
 		$select = new Select();
+		$select->setDbAdapter($this->adapter);
 		if ($table_alias === null) {
 			$table_spec = $prefixed_table;
 		} else {
@@ -97,10 +115,8 @@ class Table implements AdapterAwareInterface {
 	 * @param array|string|null $columns
 	 * @return array
 	 */
-	function fetchAll($table, $columns=null) {
-		$table = $this->prefixTable($table);
-		$sql = new Sql($this->adapter);
-		$select = new Select();
+	function all($table, $columns=null) {
+		$select = $this->select($table);
 		$select->from($table);
 		if ($columns !== null) {
 			$columns = (array) $columns;
@@ -115,17 +131,13 @@ class Table implements AdapterAwareInterface {
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      * @throws Exception\InvalidArgumentException	  
+	 * @throws Exception\UnexpectedValueException
 	 * @return array|false 
 	 */
 	function findOneBy($table, $predicate, $combination=Predicate\PredicateSet::OP_AND) {
-		
-		$prefixed_table = $this->prefixTable($table);
-		$sql = new Sql($this->adapter);
-		$select = new Select();
-		$select->from($prefixed_table);
+		$select = $this->select($table);
 		$select->where($predicate, $combination);
-		$sql_string = $sql->getSqlStringForSqlObject($select);
-		$results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE)->toArray();		
+		$results = $select->execute()->toArray();
 		if (count($results) == 0) return false;
 		if (count($results) > 1) throw new Exception\UnexpectedValueException("Find one by return more than one record");
 		return $this->makeRecord($table, $results[0]);
@@ -150,13 +162,9 @@ class Table implements AdapterAwareInterface {
 	 * @return boolean if deletion worked
 	 */
 	function delete($table, $id) {
-		if (!$this->exists($table, $id)) {
-			return false;
-		}
-		
+		if (!$this->exists($table, $id)) return false;
 		$prefixed_table = $this->prefixTable($table);
 		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
-		
 		$platform = $this->adapter->platform;		
 		$sql = new Sql($this->adapter);
 		$delete = $sql->delete($prefixed_table)
@@ -165,7 +173,6 @@ class Table implements AdapterAwareInterface {
 		$result    = $statement->execute();
 		//var_dump($result->getAffectedRows()); die('cool');
 		return true;
-		
 	}
 
 	/**
@@ -304,7 +311,6 @@ class Table implements AdapterAwareInterface {
 		$prefixed_table = $this->prefixTable($table);
 		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		
-		
 		if ($data instanceOf ArrayObject) {
 			$d = (array) $data;
 		} else {
@@ -320,7 +326,6 @@ class Table implements AdapterAwareInterface {
 		$result    = $statement->execute();
 
 		return $this->find($table, $where);
-		
 		
 	}
 	
@@ -380,7 +385,6 @@ class Table implements AdapterAwareInterface {
 		$prefixed_table = $this->prefixTable($table);
 		return $this->getMetadata()->getPrimaryKey($prefixed_table);
 	}
-
 	
 	/**
 	 * 
