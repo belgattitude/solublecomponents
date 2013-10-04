@@ -1,10 +1,10 @@
 <?php
 namespace Soluble\Normalist;
-use Soluble\Normalist\TableManager;
+use Soluble\Normalist\SyntheticTable;
 use Zend\Db\Adapter\Adapter;
 use ArrayAccess;
 
-class Record implements ArrayAccess {
+class SyntheticRecord implements ArrayAccess {
 	
 	/**
 	 *
@@ -20,9 +20,9 @@ class Record implements ArrayAccess {
 	
 	/**
 	 *
-	 * @var \Soluble\Normalist\TableManager
+	 * @var \Soluble\Normalist\SyntheticTable
 	 */
-	protected $tableManager;
+	protected $syntheticTable;
 	
 	
 	/**
@@ -39,16 +39,16 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * 
-	 * @param \Soluble\Normalist\TableManager $tableManager
+	 * @param \Soluble\Normalist\SyntheticTable $syntheticTable
 	 * @param string $tableName
 	 * @param array $data
 	 */
-	function __construct(TableManager $tableManager, $tableName, $data) {
+	function __construct(SyntheticTable $syntheticTable, $tableName, $data) {
 		$this->data  = new \ArrayObject($data);
 		$this->clean = true;
 		$this->tableName = $tableName;
-		$this->primaryKey = $tableManager->getPrimaryKey($tableName);
-		$this->tableManager = $tableManager;
+		$this->primaryKey = $syntheticTable->getPrimaryKey($tableName);
+		$this->syntheticTable = $syntheticTable;
 	}
 
 	/**
@@ -62,19 +62,20 @@ class Record implements ArrayAccess {
 	
 	/**
 	 * @throws \Exception
-	 * @return \Soluble\Normalist\Record
+	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	function save() {
 		$primary = $this->primaryKey;
 		if ($this[$primary] != '') {
 			// update
-			$record = $this->tableManager->update($this->tableName, $this->toArray(), $this[$primary]);
+			$record = $this->syntheticTable->update($this->tableName, $this->toArray(), $this[$primary]);
 		} else {
 			// insert
-			$record = $this->tableManager->insert($this->tableName, $this->toArray());
+			$record = $this->syntheticTable->insert($this->tableName, $this->toArray());
 		}
 		
 		$this->data = new \ArrayObject($record->toArray());
+		$this->clean = true;
 		return $this;		
 	}
 	
@@ -88,7 +89,7 @@ class Record implements ArrayAccess {
 		if (!$this->clean) {
 			throw new \Exception("Cannot delete record '$id', it is not in clean state (not in saved in database state)");
 		}
-		return $this->tableManager->delete($this->tableName, $id);
+		return $this->syntheticTable->delete($this->tableName, $id);
 	}
 	
 	/**
@@ -151,7 +152,7 @@ class Record implements ArrayAccess {
 	 */
 	function getParent($parent_table) {
 		
-		$relations = $this->tableManager->getRelations($this->tableName);
+		$relations = $this->syntheticTable->getRelations($this->tableName);
 
 		$rels = array();
 		foreach($relations as $column => $parent) {
@@ -159,7 +160,7 @@ class Record implements ArrayAccess {
 				// @todo, check the case when 
 				// table has many relations to the same parent
 				// we'll have to throw an exception 
-				$record = $this->tableManager->findOneBy($parent_table, array(
+				$record = $this->syntheticTable->findOneBy($parent_table, array(
 					$parent['column_name'] => $this->get($column)
 				));
 				return $record;

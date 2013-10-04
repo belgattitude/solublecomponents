@@ -12,19 +12,19 @@ class NormalistTableManagerFactory implements FactoryInterface
 	/**
 	 * 
 	 * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
-	 * @return \Soluble\Normalist\Table
+	 * @return \Soluble\Normalist\SyntheticTable
 	 */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Config');
-        $config = isset($config['tablemanager']) ? $config['tablemanager'] : array();
+        $config = isset($config['Soluble\Normalist']) ? $config['Soluble\Normalist'] : array();
 		if (empty($config)) {
-			throw new \Exception("Cannot locate table manager configuration, please review your configuration.");
+			throw new \Exception("Cannot locate Soluble\Normalist configuration, please review your configuration.");
 		}
 		
 		$adapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
 		
-		$tableManager = new Table($adapter);
+		$tableManager = new SyntheticTable($adapter);
 		$metadata = $tableManager->getMetadata();
 
 		$mdconfig = $config['metadata_cache'];

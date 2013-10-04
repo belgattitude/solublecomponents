@@ -2,7 +2,7 @@
 namespace Soluble\Normalist;
 
 
-use Soluble\Normalist\Record;
+use Soluble\Normalist\SyntheticRecord;
 use Soluble\Normalist\Exception;
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
@@ -20,7 +20,7 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class TableManager implements AdapterAwareInterface {
+class SyntheticTable implements AdapterAwareInterface {
 
 /**
  * all()
@@ -99,7 +99,7 @@ class TableManager implements AdapterAwareInterface {
 	 * @param string $table
 	 * @param int $id
 	 * @throws Exception\InvalidArgumentException	 
-	 * @return Record|false 
+	 * @return SyntheticRecord|false 
 	 */
 	function find($table, $id) {
 		$prefixed_table = $this->prefixTable($table);
@@ -132,7 +132,7 @@ class TableManager implements AdapterAwareInterface {
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      * @throws Exception\InvalidArgumentException	  
 	 * @throws Exception\UnexpectedValueException
-	 * @return array|false 
+	 * @return SyntheticRecord|false 
 	 */
 	function findOneBy($table, $predicate, $combination=Predicate\PredicateSet::OP_AND) {
 		$select = $this->select($table);
@@ -146,8 +146,10 @@ class TableManager implements AdapterAwareInterface {
 	
 	/**
 	 * Test if a record exists
+	 * 
 	 * @param string $table
 	 * @param int $id
+	 * @return boolean
 	 */
 	function exists($table, $id) {
 		$record = $this->find($table, $id);
@@ -156,6 +158,7 @@ class TableManager implements AdapterAwareInterface {
 
 	
 	/**
+	 * Delete a record
 	 * 
 	 * @param string $table
 	 * @param int $id
@@ -179,7 +182,7 @@ class TableManager implements AdapterAwareInterface {
 	 * Insert data into table
 	 * @param string $table
 	 * @param array|ArrayObject $data
-	 * @return \Soluble\Normalist\Record
+	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	function insert($table, $data) {
 		$prefixed_table = $this->prefixTable($table);
@@ -214,7 +217,7 @@ class TableManager implements AdapterAwareInterface {
 	 * @param string $table
 	 * @param array|ArrayObject $data
 	 * @param array|null $duplicate_exclude
-	 * @return \Soluble\Normalist\Record
+	 * @return SyntheticRecord
 	 * @throws \Exception
 	 */
 	
@@ -303,7 +306,7 @@ class TableManager implements AdapterAwareInterface {
 	 * Update data into table
 	 * @param string $table
 	 * @param array|ArrayObject $data
-	 * @return array|false
+	 * @return SynthticRecord|false
 	 */
 	function update($table, $data, $where) {
 		
@@ -334,10 +337,10 @@ class TableManager implements AdapterAwareInterface {
 	 * 
 	 * @param string $table
 	 * @param array $data
-	 * @return \Soluble\Normalist\Record
+	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	protected function makeRecord($table, $data) {
-		$record = new Record($this, $table, $data);
+		$record = new SyntheticRecord($this, $table, $data);
 		return $record;
 	} 
 	
@@ -400,7 +403,7 @@ class TableManager implements AdapterAwareInterface {
 	/**
 	 * 
 	 * @param \Zend\Db\Adapter\Adapter $adapter
-	 * @return \Soluble\Normalist\Table
+	 * @return \Soluble\Normalist\SyntheticTable
 	 */
 	public function setDbAdapter(Adapter $adapter) {
 		$this->adapter = $adapter;
@@ -428,7 +431,7 @@ class TableManager implements AdapterAwareInterface {
 	/**
 	 * 
 	 * @param \Soluble\Db\Metadata\Source\AbstractSource $metadata
-	 * @return \Soluble\Normalist\Table
+	 * @return \Soluble\Normalist\SyntheticTable
 	 */
 	public function setMetadata(Source\AbstractSource $metadata) {
 		$this->metadata = $metadata;
@@ -440,7 +443,7 @@ class TableManager implements AdapterAwareInterface {
 	/**
 	 * 
 	 * @param string $tablePrefix
-	 * @return \Soluble\Normalist\Table
+	 * @return \Soluble\Normalist\Synthetic
 	 */
 	public function setTablePrefix($tablePrefix) {
 		$this->tablePrefix = $tablePrefix;
