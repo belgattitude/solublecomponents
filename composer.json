@@ -22,8 +22,8 @@
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for datastore writer",
-		"zendframework/zend-eventmanager": "ZF2 integration for components",
-		"zendframework/zend-servicemanager": "ZF2 integration for components"
+		"zendframework/zend-eventmanager": "ZF2 integration for eventmanager",
+		"zendframework/zend-servicemanager": "ZF2 integration for services"
 	},
 	"autoload": {
 		"psr-0": {"Soluble": "src/"}

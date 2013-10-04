@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\Db\Metadata\Source;
 
+
 abstract class AbstractSource {
 
 	

@@ -395,7 +395,7 @@ class SyntheticTable implements AdapterAwareInterface {
 	 */
 	public function getMetadata() {
 		if ($this->metadata === null) {
-			$this->metadata = $this->getDefaultMetadata();
+			$this->metadata = $this->getDefaultMetadata($this->adapter);
 		}
 		return $this->metadata;
 	}
@@ -420,11 +420,12 @@ class SyntheticTable implements AdapterAwareInterface {
 		$adapterName = $adapter->getPlatform()->getName(); 
 		switch (strtolower($adapterName)) {
 			case 'mysql':
-				$this->metadata = new Source\MysqlISMetadata($adapter);
+				$metadata = new Source\MysqlISMetadata($adapter);
 				break;
 			default :
 				throw new \Exception("Cannot load metadata source from adapter '$adapterName', it's not supported.");		
 		}
+		return $metadata;
 		
 	}
 	
