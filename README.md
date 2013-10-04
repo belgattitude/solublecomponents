@@ -10,6 +10,9 @@ Soluble framework can be installed via composer. For composer documentation, ple
 php composer.phar require solubleframework/solubleframework:0.*
 ```
 
+## Documentation
+
+Documentation is hosted on [Read the docs](http://soluble-framework.readthedocs.org)
 
 ## Components
 
@@ -18,13 +21,5 @@ php composer.phar require solubleframework/solubleframework:0.*
 Normalist is not an ORM
 
 
-## How to generate documentation
-
-### With python generator documentation
-
-```sh
-sudo apt-get install python-setuptools
-sudo easy_install -U Sphinx
-```
 
 
