@@ -21,6 +21,8 @@
 		<server name="MYSQL_PASSWORD" value="pass" />
 		<server name="MYSQL_DATABASE" value="mydatabase" />
         -->
+		<!-- if you don't start with a /, it will be relative to unit tests  -->
+		<server name="PHPUNIT_CACHE_DIR" value="./tmp/cache" />		
     </php>
 
     <testsuites>
