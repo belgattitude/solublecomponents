@@ -6,6 +6,4 @@
 /vendor
 /build
 /bin/phpunit
-/tests/build
-/tests/tmp/
 phpunit.xml

@@ -16,12 +16,11 @@ class NormalistServiceFactoryTest extends \PHPUnit_Framework_TestCase
 	protected function setUp() {
 		
 		
-		$cfg = require(__DIR__ . '/../../../../config/zf2/soluble.local.php');
+		$cfg = require(__DIR__ . '/../../../../../config/zf2/soluble.global.php');
 		if (!$cfg) {
-			throw new \Exception("Create a /config/soluble.local.php file");
+			throw new \Exception("Create a /config/soluble.global.php file");
 		}
 		
-		$app = \Zend\Mvc\Application::init($cfg);
 		
 		
 		$config = new \Zend\ServiceManager\Config(array('Config' => $cfg));
