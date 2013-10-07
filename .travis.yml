@@ -8,6 +8,8 @@ env:
   - DB=mysql
 
 before_script:
+  - printf "\n" | pecl install imagick
+  - mkdir -p tests/tmp/cache 
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS phpunit_test_db;'; fi"
   - composer install --prefer-dist --dev
   - sudo apt-get install jpegoptim libjpeg-progs optipng

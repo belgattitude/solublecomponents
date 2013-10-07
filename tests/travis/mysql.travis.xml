@@ -27,12 +27,12 @@
 
     <testsuites>
         <testsuite name="Soluble Components test suite">
-            <directory>./../tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>./../src</directory>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
