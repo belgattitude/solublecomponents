@@ -21,7 +21,7 @@ class NormalistServiceFactoryTest extends \PHPUnit_Framework_TestCase
 			throw new \Exception("Create a /config/soluble.global.php file");
 		}
 		
-		
+		/*
 		
 		$config = new \Zend\ServiceManager\Config(array('Config' => $cfg));
 		$sm = new \Zend\ServiceManager\ServiceManager($config);
@@ -33,6 +33,8 @@ class NormalistServiceFactoryTest extends \PHPUnit_Framework_TestCase
 		
 		var_dump($sm);
 		die();
+		 * 
+		 */
 	}
 
 	/**

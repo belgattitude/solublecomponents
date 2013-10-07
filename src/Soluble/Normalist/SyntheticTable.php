@@ -268,7 +268,7 @@ class SyntheticTable implements AdapterAwareInterface {
 				$data_columns = array_keys($data);
 				$found = false;
 				foreach($unique_keys as $index_name => $unique_columns) {
-					echo "On duplicate key\n\n $index_name \n";
+					//echo "On duplicate key\n\n $index_name \n";
 					$intersect = array_intersect($data_columns, $unique_columns);
 					if (count($intersect) == count($unique_columns)) {
 						// Try to see if we can find a record with the key
