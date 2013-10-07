@@ -9,7 +9,6 @@ use Imagine\Gd\Imagine as GdImagine;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Box;
 
-use Zend\Db\Adapter\Adapter;
 use Zend\Cache\Storage\StorageInterface;
 
 
@@ -57,9 +56,10 @@ class ImageConverter implements ConverterInterface {
 		$cache_key = md5("$filename/$width/$height/$quality/$format");
 		
 		if ($this->cacheEnabled && $this->cacheStorage->hasItem($cache_key)) {
-			$cacheMd = $cache->getMetadata($cache_key);
+			$cacheMd = $this->cacheStorage->getMetadata($cache_key);
 			if ($cacheMd['mtime'] < filemtime($filename)) {
 				// invalid cache
+				
 				$binaryContent = $this->generateThumbnail($filename, $box, $format, $quality);
 				$this->cacheStorage->setItem($cache_key, $binaryContent);
 			} else {
@@ -67,6 +67,7 @@ class ImageConverter implements ConverterInterface {
 			}
 		} else {
 			$binaryContent = $this->generateThumbnail($filename, $box, $format, $quality);
+			
 		}
 		
 		switch ($format) {
@@ -85,8 +86,8 @@ class ImageConverter implements ConverterInterface {
 		header("Content-type: $content_type", true);
 		header("Accept-Ranges: bytes", true);
 		header("Cache-control: max-age=2592000, public", true);
-		header("Content-Disposition: inline; filename=\"{$media->getFilename()}\";", true);
-		header('Last-Modified: '. gmdate('D, d M Y H:i:s', $media->getFilemtime()).' GMT', true);
+		header("Content-Disposition: inline; filename=\"$filename\";", true);
+		header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', true);
 		//header('Date: ' . );
 		header('Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+10 years')) . ' GMT');
 		//header('Content-Disposition: attachment; filename="downloaded.pdf"');
