@@ -187,7 +187,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 	function getTablesInformation($schema=null)
 	{
 		if ($this->localCache[$schema]['schema']['tables'] === null) {
-			$this->localCache[$schema]['schema']['tables'] = $this->loadTablesInformation($s);
+			$this->localCache[$schema]['schema']['tables'] = $this->loadTablesInformation($schema);
 		}
 		return $this->localCache[$schema]['schema']['tables'];
 		
