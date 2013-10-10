@@ -21,7 +21,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 		$adapter = \SolubleTestFactories::getDbAdapter();
 		$cache   = \SolubleTestFactories::getCacheStorage();
 		$this->metadata = new MysqlISMetadata($adapter);
-		$this->metadata->setCache($cache);
+		//$this->metadata->setCache($cache);
 	}
 
 	/**
