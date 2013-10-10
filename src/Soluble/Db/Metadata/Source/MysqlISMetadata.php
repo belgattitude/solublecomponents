@@ -42,7 +42,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 	/**
 	 * @param array
 	 */
-	protected $localCache;
+	protected $localCache = array();
 	
 	/**
 	 * 
@@ -56,6 +56,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 		if ($schema === null) {
 			$this->schema = $adapter->getCurrentSchema();
 		}
+		
 		
 	}
 	
@@ -211,6 +212,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 		} elseif (!is_string($schema) || trim($schema) == '') {
 			throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
 		}
+		
 		
 		if ($this->localCache[$schema]['tables'][$table][$key] === null) {
 			$this->loadLocalCache($table, $schema);
