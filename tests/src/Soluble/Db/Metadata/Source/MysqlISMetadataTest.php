@@ -20,8 +20,8 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 	protected function setUp() {
 		$adapter = \SolubleTestFactories::getDbAdapter();
 		
-		var_dump($adapter->getDriver()->getConnection());
-		var_dump($adapter->getCurrentSchema());
+		//var_dump($adapter->getDriver()->getConnection());
+		//var_dump($adapter->getCurrentSchema());
 		
 		$cache   = \SolubleTestFactories::getCacheStorage();
 		
@@ -29,7 +29,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 		//$this->metadata->setCache($cache);
 		$tables = $this->metadata->getTables();
 		
-		var_dump($tables);
+		//var_dump($tables);
 		
 	}
 

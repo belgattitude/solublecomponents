@@ -22,7 +22,7 @@
 		<server name="MYSQL_DATABASE" value="phpunit_soluble_test_db" />
         
 		<!-- if you don't start with a /, it will be relative to unit tests  -->
-		<server name="PHPUNIT_CACHE_DIR" value="./tmp/cache" />		
+		<server name="PHPUNIT_CACHE_DIR" value="tmp/cache" />		
     </php>
 
     <testsuites>
