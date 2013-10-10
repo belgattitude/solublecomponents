@@ -47,6 +47,8 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 				'This test has not been implemented yet.'
 		);
 	}
+	
+	
 
 	/**
 	 * @covers Soluble\Normalist\Table::find
@@ -57,6 +59,12 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($user_id, $user['user_id']);
 	}
 
+	public function testIdInvalidUsage() {
+		$this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+		$this->table->find('user', array('cool', 'test'));
+	}
+	
+	
 	/**
 	 * 
 	 */
