@@ -16,11 +16,13 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then zcat tests/data/mysql/data.sql.gz | mysql -uroot phpunit_soluble_test_db; fi
   - sh -c "pwd"
   - sh -c "which zcat"
+  - sh -c "which php"
+  - sh -c "php -m"
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --prefer-dist --dev
-  - sudo apt-get install jpegoptim libjpeg-progs optipng
+  #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: ./bin/phpunit -v --configuration tests/travis/$DB.travis.xml
 
