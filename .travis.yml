@@ -25,5 +25,5 @@ before_script:
 
 script: 
   - phpunit -v --configuration tests/travis/$DB.travis.xml 
-  - php tests/coverage-checker.php tests/build/logs/clover.xml 75
+  - php tests/coverage-checker.php "$HOME/tests/build/logs/clover.xml" 75
 

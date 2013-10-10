@@ -38,7 +38,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::select
+	 * @covers Soluble\Normalist\SyntheticTable::select
 	 * @todo   Implement testSelect().
 	 */
 	public function testSelect() {
@@ -51,7 +51,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	
 
 	/**
-	 * @covers Soluble\Normalist\Table::find
+	 * @covers Soluble\Normalist\SyntheticTable::find
 	 */
 	public function testFind() {
 		$user_id = 1;
@@ -60,7 +60,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::find
+	 * @covers Soluble\Normalist\SyntheticTable::find
 	 */
 	public function testIdInvalidUsage() {
 		$this->setExpectedException('Soluble\Normalist\Exception\InvalidArgumentException');
@@ -88,7 +88,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @covers Soluble\Normalist\Table::fetchAll
+	 * @covers Soluble\Normalist\SyntheticTable::fetchAll
 	 * @todo   Implement testFetchAll().
 	 */
 	public function testFetchAll() {
@@ -99,7 +99,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::findOneBy
+	 * @covers Soluble\Normalist\SyntheticTable::findOneBy
 	 * @todo   Implement testFindOneBy().
 	 */
 	public function testFindOneBy() {
@@ -110,7 +110,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::exists
+	 * @covers Soluble\Normalist\SyntheticTable::exists
 	 */
 	public function testExists() {
 		$user_id = 1;
@@ -121,7 +121,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::delete
+	 * @covers Soluble\Normalist\SyntheticTable::delete
 	 * @todo   Implement testDelete().
 	 */
 	public function testDelete() {
@@ -132,7 +132,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::insert
+	 * @covers Soluble\Normalist\SyntheticTable::insert
 	 */
 	public function testInsert() {
 
@@ -151,7 +151,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::insertOnDuplicateKey
+	 * @covers Soluble\Normalist\SyntheticTable::insertOnDuplicateKey
 	 */
 	public function testInsertOnDuplicateKey() {
 		$data = $this->createMediaRecordData('phpunit_testInsertOnDuplicateKeyUpdate');		
@@ -181,7 +181,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::update
+	 * @covers Soluble\Normalist\SyntheticTable::update
 	 * @todo   Implement testUpdate().
 	 */
 	public function testUpdate() {
@@ -192,7 +192,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::getRelations
+	 * @covers Soluble\Normalist\SyntheticTable::getRelations
 	 * @todo   Implement testGetRelations().
 	 */
 	public function testGetRelations() {
@@ -203,7 +203,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::getColumnsInformation
+	 * @covers Soluble\Normalist\SyntheticTable::getColumnsInformation
 	 * @todo   Implement testGetColumnsInformation().
 	 */
 	public function testGetColumnsInformation() {
@@ -214,7 +214,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::getPrimaryKeys
+	 * @covers Soluble\Normalist\SyntheticTable::getPrimaryKeys
 	 * @todo   Implement testGetPrimaryKeys().
 	 */
 	public function testGetPrimaryKeys() {
@@ -225,7 +225,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::getPrimaryKey
+	 * @covers Soluble\Normalist\SyntheticTable::getPrimaryKey
 	 * @todo   Implement testGetPrimaryKey().
 	 */
 	public function testGetPrimaryKey() {
@@ -236,7 +236,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::getMetadata
+	 * @covers Soluble\Normalist\SyntheticTable::getMetadata
 	 * @todo   Implement testGetMetadata().
 	 */
 	public function testGetMetadata() {
@@ -247,7 +247,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::setDbAdapter
+	 * @covers Soluble\Normalist\SyntheticTable::setDbAdapter
 	 * @todo   Implement testSetDbAdapter().
 	 */
 	public function testSetDbAdapter() {
@@ -258,7 +258,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Normalist\Table::setTablePrefix
+	 * @covers Soluble\Normalist\SyntheticTable::setTablePrefix
 	 * @todo   Implement testSetTablePrefix().
 	 */
 	public function testSetTablePrefix() {
