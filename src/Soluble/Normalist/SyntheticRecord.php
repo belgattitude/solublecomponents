@@ -151,10 +151,9 @@ class SyntheticRecord implements ArrayAccess {
 	 * @param string $parent_table
 	 */
 	function getParent($parent_table) {
-		
-		$relations = $this->syntheticTable->getRelations($this->tableName);
 
-		$rels = array();
+		$relations = $this->syntheticTable->getRelations($this->tableName);
+		//$rels = array();
 		foreach($relations as $column => $parent) {
 			if ($parent['table_name'] == $parent_table) {
 				// @todo, check the case when 

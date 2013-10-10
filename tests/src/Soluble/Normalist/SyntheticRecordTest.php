@@ -17,7 +17,7 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @var SyntheticRecord
 	 */
-	protected $object;
+	protected $record;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -146,6 +146,7 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 	public function testGetParent() {
 
 		$data = $this->createMediaRecordData('phpunit_testGetParent');
+		
 		$record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
 		
 		$this->assertTrue($this->table->exists('media', $record['media_id']));		
@@ -183,7 +184,10 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 	 * @return array
 	 */
 	protected function createMediaRecordData($legacy_mapping=null) {
+		$this->table->insertOnDuplicateKey('media_container', array('reference' => 'PRODUCT_MEDIAS'));
+		
 		$container_id = $this->table->findOneBy('media_container', array('reference' => 'PRODUCT_MEDIAS'))->get('container_id');
+		
 		$data  = array(
 			'filename'  => 'phpunit_test.pdf',
 			'filemtime' => 111000,

@@ -273,6 +273,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	 * @return array
 	 */
 	protected function createMediaRecordData($legacy_mapping=null) {
+		$this->table->insertOnDuplicateKey('media_container', array('reference' => 'PRODUCT_MEDIAS'));
 		$container_id = $this->table->findOneBy('media_container', array('reference' => 'PRODUCT_MEDIAS'))->get('container_id');
 		$data  = array(
 			'filename'  => 'phpunit_test.pdf',

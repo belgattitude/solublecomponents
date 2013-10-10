@@ -96,6 +96,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetRelations() {
 		$relations = $this->metadata->getRelations('product');
+		
 		$this->assertInternalType('array', $relations);
 		$this->assertArrayHasKey('brand_id', $relations);
 		$this->assertArrayHasKey('column_name', $relations['unit_id']);
