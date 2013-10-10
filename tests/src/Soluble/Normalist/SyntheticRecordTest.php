@@ -43,7 +43,7 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @covers Smart\Model\Record::__get
+	 * @covers Soluble\Normalist\SyntheticRecord::__get
 	 */
 	function testMagicProperties() {
 		$data = $this->createMediaRecordData('phpunit_testMagicProperties');

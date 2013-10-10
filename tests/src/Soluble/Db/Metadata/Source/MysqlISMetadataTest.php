@@ -71,7 +71,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getIndexInformation
+	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getIndexesInformation
 	 * @todo   Implement testGetIndexInformation().
 	 */
 	public function testGetIndexesInformation() {
