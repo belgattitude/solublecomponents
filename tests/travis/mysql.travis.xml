@@ -17,7 +17,7 @@
 		
         <server name="MYSQL_DRIVER" value="Mysqli" />
         <server name="MYSQL_HOSTNAME" value="localhost" />
-        <server name="MYSQL_USERNAME" value="travis" />
+        <server name="MYSQL_USERNAME" value="root" />
 		<server name="MYSQL_PASSWORD" value="" />
 		<server name="MYSQL_DATABASE" value="phpunit_soluble_test_db" />
         
