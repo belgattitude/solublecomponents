@@ -103,7 +103,7 @@ class SyntheticTable implements AdapterAwareInterface {
 	 */
 	function find($table, $id) {
 		$prefixed_table = $this->prefixTable($table);
-		if (is_scalar($id)) {
+		if (!is_scalar($id)) {
 			$type = gettype($id);
 			throw new Exception\InvalidArgumentException("Unable to find a record, argument must be a scalar type (numeric, string,...), type '$type' given");
 		}

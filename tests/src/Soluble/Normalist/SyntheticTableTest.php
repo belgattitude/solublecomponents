@@ -59,9 +59,21 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($user_id, $user['user_id']);
 	}
 
+	/**
+	 * @covers Soluble\Normalist\Table::find
+	 */
 	public function testIdInvalidUsage() {
-		$this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+		$this->setExpectedException('Soluble\Normalist\Exception\InvalidArgumentException');
+		
 		$this->table->find('user', array('cool', 'test'));
+		
+		
+		//$this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+		$class = new \stdClass();
+		$class->id=1;
+		$this->table->find('user', $class);
+		  
+		 
 	}
 	
 	
