@@ -3,7 +3,7 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          colors="false"
-         convertErrorsToExceptions="false"
+         convertErrorsToExceptions="true"
          convertNoticesToExceptions="false"
          convertWarningsToExceptions="false"
          processIsolation="false"
