@@ -56,6 +56,7 @@ class ImageConverter implements ConverterInterface {
 		$cache_key = md5("$filename/$width/$height/$quality/$format");
 		
 		if ($this->cacheEnabled && $this->cacheStorage->hasItem($cache_key)) {
+			
 			$cacheMd = $this->cacheStorage->getMetadata($cache_key);
 			if ($cacheMd['mtime'] < filemtime($filename)) {
 				// invalid cache
@@ -67,6 +68,7 @@ class ImageConverter implements ConverterInterface {
 			}
 		} else {
 			$binaryContent = $this->generateThumbnail($filename, $box, $format, $quality);
+			$this->cacheStorage->setItem($cache_key, $binaryContent);
 			
 		}
 		
