@@ -15,6 +15,7 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then zcat tests/data/mysql/schema.sql.gz | mysql -uroot phpunit_soluble_test_db; fi
   - if [[ "$DB" == "mysql" ]]; then zcat tests/data/mysql/data.sql.gz | mysql -uroot phpunit_soluble_test_db; fi
   - mysql -e "show databases;" -uroot
+  - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --prefer-dist --dev
   - sudo apt-get install jpegoptim libjpeg-progs optipng
 
