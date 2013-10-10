@@ -54,13 +54,11 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::toArray
-	 * @todo   Implement testToArray().
 	 */
 	public function testToArray() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testtoarray');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertInternalType('array', $new_record->toArray());
 	}
 
 	/**
@@ -98,46 +96,40 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::offsetExists
-	 * @todo   Implement testOffsetExists().
 	 */
 	public function testOffsetExists() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testoffsetexists');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertTrue($new_record->offsetExists('legacy_mapping'));	
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::offsetGet
-	 * @todo   Implement testOffsetGet().
 	 */
 	public function testOffsetGet() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testoffsetget');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertEquals($new_record->offsetGet('legacy_mapping'), 'phpunit_testoffsetget');	
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::offsetSet
-	 * @todo   Implement testOffsetSet().
 	 */
 	public function testOffsetSet() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testMagicProperties');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$new_record->offsetSet('filename', 'cool');
+		$this->assertEquals($new_record['filename'], 'cool');		
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::offsetUnset
-	 * @todo   Implement testOffsetUnset().
 	 */
 	public function testOffsetUnset() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testMagicProperties');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$new_record->offsetUnset('filename');
+		$this->assertNull($new_record['filename']);		
 	}
 
 	/**
@@ -159,24 +151,21 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::__set
-	 * @todo   Implement test__set().
 	 */
 	public function test__set() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testMagicProperties');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$new_record->filename = 'cool';
+		$this->assertEquals($new_record['filename'], $new_record->filename);
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::__get
-	 * @todo   Implement test__get().
 	 */
 	public function test__get() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testMagicProperties');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertEquals($new_record['media_id'], $new_record->media_id);
 	}
 	
 	/**

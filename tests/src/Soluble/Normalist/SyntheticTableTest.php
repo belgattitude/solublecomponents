@@ -88,25 +88,23 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @covers Soluble\Normalist\SyntheticTable::fetchAll
-	 * @todo   Implement testFetchAll().
+	 * @covers Soluble\Normalist\SyntheticTable::all
 	 */
-	public function testFetchAll() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+	public function testAll() {
+		
+		$users = $this->table->all('user');
+		$this->assertInternalType('array', $users->toArray());
+		
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::findOneBy
-	 * @todo   Implement testFindOneBy().
 	 */
 	public function testFindOneBy() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$user_id = 1;
+		$user = $this->table->findOneBy('user', array('user_id' => $user_id));
+		$this->assertEquals($user_id, $user['user_id']);
+
 	}
 
 	/**
@@ -116,19 +114,22 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$user_id = 1;
 		$this->assertTrue($this->table->exists('user', $user_id));
 		$this->assertFalse($this->table->exists('user', 78965465));
-		
-		
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::delete
-	 * @todo   Implement testDelete().
+	 * @covers Soluble\Normalist\SyntheticTable::insert
 	 */
 	public function testDelete() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testDelete');
+		
+		$media = $this->table->insert('media', $data);
+		$media_id = $media['media_id'];
+		$return = $this->table->delete('media', $media_id);
+		$this->assertTrue($return);	
+
+		$media = $this->table->find('media', $media_id);
+		$this->assertFalse($media);
 	}
 
 	/**
@@ -215,24 +216,19 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::getPrimaryKeys
-	 * @todo   Implement testGetPrimaryKeys().
 	 */
 	public function testGetPrimaryKeys() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$primary = $this->table->getPrimaryKeys('media');
+		$this->assertInternalType('array', $primary);
+		$this->assertEquals($primary[0], 'media_id');		
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::getPrimaryKey
-	 * @todo   Implement testGetPrimaryKey().
 	 */
 	public function testGetPrimaryKey() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$primary = $this->table->getPrimaryKey('media');
+		$this->assertEquals($primary, 'media_id');
 	}
 
 	/**
