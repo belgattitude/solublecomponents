@@ -19,13 +19,16 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp() {
 		$adapter = \SolubleTestFactories::getDbAdapter();
-		$cache   = \SolubleTestFactories::getCacheStorage();
+		
 		var_dump($adapter->getDriver()->getConnection());
 		var_dump($adapter->getCurrentSchema());
+		
+		$cache   = \SolubleTestFactories::getCacheStorage();
 		
 		$this->metadata = new MysqlISMetadata($adapter);
 		//$this->metadata->setCache($cache);
 		$tables = $this->metadata->getTables();
+		
 		var_dump($tables);
 		
 	}
