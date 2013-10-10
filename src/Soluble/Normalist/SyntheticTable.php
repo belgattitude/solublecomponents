@@ -247,7 +247,12 @@ class SyntheticTable implements AdapterAwareInterface {
 		$excluded_columns = array_merge($duplicate_exclude, array($primary));
 		foreach($data as $column => $value) {
 			if (!in_array($column, $excluded_columns)) {
-				$extras[] = $platform->quoteIdentifier($column) . ' = ' . $platform->quoteValue($value); 
+				if ($value === null) {
+					$v = 'NULL';
+				} else {
+					$v = $platform->quoteValue($value);
+				}
+				$extras[] = $platform->quoteIdentifier($column) . ' = ' . $v; 
 			}
 		}
 		$sql_string .= ' on duplicate key update ' . join (',', $extras);
