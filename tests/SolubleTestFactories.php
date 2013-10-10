@@ -35,7 +35,7 @@ class SolubleTestFactories {
 		}
 		
 		$key = md5(serialize($mysql_config));
-		if (self::$_adapter_instances[$key] === null) {
+		if (!array_key_exists($key, self::$_adapter_instances)) {
 			self::$_adapter_instances[$key] = new Adapter($mysql_config);
 		}
 		return self::$_adapter_instances[$key];
@@ -67,7 +67,7 @@ class SolubleTestFactories {
 				);
 			}
 			$key = md5(serialize($cache_config));
-			if (self::$_cache_instances[$key] === null) {
+			if (!array_key_exists($key, self::$_cache_instances)) {
 				self::$_cache_instances[$key] = StorageFactory::factory($cache_config);
 			}
 			return self::$_cache_instances[$key];
