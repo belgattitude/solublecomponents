@@ -74,7 +74,7 @@ class SyntheticRecord implements ArrayAccess {
 			$predicate = array($primary => $pkvalue);
 			$data = $this->toArray();
 			unset($data[$primary]);
-			var_dump($data);
+			
 			
 			$affectedRows = $this->syntheticTable->update($this->tableName, $data, $predicate);
 			if ($affectedRows > 1) {
