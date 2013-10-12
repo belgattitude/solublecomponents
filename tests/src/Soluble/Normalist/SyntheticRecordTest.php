@@ -146,11 +146,8 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 		
 		$record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
 		
-		$this->assertTrue($this->table->exists('media', $record['media_id']));		
-		$record->save();
-		
 		$related = $record->getParent('media_container');
-		$this->assertEquals($data['container_id'], $related['container_id']);			
+		$this->assertEquals($record->container_id, $related['container_id']);			
 		
 	}
 

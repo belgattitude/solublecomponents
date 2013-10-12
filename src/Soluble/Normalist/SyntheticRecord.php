@@ -3,7 +3,7 @@ namespace Soluble\Normalist;
 
 use Soluble\Normalist\Exception;
 use Soluble\Normalist\SyntheticTable;
-use Zend\Db\Adapter\Adapter;
+//use Zend\Db\Adapter\Adapter;
 use ArrayAccess;
 
 class SyntheticRecord implements ArrayAccess {
@@ -70,10 +70,23 @@ class SyntheticRecord implements ArrayAccess {
 		$primary = $this->primaryKey;
 		if ($this[$primary] != '') {
 			// update
-			$record = $this->syntheticTable->update($this->tableName, $this->toArray(), $this[$primary]);
+			$pkvalue = $this[$primary];
+			$predicate = array($primary => $pkvalue);
+			$data = $this->toArray();
+			unset($data[$primary]);
+			var_dump($data);
+			
+			$affectedRows = $this->syntheticTable->update($this->tableName, $data, $predicate);
+			if ($affectedRows > 1) {
+				// Should never happen
+				throw new Exception\ErrorException("Saving record returned more than one affected row");
+			}
+			$record = $this->syntheticTable->find($this->tableName, $pkvalue);
+			
 		} else {
 			// insert
 			$record = $this->syntheticTable->insert($this->tableName, $this->toArray());
+			
 		}
 		
 		$this->data = new \ArrayObject($record->toArray());
@@ -183,7 +196,6 @@ class SyntheticRecord implements ArrayAccess {
 	public function __set($field, $value)
     {
 		$this->data->offsetSet($field, $value);
-		return $this;
     }
 
 	/**
@@ -194,8 +206,7 @@ class SyntheticRecord implements ArrayAccess {
 	 */
     public function __get($field)
     {
-		return 	$this->data->offsetGet($field);
-
+		return $this->data->offsetGet($field);
     }	
 	
 	

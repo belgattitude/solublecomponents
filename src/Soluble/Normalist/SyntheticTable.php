@@ -320,13 +320,14 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * Update data into table
 	 * @param string $table
 	 * @param array|ArrayObject $data
-	 * @return SynthticRecord|false
+	 * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+	 * @return int number of affected rows
 	 */
-	function update($table, $data, $where) {
+	function update($table, $data, $predicate) {
 		
-		$platform = $this->adapter->platform;
+		//$platform = $this->adapter->platform;
 		$prefixed_table = $this->prefixTable($table);
-		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
+		//$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		
 		if ($data instanceOf ArrayObject) {
 			$d = (array) $data;
@@ -337,12 +338,16 @@ class SyntheticTable implements AdapterAwareInterface {
 		$sql = new Sql($this->adapter);
 		$update = $sql->update($prefixed_table);
 		$update->set($data);
-		$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
+		//$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
+		$update->where($predicate);
 		
+		$sql_string = $sql->getSqlStringForSqlObject($update);
+		var_dump($sql_string);
+		//die();
 		$statement = $sql->prepareStatementForSqlObject($update);
 		$result    = $statement->execute();
-
-		return $this->find($table, $where);
+		$affectedRows =  $result->getAffectedRows();
+		return $affectedRows;
 		
 	}
 	

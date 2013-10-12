@@ -39,13 +39,13 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::select
-	 * @todo   Implement testSelect().
 	 */
 	public function testSelect() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		
+		$select = $this->table->select('media')->columns(array('media_id'));
+		
+		$results = $select->execute()->toArray();
+		$this->assertInternalType('array', $results);
 	}
 	
 	
@@ -183,24 +183,30 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::update
-	 * @todo   Implement testUpdate().
 	 */
 	public function testUpdate() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testUpdate');		
+		$this->table->insertOnDuplicateKey('media', $data);
+		$media = $this->table->findOneBy('media', array('legacy_mapping' => $data['legacy_mapping']));
+		
+		$affectedRows = $this->table->update('media', array('filename' => 'phpunit'), array('media_id' => $media->media_id));
+		
+		$new_media = $this->table->find('media', $media->media_id);
+		
+		$this->assertEquals($new_media->filename, 'phpunit');
+				
 	}
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::getRelations
-	 * @todo   Implement testGetRelations().
 	 */
 	public function testGetRelations() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$relations = $this->table->getRelations('media');
+		$this->assertInternalType('array', $relations);
+		$relation1 = $relations['container_id'];
+		$this->assertInternalType('array', $relation1);
+		$this->assertEquals($relation1['column_name'], 'container_id');
+		$this->assertEquals($relation1['table_name'], 'media_container');
 	}
 
 	/**
