@@ -341,8 +341,8 @@ class SyntheticTable implements AdapterAwareInterface {
 		//$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
 		$update->where($predicate);
 		
-		$sql_string = $sql->getSqlStringForSqlObject($update);
-		var_dump($sql_string);
+		//$sql_string = $sql->getSqlStringForSqlObject($update);
+		//var_dump($sql_string);
 		//die();
 		$statement = $sql->prepareStatementForSqlObject($update);
 		$result    = $statement->execute();
