@@ -85,13 +85,13 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::get
-	 * @todo   Implement testGet().
 	 */
 	public function testGet() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
+		$data = $this->createMediaRecordData('phpunit_testget');
+		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertEquals($new_record->get('legacy_mapping'), 'phpunit_testget');	
+		$this->setExpectedException('Soluble\Normalist\Exception\FieldNotFoundException');		
+		$new_record->offsetget('fieldthatnotexists');		
 	}
 
 	/**
@@ -102,7 +102,8 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
 		$this->assertTrue($new_record->offsetExists('legacy_mapping'));	
 	}
-
+	
+	
 	/**
 	 * @covers Soluble\Normalist\SyntheticRecord::offsetGet
 	 */
@@ -110,6 +111,8 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 		$data = $this->createMediaRecordData('phpunit_testoffsetget');
 		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
 		$this->assertEquals($new_record->offsetGet('legacy_mapping'), 'phpunit_testoffsetget');	
+		$this->setExpectedException('Soluble\Normalist\Exception\FieldNotFoundException');		
+		$new_record->offsetGet('fieldthatnotexists');
 	}
 
 	/**
@@ -129,7 +132,9 @@ class SyntheticRecordTest extends \PHPUnit_Framework_TestCase
 		$data = $this->createMediaRecordData('phpunit_testMagicProperties');
 		$new_record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
 		$new_record->offsetUnset('filename');
-		$this->assertNull($new_record['filename']);		
+		$this->setExpectedException('Soluble\Normalist\Exception\FieldNotFoundException');
+		$a = $new_record['filename'];		
+		
 	}
 
 	/**

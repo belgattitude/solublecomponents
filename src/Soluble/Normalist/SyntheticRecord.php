@@ -1,5 +1,7 @@
 <?php
 namespace Soluble\Normalist;
+
+use Soluble\Normalist\Exception;
 use Soluble\Normalist\SyntheticTable;
 use Zend\Db\Adapter\Adapter;
 use ArrayAccess;
@@ -92,57 +94,61 @@ class SyntheticRecord implements ArrayAccess {
 		return $this->syntheticTable->delete($this->tableName, $id);
 	}
 	
+
 	/**
-	 * 
-	 * @param string $column
+	 * Get field value 
+	 * @param string $field
 	 * @return mixed
+	 * @throws Exception\FieldNotFoundException
 	 */
-	function get($column) {
-		if (!$this->data->offsetExists($column)) {
-			throw new \Exception("Cannot get column value, column '$column' does not exists in record.");
-		}
-		return $this->offsetGet($column);
+	function get($field) {
+		return $this->offsetGet($field);
 	}
 	
 	
 	
 	/**
 	 * 
-	 * @param string $offset
+	 * @param string $field
 	 * @return boolean
 	 */
-	function offsetExists($offset) {
-		return $this->data->offsetExists($offset);
+	function offsetExists($field) {
+		return $this->data->offsetExists($field);
 	}
 	
 	/**
-	 * 
-	 * @param string $offset
+	 * Get field value 
+	 * @param string $field
 	 * @return mixed
+	 * @throws Exception\FieldNotFoundException
 	 */
-	public function offsetGet($offset) {
-		return $this->data->offsetGet($offset);
+	public function offsetGet($field) {
+		if (!$this->data->offsetExists($field)) {
+			throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+		}
+		
+		return $this->data->offsetGet($field);
 	}
 	
 	/**
 	 * 
-	 * @param string $offset
+	 * @param string $field
 	 * @param mixed $value
 	 * @return \Soluble\Normalist\Record
 	 */
-	function offsetSet($offset, $value) {
+	function offsetSet($field, $value) {
 		$this->clean = false;
-		$this->data->offsetSet($offset, $value);
+		$this->data->offsetSet($field, $value);
 		return $this;
 	}
 	
 	/**
 	 * 
-	 * @param string $offset
+	 * @param string $field
 	 * @return \Soluble\Normalist\Record
 	 */
-	function offsetUnset($offset) {
-		$this->data->offsetUnset($offset);
+	function offsetUnset($field) {
+		$this->data->offsetUnset($field);
 		return $this;
 	}
 	
@@ -169,17 +175,26 @@ class SyntheticRecord implements ArrayAccess {
 	}
 	
 
-	public function __set($name, $value)
+	/**
+	 * 
+	 * @param string $field
+	 * @param mixed $value
+	 */
+	public function __set($field, $value)
     {
-		$this->data->offsetSet($name, $value);
+		$this->data->offsetSet($field, $value);
+		return $this;
     }
 
-    public function __get($name)
+	/**
+	 * 
+	 * @param string $field
+	 * @return mixed
+	 * @throws Exception\FieldNotFoundException
+	 */
+    public function __get($field)
     {
-		if (!$this->data->offsetExists($name)) {
-			throw new \Exception("Cannot get record column '$name' on table '{$this->tableName}'");
-		}
-		return 	$this->data->offsetGet($name);
+		return 	$this->data->offsetGet($field);
 
     }	
 	
