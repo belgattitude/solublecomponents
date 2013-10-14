@@ -67,8 +67,8 @@ class ResultSet extends AbstractResultSet
 	{
 		if ($this->paginator === null) {
 			$this->paginator = new Paginator($this->getTotalRows(), 
-											 $this->getStore()->getOptions()->getLimit(), 
-											 $this->getStore()->getOptions()->getOffset());
+											 $this->getSource()->getOptions()->getLimit(), 
+											 $this->getSource()->getOptions()->getOffset());
 		}
 		return $this->paginator;
 	}
