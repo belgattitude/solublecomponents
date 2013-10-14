@@ -6,9 +6,6 @@ use Soluble\FlexStore\Writer\SendHeaders;
 
 class Json extends AbstractWriter {
 
-	
-
-	
 
 	/**
 	 * 
