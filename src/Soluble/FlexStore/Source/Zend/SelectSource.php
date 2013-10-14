@@ -63,7 +63,7 @@ class SelectSource extends AbstractSource
 			if ($params['select'] instanceof \Zend\Db\Sql\Select) {
 				$this->select = $params['select'];
 			} else {
-				throw new Exception\InvalidArgumentException("Param 'select' must be an instance of Zend\Db\Sql\Select");
+				throw new Exception\InvalidArgumentException("Param 'source' must be an instance of Zend\Db\Sql\Select");
 			}
 		} else {
 			throw new Exception\MissingArgumentException("Missing param 'select'");

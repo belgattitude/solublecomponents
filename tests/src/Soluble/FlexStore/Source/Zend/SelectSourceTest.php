@@ -29,7 +29,7 @@ class SelectSourceTest extends \PHPUnit_Framework_TestCase
 		$select->from('user');
 		$params = array(
 				'adapter' => $this->adapter,
-				'select' => $select
+				'select'  => $select
 			);
 		
 		$this->source = new SelectSource($params);

@@ -8,17 +8,17 @@ namespace Soluble\FlexStore\Source;
 use Soluble\FlexStore\Options;
 
 
-abstract class AbstractSource {
+abstract class AbstractSource implements SourceInterface {
 
 	/**
-	 * @var \Soluble\FlexStore\Options
+	 * @var Soluble\FlexStore\Options
 	 */
 	protected $options;
 	
 
 	/**
 	 * 
-	 * @return \Soluble\FlexStore\Options
+	 * @return Soluble\FlexStore\Options
 	 */
 	function getOptions()
 	{
@@ -31,8 +31,8 @@ abstract class AbstractSource {
 
 	/**
 	 * 
-	 * @param \Soluble\FlexStore\Options $options
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet
+	 * @param Soluble\FlexStore\Options $options
+	 * @return Soluble\FlexStore\ResultSet\ResultSet
 	 */
 	abstract public function getData(Options $options = null);
 
