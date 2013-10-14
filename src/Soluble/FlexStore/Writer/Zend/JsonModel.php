@@ -1,7 +1,7 @@
 <?php
-namespace Smart\Data\Store\Writer\Zend;
+namespace Soluble\FlexStore\Writer\Zend;
 use Zend\View\Model\JsonModel as ZendJsonModel;
-use Smart\Data\Store\Adapter\Adapter;
+use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Writer\AbstractWriter;
 use Soluble\FlexStore\Writer\SendHeaders;
 
@@ -9,29 +9,18 @@ use Soluble\FlexStore\Writer\SendHeaders;
 class JsonModel extends AbstractWriter {
 	
 	/**
-	 *
-	 * @var \Smart\Data\Store\Adapter\Adapter
-	 */
-	protected $store; 
-	
-	function __construct(Adapter $store) {
-		$this->store = $store;
-	}
-	
-
-	/**
 	 * 
 	 * @return \Zend\View\Model\JsonModel
 	 */
 	function getData() {
-		$data = $this->store->getData();
+		$data = $this->source->getData();
 		$json = new ZendJsonModel(array(
 			'success'	 => true,
 			'total'		 => $data->getTotalRows(), 
-			'start'		 => $data->getStore()->getOptions()->getOffset(),
-			'limit'		 => $data->getStore()->getOptions()->getLimit(),
+			'start'		 => $data->source->getOptions()->getOffset(),
+			'limit'		 => $data->source->getOptions()->getLimit(),
 			'data'		 => $data->toArray(),
-			'query'		 => $data->getStore()->getQueryString()
+			'query'		 => $data->source->getQueryString()
 		));
 		return $json;
 	}
