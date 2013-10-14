@@ -90,7 +90,6 @@ class ImageConverter implements ConverterInterface {
 		header("Cache-control: max-age=2592000, public", true);
 		header("Content-Disposition: inline; filename=\"$filename\";", true);
 		header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', true);
-		//header('Date: ' . );
 		header('Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+10 years')) . ' GMT', true);
 		//header('Content-Disposition: attachment; filename="downloaded.pdf"');
 		echo $binaryContent;
