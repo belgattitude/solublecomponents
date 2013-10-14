@@ -1,9 +1,9 @@
 <?php
 
-namespace Smart\Data\Store\ResultSet;
+namespace Soluble\FlexStore\ResultSet;
 
-use Smart\Data\Store\Adapter\Adapter as StoreAdapter;
-use Smart\Data\Store\Helper\Paginator;
+use Soluble\FlexStore\Source\AbstractSource;
+use Soluble\FlexStore\Helper\Paginator;
 use ArrayObject;
 
 class ResultSet extends AbstractResultSet
@@ -41,10 +41,9 @@ class ResultSet extends AbstractResultSet
 	protected $totalRows;
 	
 	/**
-	 * Relation to parent store
-	 * @var Smart\Data\Store\Adapter\Adapter
+	 * @var \Soluble\FlexStore\Source\AbstractSource
 	 */
-	protected $storeAdapter;
+	protected $source;
 	
     /**
      * Constructor
@@ -62,7 +61,7 @@ class ResultSet extends AbstractResultSet
 	
 	/**
 	 * 
-	 * @return \Smart\Data\Store\Helper\Paginator
+	 * @return \Soluble\FlexStore\Helper\Paginator
 	 */
 	function getPaginator()
 	{
@@ -78,29 +77,29 @@ class ResultSet extends AbstractResultSet
 
 	/**
 	 * 
-	 * @param \Smart\Data\Store\Adapter\Adapter $storeAdapter
-	 * @return \Smart\Data\Store\ResultSet\ResultSet
+	 * @param \Soluble\FlexStore\Source\AbstractSource $source
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
 	 */
-	function setStore(StoreAdapter $storeAdapter)
+	function setSource(AbstractSource $source)
 	{
-		$this->storeAdapter = $storeAdapter;
+		$this->source = $source;
 		return $this;
 	}
 	
 	/**
 	 * 
-	 * @return \Smart\Data\Store\Adapter\Adapter
+	 * @return \Soluble\FlexStore\Source\AbstractSource
 	 */
-	function getStore()
+	function getSource()
 	{
-		return $this->storeAdapter;
+		return $this->source;
 	}
 	
 	
 	/**
 	 * Set the total rows 
 	 * @param int $totalRows
-	 * @return \Smart\Data\Store\ResultSet\ResultSet
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
 	 */
 	function setTotalRows($totalRows)
 	{

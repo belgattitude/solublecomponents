@@ -1,13 +1,13 @@
 <?php
 
-namespace Smart\Data\Store\ResultSet;
+namespace Soluble\FlexStore\ResultSet;
 
 use ArrayIterator;
 use ArrayObject;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use Smart\Data\Store\ResultInterface;
+use Soluble\FlexStore\Resultset\ResultInterface;
 
 
 

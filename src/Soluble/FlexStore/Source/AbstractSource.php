@@ -3,21 +3,22 @@
  *
  * @author Vanvelthem Sébastien
  */
-namespace Soluble\Store\Adapter;
+namespace Soluble\FlexStore\Source;
 
-use Soluble\Store\Options;
+use Soluble\FlexStore\Options;
 
-abstract class Adapter {
+
+abstract class AbstractSource {
 
 	/**
-	 * @var \Soluble\Store\Options
+	 * @var \Soluble\FlexStore\Options
 	 */
 	protected $options;
 	
 
 	/**
 	 * 
-	 * @return \Soluble\Store\Options
+	 * @return \Soluble\FlexStore\Options
 	 */
 	function getOptions()
 	{
@@ -30,25 +31,14 @@ abstract class Adapter {
 
 	/**
 	 * 
-	 * @param \Soluble\Store\Options $options
-	 * @return \Soluble\Store\ResultSet\ResultSet;
+	 * @param \Soluble\FlexStore\Options $options
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
 	 */
-	abstract public function getData(Soluble\Store\Options $options = null);
+	abstract public function getData(Options $options = null);
 
 	
 
-	/**
-	 * Return the total affected rows (SQL_CALC_FOUND_ROWS)
-	 * Must be called after getData
-	 * @throws Vision_Store_Exception
-	 * @return int
-	 */
-	function getTotalCount() {
-		if ($this->totalCount === null) {
-			throw new Vision_Store_Exception("Total count cannot be called before getData.");
-		}
-		return $this->totalCount;
-	}
+
 
 	/**
 	 * Set the primary key / unique identifier in the store

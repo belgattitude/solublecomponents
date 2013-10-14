@@ -4,7 +4,7 @@
  * @author Vanvelthem Sébastien
  */
 
-namespace Soluble\Store\Helper;
+namespace Soluble\FlexStore\Helper;
 
 use Zend\Paginator\Paginator as ZendPaginator;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\Store;
+namespace Soluble\FlexStore;
 
 
 class Options {
@@ -23,7 +23,7 @@ class Options {
 	 * Set the (maximum) number of results to return
 	 *  
 	 * @param int $limit
-	 * @return \Soluble\Store\Options
+	 * @return \Soluble\FlexStore\Options
 	 */
 	function setLimit($limit) {
 		$this->limit = (int) $limit;
@@ -41,7 +41,7 @@ class Options {
 	 * Unset limit of results
 	 * Provides fluent interface
 	 *  
-	 * @return \Soluble\Store\Options
+	 * @return \Soluble\FlexStore\Options
 	 */
 	function unsetLimit() {
 		$this->limit = null;
@@ -60,7 +60,7 @@ class Options {
 	/**
 	 * Set the offset (the record to start reading when using limit)
 	 * @param int $offset
-	 * @return \Soluble\Store\Options
+	 * @return \Soluble\FlexStore\Options
 	 */
 	function setOffset($offset) {
 		$this->offset = (int) $offset;

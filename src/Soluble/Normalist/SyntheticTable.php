@@ -315,6 +315,7 @@ class SyntheticTable implements AdapterAwareInterface {
 		return $record;
 	}
 	
+	
 
 	/**
 	 * Update data into table

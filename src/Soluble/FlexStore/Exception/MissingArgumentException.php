@@ -2,7 +2,7 @@
 /**
  * @author Vanvelthem Sébastien
  */
-namespace Soluble\Store\Exception;
+namespace Soluble\FlexStore\Exception;
 
 class MissingArgumentException extends \InvalidArgumentException
 {

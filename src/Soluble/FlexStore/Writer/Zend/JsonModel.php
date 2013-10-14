@@ -2,8 +2,11 @@
 namespace Smart\Data\Store\Writer\Zend;
 use Zend\View\Model\JsonModel as ZendJsonModel;
 use Smart\Data\Store\Adapter\Adapter;
+use Soluble\FlexStore\Writer\AbstractWriter;
+use Soluble\FlexStore\Writer\SendHeaders;
 
-class JsonModel {
+
+class JsonModel extends AbstractWriter {
 	
 	/**
 	 *
@@ -31,6 +34,15 @@ class JsonModel {
 			'query'		 => $data->getStore()->getQueryString()
 		));
 		return $json;
+	}
+	
+	/**
+	 * 
+	 * @param \Soluble\FlexStore\Writer\SendHeaders $headers
+	 * @throws \Exception
+	 */
+	function send(SendHeaders $headers) {
+		throw new \Exception("Not supported");
 	}
 	
 }
