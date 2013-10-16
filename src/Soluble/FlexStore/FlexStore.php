@@ -8,7 +8,7 @@ namespace Soluble\FlexStore;
 use Soluble\FlexStore\Source; 
 use Soluble\FlexStore\Exception; 
 
-class FlexStore {
+class FlexStore implements FlexStoreInterface {
 	
 	/**
 	 *
