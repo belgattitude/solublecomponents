@@ -14,14 +14,19 @@ class JsonModel extends AbstractWriter {
 	 */
 	function getData() {
 		$data = $this->source->getData();
-		$json = new ZendJsonModel(array(
+		$d = array(
 			'success'	 => true,
 			'total'		 => $data->getTotalRows(), 
-			'start'		 => $data->source->getOptions()->getOffset(),
-			'limit'		 => $data->source->getOptions()->getLimit(),
-			'data'		 => $data->toArray(),
-			'query'		 => $data->source->getQueryString()
-		));
+			'start'		 => $data->getSource()->getOptions()->getOffset(),
+			'limit'		 => $data->getSource()->getOptions()->getLimit(),
+			'data'		 => $data->toArray()
+		
+		);
+		
+		if ($this->debug) {
+			$d['query'] = $data->getSource()->getQueryString();
+		}
+		$json = new ZendJsonModel($d);
 		return $json;
 	}
 	

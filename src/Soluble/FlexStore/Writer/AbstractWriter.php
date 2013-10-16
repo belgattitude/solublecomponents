@@ -9,6 +9,12 @@ abstract class AbstractWriter {
 	
 	/**
 	 *
+	 * @var boolean
+	 */
+	protected $debug = false;
+	
+	/**
+	 *
 	 * @var \Soluble\FlexStore\Source\AbstractSource
 	 */
 	protected $source; 
@@ -54,5 +60,15 @@ abstract class AbstractWriter {
 	 */
 	abstract function send(SendHeaders $headers=null);
 	
+	
+	/**
+	 * 
+	 * @param boolean $debug
+	 * @return \Soluble\Flexstore\Writer\AbstractWriter
+	 */
+	function setDebug($debug=true) {
+		$this->debug = $debug;
+		return $this;
+	}
 	
 }

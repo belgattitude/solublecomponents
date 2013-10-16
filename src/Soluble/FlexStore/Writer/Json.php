@@ -12,15 +12,19 @@ class Json extends AbstractWriter {
 	 */
 	function getData() {
 		$data = $this->source->getData();
-		$json = json_encode(array(
+		$d = array(
 			'success'	 => true,
 			'total'		 => $data->getTotalRows(), 
 			'start'		 => $data->getSource()->getOptions()->getOffset(),
 			'limit'		 => $data->getSource()->getOptions()->getLimit(),
-			'data'		 => $data->toArray(),
-			'query'		 => $data->getSource()->getQueryString()
-		));
-		return $json;
+			'data'		 => $data->toArray()
+		
+		);
+		
+		if ($this->debug) {
+			$d['query'] = $data->getSource()->getQueryString();
+		}
+		return json_encode($d);
 	}
 
 	/**
