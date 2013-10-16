@@ -8,6 +8,7 @@ env:
   - DB=mysql
 
 before_script:
+  - composer self-update 
   - printf "\n" | pecl install imagick
   - mkdir -p tests/tmp/cache 
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS phpunit_soluble_test_db;" -uroot; fi
@@ -25,5 +26,8 @@ before_script:
 
 script: 
   - phpunit -v --configuration tests/travis/$DB.travis.xml 
+  #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 25
 
+after_script:
+  - php ./bin/coveralls -v
