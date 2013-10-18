@@ -2,6 +2,7 @@
 
 namespace Soluble\Media\Converter;
 use Soluble\Media\BoxDimension;
+use Soluble\Media\Converter\Exception;
 
 use Imagine\Imagick\Imagine as ImagickImagine;
 use Imagine\Gd\Imagine as GdImagine;
@@ -14,8 +15,11 @@ use Zend\Cache\Storage\StorageInterface;
 
 class ImageConverter implements ConverterInterface {
 	
-	protected $default_quality = 90;
+	protected $default_backend = 'gd';
+	protected $supported_backends = array('gd', 'imagick');
+	protected $backend;
 	
+	protected $default_quality = 90;
 	
 	/**
 	 *
@@ -31,10 +35,24 @@ class ImageConverter implements ConverterInterface {
 	
 	/**
 	 * 
+	 * @param array $params
 	 */
-	function __construct() {
+	function __construct(array $params=array()) {
+		if (array_key_exists('backend', $params)) {
+			$this->setBackend($params['backend']);
+		} else {
+			$this->setBackend($this->default_backend);
+		} 
 		
-		
+	}
+	
+	function setBackend($backend) {
+		if (!in_array($backend, $this->supported_backends)) {
+			$valid_backends = join(',', $this->supported_backends);
+			throw new Exception\UnsupportedBackendException(__METHOD__ . " Backend '$backend' is not supported, supported backends are '$valid_backends'''");
+			
+		}
+		$this->backend = $backend;
 	}
 
 	/**
@@ -90,20 +108,20 @@ class ImageConverter implements ConverterInterface {
 		header("Cache-control: max-age=2592000, public", true);
 		header("Content-Disposition: inline; filename=\"$filename\";", true);
 		header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', true);
-		header('Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+10 years')) . ' GMT', true);
+		header('Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+1 years')) . ' GMT', true);
 		//header('Content-Disposition: attachment; filename="downloaded.pdf"');
 		echo $binaryContent;
 		die();
 		
 	}
 	
-	protected function generateThumbnail($filename, BoxDimension $box, $format=null, $quality=null) {
+	protected function generateThumbnail($filename, BoxDimension $box, $format=null, $quality=null, $strip=true) {
 		
 		$width    = $box->getWidth();
 		$height   = $box->getHeight();
 
 		try {
-			$imagine = $this->getImagine('imagick');
+			$imagine = $this->getImagine();
 
 			if ($imagine instanceof Imagine\Imagick\Imagine) {
 				$filter = ImageInterface::FILTER_LANCZOS;
@@ -131,7 +149,9 @@ class ImageConverter implements ConverterInterface {
 
 			$newSize = new Box($new_width, $new_height);
 
-			//$image->strip();
+			if ($strip) {
+				$image->strip();
+			}
 
 			//$image->interlace(ImageInterface::INTERLACE_LINE);
 
@@ -161,11 +181,12 @@ class ImageConverter implements ConverterInterface {
 	
 	/**
 	 * 
-	 * @param string $library
+	 * @param string $backend
 	 * @return 
 	 */
-	protected function getImagine($library) {
-		switch(strtolower($library)) {
+	protected function getImagine($backend=null) {
+		if ($backend === null) $backend = $this->backend;
+		switch(strtolower($backend)) {
 			case 'imagick' :
 				$imagine = new ImagickImagine();
 				break;

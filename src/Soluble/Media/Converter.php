@@ -26,12 +26,13 @@ class Converter {
 	/**
 	 * @return Converter\ConverterInterface
 	 */
-	function createConverter($key) {
+	function createConverter($key, array $params=array()) {
 		
 		switch(strtolower($key)) {
 			case 'image' :
-				$converter = new Converter\ImageConverter();
+				$converter = new Converter\ImageConverter($params);
 				break;
+			
 			default:
 				throw new \Exception("Only image converter is supported");
 		}

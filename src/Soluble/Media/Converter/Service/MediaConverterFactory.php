@@ -26,7 +26,7 @@ class MediaConverterFactory implements FactoryInterface
 		}
 		*/
 		
-		$converter = new Converter($adapter);
+		$converter = new Converter();
 		if ($serviceLocator->has('Cache\SolubleMediaConverter')) {
 			$converter->setCache($serviceLocator->get('Cache\SolubleMediaConverter'));
 		}		
