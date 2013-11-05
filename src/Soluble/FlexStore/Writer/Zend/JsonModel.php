@@ -23,7 +23,7 @@ class JsonModel extends AbstractWriter {
 		
 		);
 		
-		if ($this->debug) {
+		if ($this->options['debug']) {
 			$d['query'] = $data->getSource()->getQueryString();
 		}
 		$json = new ZendJsonModel($d);

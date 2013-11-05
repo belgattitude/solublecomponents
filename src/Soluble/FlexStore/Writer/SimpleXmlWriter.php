@@ -5,9 +5,20 @@ use Soluble\FlexStore\Writer\AbstractWriter;
 
 class SimpleXmlWriter extends AbstractWriter {
 
-	protected $row_tag = 'row';
-	protected $body_tag = 'response';
-
+	
+	/**
+	 * @var array
+	 */
+	protected $options = array(
+		/**
+		 * XML tag for response
+		 */
+		'body_tag' => 'response',
+		/**
+		 * XML tag for rows
+		 */
+		'row_tag' => 'row'
+	);
 
 	/**
 	 * 
@@ -15,17 +26,28 @@ class SimpleXmlWriter extends AbstractWriter {
 	 * @return \Soluble\FlexStore\Writer\SimpleXmlWriter
 	 */
 	function setRowTag($row_tag) {
-		$this->row_tag = $row_tag;
+		$this->options['row_tag'] = $row_tag;
 		return $this;
 	}
+
+	/**
+	 * 
+	 * @param string $body_tag
+	 * @return \Soluble\FlexStore\Writer\SimpleXmlWriter
+	 */
+	function setBodyTag($body_tag) {
+		$this->options['body_tag'] = $body_tag;
+		return $this;
+	}
+	
 	
 	/**
 	 * 
 	 * @return string xml encoded data
 	 */
-	function getData() {
+	public function getData() {
 		$data = $this->source->getData();
-		$bt = $this->body_tag;
+		$bt = $this->options['body_tag'];
 		$xml = new \SimpleXMLElement("<?xml version=\"1.0\"?><$bt></$bt>");
 
 		$d = array(
@@ -45,7 +67,11 @@ class SimpleXmlWriter extends AbstractWriter {
         
 		return $xml->asXML();
 	}
-	
+   /**
+    * 
+    * @param type $result
+    * @param type $xml
+    */
    protected function createXmlNode($result, &$xml)
    {
         foreach($result as $key => $value) {
@@ -55,7 +81,7 @@ class SimpleXmlWriter extends AbstractWriter {
                   $subnode = $xml->addChild("$key");
                   $this->createXmlNode($value, $subnode);
                 } else {
-					$v = array($this->row_tag => $value);
+					$v = array($this->options['row_tag'] => $value);
                     $this->createXmlNode($v, $xml);
                 }
             } else {
@@ -69,7 +95,7 @@ class SimpleXmlWriter extends AbstractWriter {
 	 * 
 	 * @param \Soluble\FlexStore\Writer\SendHeaders $headers
 	 */
-	function send(SendHeaders $headers=null) {
+	public function send(SendHeaders $headers=null) {
 		if ($headers === null) $headers = new SendHeaders();
 		ob_end_clean();
 		$headers->setContentType('application/xml; charset=utf-8');

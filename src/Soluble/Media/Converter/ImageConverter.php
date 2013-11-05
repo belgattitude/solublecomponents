@@ -110,6 +110,7 @@ class ImageConverter implements ConverterInterface {
 		header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime($filename)).' GMT', true);
 		header('Expires: ' . gmdate('D, d M Y H:i:s', strtotime('+1 years')) . ' GMT', true);
 		//header('Content-Disposition: attachment; filename="downloaded.pdf"');
+		header('Pragma: cache', true);
 		echo $binaryContent;
 		die();
 		

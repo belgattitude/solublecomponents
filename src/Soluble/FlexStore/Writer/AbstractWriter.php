@@ -3,15 +3,10 @@
 namespace Soluble\Flexstore\Writer;
 use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Writer\SendHeaders;
+use Soluble\FlexStore\Exception;
+use Traversable;
 
 abstract class AbstractWriter {
-	
-	
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $debug = false;
 	
 	/**
 	 *
@@ -23,17 +18,21 @@ abstract class AbstractWriter {
 	 *
 	 * @var array
 	 */
-	protected $params;
+	protected $options = array(
+		'debug' => false
+	);
 	
 	/**
 	 * 
-	 * @param array $params
+	 * @param array|Traversable $options
 	 */
-	function __construct(SourceInterface $source=null, array $params=null) {
+	function __construct(SourceInterface $source=null, $options=null) {
 		if ($source !== null) {
 			$this->setSource($source);
 		}
-		$this->params = $params;
+		if ($options !== null) {
+			$this->setOptions($options);
+		}
 	}
 	
 	
@@ -67,8 +66,51 @@ abstract class AbstractWriter {
 	 * @return \Soluble\Flexstore\Writer\AbstractWriter
 	 */
 	function setDebug($debug=true) {
-		$this->debug = $debug;
+		$this->options['debug'] = $debug;
 		return $this;
 	}
+	
+	
+    /**
+     * @param  array|Traversable $options
+     * @return self
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setOptions($options)
+    {
+        if (!is_array($options) && !$options instanceof Traversable) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                '"%s" expects an array or Traversable; received "%s"',
+                __METHOD__,
+                (is_object($options) ? get_class($options) : gettype($options))
+            ));
+        }
+
+        foreach ($options as $key => $value) {
+            $setter = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
+            if (method_exists($this, $setter)) {
+				
+                $this->{$setter}($value);
+            } elseif (array_key_exists($key, $this->options)) {
+                $this->options[$key] = $value;
+            } else {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'The option "%s" does not have a matching %s setter method or options[%s] array key',
+                    $key, $setter, $key
+                ));
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Retrieve options representing object state
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 	
 }

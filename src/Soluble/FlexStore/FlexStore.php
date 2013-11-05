@@ -10,6 +10,8 @@ use Soluble\FlexStore\Exception;
 
 class FlexStore implements FlexStoreInterface {
 	
+
+	
 	/**
 	 *
 	 * @var Source\SourceInterface
