@@ -67,16 +67,41 @@ class CSVTest extends \PHPUnit_Framework_TestCase
 	 * @covers Soluble\FlexStore\Writer\CSV::getData
 	 */
 	public function testGetDataWithOptions() {
+		$enclosure = '"';
 		$this->csvWriter->setOptions(
 				array(
 					'field_separator' => CSV::SEPARATOR_TAB,
 					'line_separator' => CSV::SEPARATOR_NEWLINE_UNIX,
+					'enclosure' => $enclosure,
 					'charset' => 'ISO-8859-1'
 					)
 				);
 		$data = $this->csvWriter->getData();
 		$this->assertInternalType('string', $data);
+		$data = explode(CSV::SEPARATOR_NEWLINE_UNIX, $data);
+		$line0 = str_getcsv($data[0], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
+		$this->assertInternalType('array', $line0);
+		$this->assertEquals($line0[1], 'category_id');
 
+		$select = new \Zend\Db\Sql\Select();
+		$select->from('product_category_translation')->where("lang = 'fr' and category_id = 988")->limit(50);
+		$params = array(
+			'adapter' => $this->adapter,
+			'select' => $select
+		);
+
+		
+		$this->csvWriter->setSource(new SelectSource($params));
+		$data = $this->csvWriter->getData();
+		$data = explode(CSV::SEPARATOR_NEWLINE_UNIX, $data);
+		$line1 = str_getcsv($data[1], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
+		$this->assertInternalType('array', $line1);
+		$title = $line1[4];
+		$a = mb_detect_encoding($title);
+		
+		//var_dump($a);
+		//var_dump($title);
+		//die();
 	}
 	
 	/**
