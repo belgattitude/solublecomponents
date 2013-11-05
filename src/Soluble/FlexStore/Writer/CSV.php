@@ -18,7 +18,8 @@ class CSV extends AbstractWriter {
 		'field_separator' => ";",
 		'line_separator' => "\n",
 		'enclosure' => '',
-		'charset' => 'UTF-8'
+		'charset' => 'UTF-8',
+		'escape' => '\\'
 	);	
 
 
@@ -43,17 +44,22 @@ class CSV extends AbstractWriter {
 		
 		$internal_encoding = strtoupper(iconv_get_encoding('internal_encoding'));
 		$charset = strtoupper($this->options['charset']);
-		
+		$escape = $this->options['escape'];
 		
 		$header_line = join($this->options['field_separator'], array_keys($data[0]));
 		$csv .= $header_line . $this->options['line_separator'];
 
+		
 		foreach ($data as $row) {
 
+			
 			switch ($this->options['field_separator']) {
 				case self::SEPARATOR_TAB:
 					array_walk($row, array($this, 'escapeTabDelimiter'));
 					break;
+				default:
+					array_walk($row, array($this, 'escapeFieldDelimiter'));
+					
 			}
 
 			array_walk($row, array($this, 'escapeLineDelimiter'));
@@ -116,6 +122,17 @@ class CSV extends AbstractWriter {
 	protected function escapeTabDelimiter(&$item, $key) {
 		$item = str_replace("\t", " ", $item);
 	}
+	
+	/**
+	 *
+	 * @param string $item
+	 * @param string $key 
+	 * @return string
+	 */
+	protected function escapeFieldDelimiter(&$item, $key) {
+		$item = str_replace($this->options['field_separator'], $this->options['escape'] . $this->options['field_separator'], $item);
+	}
+	
 
 	/**
 	 *
