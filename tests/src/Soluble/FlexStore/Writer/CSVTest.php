@@ -121,6 +121,40 @@ class CSVTest extends \PHPUnit_Framework_TestCase
 	
 
 	/**
+	 * @covers Soluble\FlexStore\Writer\CSV::getData
+	 */
+	public function testGetDataEscapeDelimiter() {
+		$enclosure = '"';
+		$this->csvWriter->setOptions(
+				array(
+					'field_separator' => CSV::SEPARATOR_SEMICOLON,
+					'line_separator' => CSV::SEPARATOR_NEWLINE_UNIX,
+					'enclosure' => $enclosure,
+					'charset' => 'ISO-8859-1',
+					'escape' => '\\'
+					)
+				);
+
+
+		$select = new \Zend\Db\Sql\Select();
+		$select->from(array('pc18' => 'product_category_translation'))
+			   ->columns(array(
+				   'category_id',
+				   'test' => new \Zend\Db\Sql\Expression("'alpha; beta;'")
+			   ))	
+			   ->where("lang = 'fr' and category_id = 988");
+		$params = array(
+			'adapter' => $this->adapter,
+			'select' => $select
+		);
+
+		
+		$this->csvWriter->setSource(new SelectSource($params));
+		$data = $this->csvWriter->getData();
+		$this->assertContains('alpha\; beta\;', $data);
+		
+	}
+	/**
 	 * @covers Soluble\FlexStore\Writer\CSV::send
 	 * @todo   Implement testSend().
 	 */
