@@ -97,7 +97,7 @@ class CSV extends AbstractWriter {
 		//Content-Type: text/csv; name="filename.csv"
 		//Content-Disposition: attachment; filename="filename.csv"		
 		;
-		$headers->setContentType('text/csv');
+		$headers->setContentType('text/csv; charset=' . $this->options['charset']);
 		$headers->printHeaders();
 		$json = $this->getData();
 		echo $json;

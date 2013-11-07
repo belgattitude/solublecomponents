@@ -17,7 +17,9 @@ class SimpleXmlWriter extends AbstractWriter {
 		/**
 		 * XML tag for rows
 		 */
-		'row_tag' => 'row'
+		'row_tag' => 'row',
+		
+		'encoding' => 'UTF-8'
 	);
 
 	/**
@@ -48,7 +50,8 @@ class SimpleXmlWriter extends AbstractWriter {
 	public function getData() {
 		$data = $this->source->getData();
 		$bt = $this->options['body_tag'];
-		$xml = new \SimpleXMLElement("<?xml version=\"1.0\"?><$bt></$bt>");
+		$encoding = $this->options['encoding'];
+		$xml = new \SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");
 
 		$d = array(
 			'success'	 => true,
