@@ -89,7 +89,8 @@ class SimpleXmlWriter extends AbstractWriter {
                 }
             } else {
 				
-                $xml->addChild("$key", "$value");
+				$xml->addChild("$key", htmlspecialchars($value, ENT_XML1, $this->options->encoding));				
+                
             }
         }
    }	
@@ -103,7 +104,7 @@ class SimpleXmlWriter extends AbstractWriter {
 		ob_end_clean();
 		$headers->setContentType('application/xml; charset=utf-8');
 		$headers->printHeaders();
-		$json = $this->getData();
-		echo $json;
+		$xml = $this->getData();
+		echo $xml;
 	}
 }
