@@ -62,7 +62,7 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::find
 	 */
-	public function testIdInvalidUsage() {
+	public function testFindThrowsInvalidArgumentException() {
 		$this->setExpectedException('Soluble\Normalist\Exception\InvalidArgumentException');
 		
 		$this->table->find('user', array('cool', 'test'));
@@ -76,6 +76,30 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		 
 	}
 	
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::insert
+	 */
+	public function testInsertThrowsInvalidQueryException() {
+		$this->setExpectedException('Soluble\Normalist\Exception\InvalidQueryException');
+		$data = array('column_not_exists' => 1);
+		$this->table->insert('media', $data);
+	}
+	
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::insert
+	 */
+	public function testInsertThrowsRuntimeException() {
+		$this->setExpectedException('Soluble\Normalist\Exception\RuntimeException');
+		$data  = array(
+			'filename'  => 'phpunit_test.pdf',
+			'filemtime' => 111000,
+			'filesize'  => 5000
+		);
+		/// wil fail because not container_id specified
+		$this->table->insert('media', $data);
+	}
+	
+
 	
 	/**
 	 * 
