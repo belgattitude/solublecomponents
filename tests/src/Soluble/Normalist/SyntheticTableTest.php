@@ -179,6 +179,13 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testDelete() {
 		$data = $this->createMediaRecordData('phpunit_testDelete');
+		$media = $this->table->findOneBy('media', array('legacy_mapping' => 'phpunit_testDelete'));
+		if ($media) {
+			// cleanup if any
+			
+			$this->table->delete('media', $media['media_id']);
+		}
+		
 		
 		$media = $this->table->insert('media', $data);
 		$media_id = $media['media_id'];
