@@ -2,6 +2,6 @@
 
 namespace Soluble\Normalist\Exception;
 
-class RecordNotFoundException extends \Exception
+class RecordNotFoundException extends \Exception implements ExceptionInterface
 {
 }

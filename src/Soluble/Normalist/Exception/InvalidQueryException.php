@@ -2,7 +2,7 @@
 
 namespace Soluble\Normalist\Exception;
 
-class InvalidQueryException extends ErrorException
+class InvalidQueryException extends ErrorException implements ExceptionInterface
 {
 	/**
 	 * @var string

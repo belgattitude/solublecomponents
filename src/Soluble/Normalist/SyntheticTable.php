@@ -186,9 +186,9 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * Insert data into table
 	 * @param string $table
 	 * @param array|ArrayObject $data
-	 * @throws Exception\InvalidQeuryException
-	 * @throws Exception\ErrorException
-	 * @throws Exception\RuntimeException
+	 * @throws Exception\InvalidQueryException when a column does not exist in database
+	 * @throws Exception\RuntimeException when a constraint violation or a not null value is thrown
+	 * @throws Exception\ErrorException other exception	 
 	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	

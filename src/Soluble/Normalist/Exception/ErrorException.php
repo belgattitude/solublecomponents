@@ -2,6 +2,6 @@
 
 namespace Soluble\Normalist\Exception;
 
-class ErrorException extends \Exception
+class ErrorException extends \Exception implements ExceptionInterface
 {
 }

@@ -2,6 +2,6 @@
 
 namespace Soluble\Normalist\Exception;
 
-class FieldNotFoundException extends ErrorException
+class FieldNotFoundException extends ErrorException implements ExceptionInterface
 {
 }
