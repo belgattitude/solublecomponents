@@ -204,20 +204,43 @@ class SyntheticTable implements AdapterAwareInterface {
 		$sql = new Sql($this->adapter);
 		$insert = $sql->insert($prefixed_table);
 		$insert->values($data);
-
+		
 		
 		
 		try {
 			$statement = $sql->prepareStatementForSqlObject($insert);			
 			$result    = $statement->execute();
 		} catch (\Zend\Db\Adapter\Exception\InvalidQueryException $e) {
-			$message = $e->getMessage();
-			$sql_string = $insert->getSqlString($sql->getAdapter()->getPlatform());
-			$iqex = new Exception\InvalidQueryException($message, $e->getCode(), $e);
-			$iqex->setSqlString($sql_string);
-			throw $iqex;
+			$messages = array();
+			$ex = $e;
+			do {
+				$messages[] = $ex->getMessage();
+			} while ($ex = $ex->getPrevious());	
+			$message = join(', ', array_unique($messages));
+			
+			// In ZF2, PDO_Mysql and MySQLi return different exception, 
+			// attempt to normalize
+			
+			$lmsg = strtolower($message);
+			
+			if (strpos($lmsg, 'constraint violation') !== false ||
+				strpos($lmsg, 'sqlstate[23000]') !== false) {
+				$rex = new Exception\RuntimeException($message, $e->getCode(), $e);
+				throw $rex;
+				
+			} else {
+				$sql_string = $insert->getSqlString($sql->getAdapter()->getPlatform());
+				$iqex = new Exception\InvalidQueryException($message, $e->getCode(), $e);
+				$iqex->setSqlString($sql_string);
+				throw $iqex;
+			}
 		} catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
-			$message = $e->getMessage();
+			$messages = array();
+			$ex = $e;
+			do {
+				$messages[] = $ex->getMessage();
+			} while ($ex = $ex->getPrevious());	
+			$message = join(', ', array_unique($messages));
 			$rex = new Exception\RuntimeException($message, $e->getCode(), $e);
 			throw $rex;
 		}

@@ -84,6 +84,39 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$data = array('column_not_exists' => 1);
 		$this->table->insert('media', $data);
 	}
+
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::insert
+	 */
+	public function testInsertInvalidQueryExceptionMessage() {
+		
+		$data = array('column_not_exists' => 1);
+		try {
+			$this->table->insert('media', $data);
+		} catch (\Soluble\Normalist\Exception\InvalidQueryException $e) {
+			$msg = strtolower($e->getMessage());
+			$this->assertContains("column_not_exists", $msg);
+			$this->assertContains("unknown column", $msg);
+		}
+	}
+	
+
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::insert
+	 */
+	public function testInsertNotNullRuntimeExceptionMessage() {
+		
+		$data = array('title' => "A title that shouln't be saved in phpunit database", 'reference' => null);
+		try {
+			$this->table->insert('product_type', $data);
+		} catch (\Soluble\Normalist\Exception\RuntimeException $e) {
+			$msg = strtolower($e->getMessage());
+			$this->assertContains("reference", $msg);
+			$this->assertContains("cannot be null", $msg);
+		}
+	}
+	
+	
 	
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::insert
