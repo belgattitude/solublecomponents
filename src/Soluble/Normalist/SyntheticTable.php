@@ -63,12 +63,19 @@ class SyntheticTable implements AdapterAwareInterface {
 	
 	
 	/**
+	 *
+	 * @var Zend\Db\Sql\Sql
+	 */
+	protected $sql;
+	
+	/**
 	 * 
 	 * @param \Zend\Db\Adapter\Adapter $adapter
 	 * @param string $table table name
 	 */
 	function __construct(Adapter $adapter) {
 		$this->setDbAdapter($adapter);
+		$this->sql = new Sql($adapter);
 	}
 
 
@@ -173,10 +180,10 @@ class SyntheticTable implements AdapterAwareInterface {
 		$prefixed_table = $this->prefixTable($table);
 		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		$platform = $this->adapter->platform;		
-		$sql = new Sql($this->adapter);
-		$delete = $sql->delete($prefixed_table)
+		
+		$delete = $this->sql->delete($prefixed_table)
 				  ->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($id));
-		$statement = $sql->prepareStatementForSqlObject($delete);
+		$statement = $this->sql->prepareStatementForSqlObject($delete);
 		$result    = $statement->execute();
 		//var_dump($result->getAffectedRows()); die('cool');
 		return true;
@@ -201,14 +208,14 @@ class SyntheticTable implements AdapterAwareInterface {
 			$d = $data;
 		}
 		
-		$sql = new Sql($this->adapter);
-		$insert = $sql->insert($prefixed_table);
+		
+		$insert = $this->sql->insert($prefixed_table);
 		$insert->values($data);
 		
 		
 		
 		try {
-			$statement = $sql->prepareStatementForSqlObject($insert);			
+			$statement = $this->sql->prepareStatementForSqlObject($insert);			
 			$result    = $statement->execute();
 		} catch (\Zend\Db\Adapter\Exception\InvalidQueryException $e) {
 			$messages = array();
@@ -229,7 +236,7 @@ class SyntheticTable implements AdapterAwareInterface {
 				throw $rex;
 				
 			} else {
-				$sql_string = $insert->getSqlString($sql->getAdapter()->getPlatform());
+				$sql_string = $insert->getSqlString($this->sql->getAdapter()->getPlatform());
 				$iqex = new Exception\InvalidQueryException($message, $e->getCode(), $e);
 				$iqex->setSqlString($sql_string);
 				throw $iqex;
@@ -278,11 +285,11 @@ class SyntheticTable implements AdapterAwareInterface {
 			$d = $data;
 		}
 		
-		$sql = new Sql($this->adapter);
-		$insert = $sql->insert($prefixed_table);
+		
+		$insert = $this->sql->insert($prefixed_table);
 		$insert->values($data);
 
-		$sql_string = $sql->getSqlStringForSqlObject($insert);
+		$sql_string = $this->sql->getSqlStringForSqlObject($insert);
 		$extras = array(); 
 		$excluded_columns = array_merge($duplicate_exclude, array($primary));
 		foreach($data as $column => $value) {
@@ -376,8 +383,8 @@ class SyntheticTable implements AdapterAwareInterface {
 			$d = $data;
 		}
 		
-		$sql = new Sql($this->adapter);
-		$update = $sql->update($prefixed_table);
+		
+		$update = $this->sql->update($prefixed_table);
 		$update->set($data);
 		//$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
 		$update->where($predicate);
@@ -385,7 +392,7 @@ class SyntheticTable implements AdapterAwareInterface {
 		//$sql_string = $sql->getSqlStringForSqlObject($update);
 		//var_dump($sql_string);
 		//die();
-		$statement = $sql->prepareStatementForSqlObject($update);
+		$statement = $this->sql->prepareStatementForSqlObject($update);
 		$result    = $statement->execute();
 		$affectedRows =  $result->getAffectedRows();
 		return $affectedRows;
