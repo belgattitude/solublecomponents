@@ -307,7 +307,7 @@ class SyntheticTable implements AdapterAwareInterface {
 		try {
 			//$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
 			
-			$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_PREPARE);
+			$stmt = $this->adapter->query($sql_string, Adapter::QUERY_MODE_PREPARE);
 			$result = $result->execute();
 			
 		} catch (\Exception $e) {
