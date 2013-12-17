@@ -305,7 +305,11 @@ class SyntheticTable implements AdapterAwareInterface {
 		$sql_string .= ' on duplicate key update ' . join (',', $extras);
 		
 		try {
-			$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+			//$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+			
+			$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_PREPARE);
+			$result = $result->execute();
+			
 		} catch (\Exception $e) {
 			$message ="Cannot execute sql [ $sql_string ]";
 			throw new Exception\ErrorException($message, $code=1, $e);
