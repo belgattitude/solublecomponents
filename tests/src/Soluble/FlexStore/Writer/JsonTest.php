@@ -67,9 +67,31 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 	public function testGetData() {
 		$data = $this->jsonWriter->getData();
 		$this->assertJson($data);
+		$d = json_decode($data, $assoc=true);
+		$this->assertArrayHasKey('total', $d);
+		$this->assertArrayHasKey('start', $d);
+		$this->assertArrayHasKey('limit', $d);
+		$this->assertArrayHasKey('data', $d);
+		$this->assertTrue($d['success']);
+		$this->assertEquals($d['total'], count($d['data']));
+		$this->assertArrayNotHasKey('query', $d);
 		
 	}
 
+	/**
+	 * @covers Soluble\FlexStore\Writer\Json::getData
+	 * @covers Soluble\FlexStore\Writer\Json::setDebug
+	 */
+	public function testGetDataWithDebug() {
+		$this->jsonWriter->setDebug($debug=true);
+		$data = $this->jsonWriter->getData();
+		$this->assertJson($data);
+		$d = json_decode($data, $assoc=true);
+
+		$this->assertArrayHasKey('query', $d);
+		
+	}	
+	
 	/**
 	 * @covers Soluble\FlexStore\Writer\Json::send
 	 */

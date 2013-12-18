@@ -21,7 +21,7 @@ class Json extends AbstractWriter {
 			'data'		 => $data->toArray()
 		);
 		
-		if ($this->debug) {
+		if ($this->options['debug']) {
 			$d['query'] = $data->getSource()->getQueryString();
 		}		
 		return Encoder::encode($d);
