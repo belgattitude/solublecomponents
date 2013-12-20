@@ -16,7 +16,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 	
 	/**
 	 *
-	 * @var \Soluble\FlexStore\FlexStore
+	 * @var FlexStore
 	 */
 	protected $store;
 
@@ -45,7 +45,62 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown() {
 		
 	}
+	
+	/**
+	 * @covers Soluble\FlexStore\ResultSet\AbstractResultSet::toArray
+	 */
+	public function testGetArray() {
+		
+		
+		$select = new \Zend\Db\Sql\Select();
+		$select->from('product_brand');
+		$parameters = array(
+			'adapter' => $this->adapter,
+			'select' => $select
+		);
+		$store = new FlexStore('zend\select', $parameters);
+		
+		$resultset = $this->store->getSource()->getData();
+		$arr = $resultset->toArray();
+		$this->assertInternalType('array', $arr);
+	}
+	
 
+	/**
+	 * @covers Soluble\FlexStore\ResultSet\ResultSet::setColumns
+	 */
+	public function testSetColumns() {
+		
+		
+		$select = new \Zend\Db\Sql\Select();
+		$select->from('product_brand');
+		$parameters = array(
+			'adapter' => $this->adapter,
+			'select' => $select
+		);
+		$store = new FlexStore('zend\select', $parameters);
+		
+		$columns = array('legacy_mapping', 'brand_id');
+		$resultset = $this->store->getSource()->getData();
+		$resultset->setColumns($columns);
+		$arr = $resultset->toArray();
+		$this->assertInternalType('array', $arr);
+		
+		$first = $arr[0];
+		foreach($columns as $column) {
+			$this->assertArrayHasKey($column, $first);
+		}
+		// test number of returned columns
+		$test = array_keys($first);
+		$this->assertEquals(count($columns), count($test));
+		
+		// test order / sort
+		
+		$this->assertEquals(array_shift($columns), array_shift($test));
+		$this->assertEquals(array_shift($columns), array_shift($test));
+	}
+	
+	
 	/**
 	 * @covers Soluble\FlexStore\ResultSet\ResultSet::getPaginator
 	 */

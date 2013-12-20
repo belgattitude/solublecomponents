@@ -17,6 +17,35 @@ abstract class AbstractSource implements SourceInterface {
 	
 
 	/**
+	 * columns to retrieve when calling getData
+	 * @var array
+	 */
+	protected $columns;
+	
+	
+	/**
+	 * 
+	 * @param array $columns
+	 * @return \Soluble\FlexStore\Source\AbstractSource
+	 */
+	public function setColumns(array $columns) 
+	{
+		$this->columns = $columns;
+		return $this;
+	}
+	
+	
+	/**
+	 * 
+	 * @return \Soluble\FlexStore\Source\AbstractSource
+	 */
+	public function unsetColumns() 
+	{
+		$this->columns = null;
+		return $this;
+	}	
+	
+	/**
 	 * 
 	 * @return Soluble\FlexStore\Options
 	 */

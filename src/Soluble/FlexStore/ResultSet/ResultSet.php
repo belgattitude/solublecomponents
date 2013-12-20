@@ -36,6 +36,18 @@ class ResultSet extends AbstractResultSet
 	
 	/**
 	 *
+	 * @var boolean
+	 */
+	protected $columnsChecked = false;	
+
+	/**
+	 *
+	 * @var array
+	 */
+	protected $columns;
+	
+	/**
+	 *
 	 * @var integer
 	 */
 	protected $totalRows;
@@ -158,17 +170,65 @@ class ResultSet extends AbstractResultSet
     {
         return $this->returnType;
     }
+	
+	
+	/**
+	 * 
+	 * @param array $columns
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
+	 */
+	public function setColumns(array $columns) 
+	{
+		$this->columnsChecked = false;
+		$this->columns = $columns;
+		return $this;
+	}
+	
+	
+	/**
+	 * 
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
+	 */
+	public function unsetColumns() 
+	{
+		$this->columnsChecked = false;
+		$this->columns = null;
+		return $this;
+	}
 
     /**
+	 * 
+	 * @throws Exception\UnknownColumnException
      * @return array|\ArrayObject|null
      */
     public function current()
     {
         $data = parent::current();
-
+		
+		if ($this->columns !== null) {
+			
+			$d = new \ArrayObject();
+			if (!$this->columnsChecked) {
+				foreach($this->columns as $column) {
+					if (!$data->offsetExists($column)) {
+						$msg = "Column '$column' does not exists";
+						throw new Exception\UnknownColumnException($msg);
+					}
+				}
+				$this->columnsChecked;
+			}
+			
+			foreach($this->columns as $column) {
+				$d[$column] = $data[$column];
+			}
+			$data = $d;
+			
+			
+		}
         if ($this->returnType === self::TYPE_ARRAYOBJECT && is_array($data)) {
             /** @var $ao ArrayObject */
             $ao = clone $this->arrayObjectPrototype;
+
             if ($ao instanceof ArrayObject || method_exists($ao, 'exchangeArray')) {
                 $ao->exchangeArray($data);
             }

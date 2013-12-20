@@ -103,7 +103,7 @@ class SelectSource extends AbstractSource
 	/**
 	 *
 	 * @param \Soluble\FlexStore\Options $options
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet;
+	 * @return \Soluble\FlexStore\ResultSet\ResultSet
 	 */
 	function getData(Options $options = null) {
 		if ($options === null) {
@@ -111,6 +111,7 @@ class SelectSource extends AbstractSource
 		}
 		$select = $this->assignOptions(clone $this->select, $options);
 
+		
 		$sql = new Sql($this->adapter);
 		$sql_string = $sql->getSqlStringForSqlObject($select);
 		if ($sql_string == '') {
@@ -125,12 +126,18 @@ class SelectSource extends AbstractSource
 			$r->initialize($results);
 			$r->setSource($this);
 
+			if ($this->columns !== null) {
+				$r->setColumns($this->columns);
+			}
+			
 			if ($options->hasLimit()) {
 				$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
 				$r->setTotalRows($row['total_count']);
 			} else {
 				$r->setTotalRows($r->count());
 			}
+		
+			
 		} catch (\Exception $e) {
 			echo "Error " . $e->getMessage();
 			var_dump($sql_string);
