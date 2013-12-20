@@ -140,10 +140,14 @@ class CSV extends AbstractWriter {
 	 * @param string $key 
 	 * @return void
 	 */
-	protected function addEnclosure(&$item, $key) {
+	protected function addEnclosure(&$item, $key) 
+	{
 		$enc = $this->options['enclosure'];
-		//$item = $enc . str_replace($enc, '\\' . $enc, $item) . $enc;
-		$item = $enc . str_replace($enc, '', $item) . $enc;
+		$escape = $this->options['escape'];
+		if ($escape == '') {
+			$item = $enc . str_replace($enc, '', $item) . $enc;
+		} else {
+			$item = $enc . str_replace($enc, $escape . $enc, $item) . $enc;
+		}
 	}
-
 }
