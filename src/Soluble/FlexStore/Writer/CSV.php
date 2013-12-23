@@ -39,7 +39,11 @@ class CSV extends AbstractWriter {
 		iconv_set_encoding("input_encoding", "UTF-8");
 		iconv_set_encoding("output_encoding", "UTF-8");
 		mb_internal_encoding("UTF-8");
-*/		
+*/
+		
+		iconv_set_encoding("internal_encoding", "UTF-8");
+		
+		
 		$csv = '';
 		$data = $this->source->getData()->toArray();		
 //echo "éééééààà";
@@ -88,12 +92,12 @@ class CSV extends AbstractWriter {
 				
 				$l = (string) $line;
 				if ($l != '') {
-					//var_dump($this->options['charset']);
-					$line = iconv($internal_encoding, $this->options['charset'], $l);
-					//var_dump($line);
+					$l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
 					
-					if ($line === false) {
-						throw new Exception\CharsetConversionException("Cannot convert the charset to " . $this->options['charset'] . ", value: '$l'.");
+					if ($l === false) {
+						throw new Exception\CharsetConversionException("Cannot convert the charset to '" . $this->options['charset'] . "' from charset '$internal_encoding', value: '$line'.");
+					} else {
+						$line = $l;
 					}
 				}
 			}
