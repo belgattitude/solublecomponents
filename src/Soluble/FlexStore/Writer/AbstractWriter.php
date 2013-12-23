@@ -19,7 +19,8 @@ abstract class AbstractWriter {
 	 * @var array
 	 */
 	protected $options = array(
-		'debug' => false
+		'debug' => false,
+		'charset' => 'UTF-8'
 	);
 	
 	/**
@@ -48,7 +49,7 @@ abstract class AbstractWriter {
 	
 	
 	/**
-	 * 
+	 * @return string
 	 */
 	abstract function getData();
 	
@@ -59,6 +60,27 @@ abstract class AbstractWriter {
 	 */
 	abstract function send(SendHeaders $headers=null);
 	
+	
+	/**
+	 * 
+	 * @param string $filename
+	 * @param string $charset
+	 * 
+	 */
+	public function save($filename, $charset=null)
+	{
+		$data = $this->getData();
+		if ($charset === null) { 
+			$charset = $this->options['charset'];
+		}
+		// UTF-8 : file_put_contents("file.txt", "\xEF\xBB\xBF" . $data);	
+		$ret = file_put_contents($filename, $data);
+		if (!$ret) {
+			throw new \Exception("Filename $filename cannot be written");
+		}
+		
+				
+	}
 	
 	/**
 	 * 

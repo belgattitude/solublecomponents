@@ -27,22 +27,31 @@ class CSV extends AbstractWriter {
 	 * @throws \Soluble\FlexStore\Writer\Exception\CharsetConversionException
 	 * @return string csv encoded data
 	 */
-	function getData() {
-		
+	function getData() 
+	{
 
-		if (!function_exists('iconv')) {
-			throw new Exception\RuntimeException('CSV writer requires iconv extension');
-		}
-		
-		
+// TODO - TEST database connection charset !!!
+// 		
+		ini_set("default_charset", 'UTF-8');
+/*
+		$backup_encoding = iconv_get_encoding("internal_encoding");
+		iconv_set_encoding("internal_encoding", "UTF-8");
+		iconv_set_encoding("input_encoding", "UTF-8");
+		iconv_set_encoding("output_encoding", "UTF-8");
+		mb_internal_encoding("UTF-8");
+*/		
 		$csv = '';
 		$data = $this->source->getData()->toArray();		
-		
+//echo "éééééààà";
+//	var_dump($data); die();
 		if (count($data) == 0) {
 			return $data;
 		}
 		
-		$internal_encoding = strtoupper(iconv_get_encoding('internal_encoding'));
+		//$internal_encoding = strtoupper(iconv_get_encoding('internal_encoding'));
+		$internal_encoding = strtoupper(ini_get('default_charset'));
+		
+		
 		$charset = strtoupper($this->options['charset']);
 		$escape = $this->options['escape'];
 		
@@ -70,10 +79,19 @@ class CSV extends AbstractWriter {
 
 			$line = join($this->options['field_separator'], $row);
 			
+					
 			if ($charset != $internal_encoding) {
+
+				if (!function_exists('iconv')) {
+					throw new Exception\RuntimeException('CSV writer requires iconv extension');
+				} 
+				
 				$l = (string) $line;
 				if ($l != '') {
+					//var_dump($this->options['charset']);
 					$line = iconv($internal_encoding, $this->options['charset'], $l);
+					//var_dump($line);
+					
 					if ($line === false) {
 						throw new Exception\CharsetConversionException("Cannot convert the charset to " . $this->options['charset'] . ", value: '$l'.");
 					}
@@ -82,7 +100,6 @@ class CSV extends AbstractWriter {
 
 			$csv .= $line . $this->options['line_separator'];
 		}
-
 		return $csv;
 	}
 
@@ -93,10 +110,10 @@ class CSV extends AbstractWriter {
 	 */
 	public function send(SendHeaders $headers=null) {
 		if ($headers === null) $headers = new SendHeaders();
-		ob_end_clean()
+		ob_end_clean();
 		//Content-Type: text/csv; name="filename.csv"
 		//Content-Disposition: attachment; filename="filename.csv"		
-		;
+		
 		$headers->setContentType('text/csv; charset=' . $this->options['charset']);
 		$headers->printHeaders();
 		$json = $this->getData();
