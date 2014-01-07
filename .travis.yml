@@ -8,7 +8,6 @@ env:
   - DB=mysql
 
 before_script:
-  - composer self-update 
   - printf "\n" | pecl install imagick
   - mkdir -p tests/tmp/cache 
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS phpunit_soluble_test_db;" -uroot; fi
