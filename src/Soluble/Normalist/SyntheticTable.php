@@ -199,7 +199,8 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	
-	function insert($table, $data) {
+	function insert($table, $data) 
+	{
 		$prefixed_table = $this->prefixTable($table);
 		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
 		if ($data instanceOf ArrayObject) {
@@ -207,12 +208,10 @@ class SyntheticTable implements AdapterAwareInterface {
 		} else {
 			$d = $data;
 		}
-		
+
 		
 		$insert = $this->sql->insert($prefixed_table);
 		$insert->values($data);
-		
-		
 		
 		try {
 			$statement = $this->sql->prepareStatementForSqlObject($insert);			
@@ -438,6 +437,33 @@ class SyntheticTable implements AdapterAwareInterface {
 	function getColumnsInformation($table) {
 		$prefixed_table = $this->prefixTable($table);
 		return $this->getMetadata()->getColumnsInformation($prefixed_table);
+	}
+	
+
+	/**
+	 * Return cleaned data suitable for inserting/updating a table
+	 * If $throwException is true, if any non existing column is found
+	 * an error will be thrown
+	 * 
+	 * @param string $table table name
+	 * @param array|ArrayObject $data associative array containing data to insert
+	 * @param boolean $throwException if true will throw an exception if a column does not exists
+	 * @return \ArrayObject
+	 * @throws Exception\InvalidColumnException
+	 */
+	function getRecordCleanedData($table, $data, $throwException=false)
+	{
+		$d = new \ArrayObject();
+		$ci = $this->getColumnsInformation($table);
+		$columns = array_keys($ci);
+		foreach($data as $column => $value) {
+			if (in_array($column, $columns)) {
+				$d->offsetSet($column, $value);
+			} elseif ($throwException) { 
+				throw new Exception\InvalidColumnException("Column '$column' does not exists in table '$table'");
+			}
+		}
+		return $d;
 	}
 
 	/**

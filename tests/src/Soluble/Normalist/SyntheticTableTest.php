@@ -134,15 +134,38 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	
 
 	
+		
+	
 	/**
 	 * 
 	 */
-	public function testTableNotExists() {
+	public function testTableThrowsTableNotExistsException() {
 		//$this->setExpectedException('InvalidArgumentException', 'Invalid magic');
 		$this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotExistException');
 		$this->table->find("table_that_not_exists", 1);
 		
 	}
+	
+	public function testGetRecordCleanedData() {
+		$data = array(
+			'cool' => 'test',
+			'user_id' => 1,
+			'username' => 'test');
+		$d = $this->table->getRecordCleanedData('user', $data, $throwException=false);
+		$this->assertInstanceOf('ArrayObject', $d);
+		$this->assertFalse($d->offsetExists('cool'));
+		$this->assertTrue($d->offsetExists('user_id'));
+		$this->assertEquals($d['username'], 'test');
+	}
+
+	public function testGetRecordCleanedDataThrowsInvalidColumnException() {
+		$this->setExpectedException('Soluble\Normalist\Exception\InvalidColumnException');			
+		$data = array(
+			'cool' => 'test',
+			'user_id' => 1,
+			'username' => 'test');
+		$d = $this->table->getRecordCleanedData('user', $data, $throwException=true);
+	}	
 	
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::all
