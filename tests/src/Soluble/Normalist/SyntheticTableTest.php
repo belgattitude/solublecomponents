@@ -234,6 +234,19 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$data['filename'] = 'my_test_filename';
 		$return = $this->table->insert('media', $data);
 		$this->assertEquals($data['filename'], $return['filename']);
+
+		// Test with arrayObject
+		$data = new \ArrayObject($this->createMediaRecordData('phpunit_testInsert'));
+		$media = $this->table->findOneBy('media', array('legacy_mapping' => $data['legacy_mapping']));
+		
+		if ($media) {
+			$this->table->delete('media', $media['media_id']);
+		}
+		
+		$data['filename'] = 'my_test_filename';
+		$return = $this->table->insert('media', $data);
+		$this->assertEquals($data['filename'], $return['filename']);
+		
 		
 		
 	}
@@ -266,6 +279,33 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 
 		$record->delete();
 
+		// Test with ArrayObject
+		
+		$data = new \ArrayObject($this->createMediaRecordData('phpunit_testInsertOnDuplicateKeyUpdate'));		
+		
+		$media = $this->table->findOneBy('media', array('legacy_mapping' =>$data['legacy_mapping']));
+		
+		if ($media) {
+			$this->table->delete('media', $media['media_id']);
+		}
+		
+		$record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertTrue($this->table->exists('media', $record['media_id']));
+		
+		$record['filesize'] = 1000;
+		$record->save();
+		$this->assertEquals(1000, $record['filesize']);
+		
+		$record['filesize'] = 5000;
+		$record = $this->table->insertOnDuplicateKey('media', $data, array('legacy_mapping'));
+		$this->assertEquals(5000, $record['filesize']);
+
+		$record = $this->table->insertOnDuplicateKey('media', $data);
+		$this->assertEquals(5000, $record['filesize']);
+
+		$record->delete();
+		
+		
 	}
 
 	/**
@@ -281,6 +321,18 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 		$new_media = $this->table->find('media', $media->media_id);
 		
 		$this->assertEquals($new_media->filename, 'phpunit');
+		
+		// test with ArrayObject
+		
+		$data = new \ArrayObject($this->createMediaRecordData('phpunit_testUpdate'));		
+		$this->table->insertOnDuplicateKey('media', $data);
+		$media = $this->table->findOneBy('media', array('legacy_mapping' => $data['legacy_mapping']));
+		
+		$affectedRows = $this->table->update('media', array('filename' => 'phpunit'), array('media_id' => $media->media_id));
+		
+		$new_media = $this->table->find('media', $media->media_id);
+		
+		$this->assertEquals($new_media->filename, 'phpunit');		
 				
 	}
 
