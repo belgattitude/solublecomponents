@@ -18,16 +18,21 @@ class SolubleTestFactories {
 	/**
 	 * 
 	 * @param array $mysql_config (driver,hostname,username,password,database)
+	 * @param string $driver force driver to be Pdo_Mysql, Mysqli
 	 * @return \Zend\Db\Adapter\Adapter
 	 */
-	static function getDbAdapter(array $mysql_config=null) {
+	static function getDbAdapter(array $mysql_config=null, $driver=null) {
 		
 		if ($mysql_config === null) {
 			/**
 			 * Those values must be defined in phpunit.xml configuration file
 			 */
 			$mysql_config = array();
-			$mysql_config['driver']   = $_SERVER['MYSQL_DRIVER'];
+			if ($driver !== null) {
+				$mysql_config['driver']   = $driver;
+			} else {
+				$mysql_config['driver']   = $_SERVER['MYSQL_DRIVER'];
+			}
 			$mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
 			$mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
 			$mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];

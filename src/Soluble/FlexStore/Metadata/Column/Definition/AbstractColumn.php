@@ -1,0 +1,353 @@
+<?php
+
+namespace Soluble\FlexStore\Metadata\Column\Definition;
+
+
+abstract class AbstractColumn
+{
+
+    /**
+     *
+     * @var string
+     */
+    protected $name = null;
+
+    /**
+     *
+     * @var string
+     */
+    protected $tableName = null;
+
+    /**
+     *
+     * @var string
+     */
+    protected $schemaName = null;
+
+    /**
+     *
+     * @var
+     */
+    protected $ordinalPosition = null;
+
+    /**
+     *
+     * @var string
+     */
+    protected $columnDefault = null;
+
+    /**
+     *
+     * @var bool
+     */
+    protected $isNullable = null;
+
+    /**
+     *
+     * @var string
+     */
+    protected $dataType = null;
+
+    /**
+     *
+     * @var string
+     */
+    protected $nativeDataType = null;
+	
+	
+	/**
+	 * @var string
+	 */
+	protected $alias;
+	
+	/**
+	 * @var string;
+	 */
+	protected $tableAlias;
+	
+	/**
+	 * @var string
+	 */
+	protected $catalog;
+	
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected $isPrimary;
+
+	
+
+
+    /**
+     * Constructor
+     *
+     * @param string $name
+     * @param string $tableName
+     * @param string $schemaName
+     */
+    public function __construct($name, $tableName = null, $schemaName = null)
+    {
+        $this->setName($name);
+        $this->setTableName($tableName);
+        $this->setSchemaName($schemaName);
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+		return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get table name
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * Set table name
+     *
+     * @param string $tableName
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+        return $this;
+    }
+
+    /**
+     * Set schema name
+     *
+     * @param string $schemaName
+	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setSchemaName($schemaName)
+    {
+        $this->schemaName = $schemaName;
+		return $this;
+    }
+
+    /**
+     * Get schema name
+     *
+     * @return string
+     */
+    public function getSchemaName()
+    {
+        return $this->schemaName;
+    }
+
+    /**
+     * @return int $ordinalPosition
+     */
+    public function getOrdinalPosition()
+    {
+        return $this->ordinalPosition;
+    }
+
+    /**
+     * @param int $ordinalPosition to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setOrdinalPosition($ordinalPosition)
+    {
+        $this->ordinalPosition = $ordinalPosition;
+        return $this;
+    }
+
+    /**
+     * @return null|string the $columnDefault
+     */
+    public function getColumnDefault()
+    {
+        return $this->columnDefault;
+    }
+
+    /**
+     * @param mixed $columnDefault to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setColumnDefault($columnDefault)
+    {
+        $this->columnDefault = $columnDefault;
+        return $this;
+    }
+
+    /**
+     * @return bool $isNullable
+     */
+    public function getIsNullable()
+    {
+        return $this->isNullable;
+    }
+
+    /**
+     * @param bool $isNullable to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setIsNullable($isNullable)
+    {
+        $this->isNullable = $isNullable;
+        return $this;
+    }
+
+    /**
+     * @return bool $isNullable
+     */
+    public function isNullable()
+    {
+        return $this->isNullable;
+    }
+
+    /**
+     * @return bool $isPrimary
+     */
+    public function getIsPrimary()
+    {
+        return $this->isPrimary;
+    }
+
+    /**
+     * @param bool $isPrimary to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setIsPrimary($isPrimary)
+    {
+        $this->isPrimary = $isPrimary;
+        return $this;
+    }
+
+    /**
+     * @return bool $isPrimary
+     */
+    public function isPrimary()
+    {
+        return $this->isPrimary;
+    }
+
+    /**
+     * @return null|string the $dataType
+     */
+    public function getDataType()
+    {
+        return $this->dataType;
+    }
+	
+    /**
+     * @param string $dataType the $dataType to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setDataType($dataType)
+    {
+        $this->dataType = $dataType;
+        return $this;
+    }
+
+
+    /**
+     * @return null|string the $nativeDataType
+     */
+    public function getNativeDataType()
+    {
+        return $this->nativeDataType;
+    }
+
+	
+	
+    /**
+     * @param string $nativeDataType the $dataType to set
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setNativeDataType($nativeDataType)
+    {
+        $this->nativeDataType = $nativeDataType;
+        return $this;
+    }
+	
+	
+	/**
+	 * 
+	 * @param string $alias column alias name
+	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+	 */
+	public function setAlias($alias) 
+	{
+		$this->alias = $alias;
+		return $this;
+	}		
+		
+	/**
+	 * @return string column alais
+	 */
+	public function getAlias() 
+	{
+		return $this->alias;
+	}		
+	
+	/**
+	 * 
+	 * @param string $tableAlias table alias name
+	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+	 */
+	public function setTableAlias($tableAlias) 
+	{
+		$this->tableAlias = $tableAlias;
+		return $this;
+	}		
+
+	/**
+	 * 
+	 * @return string table alias
+	 */
+	public function getTableAlias() 
+	{
+		return $this->tableAlias;
+		
+	}			
+	
+	/**
+	 * 
+	 * @param string $catalog db catalog
+	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+	 */
+	public function setCatalog($catalog) 
+	{
+		$this->catalog = $catalog;
+		return $this;
+	}		
+		
+	/**
+	 * @return string catalog
+	 */
+	public function getCatalog() 
+	{
+		return $this->catalog;
+		
+	}			
+		
+
+
+
+}
