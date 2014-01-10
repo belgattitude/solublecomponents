@@ -65,17 +65,17 @@ class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
 	/**
 	 * @covers Soluble\FlexStore\Metadata\Source\MysqliMetadataSource::getColumnsMetadata
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::isPrimary
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getDatatype
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getNativeDatatype
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getTableName
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::isNullable
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getTableAlias
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getOrdinalPosition
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\AbstractColumn::getCatalog
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::isPrimary
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getDatatype
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getNativeDatatype
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getTableName
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::isNullable
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getTableAlias
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getOrdinalPosition
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn::getCatalog
 	 *
-	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\IntegerColumn::isAutoIncrement
- 	 * @covers Soluble\FlexStore\Metadata\ColumnDefinition\IntegerColumn::isNumericUnsigned
+	 * @covers Soluble\FlexStore\Metadata\Column\Definition\IntegerColumn::isAutoIncrement
+ 	 * @covers Soluble\FlexStore\Metadata\Column\Definition\IntegerColumn::isNumericUnsigned
 	 */
 	function testgetColumnsMetadata()
 	{

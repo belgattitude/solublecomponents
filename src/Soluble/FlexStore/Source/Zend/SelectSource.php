@@ -145,6 +145,11 @@ class SelectSource extends AbstractSource
 		}
 		return $r;
 	}
+	
+	public function getMetadata()
+	{
+		
+	}
 
 	/**
 	 * @return string
