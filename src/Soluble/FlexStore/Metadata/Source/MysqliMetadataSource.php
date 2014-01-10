@@ -42,17 +42,17 @@ class MysqliMetadataSource  {
 			
 			$datatype = $type_map->offsetGet($datatype);
 			
-			$column = Column\Type::createColumnDefinition($datatype, $name, $tableName, $schemaName);
+			$column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName);
 			
 			$column->setAlias($field->name);
 			$column->setTableAlias($field->table);
 			$column->setCatalog($field->catalog);
 			$column->setOrdinalPosition($idx + 1);
-			$column->setDataType($datatype);
+			$column->setDataType($datatype['type']);
 			$column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
 			$column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
 			$column->setColumnDefault($field->def);
-			$column->setNativeDataType($nativeDataType);
+			$column->setNativeDataType($datatype['native']);
 			
 			if ($column instanceof Column\Definition\NumericColumnInterface) {
 				$column->setNumericUnsigned(($field->flags & MYSQLI_UNSIGNED_FLAG) > 0);
@@ -147,9 +147,9 @@ class MysqliMetadataSource  {
 	 */
 	protected function getDatatypeMapping() {
 
-		// ALL the following fields are not supported by Vision_Store
+		// ALL the following fields are not supported yet
 		// Maybe todo in a later release or choose to map them to approximative
-		// types (i.e. MYSQLI_YEAR could be a Vision_Store_Metadata::DATATYPE_INTEGER) ?
+		// types (i.e. MYSQLI_YEAR could be a integer) ?
 		/*
 		  MYSQLI_TYPE_NULL
 		  MYSQLI_TYPE_YEAR
@@ -158,55 +158,61 @@ class MysqliMetadataSource  {
 		  MYSQLI_TYPE_GEOMETRY
 		 */
 
-		$mapping = new ArrayObject();
+		$mapping = new ArrayObject(array(
+			MYSQLI_TYPE_STRING		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+			MYSQLI_TYPE_CHAR		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
+			MYSQLI_TYPE_VAR_STRING	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+			
+			MYSQLI_TYPE_ENUM => array('type' => Column\Type::TYPE_STRING, 'native' => 'ENUM'),
 
-		// texts
-		$mapping->offsetSet(MYSQLI_TYPE_STRING, Column\Type::TYPE_STRING);
-		$mapping->offsetSet(MYSQLI_TYPE_CHAR, Column\Type::TYPE_STRING);
-		$mapping->offsetSet(MYSQLI_TYPE_VAR_STRING, Column\Type::TYPE_STRING);
+			// BLOBS ARE CURRENTLY SENT AS TEXT
+			// I DIDN'T FIND THE WAY TO MAKE THE DIFFERENCE !!!
+
+
+			MYSQLI_TYPE_TINY_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'TINYBLOB'),
+			MYSQLI_TYPE_MEDIUM_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'MEDIUMBLOB'),
+			MYSQLI_TYPE_LONG_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'LONGBLOB'),
+			MYSQLI_TYPE_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
+
+
+
+			// integer
+			MYSQLI_TYPE_TINY => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
+			MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
+			MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
+			MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
+			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'LONG'),
+			MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
+
+			// timestamps
+			MYSQLI_TYPE_TIMESTAMP => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'TIMESTAMP'),
+			MYSQLI_TYPE_DATETIME => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'DATETIME'),
+
+			// dates
+			MYSQLI_TYPE_DATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+			MYSQLI_TYPE_NEWDATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+
+			// time
+			MYSQLI_TYPE_TIME => array('type' => Column\Type::TYPE_TIME, 'native' => 'TIME'),
+
+			// decimals
+			MYSQLI_TYPE_DECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+			MYSQLI_TYPE_NEWDECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+
+			MYSQLI_TYPE_FLOAT => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'FLOAT'),
+			MYSQLI_TYPE_DOUBLE => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'DOUBLE'),
+
+			
+			
+			// boolean
+			
+			MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
+			MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
+			
+		));
+		
 
 		// enum
-		$mapping->offsetSet(MYSQLI_TYPE_ENUM, Column\Type::TYPE_STRING);
-
-		// BLOBS ARE CURRENTLY SENT AS TEXT
-		// I DIDN'T FIND THE WAY TO MAKE THE DIFFERENCE !!!
-		
-		
-		$mapping->offsetSet(MYSQLI_TYPE_TINY_BLOB, Column\Type::TYPE_BLOB);
-		$mapping->offsetSet(MYSQLI_TYPE_MEDIUM_BLOB, Column\Type::TYPE_BLOB);
-		$mapping->offsetSet(MYSQLI_TYPE_LONG_BLOB, Column\Type::TYPE_BLOB);
-		$mapping->offsetSet(MYSQLI_TYPE_BLOB, Column\Type::TYPE_BLOB);
-
-
-
-		// integer
-		$mapping->offsetSet(MYSQLI_TYPE_TINY, Column\Type::TYPE_INTEGER);
-		$mapping->offsetSet(MYSQLI_TYPE_SHORT, Column\Type::TYPE_INTEGER);
-		$mapping->offsetSet(MYSQLI_TYPE_INT24, Column\Type::TYPE_INTEGER);
-		$mapping->offsetSet(MYSQLI_TYPE_LONG, Column\Type::TYPE_INTEGER);
-		$mapping->offsetSet(MYSQLI_TYPE_LONGLONG, Column\Type::TYPE_INTEGER);
-
-		// timestamps
-		$mapping->offsetSet(MYSQLI_TYPE_TIMESTAMP, Column\Type::TYPE_DATETIME);
-		$mapping->offsetSet(MYSQLI_TYPE_DATETIME, Column\Type::TYPE_DATETIME);
-
-		// dates
-		$mapping->offsetSet(MYSQLI_TYPE_DATE, Column\Type::TYPE_DATE);
-		$mapping->offsetSet(MYSQLI_TYPE_NEWDATE, Column\Type::TYPE_DATE);
-
-		// time
-		$mapping->offsetSet(MYSQLI_TYPE_TIME, Column\Type::TYPE_TIME);
-
-		// decimals
-		$mapping->offsetSet(MYSQLI_TYPE_DECIMAL, Column\Type::TYPE_DECIMAL);
-		$mapping->offsetSet(MYSQLI_TYPE_NEWDECIMAL, Column\Type::TYPE_DECIMAL);
-		
-		$mapping->offsetSet(MYSQLI_TYPE_FLOAT, Column\Type::TYPE_FLOAT);
-		$mapping->offsetSet(MYSQLI_TYPE_DOUBLE, Column\Type::TYPE_FLOAT);
-
-		// boolean
-		// When available (PHP5.3, add MYSQLI_TYPE_BOOLEAN)		
-		$mapping->offsetSet(MYSQLI_TYPE_BIT, Column\Type::TYPE_BOOLEAN);
 
 		return $mapping;
 	}
