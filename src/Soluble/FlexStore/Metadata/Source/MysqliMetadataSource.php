@@ -123,7 +123,6 @@ class MysqliMetadataSource extends AbstractMetadataSource {
 				
 				$column->setNumericScale($field->length - $field->decimals + 1);
 				$column->setNumericPrecision($field->decimals);
-				
 			}
 			
 			if ($column instanceof Column\Definition\StringColumn) {
