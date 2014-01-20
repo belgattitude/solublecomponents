@@ -22,6 +22,12 @@ class MysqliMetadataSource  {
 	}
 	
 	
+	/**
+	 * 
+	 * @param string $sql
+	 * @return \ArrayObject
+	 * @throws Exception\UnsupportedDatatypeException
+	 */
 	function getColumnsMetadata($sql)
 	{
 		$metadata = new ArrayObject();
@@ -31,7 +37,8 @@ class MysqliMetadataSource  {
 		
 		foreach($fields as $idx => $field) {
 			
-			$name = $field->orgname;
+			
+			$name = $field->orgname == '' ? $field->name : $field->orgname;
 			$tableName = $field->orgtable;
 			$schemaName = $field->db;
 			
@@ -43,6 +50,23 @@ class MysqliMetadataSource  {
 			$datatype = $type_map->offsetGet($datatype);
 			
 			$column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName);
+			/*
+			if ($field->name == 'min_time') {
+				var_dump($field);
+			//	var_dump($field->flags & MYSQLI_BLOB_FLAG);
+			//	var_dump($field->flags & MYSQLI_ENUM_FLAG);
+				die();
+			}*/
+/*
+	MYSQLI_BINARY_FLAG
+	MYSQLI_BLOB_FLAG
+	MYSQLI_ENUM_FLAG
+	MYSQLI_MULTIPLE_KEY_FLAG
+	MYSQLI_GROUP_FLAG
+	MYSQLI_SET_FLAG
+	MYSQLI_UNIQUE_KEY_FLAG
+	MYSQLI_ZEROFILL_FLAG
+*/
 			
 			$column->setAlias($field->name);
 			$column->setTableAlias($field->table);
@@ -52,7 +76,18 @@ class MysqliMetadataSource  {
 			$column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
 			$column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
 			$column->setColumnDefault($field->def);
-			$column->setNativeDataType($datatype['native']);
+			
+			if (($field->flags & MYSQLI_SET_FLAG) > 0) {
+				$column->setNativeDataType('SET');
+			} elseif (($field->flags & MYSQLI_ENUM_FLAG) > 0) {
+				$column->setNativeDataType('ENUM');
+			} else {
+				$column->setNativeDataType($datatype['native']);
+			}
+			
+			if ($field->table == '') {
+				$column->setIsGroup(($field->flags & MYSQLI_GROUP_FLAG) > 0);
+			}
 			
 			if ($column instanceof Column\Definition\NumericColumnInterface) {
 				$column->setNumericUnsigned(($field->flags & MYSQLI_UNSIGNED_FLAG) > 0);
@@ -82,7 +117,12 @@ class MysqliMetadataSource  {
 				$column->setCharacterOctetLength($field->length);
 			}
 			
-			$metadata[$column->getAlias()] = $column;
+			$alias = $column->getAlias();
+			if ($metadata->offsetExists($alias)) {
+				throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query.");
+			}
+			
+			$metadata->offsetSet($alias, $column);
 
 		}
 		
@@ -103,6 +143,8 @@ class MysqliMetadataSource  {
 			throw new Exception\EmptyQueryException();
 		}
  		
+		$sql = $this->makeQueryEmpty($sql);
+		
 		if ($this->mysqli->connect_error) {
 			$errno = $this->mysqli->connect_errno;
 			$message = $this->mysqli->connect_error;
@@ -115,7 +157,15 @@ class MysqliMetadataSource  {
 			$message = $this->mysqli->error;
 			throw new Exception\InvalidQueryException("Sql is not correct : $message");
 		}
-		$stmt->execute();
+		$result = $stmt->execute();
+		
+		// to check if query is empty
+		/*
+			$stmt->store_result();
+			var_dump($stmt->num_rows);
+			var_dump(
+		 */
+		
 		$result = $stmt->result_metadata();
 		$metaFields = $result->fetch_fields();
 		$result->close();
@@ -136,7 +186,11 @@ class MysqliMetadataSource  {
 	 */
 	protected function makeQueryEmpty($sql) {
 		// see the reason why in Vision_Store_Adapter_ZendDbSelect::getMetatData
-		$sql = str_replace("('__innerselect'='__innerselect')", '(1=0)', $sql);
+		//$sql = str_replace("('__innerselect'='__innerselect')", '(1=0)', $sql);
+		
+		$sql = preg_replace('/(\r\n|\r|\n|\t)+/', " ", strtolower($sql));
+		$sql = preg_replace('/\s+/', ' ', $sql);
+		
 		return $sql;
 	}
 
@@ -181,7 +235,7 @@ class MysqliMetadataSource  {
 			MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
 			MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
 			MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
-			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'LONG'),
+			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
 			MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
 
 			// timestamps

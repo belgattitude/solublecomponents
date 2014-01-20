@@ -74,8 +74,14 @@ abstract class AbstractColumn
 	 *
 	 * @var boolean
 	 */
-	protected $isPrimary;
+	protected $isPrimary = false;
 
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected $isGroup = false;
+	
 	
 
 
@@ -133,6 +139,7 @@ abstract class AbstractColumn
      */
     public function setTableName($tableName)
     {
+		if (trim($tableName) == '') $tableName = null;
         $this->tableName = $tableName;
         return $this;
     }
@@ -145,6 +152,7 @@ abstract class AbstractColumn
      */
     public function setSchemaName($schemaName)
     {
+		if (trim($schemaName) == '') $schemaName = null;		
         $this->schemaName = $schemaName;
 		return $this;
     }
@@ -313,6 +321,7 @@ abstract class AbstractColumn
 	 */
 	public function setTableAlias($tableAlias) 
 	{
+		if (trim($tableAlias) == '') $tableAlias = null;
 		$this->tableAlias = $tableAlias;
 		return $this;
 	}		
@@ -345,9 +354,43 @@ abstract class AbstractColumn
 	{
 		return $this->catalog;
 		
-	}			
-		
+	}		
+	
 
+    /**
+     * @return bool $isGroup
+     */
+    public function getIsGroup()
+    {
+        return $this->isGroup;
+    }
+
+    /**
+     * @param bool $isGroup when the column is grouped
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setIsGroup($isGroup)
+    {
+        $this->isGroup = $isGroup;
+        return $this;
+    }
+
+    /**
+     * @return bool $isGroup
+     */
+    public function isGroup()
+    {
+        return $this->isGroup;
+    }	
+	
+	
+	/**
+	 * @return boolean
+	 */
+	public function isComputed()
+	{
+		return ($this->tableName == '');
+	}
 
 
 }
