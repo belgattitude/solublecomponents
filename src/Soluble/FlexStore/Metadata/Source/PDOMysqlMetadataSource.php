@@ -7,53 +7,83 @@ use Soluble\FlexStore\Metadata\Column\Types;
 
 use ArrayObject;
 
-class PDOMysqlMetadataSource  {
+class PDOMysqlMetadataSource extends AbstractMetadataSource {
 
 
 	/**
-	 * @var \Mysqli
+	 * @var \PDO
 	 */
-	protected $mysqli;
+	protected $pdo;
 
-	public function __construct(\Mysqli $mysqli) 
+	
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected $cache_active = true;
+	
+	/**
+	 *
+	 * @var Array
+	 */
+	static protected $metadata_cache = array();
+	
+
+	public function __construct(\PDO $pdo) 
 	{
-		$this->mysqli = $mysqli;
-		//$this->store  = $store;
+		$driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+		if (strtolower($driver) != 'mysql') {
+			throw new \Exception(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
+		}
+		
+		$this->pdo = $pdo;
 	}
 	
+
 	
-	function getColumnsMetadata($sql)
+	/**
+	 * 
+	 * @param string $sql
+	 * @return \ArrayObject
+	 * @throws Exception\UnsupportedDatatypeException
+	 * @throws Exception\AmbiguousColumnException
+	 * @throws Exception\ConnectionException
+	 */
+	protected function readColumnsMetadata($sql)
 	{
+		
 		$metadata = new ArrayObject();
 		$fields = $this->readFields($sql);
+
 		$type_map = $this->getDatatypeMapping();
 		
 		
 		foreach($fields as $idx => $field) {
 			
-			$name = $field->orgname;
-			$tableName = $field->orgtable;
-			$schemaName = $field->db;
+			$name = $field['name'];
+			$tableName = $field['table'];
 			
-			$datatype = $field->type;
+			
+			$datatype = strtoupper($field['native_type']);
 			if (!$type_map->offsetExists($datatype)) {
 				throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
 			}
 			
 			$datatype = $type_map->offsetGet($datatype);
 			
-			$column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName);
+			$column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName=null);
 			
-			$column->setAlias($field->name);
-			$column->setTableAlias($field->table);
-			$column->setCatalog($field->catalog);
+			$column->setAlias($field['name']);
+			$column->setTableAlias($field['table']);
+			//$column->setCatalog($field->catalog);
 			$column->setOrdinalPosition($idx + 1);
 			$column->setDataType($datatype['type']);
-			$column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
-			$column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
-			$column->setColumnDefault($field->def);
+			$column->setIsNullable(!in_array('not_null', $field['flags']));
+			$column->setIsPrimary(in_array('primary_key', $field['flags']));
+			//$column->setColumnDefault($field->def);
 			$column->setNativeDataType($datatype['native']);
 			
+/*			
 			if ($column instanceof Column\Definition\NumericColumnInterface) {
 				$column->setNumericUnsigned(($field->flags & MYSQLI_UNSIGNED_FLAG) > 0);
 			} 
@@ -61,7 +91,7 @@ class PDOMysqlMetadataSource  {
 			if ($column instanceof Column\Definition\IntegerColumn) {
 				$column->setIsAutoIncrement(($field->flags & MYSQLI_AUTO_INCREMENT_FLAG) > 0);
 			}
-
+*/
 			if ($column instanceof Column\Definition\DecimalColumn) {
 				// salary DECIMAL(5,2)
 				// In this example, 5 is the precision and 2 is the scale.
@@ -69,20 +99,26 @@ class PDOMysqlMetadataSource  {
 				// with five digits and two decimals, so values that can be stored in 
 				// the salary column range from -999.99 to 999.99. 
 				
-				$column->setNumericPrecision($field->length - $field->decimals + 1);
-				$column->setNumericScale($field->decimals);
+
+				$column->setNumericPrecision($field['precision']);
+				$column->setNumericScale($field['len'] - $field['precision'] + 1);
 				
 			}
 			
 			if ($column instanceof Column\Definition\StringColumn) {
-				$column->setCharacterMaximumLength($field->length);
+				$column->setCharacterMaximumLength($field['len']);
 			}
 			
 			if ($column instanceof Column\Definition\BlobColumn) {
-				$column->setCharacterOctetLength($field->length);
+				$column->setCharacterOctetLength($field['len']);
 			}
 			
-			$metadata[$column->getAlias()] = $column;
+			$alias = $column->getAlias();
+			if ($metadata->offsetExists($alias)) {
+				throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query.");
+			}
+			
+			$metadata->offsetSet($alias, $column);
 
 		}
 		
@@ -103,42 +139,31 @@ class PDOMysqlMetadataSource  {
 			throw new Exception\EmptyQueryException();
 		}
  		
+		$sql = $this->makeQueryEmpty($sql);
+		/*
 		if ($this->mysqli->connect_error) {
 			$errno = $this->mysqli->connect_errno;
 			$message = $this->mysqli->connect_error;
 			throw new Exception\ConnectionException("Connection error: $message ($errno)");
 		}
+		 * 
+		 */
 		
-		$stmt = $this->mysqli->prepare($sql);
-
-		if (!$stmt) {
-			$message = $this->mysqli->error;
-			throw new Exception\InvalidQueryException("Sql is not correct : $message");
-		}
+		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute();
-		$result = $stmt->result_metadata();
-		$metaFields = $result->fetch_fields();
-		$result->close();
-		$stmt->close();
+		$column_count = $stmt->columnCount();
+		$metaFields = array();
+		for($i = 0; $i < $column_count; $i++) {
+			$meta = $stmt->getColumnMeta($i);
+			$metaFields[$i] = $meta;
+		}
+		
+		$stmt->closeCursor();
+		unset($stmt);
 		return $metaFields;
 	}
 	
 	
-
-
-	/**
-	 * Optimization, will add false condition to the query
-	 * so the metadata loading will be faster
-	 *
-	 * 
-	 * @param string $sql query string
-	 * @return string
-	 */
-	protected function makeQueryEmpty($sql) {
-		// see the reason why in Vision_Store_Adapter_ZendDbSelect::getMetatData
-		$sql = str_replace("('__innerselect'='__innerselect')", '(1=0)', $sql);
-		return $sql;
-	}
 
 
 	/**
@@ -147,67 +172,50 @@ class PDOMysqlMetadataSource  {
 	 */
 	protected function getDatatypeMapping() {
 
-		// ALL the following fields are not supported yet
-		// Maybe todo in a later release or choose to map them to approximative
-		// types (i.e. MYSQLI_YEAR could be a integer) ?
-		/*
-		  MYSQLI_TYPE_NULL
-		  MYSQLI_TYPE_YEAR
-		  MYSQLI_TYPE_ENUM
-		  MYSQLI_TYPE_SET
-		  MYSQLI_TYPE_GEOMETRY
-		 */
 
 		$mapping = new ArrayObject(array(
-			MYSQLI_TYPE_STRING		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
-			MYSQLI_TYPE_CHAR		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
-			MYSQLI_TYPE_VAR_STRING	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+			'STRING'		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
+			'VAR_STRING'	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
 			
-			MYSQLI_TYPE_ENUM => array('type' => Column\Type::TYPE_STRING, 'native' => 'ENUM'),
+			
 
 			// BLOBS ARE CURRENTLY SENT AS TEXT
 			// I DIDN'T FIND THE WAY TO MAKE THE DIFFERENCE !!!
 
-
-			MYSQLI_TYPE_TINY_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'TINYBLOB'),
-			MYSQLI_TYPE_MEDIUM_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'MEDIUMBLOB'),
-			MYSQLI_TYPE_LONG_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'LONGBLOB'),
-			MYSQLI_TYPE_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
-
-
+			'BLOB' => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
 
 			// integer
-			MYSQLI_TYPE_TINY => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
-			MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
-			MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
-			MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
-			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'LONG'),
-			MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
+			'TINY' => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
+			
+			'SHORT' => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
+			'INT24' => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
+			'LONG' => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'INTEGER'),
+			'LONGLONG' => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
 
 			// timestamps
-			MYSQLI_TYPE_TIMESTAMP => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'TIMESTAMP'),
-			MYSQLI_TYPE_DATETIME => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'DATETIME'),
+			'TIMESTAMP' => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'TIMESTAMP'),
+			'DATETIME' => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'DATETIME'),
 
 			// dates
-			MYSQLI_TYPE_DATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
-			MYSQLI_TYPE_NEWDATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+			'DATE' => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+			'NEWDATE' => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
 
 			// time
-			MYSQLI_TYPE_TIME => array('type' => Column\Type::TYPE_TIME, 'native' => 'TIME'),
+			'TIME' => array('type' => Column\Type::TYPE_TIME, 'native' => 'TIME'),
 
 			// decimals
-			MYSQLI_TYPE_DECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
-			MYSQLI_TYPE_NEWDECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+			'DECIMAL' => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+			'NEWDECIMAL' => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
 
-			MYSQLI_TYPE_FLOAT => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'FLOAT'),
-			MYSQLI_TYPE_DOUBLE => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'DOUBLE'),
+			'FLOAT' => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'FLOAT'),
+			'DOUBLE' => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'DOUBLE'),
 
 			
 			
 			// boolean
 			
-			MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
-			MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
+			'BIT' => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
+			'BOOLEAN' => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
 			
 		));
 		
@@ -217,12 +225,5 @@ class PDOMysqlMetadataSource  {
 		return $mapping;
 	}
 
-	/**
-	 * Return defined columns
-	 * @return array
-	 */
-	function getColumns() {
-		return array_keys((array) $this->reallyLoadMetadata());
-	}
 
 }

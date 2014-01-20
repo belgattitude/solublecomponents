@@ -129,8 +129,8 @@ class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals($md['test_decimal_10_3']->getDatatype(), Column\Type::TYPE_DECIMAL);
 		$this->assertEquals($md['test_decimal_10_3']->getNativeDatatype(), 'DECIMAL');
-		$this->assertEquals($md['test_decimal_10_3']->getNumericScale(), 3);
-		$this->assertEquals($md['test_decimal_10_3']->getNumericPrecision(), 10);
+		$this->assertEquals(10, $md['test_decimal_10_3']->getNumericScale());
+		$this->assertEquals(3, $md['test_decimal_10_3']->getNumericPrecision());
 		
 		
 		$this->assertEquals($md['test_float']->getDatatype(), Column\Type::TYPE_FLOAT);
@@ -267,7 +267,7 @@ class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(Column\Type::TYPE_INTEGER, $md['max(filemtime)']->getDatatype());
 		$this->assertEquals(Column\Type::TYPE_INTEGER, $md['max_time']->getDatatype());
-		$this->assertEquals('BIGINT', $md['max_time']->getNativeDatatype());
+		$this->assertEquals('INTEGER', $md['max_time']->getNativeDatatype());
 		
 		// Testing computed
 		$this->assertTrue($md['min_time']->isComputed());

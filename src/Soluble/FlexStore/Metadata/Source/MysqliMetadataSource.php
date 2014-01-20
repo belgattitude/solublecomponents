@@ -7,7 +7,7 @@ use Soluble\FlexStore\Metadata\Column\Types;
 
 use ArrayObject;
 
-class MysqliMetadataSource  {
+class MysqliMetadataSource extends AbstractMetadataSource {
 
 
 	/**
@@ -15,21 +15,38 @@ class MysqliMetadataSource  {
 	 */
 	protected $mysqli;
 
+	
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected $cache_active = true;
+	
+	/**
+	 *
+	 * @var Array
+	 */
+	static protected $metadata_cache = array();
+	
+
 	public function __construct(\Mysqli $mysqli) 
 	{
 		$this->mysqli = $mysqli;
-		//$this->store  = $store;
 	}
 	
+
 	
 	/**
 	 * 
 	 * @param string $sql
 	 * @return \ArrayObject
 	 * @throws Exception\UnsupportedDatatypeException
+	 * @throws Exception\AmbiguousColumnException
+	 * @throws Exception\ConnectionException
 	 */
-	function getColumnsMetadata($sql)
+	protected function readColumnsMetadata($sql)
 	{
+		
 		$metadata = new ArrayObject();
 		$fields = $this->readFields($sql);
 		$type_map = $this->getDatatypeMapping();
@@ -104,8 +121,8 @@ class MysqliMetadataSource  {
 				// with five digits and two decimals, so values that can be stored in 
 				// the salary column range from -999.99 to 999.99. 
 				
-				$column->setNumericPrecision($field->length - $field->decimals + 1);
-				$column->setNumericScale($field->decimals);
+				$column->setNumericScale($field->length - $field->decimals + 1);
+				$column->setNumericPrecision($field->decimals);
 				
 			}
 			
@@ -176,24 +193,6 @@ class MysqliMetadataSource  {
 	
 
 
-	/**
-	 * Optimization, will add false condition to the query
-	 * so the metadata loading will be faster
-	 *
-	 * 
-	 * @param string $sql query string
-	 * @return string
-	 */
-	protected function makeQueryEmpty($sql) {
-		// see the reason why in Vision_Store_Adapter_ZendDbSelect::getMetatData
-		//$sql = str_replace("('__innerselect'='__innerselect')", '(1=0)', $sql);
-		
-		$sql = preg_replace('/(\r\n|\r|\n|\t)+/', " ", strtolower($sql));
-		$sql = preg_replace('/\s+/', ' ', $sql);
-		
-		return $sql;
-	}
-
 
 	/**
 	 * 
@@ -229,13 +228,14 @@ class MysqliMetadataSource  {
 			MYSQLI_TYPE_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
 
 
-
+			
+			
 			// integer
 			MYSQLI_TYPE_TINY => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
 			MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
 			MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
 			MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
-			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
+			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'INTEGER'),
 			MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
 
 			// timestamps
@@ -271,12 +271,5 @@ class MysqliMetadataSource  {
 		return $mapping;
 	}
 
-	/**
-	 * Return defined columns
-	 * @return array
-	 */
-	function getColumns() {
-		return array_keys((array) $this->reallyLoadMetadata());
-	}
 
 }
