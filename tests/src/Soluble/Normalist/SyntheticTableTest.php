@@ -173,9 +173,32 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 	public function testAll() {
 		
 		$users = $this->table->all('user');
-		$this->assertInternalType('array', $users->toArray());
+		$this->assertInternalType('array', $users);
+		$this->assertInstanceOf('\Soluble\Normalist\SyntheticRecord', $users[0]);
 		
 	}
+	
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::getArray
+	 */
+	public function testGetArray() {
+		
+		$users = $this->table->getArray('user');
+		$this->assertInternalType('array', $users);
+		$this->assertInternalType('array', $users['0']);
+		
+		
+	}
+	
+	/**
+	 * @covers Soluble\Normalist\SyntheticTable::getArrayColumn
+	 */
+	public function testGetArrayColumn() {
+		$users = $this->table->getArrayColumn('user', 'username');
+		$this->assertInternalType('array', $users);
+		$this->assertEquals('admin', $users[1]);
+	}
+	
 
 	/**
 	 * @covers Soluble\Normalist\SyntheticTable::findOneBy

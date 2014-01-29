@@ -124,21 +124,136 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * 
 	 * @param string $table
 	 * @param array|string|null $columns
-	 * @return array
+	 * @param array|string $order
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 * @return array of SyntheticRecord
 	 */
-	function all($table, $columns=null) {
+	function all($table, $columns=null, $order=null, $limit=null, $offset=null) {
 		$select = $this->select($table);
 		$select->from($table);
 		if ($columns !== null) {
 			$columns = (array) $columns;
 			$select->columns($columns);
 		}
-		return $select->execute();
+		
+		if ($order !== null) {
+			$select->order($order);
+		}
+		
+		if ($limit > 0) {
+			$select->limit($limit);
+			if ($offset !== null) {
+				$select->offset($offset);
+			}
+		}
+		
+		$rows = $select->execute();
+		if (!$rows) {
+			throw new \Exception("Error fetching all records");
+		}
+		$data = array();
+		foreach($rows as $row) {
+			$data[] = $this->makeRecord($table, $row);
+		}
+		return $data;
+	}
+	
+	/**
+	 * Return table as array_column
+	 * 
+	 * @param string $table
+	 * @param string $column_key
+	 * @param string|null $index_key if null will take the primary key
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+	 * @param array|string $order
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 * 
+     * @throws Exception\InvalidArgumentException	  
+	 * @throws Exception\UnexpectedValueException
+	 *
+	 * @return array 
+	 */
+	function getArrayColumn($table, $column_key, $index_key=null, $predicate=null, $combination=Predicate\PredicateSet::OP_AND, $order=null, $limit=null, $offset=null) 
+	{
+		$select = $this->select($table);
+		$select->from($table);
+		
+		if ($index_key === null) {
+			$index_key = $this->getPrimaryKey($table);
+		}
+		
+		$select->columns(array($column_key, $index_key));
+		
+		if ($predicate !== null) {
+			$select->where($predicate, $combination);
+		}
+		
+		if ($order !== null) {
+			$select->order($order);
+		}
+		
+		if ($limit > 0) {
+			$select->limit($limit);
+			if ($offset !== null) {
+				$select->offset($offset);
+			}
+		}
+		
+		$rows = $select->execute();
+		if (!$rows) {
+			throw new \Exception("Error fetching all records");
+		}
+		return array_column($rows->toArray(), $column_key, $index_key);
+	}
+	
+	/**
+	 * Return table as array
+	 * 
+	 * @param string $table
+	 * @param array|string|null $columns
+	 * @param array|string $order
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 * 
+     * @throws Exception\InvalidArgumentException	  
+	 * @throws Exception\UnexpectedValueException
+	 *
+	 * @return array 
+	 */
+	function getArray($table, $columns=null, $order=null, $limit=null, $offset=null) 
+	{
+		$select = $this->select($table);
+		$select->from($table);
+		if ($columns !== null) {
+			$columns = (array) $columns;
+			$select->columns($columns);
+		}
+		
+		if ($order !== null) {
+			$select->order($order);
+		}
+		
+		if ($limit > 0) {
+			$select->limit($limit);
+			if ($offset !== null) {
+				$select->offset($offset);
+			}
+		}
+		
+		$rows = $select->execute();
+		if (!$rows) {
+			throw new \Exception("Error fetching all records");
+		}
+		return $rows->toArray();
 	}
 	
 	/**
 	 * Find a record
 	 * 
+	 * @param string $table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      * @throws Exception\InvalidArgumentException	  
