@@ -10,6 +10,8 @@ use Soluble\Db\Metadata\Exception;
 class SyntheticTableTest extends \PHPUnit_Framework_TestCase
 {
 
+
+
 	/**
 	 * @var SyntheticTable
 	 */
