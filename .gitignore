@@ -5,6 +5,7 @@
 .settings/
 .*.sw*
 .*.un~
+composer.phar
 composer.lock
 docs/_build
 nbproject
