@@ -105,7 +105,7 @@ html_theme = 'soluble'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-	'github_fork': 'soluble/solublecomponents'
+	'github_fork': 'belgattitude/solublecomponents'
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -199,7 +199,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'SolubleComponentsdocumentation.tex', u'Soluble Components documentation Documentation',
+  ('index', 'SolubleComponents.tex', u'Soluble Components documentation Documentation',
    u'Sébastien Vanvelthem', 'manual'),
 ]
 
