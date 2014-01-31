@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Soluble Framework documentation documentation build configuration file, created by
+# Soluble Components documentation documentation build configuration file, created by
 # sphinx-quickstart on Fri Oct  4 10:52:47 2013.
 #
 # This file is execfile()d with the current directory set to its
@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Soluble Framework documentation'
+project = u'Soluble Components documentation'
 copyright = u'2013, Sébastien Vanvelthem'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -98,19 +98,22 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+#html_theme = 'default'
+html_theme = 'soluble'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+	'github_fork': 'soluble/solublecomponents'
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
-#html_theme_path = []
+html_theme_path = ['_themes']
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = 'Soluble components'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -127,7 +130,7 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static', 'API']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -176,7 +179,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'SolubleFrameworkdocumentationdoc'
+htmlhelp_basename = 'Solubledocs'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -196,7 +199,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'SolubleFrameworkdocumentation.tex', u'Soluble Framework documentation Documentation',
+  ('index', 'SolubleComponentsdocumentation.tex', u'Soluble Components documentation Documentation',
    u'Sébastien Vanvelthem', 'manual'),
 ]
 
@@ -226,7 +229,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'solubleframeworkdocumentation', u'Soluble Framework documentation Documentation',
+    ('index', 'solubleframeworkdocumentation', u'Soluble Components documentation Documentation',
      [u'Sébastien Vanvelthem'], 1)
 ]
 
@@ -240,8 +243,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'SolubleFrameworkdocumentation', u'Soluble Framework documentation Documentation',
-   u'Sébastien Vanvelthem', 'SolubleFrameworkdocumentation', 'One line description of project.',
+  ('index', 'SolubleComponentsdocumentation', u'Soluble Components documentation Documentation',
+   u'Sébastien Vanvelthem', 'SolubleComponentsdocumentation', 'One line description of project.',
    'Miscellaneous'),
 ]
 
