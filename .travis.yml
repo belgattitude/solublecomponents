@@ -24,7 +24,7 @@ before_script:
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: 
-  - phpunit -v --configuration tests/travis/$DB.travis.xml 
+  - phpunit -v --configuration tests/config/phpunit.$DB.travis.xml 
   #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 25
 

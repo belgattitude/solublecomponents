@@ -8,7 +8,7 @@ use Symfony\Component\Finder\Finder;
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
-    ->in('src')
+    ->in('../src')
 ;
 
 return new Sami($iterator, array(

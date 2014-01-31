@@ -6,10 +6,22 @@
 Welcome to Soluble Framework documentation!
 ===========================================================
 
-Contents:
+
+Components:
+---------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+
+   components/Normalist/introduction
+
+Contribute:
+-----------
+
+Your contributions are more than welcome !
+
+Start by `forking Soluble Components repository <https://github.com/belgattitude/solublecomponents>`_, write your feature, fix bugs, and send a `pull request <https://help.github.com/articles/using-pull-requests>`_.
+
 
 
 

@@ -1,0 +1,1 @@
+./../bin/sami.php update ./sami_configuration.php 

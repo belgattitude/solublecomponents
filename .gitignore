@@ -8,6 +8,7 @@
 composer.phar
 composer.lock
 docs/_build
+docs/html
 nbproject
 tmp/
 vendor/
