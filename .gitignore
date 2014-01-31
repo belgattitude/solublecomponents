@@ -6,6 +6,7 @@
 .*.sw*
 .*.un~
 composer.lock
+docs/_build
 nbproject
 tmp/
 vendor/

@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\Normalist;
+namespace Soluble\Normalist\Synthetic;
 
 
 use Soluble\Normalist\SyntheticRecord;
@@ -20,27 +20,19 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class SyntheticTable implements AdapterAwareInterface {
+class Table implements AdapterAwareInterface {
 
-/**
- * all()
- * find()
- * findOrFail()
- * where('votes', '>', 100)->take(10)->get() -> array
- * where('votes', '>', 100)->count()
- * whereRaw('age > ? and votes=100', array(25))->get()
- * delete()
- * touch()
- * hasOne - User::find(1)->phone
- * hasMany - User::find(1)->comments
- * Many2Many - User::find(1)->roles
- * Post::has('comments')->get()
- * Post::has('comments', '>=', 3)->get()
- * User->toJson()
- * User->roles->each(function($role) {})
- * User->sortBy
- * 
- */
+	/**
+	 *
+	 * @var string
+	 */
+	protected $table;
+
+	/**
+	 * @param TableManager
+	 */
+	protected $tableManager;
+	
 	/**
 	 *
 	 * @param \Zend\Db\Adapter\Adapter $adapter
@@ -67,29 +59,29 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * @var Zend\Db\Sql\Sql
 	 */
 	protected $sql;
-	
+
 	/**
 	 * 
-	 * @param \Zend\Db\Adapter\Adapter $adapter
 	 * @param string $table table name
+	 * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
 	 */
-	function __construct(Adapter $adapter) {
-		$this->setDbAdapter($adapter);
-		$this->sql = new Sql($adapter);
+	function __construct($table, TableManager $tableManager) {
+		$this->table = $table;
+		$this->tableManager = $tableManager;
+		$this->sql = new Sql($tableManager->getDbAdapter());
 	}
-
-
 	
 	/**
-	 * 
-	 * @param string $table
+	 * Get a Zend\Db\Select object
+	 *  
 	 * @param string $table_alias
 	 * @return \Soluble\Db\Sql\Select
 	 */
-	function select($table, $table_alias=null) {
-		$prefixed_table = $this->prefixTable($table);
+	function select($table_alias=null) 
+	{
+		$prefixed_table = $this->prefixTable($this->table);
 		$select = new Select();
-		$select->setDbAdapter($this->adapter);
+		$select->setDbAdapter($this->tableManager->getDbAdapter());
 		if ($table_alias === null) {
 			$table_spec = $prefixed_table;
 		} else {
@@ -98,171 +90,57 @@ class SyntheticTable implements AdapterAwareInterface {
 		$select->from($table_spec);
 		return $select;
 	}
-
 	
 
+	/**
+	 * 
+	 * @return \Soluble\Normalist\Synthetic\TableSearch
+	 * @throws \Exception
+	 */
+	public function search($table_alias=null)
+	{
+		return new TableSearch($this->select($table_alias), $this->tableManager);
+	}
+	
+	
+	/**
+	 * 
+	 * @return array
+	 */
+	public function all()
+	{
+		return $this->search()->toArray();
+	}
 	
 	/**
 	 * Find a record
 	 * 
-	 * @param string $table
 	 * @param int $id
 	 * @throws Exception\InvalidArgumentException	 
 	 * @return SyntheticRecord|false 
 	 */
-	function find($table, $id) {
-		$prefixed_table = $this->prefixTable($table);
+	function find($id) {
+		$prefixed_table = $this->prefixTable($this->table);
 		if (!is_scalar($id)) {
 			$type = gettype($id);
 			throw new Exception\InvalidArgumentException("Unable to find a record, argument must be a scalar type (numeric, string,...), type '$type' given");
 		}
-		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
-		$record =  $this->findOneBy($table, array($primary => $id));
+		$primary = $this->tableManager->getMetadata()->getPrimaryKey($prefixed_table);
+		$record =  $this->findOneBy(array($primary => $id));
 		return $record;	
 	}
-	
-	/**
-	 * Fetch all records in a table
-	 * 
-	 * @param string $table
-	 * @param array|string|null $columns
-	 * @param array|string $order
-	 * @param int|null $limit
-	 * @param int|null $offset
-	 * @return array of SyntheticRecord
-	 */
-	function all($table, $columns=null, $order=null, $limit=null, $offset=null) {
-		$select = $this->select($table);
-		$select->from($table);
-		if ($columns !== null) {
-			$columns = (array) $columns;
-			$select->columns($columns);
-		}
-		
-		if ($order !== null) {
-			$select->order($order);
-		}
-		
-		if ($limit > 0) {
-			$select->limit($limit);
-			if ($offset !== null) {
-				$select->offset($offset);
-			}
-		}
-		
-		$rows = $select->execute();
-		if (!$rows) {
-			throw new \Exception("Error fetching all records");
-		}
-		$data = array();
-		foreach($rows as $row) {
-			$data[] = $this->makeRecord($table, $row);
-		}
-		return $data;
-	}
-	
-	/**
-	 * Return table as array_column
-	 * 
-	 * @param string $table
-	 * @param string $column_key
-	 * @param string|null $index_key if null will take the primary key
-     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
-	 * @param array|string $order
-	 * @param int|null $limit
-	 * @param int|null $offset
-	 * 
-     * @throws Exception\InvalidArgumentException	  
-	 * @throws Exception\UnexpectedValueException
-	 *
-	 * @return array 
-	 */
-	function getArrayColumn($table, $column_key, $index_key=null, $predicate=null, $combination=Predicate\PredicateSet::OP_AND, $order=null, $limit=null, $offset=null) 
-	{
-		$select = $this->select($table);
-		$select->from($table);
-		
-		if ($index_key === null) {
-			$index_key = $this->getPrimaryKey($table);
-		}
-		
-		$select->columns(array($column_key, $index_key));
-		
-		if ($predicate !== null) {
-			$select->where($predicate, $combination);
-		}
-		
-		if ($order !== null) {
-			$select->order($order);
-		}
-		
-		if ($limit > 0) {
-			$select->limit($limit);
-			if ($offset !== null) {
-				$select->offset($offset);
-			}
-		}
-		
-		$rows = $select->execute();
-		if (!$rows) {
-			throw new \Exception("Error fetching all records");
-		}
-		return array_column($rows->toArray(), $column_key, $index_key);
-	}
-	
-	/**
-	 * Return table as array
-	 * 
-	 * @param string $table
-	 * @param array|string|null $columns
-	 * @param array|string $order
-	 * @param int|null $limit
-	 * @param int|null $offset
-	 * 
-     * @throws Exception\InvalidArgumentException	  
-	 * @throws Exception\UnexpectedValueException
-	 *
-	 * @return array 
-	 */
-	function getArray($table, $columns=null, $order=null, $limit=null, $offset=null) 
-	{
-		$select = $this->select($table);
-		$select->from($table);
-		if ($columns !== null) {
-			$columns = (array) $columns;
-			$select->columns($columns);
-		}
-		
-		if ($order !== null) {
-			$select->order($order);
-		}
-		
-		if ($limit > 0) {
-			$select->limit($limit);
-			if ($offset !== null) {
-				$select->offset($offset);
-			}
-		}
-		
-		$rows = $select->execute();
-		if (!$rows) {
-			throw new \Exception("Error fetching all records");
-		}
-		return $rows->toArray();
-	}
-	
+
 	/**
 	 * Find a record
 	 * 
-	 * @param string $table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      * @throws Exception\InvalidArgumentException	  
 	 * @throws Exception\UnexpectedValueException
 	 * @return SyntheticRecord|false 
 	 */
-	function findOneBy($table, $predicate, $combination=Predicate\PredicateSet::OP_AND) {
+	function findOneBy($predicate, $combination=Predicate\PredicateSet::OP_AND) {
+		$table = $this->table;
 		$select = $this->select($table);
 		$select->where($predicate, $combination);
 		$results = $select->execute()->toArray();
@@ -275,12 +153,11 @@ class SyntheticTable implements AdapterAwareInterface {
 	/**
 	 * Test if a record exists
 	 * 
-	 * @param string $table
 	 * @param int $id
 	 * @return boolean
 	 */
-	function exists($table, $id) {
-		$record = $this->find($table, $id);
+	function exists($id) {
+		$record = $this->find($id);
 		return ($record !== false);
 	}
 
@@ -292,11 +169,11 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * @param int $id
 	 * @return boolean if deletion worked
 	 */
-	function delete($table, $id) {
-		if (!$this->exists($table, $id)) return false;
-		$prefixed_table = $this->prefixTable($table);
-		$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);		
-		$platform = $this->adapter->platform;		
+	function delete($id) {
+		if (!$this->exists($id)) return false;
+		$prefixed_table = $this->prefixTable($this->able);
+		$primary = $this->tableManager->getMetadata()->getPrimaryKey($prefixed_table);		
+		$platform = $this->tableManager->getDbAdapter()->platform;		
 		
 		$delete = $this->sql->delete($prefixed_table)
 				  ->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($id));
@@ -528,7 +405,7 @@ class SyntheticTable implements AdapterAwareInterface {
 	 * @return \Soluble\Normalist\SyntheticRecord
 	 */
 	protected function makeRecord($table, $data) {
-		$record = new SyntheticRecord($this, $table, $data);
+		$record = new Record($this->tableManager, $table, $data);
 		return $record;
 	} 
 	

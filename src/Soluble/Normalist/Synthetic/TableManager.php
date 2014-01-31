@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\Normalist;
+namespace Soluble\Normalist\Synthetic;
 
 
 use Soluble\Normalist\SyntheticRecord;
@@ -20,27 +20,9 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class SyntheticTable implements AdapterAwareInterface {
+class TableManager implements AdapterAwareInterface {
 
-/**
- * all()
- * find()
- * findOrFail()
- * where('votes', '>', 100)->take(10)->get() -> array
- * where('votes', '>', 100)->count()
- * whereRaw('age > ? and votes=100', array(25))->get()
- * delete()
- * touch()
- * hasOne - User::find(1)->phone
- * hasMany - User::find(1)->comments
- * Many2Many - User::find(1)->roles
- * Post::has('comments')->get()
- * Post::has('comments', '>=', 3)->get()
- * User->toJson()
- * User->roles->each(function($role) {})
- * User->sortBy
- * 
- */
+
 	/**
 	 *
 	 * @param \Zend\Db\Adapter\Adapter $adapter
@@ -77,7 +59,23 @@ class SyntheticTable implements AdapterAwareInterface {
 		$this->setDbAdapter($adapter);
 		$this->sql = new Sql($adapter);
 	}
+	
+	/**
+	 * @return Table
+	 */
+	function getTable($table)
+	{
+		 return new Table($table, $this);
+	}
 
+	/**
+	 * 
+	 * @return \Zend\Db\Adapter\Adapter $adapter
+	 */
+	function getDbAdapter()
+	{
+		return $this->adapter;
+	}
 
 	
 	/**
