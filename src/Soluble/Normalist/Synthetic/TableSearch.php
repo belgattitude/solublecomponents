@@ -96,8 +96,9 @@ class TableSearch
 
     /**
      *
-     * @param type $predicate
-     * @param type $combination
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Zend\Db\Sql\Predicate\PredicateSet
+     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException     
      * @return \Soluble\Normalist\Synthetic\TableSearch
      */
     public function where($predicate, $combination=null)
@@ -105,6 +106,19 @@ class TableSearch
         $this->select->where($predicate, $combination);
         return $this;
     }
+    
+    /**
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException     
+     * @return \Soluble\Normalist\Synthetic\TableSearch
+     */
+    public function orWhere($predicate)
+    {
+        $this->select->orWhere($predicate);
+        return $this;
+    }
+    
 
     /**
      *
@@ -130,9 +144,15 @@ class TableSearch
         return $this->select;
     }
 
+    /**
+     * Return SQL string
+     * 
+     * @return string
+     */
     public function getSql()
     {
-        return $this->select->getSqlString();
+        $adapterPlatform = $this->tableManager->getDbAdapter()->getPlatform();
+        return $this->select->getSqlString($adapterPlatform);
     }
 
 

@@ -3,6 +3,8 @@
 namespace Soluble\Db\Sql;
 
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Exception;
+use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\Select as ZendDbSqlSelect;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -17,6 +19,22 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     protected $adapter;
 
 
+    
+    /**
+     * Create an where clause with 'OR'
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @throws Exception\InvalidArgumentException
+     * @return Select
+     */
+    public function orWhere($predicate)
+    {
+        return $this->where($predicate, Predicate\PredicateSet::OP_OR);
+        return $this;
+    }
+    
+    
+    
     /**
      * Set database adapter
      * @param \Zend\Db\Adapter\Adapter $adapter
@@ -24,6 +42,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {
+        
         $this->sql = null;
         $this->adapter = $adapter;
         return $this;

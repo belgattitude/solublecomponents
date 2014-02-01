@@ -1,50 +1,49 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
+use Soluble\Normalist\Synthetic\Exception;
 
-use Soluble\Normalist\SyntheticRecord;
-use Soluble\Normalist\Exception;
 use Soluble\Db\Sql\Select;
-use Soluble\Db\Metadata\Source;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
 
-//use Zend\Cache\StorageFactory;
-use Zend\Db\Adapter\AdapterAwareInterface;
-
-//use Soluble\Db\Metadata\Cache\CacheAwareInterface;
-
-
 use ArrayObject;
 
-class Table implements AdapterAwareInterface
+class Table 
 {
     /**
-     *
+     * Table name
      * @var string
      */
     protected $table;
 
     /**
+     * Prefixed table name or table name if no prefix
+     * @var string
+     */
+    protected $prefixed_table;
+    
+    
+    /**
+     * Primary key of the table
+     * @var string|integer
+     */
+    protected $primary_key;
+    
+    /**
+     * Table alias useful when using join
+     * @var string 
+     */
+    protected $table_alias;
+    
+    /**
      * @param TableManager
      */
     protected $tableManager;
-
-    /**
-     *
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     */
-    protected $adapter;
-
-
-    /**
-     *
-     * @var Source\AbstractSource
-     */
-    protected $metadata;
 
 
     /**
@@ -62,36 +61,64 @@ class Table implements AdapterAwareInterface
 
     /**
      *
-     * @param string $table table name
+     * @var array
+     */
+    protected $column_information;
+    
+    /**
+     *
+     * @param array|string $table table name
      * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
      */
     public function __construct($table, TableManager $tableManager)
     {
-        $this->table = $table;
         $this->tableManager = $tableManager;
         $this->sql = new Sql($tableManager->getDbAdapter());
+        $this->setTableName($table);
+        $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
+        
     }
-
+    
+    
     /**
-     * Get a Zend\Db\Select object
-     *
-     * @param string $table_alias
-     * @return \Soluble\Db\Sql\Select
+     * Return list of table columns
+     * @return array
      */
-    public function select($table_alias=null)
+    public function getColumnsInformation()
     {
-        $prefixed_table = $this->prefixTable($this->table);
-        $select = new Select();
-        $select->setDbAdapter($this->tableManager->getDbAdapter());
-        if ($table_alias === null) {
-            $table_spec = $prefixed_table;
-        } else {
-            $table_spec = array($table_alias => $prefixed_table);
+        if ($this->column_information === null) {
+            $this->column_information = $this->tableManager
+                                ->getMetadata()
+                                ->getColumnsInformation($this->prefixed_table);
         }
-        $select->from($table_spec);
-        return $select;
+        return $this->column_information;
     }
-
+    
+    
+    
+    /**
+     * Set internal table name
+     * @param array|string $table
+     */
+    protected function setTableName($table)
+    {
+        if (is_array($table)) {
+            if (count($table) != 1) {
+                throw new Exception\InvalidArgumentException("If given as array, table name must only contain one record");
+            }
+            $alias = array_pop(array_keys($table));
+            $table_name = $table[$alias];
+        } elseif (is_string($table)) {
+            $table_name = $table;
+            $alias = $table;
+        } else {
+            throw new Exception\InvalidArgumentException("Table name must be a string or an array");
+        }
+        
+        $this->table = $table;
+        $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
+        $this->setTableAlias($alias);
+    }
 
     /**
      *
@@ -105,7 +132,8 @@ class Table implements AdapterAwareInterface
 
 
     /**
-     *
+     * Return all records in the table
+     * 
      * @return array
      */
     public function all()
@@ -116,147 +144,271 @@ class Table implements AdapterAwareInterface
     /**
      * Find a record
      *
-     * @param int $id
-     * @throws Exception\InvalidArgumentException
-     * @return SyntheticRecord|false
+     * @param integer|string $id
+     * 
+     * @throws Exception\InvalidArgumentException when the id is not scalar
+     * 
+     * @return Record|false
      */
     public function find($id)
     {
-        $prefixed_table = $this->prefixTable($this->table);
         if (!is_scalar($id)) {
             $type = gettype($id);
-            throw new Exception\InvalidArgumentException("Unable to find a record, argument must be a scalar type (numeric, string,...), type '$type' given");
+            throw new Exception\InvalidArgumentException("Table::find(id) only accept a scale id (numeric, string,...), type '$type' given");
         }
-        $primary = $this->tableManager->getMetadata()->getPrimaryKey($prefixed_table);
-        $record =  $this->findOneBy(array($primary => $id));
+        $record =  $this->findOneBy(array($this->primary_key => $id));
+        return $record;
+    }
+    
+    /**
+     * Find a record by primary key, throw a NotFoundException if record does not exists
+     * 
+     * @param integer|string $id
+     * 
+     * @throws Exception\NotFoundException      
+     * @throws Exception\InvalidArgumentException when the id is not scalar (string, int, numeric)
+     * 
+     * @return Record
+     */
+    public function findOrFail($id) 
+    {
+        $record = $this->find($id);
+        if ($record === false) {
+            throw new Exception\NotFoundException("Cannot find record '$id' in table '$this->table'");
+        }
+        return $record;
+        
+    }
+
+    /**
+     * Find a record by unique key
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     * 
+     * @throws Exception\UnexpectedValueException
+     * 
+     * @return Record|false
+     */
+    public function findOneBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
+    {
+        $select = $this->select($this->table);
+        $select->where($predicate, $combination);
+        $results = $select->execute()->toArray();
+        if (count($results) == 0) return false;
+        if (count($results) > 1) throw new Exception\UnexpectedValueException("Table::findOneBy return more than one record");
+        return $this->makeRecord($this->table, $results[0]);
+    }
+
+    /**
+     * Find a record by unique key and trhow an exception id record cannot be found
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     * 
+     * @throws Exception\NotFoundException
+     * @throws Exception\UnexpectedValueException
+     * 
+     * @return Record
+     */
+    public function findOneByOrFail($predicate, $combination=Predicate\PredicateSet::OP_AND)
+    {
+        $record = $this->findOneBy($predicate, $combination);
+        if ($record === false) {
+            throw new Exception\NotFoundException("Cannot findOneBy record in table '$this->table'");
+        }
         return $record;
     }
 
     /**
-     * Find a record
-     *
-     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
-     * @throws Exception\InvalidArgumentException
-     * @throws Exception\UnexpectedValueException
-     * @return SyntheticRecord|false
+     * Count the number of record in table
+     * 
+     * @throws Exception\UnexpectedValueException when the returned count is not numeric (should not happen)
+     * 
+     * @return int
      */
-    public function findOneBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
+    function count()
     {
-        $table = $this->table;
-        $select = $this->select($table);
-        $select->where($predicate, $combination);
-        $results = $select->execute()->toArray();
-        if (count($results) == 0) return false;
-        if (count($results) > 1) throw new Exception\UnexpectedValueException("Find one by return more than one record");
-        return $this->makeRecord($table, $results[0]);
+        $result = $this->select()
+                      ->columns(array('count' => new Expression('count(*)')))
+                      ->execute()->toArray();
+        $count = $result[0]['count'];
+        if (!is_numeric($count)) {
+            throw new Exception\UnexpectedValueException("Table::count() return a non numeric value");
+        }
+        return (int) $result[0]['count'];
     }
-
-
+    
     /**
      * Test if a record exists
      *
-     * @param int $id
+     * @param integer|string $id
+     * 
+     * @throws Exception\InvalidArgumentException when the id is not scalar
+     * 
      * @return boolean
      */
     public function exists($id)
     {
-        $record = $this->find($id);
-        return ($record !== false);
+        if (!is_scalar($id)) {
+            $type = gettype($id);
+            throw new Exception\InvalidArgumentException("Table::exists(id) only accept a scale id (numeric, string,...), type '$type' given");
+        }
+        $result = $this->select()->where(array($this->primary_key => $id))
+                      ->columns(array('count' => new Expression('count(*)')))
+                      ->execute()->toArray();
+        
+        return ($result[0]['count'] == 1);
     }
 
+    
+    /**
+     * Get a Soluble\Db\Select object
+     *
+     * @param string $table_alias useful when you want to join columns
+     * @return \Soluble\Db\Sql\Select
+     */
+    public function select($table_alias=null)
+    {
+        $prefixed_table = $this->getTableName($this->table);
+        $select = new Select();
+        $select->setDbAdapter($this->tableManager->getDbAdapter());
+        if ($table_alias === null) {
+            $table_spec = $this->table_alias;
+        } else {
+            $table_spec = array($table_alias => $prefixed_table);
+        }
+        $select->from($table_spec);
+        return $select;
+    }
 
+    
     /**
      * Delete a record
      *
-     * @param string $table
-     * @param int $id
-     * @return boolean if deletion worked
+     * @param integer|strig $id primary key value
+     * 
+     * @throws Exception\InvalidArgumentException if $id is not valid / not a scalar value
+     * 
+     * @return int the number of affected rows (maybe be greater than 1 with trigger or cascade)
      */
     public function delete($id)
     {
-        if (!$this->exists($id)) return false;
-        $prefixed_table = $this->prefixTable($this->able);
-        $primary = $this->tableManager->getMetadata()->getPrimaryKey($prefixed_table);
-        $platform = $this->tableManager->getDbAdapter()->platform;
-
-        $delete = $this->sql->delete($prefixed_table)
-                  ->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($id));
+        if (!is_scalar($id)) {
+            $type = gettype($id);
+            throw new Exception\InvalidArgumentException("Table::delete(id) only accept a scale id (numeric, string,...), type '$type' given");
+        }
+        
+        $delete = $this->sql->delete($this->prefixed_table)
+                  ->where(array($this->primary_key => $id));
+                  
         $statement = $this->sql->prepareStatementForSqlObject($delete);
         $result    = $statement->execute();
-        //var_dump($result->getAffectedRows()); die('cool');
-        return true;
+        $affected  = $result->getAffectedRows();
+        /**
+        Removed in case of trigger, a deletion may provoque
+        multiple deletion or a foreign key cascade.
+        Test before implementing; 
+        if ($affected > 1) {
+            throw new Exception\UnexpectedValueException("Table delete returned more than one affected row");            
+        }
+         * 
+         */
+        return $affected;
+    }
+
+    /**
+     * Delete a record or throw an Exception
+     *
+     * @param integer|strig $id primary key value
+     * 
+     * @throws Exception\InvalidArgumentException if $id is not valid / not a scalar value
+     * @throws Exception\NotFoundException if record does not exists
+     * 
+     * @return Table
+     */    
+    public function deleteOrFail($id)
+    {
+        $deleted = $this->delete($id);
+        if ($deleted == 0) {
+            throw new Exception\NotFoundException("Cannot delete record '$id' in table '$this->table'");
+        }
+        return $this;
     }
 
     /**
      * Insert data into table
-     * @param string $table
+     *
      * @param array|ArrayObject $data
-     * @throws Exception\InvalidQueryException when a column does not exist in database
-     * @throws Exception\RuntimeException when a constraint violation or a not null value is thrown
-     * @throws Exception\ErrorException other exception
-     * @return \Soluble\Normalist\SyntheticRecord
+     * 
+     * @throws Exception\InvalidArgumentException when data is not an array or an ArrayObject
+     * @throws Exception\UnexistentColumnException when $data contains columns that does not exists in table
+     * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
+     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key     
+     * @throws Exception\RuntimeException when insertion failed for another reason
+     * 
+     * @return \Soluble\Normalist\Synthetic\Record
      */
-
-    public function insert($table, $data)
+    public function insert($data)
     {
-        $prefixed_table = $this->prefixTable($table);
-        $primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
-        } else {
+        } elseif (is_array($data)) {
             $d = $data;
+        } else {
+            $type = gettype($data);
+            throw new Exception\InvalidArgumentException("Table::insert(data) expects data to be array or ArrayObject. Type receive '$type'");
+        }
+        
+        $diff = array_diff_key($d, $this->getColumnsInformation());
+        if (count($diff) > 0) {
+            $msg = join(',', array_keys($diff));
+            throw new Exception\UnexistentColumnException("Table::insert(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
         }
 
-
-        $insert = $this->sql->insert($prefixed_table);
+        $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
 
         try {
             $statement = $this->sql->prepareStatementForSqlObject($insert);
             $result    = $statement->execute();
-        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $e) {
-            $messages = array();
-            $ex = $e;
-            do {
-                $messages[] = $ex->getMessage();
-            } while ($ex = $ex->getPrevious());
-            $message = join(', ', array_unique($messages));
+        } catch (\Exception $e) {
 
             // In ZF2, PDO_Mysql and MySQLi return different exception,
-            // attempt to normalize
-
-            $lmsg = strtolower($message);
-
-            if (strpos($lmsg, 'constraint violation') !== false ||
-                strpos($lmsg, 'sqlstate[23000]') !== false) {
-                $rex = new Exception\RuntimeException($message, $e->getCode(), $e);
-                throw $rex;
-
-            } else {
-                $sql_string = $insert->getSqlString($this->sql->getAdapter()->getPlatform());
-                $iqex = new Exception\InvalidQueryException($message, $e->getCode(), $e);
-                $iqex->setSqlString($sql_string);
-                throw $iqex;
-            }
-        } catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
+            // attempt to normalize by catching one exception instead
+            // of RuntimeException and InvalidQueryException
+            
             $messages = array();
             $ex = $e;
             do {
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
             $message = join(', ', array_unique($messages));
-            $rex = new Exception\RuntimeException($message, $e->getCode(), $e);
-            throw $rex;
-        }
 
-        if (array_key_exists($primary, $d)) {
+            $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
+            if (strpos($lmsg, 'constraint violation') !== false ||
+                strpos($lmsg, 'foreign key') !== false ||    
+                strpos($lmsg, 'sqlstate[23000]') !== false) {
+                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
+                throw $rex;
+            } else if (strpos($lmsg, 'duplicate entry') !== false ) {
+                $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
+                throw $rex;
+            } else {
+                $sql_string = $insert->getSqlString($this->sql->getAdapter()->getPlatform());
+                $iqex = new Exception\RuntimeException($message . "[$sql_string]", $e->getCode(), $e);
+                throw $iqex;
+            }
+            
+        } 
+        
+        if (array_key_exists($this->primary_key, $d)) {
             // not using autogenerated value
             $id = $d['primary'];
         } else {
-            $id = $this->adapter->getDriver()->getLastGeneratedValue();
+            $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
         }
-        $record = $this->find($table, $id);
+        $record = $this->find($id);
         if (!$record) {
             throw new Exception\ErrorException("Insert may have failed, cannot retrieve inserted record with id='$id' on table '$table'");
         }
@@ -265,10 +417,9 @@ class Table implements AdapterAwareInterface
 
     /**
      *
-     * @param string $table
      * @param array|ArrayObject $data
      * @param array|null $duplicate_exclude
-     * @return SyntheticRecord
+     * @return Record
      * @throws \Exception
      */
     public function insertOnDuplicateKey($table, $data, $duplicate_exclude=array())
@@ -367,47 +518,12 @@ class Table implements AdapterAwareInterface
 
 
 
-    /**
-     * Update data into table
-     * @param string $table
-     * @param array|ArrayObject $data
-     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @return int number of affected rows
-     */
-    public function update($table, $data, $predicate)
-    {
-        //$platform = $this->adapter->platform;
-        $prefixed_table = $this->prefixTable($table);
-        //$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
-
-        if ($data instanceOf ArrayObject) {
-            $d = (array) $data;
-        } else {
-            $d = $data;
-        }
-
-
-        $update = $this->sql->update($prefixed_table);
-        $update->set($d);
-        //$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
-        $update->where($predicate);
-
-        //$sql_string = $sql->getSqlStringForSqlObject($update);
-        //var_dump($sql_string);
-        //die();
-        $statement = $this->sql->prepareStatementForSqlObject($update);
-        $result    = $statement->execute();
-        $affectedRows =  $result->getAffectedRows();
-        return $affectedRows;
-
-    }
 
 
     /**
-     *
      * @param string $table
      * @param array $data
-     * @return \Soluble\Normalist\SyntheticRecord
+     * @return Record
      */
     protected function makeRecord($table, $data)
     {
@@ -430,16 +546,6 @@ class Table implements AdapterAwareInterface
     }
 
 
-    /**
-     * Return table columns
-     * @param string $table
-     * @return array
-     */
-    public function getColumnsInformation($table)
-    {
-        $prefixed_table = $this->prefixTable($table);
-        return $this->getMetadata()->getColumnsInformation($prefixed_table);
-    }
 
 
     /**
@@ -491,85 +597,59 @@ class Table implements AdapterAwareInterface
         return $this->getMetadata()->getPrimaryKey($prefixed_table);
     }
 
+    
     /**
-     *
-     * @return \Soluble\Db\Metadata\Source\AbstractSource
-     */
-    public function getMetadata()
-    {
-        if ($this->metadata === null) {
-            $this->metadata = $this->getDefaultMetadata($this->adapter);
-        }
-        return $this->metadata;
-    }
-
-    /**
-     *
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     * @return \Soluble\Normalist\SyntheticTable
-     */
-    public function setDbAdapter(Adapter $adapter)
-    {
-        $this->adapter = $adapter;
-        return $this;
-    }
-
-    /**
-     *
-     * @param Adapter $adapter
-     * @throws \Exception
-     */
-    protected function getDefaultMetadata(Adapter $adapter)
-    {
-        $adapterName = $adapter->getPlatform()->getName();
-        switch (strtolower($adapterName)) {
-            case 'mysql':
-                $metadata = new Source\MysqlISMetadata($adapter);
-                break;
-            default :
-                throw new \Exception("Cannot load metadata source from adapter '$adapterName', it's not supported.");
-        }
-        return $metadata;
-
-    }
-
-    /**
-     *
-     * @param \Soluble\Db\Metadata\Source\AbstractSource $metadata
-     * @return \Soluble\Normalist\SyntheticTable
-     */
-    public function setMetadata(Source\AbstractSource $metadata)
-    {
-        $this->metadata = $metadata;
-        return $this;
-    }
-
-
-
-    /**
-     *
-     * @param string $tablePrefix
-     * @return \Soluble\Normalist\Synthetic
-     */
-    public function setTablePrefix($tablePrefix)
-    {
-        $this->tablePrefix = $tablePrefix;
-        return $this;
-    }
-
-
-    /**
-     * Return prefixed table anme
-     *
-     * @param string $table
+     * Return the original table name
+     * 
      * @return string
-     * @throws Exception\InvalidArgumentException
      */
-    protected function prefixTable($table)
+    public function getTableName()
     {
-        if (!is_string($table)) throw new Exception\InvalidArgumentException("Table name must be a string");
-        if (trim($table) == '') throw new Exception\InvalidArgumentException("Table name is empty");
-        return $this->tablePrefix . $table;
+       return $this->table;
     }
-
+    
+    /**
+     * Return the prefixed table
+     * 
+     * @return string
+     */
+    public function getPrefixedTableName()
+    {
+        return $this->prefixed_table;
+    }
+    
+    /**
+     * Set table alias when referencing this table in a join
+     * 
+     * @param string $table_alias alias name for table when using join
+     * @throws Exception\InvalidArgumentException
+     * @return Table
+     */
+    public function setTableAlias($table_alias)
+    {
+        if (!is_string($table_alias)) {
+            throw new Exception\InvalidArgumentException("Table alias must be a string");
+        }
+        
+        if (!preg_match('/^[A-Za-z]([A-Za-z0-9_-])+$/', $table_alias)) {
+            throw new Exception\InvalidArgumentException("Invalid table alias '$table_alias'");
+        }
+        $this->table_alias = $table_alias;
+        return $this;
+    }
+    
+    
+    /**
+     * Return the table alias, if not set will return the table name
+     * 
+     * @return string
+     */
+    public function getTableAlias()
+    {
+        if ($this->table_alias == '') {
+            return $this->getTableName();
+        }
+        return $this->table_alias;
+    }
+     
 }
