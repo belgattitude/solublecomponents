@@ -56,20 +56,20 @@ class TableManager implements AdapterAwareInterface
         $this->setDbAdapter($adapter);
         $this->sql = new Sql($adapter);
     }
-    
+
     /**
      * Return a synthetic table
-     * 
+     *
      * @return Table
      */
     public function table($table)
     {
         return new Table($table, $this);
     }
-    
+
     /**
      * Return a synthetic table
-     * 
+     *
      * @return Table
      */
     public function getTable($table)
@@ -79,7 +79,7 @@ class TableManager implements AdapterAwareInterface
 
     /**
      * Return underlyng Zend\Db\Adapter
-     * 
+     *
      * @return \Zend\Db\Adapter\Adapter $adapter
      */
     public function getDbAdapter()
@@ -89,8 +89,8 @@ class TableManager implements AdapterAwareInterface
 
 
     /**
-     * Return a generic select 
-     * 
+     * Return a generic select
+     *
      * @return \Soluble\Db\Sql\Select
      */
     public function getSelect()
@@ -103,8 +103,8 @@ class TableManager implements AdapterAwareInterface
 
     /**
      * Set global table prefix
-     * 
-     * @param string $table_prefix 
+     *
+     * @param string $table_prefix
      * @return TableManager
      */
     public function setTablePrefix($table_prefix)
@@ -112,21 +112,21 @@ class TableManager implements AdapterAwareInterface
        $this->table_prefix = $table_prefix;
        return $this;
     }
-    
+
     /**
      * Return global table prefix
-     * 
+     *
      * @return string
      */
     public function getTablePrefix()
     {
         return $this->table_prefix;
     }
-    
-    
+
+
     /**
      * Update data into table
-     * 
+     *
      * @param string $table
      * @param array|ArrayObject $data
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
@@ -159,19 +159,19 @@ class TableManager implements AdapterAwareInterface
         return $affectedRows;
 
     }
-    
-    
+
+
     /**
      * Return prefixed table name
-     * 
+     *
      * @param string $table
      * @return string
      */
     public function getPrefixedTable($table)
     {
-       return $this->table_prefix . $table; 
+       return $this->table_prefix . $table;
     }
-    
+
 
     /**
      *

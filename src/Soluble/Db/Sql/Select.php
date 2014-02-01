@@ -19,7 +19,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     protected $adapter;
 
 
-    
+
     /**
      * Create an where clause with 'OR'
      *
@@ -32,9 +32,9 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         return $this->where($predicate, Predicate\PredicateSet::OP_OR);
         return $this;
     }
-    
-    
-    
+
+
+
     /**
      * Set database adapter
      * @param \Zend\Db\Adapter\Adapter $adapter
@@ -42,7 +42,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {
-        
+
         $this->sql = null;
         $this->adapter = $adapter;
         return $this;

@@ -98,7 +98,7 @@ class TableSearch
      *
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Zend\Db\Sql\Predicate\PredicateSet
-     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException     
+     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException
      * @return \Soluble\Normalist\Synthetic\TableSearch
      */
     public function where($predicate, $combination=null)
@@ -106,11 +106,11 @@ class TableSearch
         $this->select->where($predicate, $combination);
         return $this;
     }
-    
+
     /**
      *
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException     
+     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException
      * @return \Soluble\Normalist\Synthetic\TableSearch
      */
     public function orWhere($predicate)
@@ -118,7 +118,7 @@ class TableSearch
         $this->select->orWhere($predicate);
         return $this;
     }
-    
+
 
     /**
      *
@@ -146,7 +146,7 @@ class TableSearch
 
     /**
      * Return SQL string
-     * 
+     *
      * @return string
      */
     public function getSql()

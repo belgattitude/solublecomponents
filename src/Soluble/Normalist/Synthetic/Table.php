@@ -13,7 +13,7 @@ use Zend\Db\Sql\Predicate;
 
 use ArrayObject;
 
-class Table 
+class Table
 {
     /**
      * Table name
@@ -26,20 +26,20 @@ class Table
      * @var string
      */
     protected $prefixed_table;
-    
-    
+
+
     /**
      * Primary key of the table
      * @var string|integer
      */
     protected $primary_key;
-    
+
     /**
      * Table alias useful when using join
-     * @var string 
+     * @var string
      */
     protected $table_alias;
-    
+
     /**
      * @param TableManager
      */
@@ -64,7 +64,7 @@ class Table
      * @var array
      */
     protected $column_information;
-    
+
     /**
      *
      * @param array|string $table table name
@@ -76,10 +76,10 @@ class Table
         $this->sql = new Sql($tableManager->getDbAdapter());
         $this->setTableName($table);
         $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
-        
+
     }
-    
-    
+
+
     /**
      * Return list of table columns
      * @return array
@@ -93,9 +93,9 @@ class Table
         }
         return $this->column_information;
     }
-    
-    
-    
+
+
+
     /**
      * Set internal table name
      * @param array|string $table
@@ -114,7 +114,7 @@ class Table
         } else {
             throw new Exception\InvalidArgumentException("Table name must be a string or an array");
         }
-        
+
         $this->table = $table;
         $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
         $this->setTableAlias($alias);
@@ -133,7 +133,7 @@ class Table
 
     /**
      * Return all records in the table
-     * 
+     *
      * @return array
      */
     public function all()
@@ -145,9 +145,9 @@ class Table
      * Find a record
      *
      * @param integer|string $id
-     * 
+     *
      * @throws Exception\InvalidArgumentException when the id is not scalar
-     * 
+     *
      * @return Record|false
      */
     public function find($id)
@@ -159,25 +159,25 @@ class Table
         $record =  $this->findOneBy(array($this->primary_key => $id));
         return $record;
     }
-    
+
     /**
      * Find a record by primary key, throw a NotFoundException if record does not exists
-     * 
+     *
      * @param integer|string $id
-     * 
-     * @throws Exception\NotFoundException      
+     *
+     * @throws Exception\NotFoundException
      * @throws Exception\InvalidArgumentException when the id is not scalar (string, int, numeric)
-     * 
+     *
      * @return Record
      */
-    public function findOrFail($id) 
+    public function findOrFail($id)
     {
         $record = $this->find($id);
         if ($record === false) {
             throw new Exception\NotFoundException("Cannot find record '$id' in table '$this->table'");
         }
         return $record;
-        
+
     }
 
     /**
@@ -185,9 +185,9 @@ class Table
      *
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
-     * 
+     *
      * @throws Exception\UnexpectedValueException
-     * 
+     *
      * @return Record|false
      */
     public function findOneBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
@@ -205,10 +205,10 @@ class Table
      *
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
-     * 
+     *
      * @throws Exception\NotFoundException
      * @throws Exception\UnexpectedValueException
-     * 
+     *
      * @return Record
      */
     public function findOneByOrFail($predicate, $combination=Predicate\PredicateSet::OP_AND)
@@ -222,12 +222,12 @@ class Table
 
     /**
      * Count the number of record in table
-     * 
+     *
      * @throws Exception\UnexpectedValueException when the returned count is not numeric (should not happen)
-     * 
+     *
      * @return int
      */
-    function count()
+    public function count()
     {
         $result = $this->select()
                       ->columns(array('count' => new Expression('count(*)')))
@@ -238,14 +238,14 @@ class Table
         }
         return (int) $result[0]['count'];
     }
-    
+
     /**
      * Test if a record exists
      *
      * @param integer|string $id
-     * 
+     *
      * @throws Exception\InvalidArgumentException when the id is not scalar
-     * 
+     *
      * @return boolean
      */
     public function exists($id)
@@ -257,11 +257,11 @@ class Table
         $result = $this->select()->where(array($this->primary_key => $id))
                       ->columns(array('count' => new Expression('count(*)')))
                       ->execute()->toArray();
-        
+
         return ($result[0]['count'] == 1);
     }
 
-    
+
     /**
      * Get a Soluble\Db\Select object
      *
@@ -282,14 +282,14 @@ class Table
         return $select;
     }
 
-    
+
     /**
      * Delete a record
      *
      * @param integer|strig $id primary key value
-     * 
+     *
      * @throws Exception\InvalidArgumentException if $id is not valid / not a scalar value
-     * 
+     *
      * @return int the number of affected rows (maybe be greater than 1 with trigger or cascade)
      */
     public function delete($id)
@@ -298,21 +298,21 @@ class Table
             $type = gettype($id);
             throw new Exception\InvalidArgumentException("Table::delete(id) only accept a scale id (numeric, string,...), type '$type' given");
         }
-        
+
         $delete = $this->sql->delete($this->prefixed_table)
                   ->where(array($this->primary_key => $id));
-                  
+
         $statement = $this->sql->prepareStatementForSqlObject($delete);
         $result    = $statement->execute();
         $affected  = $result->getAffectedRows();
         /**
         Removed in case of trigger, a deletion may provoque
         multiple deletion or a foreign key cascade.
-        Test before implementing; 
+        Test before implementing;
         if ($affected > 1) {
-            throw new Exception\UnexpectedValueException("Table delete returned more than one affected row");            
+            throw new Exception\UnexpectedValueException("Table delete returned more than one affected row");
         }
-         * 
+         *
          */
         return $affected;
     }
@@ -321,12 +321,12 @@ class Table
      * Delete a record or throw an Exception
      *
      * @param integer|strig $id primary key value
-     * 
+     *
      * @throws Exception\InvalidArgumentException if $id is not valid / not a scalar value
      * @throws Exception\NotFoundException if record does not exists
-     * 
+     *
      * @return Table
-     */    
+     */
     public function deleteOrFail($id)
     {
         $deleted = $this->delete($id);
@@ -340,13 +340,13 @@ class Table
      * Insert data into table
      *
      * @param array|ArrayObject $data
-     * 
+     *
      * @throws Exception\InvalidArgumentException when data is not an array or an ArrayObject
      * @throws Exception\UnexistentColumnException when $data contains columns that does not exists in table
      * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
-     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key     
+     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
      * @throws Exception\RuntimeException when insertion failed for another reason
-     * 
+     *
      * @return \Soluble\Normalist\Synthetic\Record
      */
     public function insert($data)
@@ -359,7 +359,7 @@ class Table
             $type = gettype($data);
             throw new Exception\InvalidArgumentException("Table::insert(data) expects data to be array or ArrayObject. Type receive '$type'");
         }
-        
+
         $diff = array_diff_key($d, $this->getColumnsInformation());
         if (count($diff) > 0) {
             $msg = join(',', array_keys($diff));
@@ -377,7 +377,7 @@ class Table
             // In ZF2, PDO_Mysql and MySQLi return different exception,
             // attempt to normalize by catching one exception instead
             // of RuntimeException and InvalidQueryException
-            
+
             $messages = array();
             $ex = $e;
             do {
@@ -387,11 +387,11 @@ class Table
 
             $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
             if (strpos($lmsg, 'constraint violation') !== false ||
-                strpos($lmsg, 'foreign key') !== false ||    
+                strpos($lmsg, 'foreign key') !== false ||
                 strpos($lmsg, 'sqlstate[23000]') !== false) {
                 $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
                 throw $rex;
-            } else if (strpos($lmsg, 'duplicate entry') !== false ) {
+            } elseif (strpos($lmsg, 'duplicate entry') !== false ) {
                 $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
                 throw $rex;
             } else {
@@ -399,9 +399,9 @@ class Table
                 $iqex = new Exception\RuntimeException($message . "[$sql_string]", $e->getCode(), $e);
                 throw $iqex;
             }
-            
-        } 
-        
+
+        }
+
         if (array_key_exists($this->primary_key, $d)) {
             // not using autogenerated value
             $id = $d['primary'];
@@ -597,30 +597,30 @@ class Table
         return $this->getMetadata()->getPrimaryKey($prefixed_table);
     }
 
-    
+
     /**
      * Return the original table name
-     * 
+     *
      * @return string
      */
     public function getTableName()
     {
        return $this->table;
     }
-    
+
     /**
      * Return the prefixed table
-     * 
+     *
      * @return string
      */
     public function getPrefixedTableName()
     {
         return $this->prefixed_table;
     }
-    
+
     /**
      * Set table alias when referencing this table in a join
-     * 
+     *
      * @param string $table_alias alias name for table when using join
      * @throws Exception\InvalidArgumentException
      * @return Table
@@ -630,18 +630,18 @@ class Table
         if (!is_string($table_alias)) {
             throw new Exception\InvalidArgumentException("Table alias must be a string");
         }
-        
+
         if (!preg_match('/^[A-Za-z]([A-Za-z0-9_-])+$/', $table_alias)) {
             throw new Exception\InvalidArgumentException("Invalid table alias '$table_alias'");
         }
         $this->table_alias = $table_alias;
         return $this;
     }
-    
-    
+
+
     /**
      * Return the table alias, if not set will return the table name
-     * 
+     *
      * @return string
      */
     public function getTableAlias()
@@ -651,5 +651,5 @@ class Table
         }
         return $this->table_alias;
     }
-     
+
 }
