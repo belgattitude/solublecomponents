@@ -8,121 +8,130 @@ namespace Soluble\Db\Metadata\Source;
 class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var MysqlISMetadata
-	 */
-	protected $metadata;
+    /**
+     * @var MysqlISMetadata
+     */
+    protected $metadata;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$adapter = \SolubleTestFactories::getDbAdapter();
-		
-		//var_dump($adapter->getDriver()->getConnection());
-		//var_dump($adapter->getCurrentSchema());
-		
-		$cache   = \SolubleTestFactories::getCacheStorage();
-		
-		$this->metadata = new MysqlISMetadata($adapter);
-		//$this->metadata->setCache($cache);
-		$tables = $this->metadata->getTables();
-		
-		//var_dump($tables);
-		
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $adapter = \SolubleTestFactories::getDbAdapter();
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-		
-	}
+        //var_dump($adapter->getDriver()->getConnection());
+        //var_dump($adapter->getCurrentSchema());
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getUniqueKeys
-	 * @todo   Implement testGetUniqueKeys().
-	 */
-	public function testGetUniqueKeys() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+        $cache   = \SolubleTestFactories::getCacheStorage();
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKey
-	 */
-	public function testGetPrimaryKey() {
-		$primary = $this->metadata->getPrimaryKey('user');
-		$this->assertInternalType('string', $primary);
-		$this->assertEquals('user_id', $primary);
-	}
+        $this->metadata = new MysqlISMetadata($adapter);
+        //$this->metadata->setCache($cache);
+        $tables = $this->metadata->getTables();
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKeys
-	 */
-	public function testGetPrimaryKeys() {
-		$keys = $this->metadata->getPrimaryKeys('user');
-		$this->assertInternalType('array', $keys);
-		
-	}
+        //var_dump($tables);
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getIndexesInformation
-	 * @todo   Implement testGetIndexInformation().
-	 */
-	public function testGetIndexesInformation() {
-		$indexes = $this->metadata->getIndexesInformation('product');
-		$this->assertInternalType('array', $indexes);
-		$this->assertArrayHasKey('unique_slug_idx', $indexes);
-	
-	}
+    }
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getColumnsInformation
-	 */
-	public function testGetColumnsInformation() {
-		$infos = $this->metadata->getColumnsInformation('product');
-		$this->assertInternalType('array', $infos);
-		$this->assertArrayHasKey('product_id', $infos);
-		
-	}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getRelations
-	 */
-	public function testGetRelations() {
-		$relations = $this->metadata->getRelations('product');
-		
-		$this->assertInternalType('array', $relations);
-		$this->assertArrayHasKey('brand_id', $relations);
-		$this->assertArrayHasKey('column_name', $relations['unit_id']);
-		$this->assertArrayHasKey('table_schema', $relations['unit_id']);
-		$this->assertArrayHasKey('table_name', $relations['unit_id']);
-		$this->assertArrayHasKey('constraint_name', $relations['unit_id']);
-	}
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getUniqueKeys
+     * @todo   Implement testGetUniqueKeys().
+     */
+    public function testGetUniqueKeys()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getTablesInformation
-	 */
-	public function testGetTablesInformation() {
-		$infos = $this->metadata->getTableInformation('user');
-		$this->assertInternalType('array', $infos);
-		$this->assertArrayHasKey('TABLE_NAME', $infos);
-	}
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKey
+     */
+    public function testGetPrimaryKey()
+    {
+        $primary = $this->metadata->getPrimaryKey('user');
+        $this->assertInternalType('string', $primary);
+        $this->assertEquals('user_id', $primary);
+    }
 
-	/**
-	 * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::setCache
-	 * @todo   Implement testSetCache().
-	 */
-	public function testSetCache() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKeys
+     */
+    public function testGetPrimaryKeys()
+    {
+        $keys = $this->metadata->getPrimaryKeys('user');
+        $this->assertInternalType('array', $keys);
+
+    }
+
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getIndexesInformation
+     * @todo   Implement testGetIndexInformation().
+     */
+    public function testGetIndexesInformation()
+    {
+        $indexes = $this->metadata->getIndexesInformation('product');
+        $this->assertInternalType('array', $indexes);
+        $this->assertArrayHasKey('unique_slug_idx', $indexes);
+
+    }
+
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getColumnsInformation
+     */
+    public function testGetColumnsInformation()
+    {
+        $infos = $this->metadata->getColumnsInformation('product');
+        $this->assertInternalType('array', $infos);
+        $this->assertArrayHasKey('product_id', $infos);
+
+    }
+
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getRelations
+     */
+    public function testGetRelations()
+    {
+        $relations = $this->metadata->getRelations('product');
+
+        $this->assertInternalType('array', $relations);
+        $this->assertArrayHasKey('brand_id', $relations);
+        $this->assertArrayHasKey('column_name', $relations['unit_id']);
+        $this->assertArrayHasKey('table_schema', $relations['unit_id']);
+        $this->assertArrayHasKey('table_name', $relations['unit_id']);
+        $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
+    }
+
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getTablesInformation
+     */
+    public function testGetTablesInformation()
+    {
+        $infos = $this->metadata->getTableInformation('user');
+        $this->assertInternalType('array', $infos);
+        $this->assertArrayHasKey('TABLE_NAME', $infos);
+    }
+
+    /**
+     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::setCache
+     * @todo   Implement testSetCache().
+     */
+    public function testSetCache()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
 }

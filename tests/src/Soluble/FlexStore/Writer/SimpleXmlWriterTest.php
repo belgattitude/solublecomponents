@@ -10,112 +10,117 @@ use Soluble\FlexStore\Source\Zend\SelectSource;
 class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var Xml
-	 */
-	protected $xmlWriter;
+    /**
+     * @var Xml
+     */
+    protected $xmlWriter;
 
-	/**
-	 * @var SelectSource
-	 */
-	protected $source;
+    /**
+     * @var SelectSource
+     */
+    protected $source;
 
-	/**
-	 *
-	 * @var \Zend\Db\Adapter\Adapter
-	 */
-	protected $adapter;
+    /**
+     *
+     * @var \Zend\Db\Adapter\Adapter
+     */
+    protected $adapter;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$this->adapter = \SolubleTestFactories::getDbAdapter();
-		$select = new \Zend\Db\Sql\Select();
-		$select->from('product_brand');
-		$params = array(
-			'adapter' => $this->adapter,
-			'select' => $select
-		);
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->adapter = \SolubleTestFactories::getDbAdapter();
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $params = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
 
-		$this->source = new SelectSource($params);
+        $this->source = new SelectSource($params);
 
 
-		$this->xmlWriter = new SimpleXmlWriter();
-		$this->xmlWriter->setSource($this->source);
-	}
+        $this->xmlWriter = new SimpleXmlWriter();
+        $this->xmlWriter->setSource($this->source);
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-		
-	}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
-	/**
-	 * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getData
-	 */
-	public function testGetData() {
-		$this->xmlWriter->setRowTag('row');
+    /**
+     * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getData
+     */
+    public function testGetData()
+    {
+        $this->xmlWriter->setRowTag('row');
 
-		$data = $this->xmlWriter->getData();
-		$this->assertInternalType('string', $data);
-		$xml = new \SimpleXMLElement($data);
+        $data = $this->xmlWriter->getData();
+        $this->assertInternalType('string', $data);
+        $xml = new \SimpleXMLElement($data);
 
-		$this->assertTrue(is_numeric((string) $xml->total));
-		$this->assertTrue(is_numeric((string) $xml->success));
-		$this->assertNotEmpty($xml->data->row[0]->reference);
-	}
+        $this->assertTrue(is_numeric((string) $xml->total));
+        $this->assertTrue(is_numeric((string) $xml->success));
+        $this->assertNotEmpty($xml->data->row[0]->reference);
+    }
 
-	/**
-	 * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getData
-	 */
-	public function testGetDataWithOptions() {
-		$this->xmlWriter->setOptions(
-				array(
-					'row_tag' => 'line',
-					'body_tag' => 'result'
-					)
-				);
+    /**
+     * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getData
+     */
+    public function testGetDataWithOptions()
+    {
+        $this->xmlWriter->setOptions(
+                array(
+                    'row_tag' => 'line',
+                    'body_tag' => 'result'
+                    )
+                );
 
-		$data = $this->xmlWriter->getData();
-		$this->assertInternalType('string', $data);
+        $data = $this->xmlWriter->getData();
+        $this->assertInternalType('string', $data);
 
-		$xml = new \SimpleXMLElement($data);
+        $xml = new \SimpleXMLElement($data);
 
-		$this->assertTrue(is_numeric((string) $xml->total));
-		$this->assertTrue(is_numeric((string) $xml->success));
-		$this->assertNotEmpty($xml->data->line[0]->reference);
-	}
-	
-	/**
-	 * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getOptions
-	 */
-	public function testGetDataWithOptionsThrowsInvalidArgumentException() {
-		$this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
-		$this->xmlWriter->setOptions(
-				array(
-					'rossssss' => 'line',
-					'body_tag' => 'result'
-					)
-				);
+        $this->assertTrue(is_numeric((string) $xml->total));
+        $this->assertTrue(is_numeric((string) $xml->success));
+        $this->assertNotEmpty($xml->data->line[0]->reference);
+    }
 
-		
-		$data = $this->xmlWriter->getData();
-	}
-	
+    /**
+     * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::getOptions
+     */
+    public function testGetDataWithOptionsThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
+        $this->xmlWriter->setOptions(
+                array(
+                    'rossssss' => 'line',
+                    'body_tag' => 'result'
+                    )
+                );
 
-	/**
-	 * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::send
-	 * @todo   Implement testSend().
-	 */
-	public function testSend() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+
+        $data = $this->xmlWriter->getData();
+    }
+
+
+    /**
+     * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::send
+     * @todo   Implement testSend().
+     */
+    public function testSend()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
 }

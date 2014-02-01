@@ -8,76 +8,81 @@ namespace Soluble\Media\Converter;
 class ImageConverterTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var ImageConverter
-	 */
-	protected $object;
+    /**
+     * @var ImageConverter
+     */
+    protected $object;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$this->object = new ImageConverter;
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->object = new ImageConverter;
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-		
-	}
-	
-	public function testSetBackendUnsupportedException() {
-		
-		$this->setExpectedException('Soluble\Media\Converter\Exception\UnsupportedBackendException');
-		$params = array('backend' => 'randomstring');
-		$converter = new ImageConverter($params);
-	}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
-	/**
-	 * @covers Soluble\Media\Converter\ImageConverter::setBackend
-	 * @todo   Implement testSetBackend().
-	 */
-	public function testSetBackend() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+    public function testSetBackendUnsupportedException()
+    {
+        $this->setExpectedException('Soluble\Media\Converter\Exception\UnsupportedBackendException');
+        $params = array('backend' => 'randomstring');
+        $converter = new ImageConverter($params);
+    }
 
-	/**
-	 * @covers Soluble\Media\Converter\ImageConverter::getThumbnail
-	 * @todo   Implement testGetThumbnail().
-	 */
-	public function testGetThumbnail() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+    /**
+     * @covers Soluble\Media\Converter\ImageConverter::setBackend
+     * @todo   Implement testSetBackend().
+     */
+    public function testSetBackend()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
-	/**
-	 * @covers Soluble\Media\Converter\ImageConverter::setCache
-	 * @todo   Implement testSetCache().
-	 */
-	public function testSetCache() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+    /**
+     * @covers Soluble\Media\Converter\ImageConverter::getThumbnail
+     * @todo   Implement testGetThumbnail().
+     */
+    public function testGetThumbnail()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
-	/**
-	 * @covers Soluble\Media\Converter\ImageConverter::unsetCache
-	 * @todo   Implement testUnsetCache().
-	 */
-	public function testUnsetCache() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+    /**
+     * @covers Soluble\Media\Converter\ImageConverter::setCache
+     * @todo   Implement testSetCache().
+     */
+    public function testSetCache()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * @covers Soluble\Media\Converter\ImageConverter::unsetCache
+     * @todo   Implement testUnsetCache().
+     */
+    public function testUnsetCache()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
 }

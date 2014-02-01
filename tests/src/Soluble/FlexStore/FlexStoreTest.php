@@ -9,39 +9,40 @@ use Soluble\FlexStore\Source;
 class FlexStoreTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var FlexStore
-	 */
-	protected $store;
+    /**
+     * @var FlexStore
+     */
+    protected $store;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		$this->adapter = \SolubleTestFactories::getDbAdapter();
-		$select = new \Zend\Db\Sql\Select();
-		$select->from('user');
-		$parameters = array(
-			'adapter' => $this->adapter,
-			'select' => $select
-		);
-		$this->store = new FlexStore('zend\select', $parameters);
-	}
-	
-	
-	public function testGetSource() {
-		
-		$source = $this->store->getSource();
-		$this->assertInstanceOf('Soluble\FlexStore\Source\SourceInterface', $source);
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->adapter = \SolubleTestFactories::getDbAdapter();
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('user');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $this->store = new FlexStore('zend\select', $parameters);
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-		
-	}
+
+    public function testGetSource()
+    {
+        $source = $this->store->getSource();
+        $this->assertInstanceOf('Soluble\FlexStore\Source\SourceInterface', $source);
+    }
+
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
 }

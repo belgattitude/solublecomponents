@@ -9,51 +9,51 @@ class NormalistServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		
-		
-		$cfg = require(__DIR__ . '/../../../../../config/zf2/soluble.global.php');
-		if (!$cfg) {
-			throw new \Exception("Create a /config/soluble.global.php file");
-		}
-		
-		/*
-		
-		$config = new \Zend\ServiceManager\Config(array('Config' => $cfg));
-		$sm = new \Zend\ServiceManager\ServiceManager($config);
-		var_dump($sm->get('Cache\SolubleDbMetadata'));
-		
-		//var_dump($sm->has('test'));
-		die();
-		
-		
-		var_dump($sm);
-		die();
-		 * 
-		 */
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $cfg = require(__DIR__ . '/../../../../../config/zf2/soluble.global.php');
+        if (!$cfg) {
+            throw new \Exception("Create a /config/soluble.global.php file");
+        }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-		
-	}
+        /*
 
-	/**
-	 * @covers Soluble\Normalist\Service\NormalistServiceFactory::createService
-	 * @todo   Implement testCreateService().
-	 */
-	public function testCreateService() {
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-				'This test has not been implemented yet.'
-		);
-	}
+        $config = new \Zend\ServiceManager\Config(array('Config' => $cfg));
+        $sm = new \Zend\ServiceManager\ServiceManager($config);
+        var_dump($sm->get('Cache\SolubleDbMetadata'));
+
+        //var_dump($sm->has('test'));
+        die();
+
+
+        var_dump($sm);
+        die();
+         *
+         */
+    }
+
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
+
+    /**
+     * @covers Soluble\Normalist\Service\NormalistServiceFactory::createService
+     * @todo   Implement testCreateService().
+     */
+    public function testCreateService()
+    {
+        // Remove the following lines when you implement this test.
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+    }
 
 }

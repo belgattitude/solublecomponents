@@ -10,112 +10,114 @@ use Soluble\FlexStore\Source\Zend\SelectSource;
 class JsonTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-	 * @var Json
-	 */
-	protected $jsonWriter;
-	
-	/**
-	 * @var SelectSource
-	 */
-	protected $source;
+    /**
+     * @var Json
+     */
+    protected $jsonWriter;
 
-	
-	/**
-	 *
-	 * @var \Zend\Db\Adapter\Adapter
-	 */
-	protected $adapter;	
+    /**
+     * @var SelectSource
+     */
+    protected $source;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		
-		$this->adapter = \SolubleTestFactories::getDbAdapter();
-		$select = new \Zend\Db\Sql\Select();
-		$select->from('product_brand')->where("reference = 'STAG'");
-		$params = array(
-				'adapter' => $this->adapter,
-				'select' => $select
-			);
-		
-		$this->source = new SelectSource($params);		
-		
-		
-		$this->jsonWriter = new Json();
-		$this->jsonWriter->setSource($this->source);
-		
-		
-	}
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown() {
-	
-		
-        //header_remove(); 
-        parent::tearDown();		
-	}
+    /**
+     *
+     * @var \Zend\Db\Adapter\Adapter
+     */
+    protected $adapter;
 
-	/**
-	 * @covers Soluble\FlexStore\Writer\Json::getData
-	 */
-	public function testGetData() {
-		$data = $this->jsonWriter->getData();
-		$this->assertJson($data);
-		$d = json_decode($data, $assoc=true);
-		$this->assertArrayHasKey('total', $d);
-		$this->assertArrayHasKey('start', $d);
-		$this->assertArrayHasKey('limit', $d);
-		$this->assertArrayHasKey('data', $d);
-		$this->assertTrue($d['success']);
-		$this->assertEquals($d['total'], count($d['data']));
-		$this->assertArrayNotHasKey('query', $d);
-		
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->adapter = \SolubleTestFactories::getDbAdapter();
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand')->where("reference = 'STAG'");
+        $params = array(
+                'adapter' => $this->adapter,
+                'select' => $select
+            );
 
-	/**
-	 * @covers Soluble\FlexStore\Writer\Json::getData
-	 * @covers Soluble\FlexStore\Writer\Json::setDebug
-	 */
-	public function testGetDataWithDebug() {
-		$this->jsonWriter->setDebug($debug=true);
-		$data = $this->jsonWriter->getData();
-		$this->assertJson($data);
-		$d = json_decode($data, $assoc=true);
+        $this->source = new SelectSource($params);
 
-		$this->assertArrayHasKey('query', $d);
-		
-	}	
-	
-	/**
-	 * @covers Soluble\FlexStore\Writer\Json::send
-	 */
-	public function testSend() {
-		// Remove the following lines when you implement this test.
-		/*
-		ob_end_flush();
-		ob_end_clean();
-		ob_start();
-		$this->jsonWriter->send();
-		$a = ob_get_contents();
-		ob_end_clean();
-		var_dump($a);
+
+        $this->jsonWriter = new Json();
+        $this->jsonWriter->setSource($this->source);
+
+
+    }
+
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        //header_remove();
+        parent::tearDown();
+    }
+
+    /**
+     * @covers Soluble\FlexStore\Writer\Json::getData
+     */
+    public function testGetData()
+    {
+        $data = $this->jsonWriter->getData();
+        $this->assertJson($data);
+        $d = json_decode($data, $assoc=true);
+        $this->assertArrayHasKey('total', $d);
+        $this->assertArrayHasKey('start', $d);
+        $this->assertArrayHasKey('limit', $d);
+        $this->assertArrayHasKey('data', $d);
+        $this->assertTrue($d['success']);
+        $this->assertEquals($d['total'], count($d['data']));
+        $this->assertArrayNotHasKey('query', $d);
+
+    }
+
+    /**
+     * @covers Soluble\FlexStore\Writer\Json::getData
+     * @covers Soluble\FlexStore\Writer\Json::setDebug
+     */
+    public function testGetDataWithDebug()
+    {
+        $this->jsonWriter->setDebug($debug=true);
+        $data = $this->jsonWriter->getData();
+        $this->assertJson($data);
+        $d = json_decode($data, $assoc=true);
+
+        $this->assertArrayHasKey('query', $d);
+
+    }
+
+    /**
+     * @covers Soluble\FlexStore\Writer\Json::send
+     */
+    public function testSend()
+    {
+        // Remove the following lines when you implement this test.
+        /*
+        ob_end_flush();
+        ob_end_clean();
+        ob_start();
+        $this->jsonWriter->send();
+        $a = ob_get_contents();
+        ob_end_clean();
+        var_dump($a);
 //		$headers_list = headers_list();
-		
-		die();
-		/*
 
-		var_dump($headers_list); die();
+        die();
+        /*
+
+        var_dump($headers_list); die();
         $this->assertNotEmpty($headers_list);
-		
-        $this->assertContains('Location: foo', $headers_list);		
-		 * 
-		 */
-	}
+
+        $this->assertContains('Location: foo', $headers_list);
+         *
+         */
+    }
 
 }
