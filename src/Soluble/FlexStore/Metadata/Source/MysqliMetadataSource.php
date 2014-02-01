@@ -7,268 +7,267 @@ use Soluble\FlexStore\Metadata\Column\Types;
 
 use ArrayObject;
 
-class MysqliMetadataSource extends AbstractMetadataSource {
+class MysqliMetadataSource extends AbstractMetadataSource
+{
+    /**
+     * @var \Mysqli
+     */
+    protected $mysqli;
 
 
-	/**
-	 * @var \Mysqli
-	 */
-	protected $mysqli;
+    /**
+     *
+     * @var boolean
+     */
+    protected $cache_active = true;
 
-	
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $cache_active = true;
-	
-	/**
-	 *
-	 * @var Array
-	 */
-	static protected $metadata_cache = array();
-	
+    /**
+     *
+     * @var Array
+     */
+    protected static $metadata_cache = array();
 
-	public function __construct(\Mysqli $mysqli) 
-	{
-		$this->mysqli = $mysqli;
-	}
-	
 
-	
-	/**
-	 * 
-	 * @param string $sql
-	 * @return \ArrayObject
-	 * @throws Exception\UnsupportedDatatypeException
-	 * @throws Exception\AmbiguousColumnException
-	 * @throws Exception\ConnectionException
-	 */
-	protected function readColumnsMetadata($sql)
-	{
-		
-		$metadata = new ArrayObject();
-		$fields = $this->readFields($sql);
-		$type_map = $this->getDatatypeMapping();
-		
-		
-		foreach($fields as $idx => $field) {
-			
-			
-			$name = $field->orgname == '' ? $field->name : $field->orgname;
-			$tableName = $field->orgtable;
-			$schemaName = $field->db;
-			
-			$datatype = $field->type;
-			if (!$type_map->offsetExists($datatype)) {
-				throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
-			}
-			
-			$datatype = $type_map->offsetGet($datatype);
-			
-			$column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName);
-			/*
-			if ($field->name == 'min_time') {
-				var_dump($field);
-			//	var_dump($field->flags & MYSQLI_BLOB_FLAG);
-			//	var_dump($field->flags & MYSQLI_ENUM_FLAG);
-				die();
-			}*/
+    public function __construct(\Mysqli $mysqli)
+    {
+        $this->mysqli = $mysqli;
+    }
+
+
+
+    /**
+     *
+     * @param string $sql
+     * @return \ArrayObject
+     * @throws Exception\UnsupportedDatatypeException
+     * @throws Exception\AmbiguousColumnException
+     * @throws Exception\ConnectionException
+     */
+    protected function readColumnsMetadata($sql)
+    {
+
+        $metadata = new ArrayObject();
+        $fields = $this->readFields($sql);
+        $type_map = $this->getDatatypeMapping();
+
+
+        foreach($fields as $idx => $field) {
+
+
+            $name = $field->orgname == '' ? $field->name : $field->orgname;
+            $tableName = $field->orgtable;
+            $schemaName = $field->db;
+
+            $datatype = $field->type;
+            if (!$type_map->offsetExists($datatype)) {
+                throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
+            }
+
+            $datatype = $type_map->offsetGet($datatype);
+
+            $column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName);
+            /*
+            if ($field->name == 'min_time') {
+                var_dump($field);
+            //	var_dump($field->flags & MYSQLI_BLOB_FLAG);
+            //	var_dump($field->flags & MYSQLI_ENUM_FLAG);
+                die();
+            }*/
 /*
-	MYSQLI_BINARY_FLAG
-	MYSQLI_BLOB_FLAG
-	MYSQLI_ENUM_FLAG
-	MYSQLI_MULTIPLE_KEY_FLAG
-	MYSQLI_GROUP_FLAG
-	MYSQLI_SET_FLAG
-	MYSQLI_UNIQUE_KEY_FLAG
-	MYSQLI_ZEROFILL_FLAG
+    MYSQLI_BINARY_FLAG
+    MYSQLI_BLOB_FLAG
+    MYSQLI_ENUM_FLAG
+    MYSQLI_MULTIPLE_KEY_FLAG
+    MYSQLI_GROUP_FLAG
+    MYSQLI_SET_FLAG
+    MYSQLI_UNIQUE_KEY_FLAG
+    MYSQLI_ZEROFILL_FLAG
 */
-			
-			$column->setAlias($field->name);
-			$column->setTableAlias($field->table);
-			$column->setCatalog($field->catalog);
-			$column->setOrdinalPosition($idx + 1);
-			$column->setDataType($datatype['type']);
-			$column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
-			$column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
-			$column->setColumnDefault($field->def);
-			
-			if (($field->flags & MYSQLI_SET_FLAG) > 0) {
-				$column->setNativeDataType('SET');
-			} elseif (($field->flags & MYSQLI_ENUM_FLAG) > 0) {
-				$column->setNativeDataType('ENUM');
-			} else {
-				$column->setNativeDataType($datatype['native']);
-			}
-			
-			if ($field->table == '') {
-				$column->setIsGroup(($field->flags & MYSQLI_GROUP_FLAG) > 0);
-			}
-			
-			if ($column instanceof Column\Definition\NumericColumnInterface) {
-				$column->setNumericUnsigned(($field->flags & MYSQLI_UNSIGNED_FLAG) > 0);
-			} 
-			
-			if ($column instanceof Column\Definition\IntegerColumn) {
-				$column->setIsAutoIncrement(($field->flags & MYSQLI_AUTO_INCREMENT_FLAG) > 0);
-			}
 
-			if ($column instanceof Column\Definition\DecimalColumn) {
-				// salary DECIMAL(5,2)
-				// In this example, 5 is the precision and 2 is the scale.
-				// Standard SQL requires that DECIMAL(5,2) be able to store any value 
-				// with five digits and two decimals, so values that can be stored in 
-				// the salary column range from -999.99 to 999.99. 
-				
-				$column->setNumericScale($field->length - $field->decimals + 1);
-				$column->setNumericPrecision($field->decimals);
-			}
-			
-			if ($column instanceof Column\Definition\StringColumn) {
-				$column->setCharacterMaximumLength($field->length);
-			}
-			
-			if ($column instanceof Column\Definition\BlobColumn) {
-				$column->setCharacterOctetLength($field->length);
-			}
-			
-			$alias = $column->getAlias();
-			if ($metadata->offsetExists($alias)) {
-				throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query.");
-			}
-			
-			$metadata->offsetSet($alias, $column);
+            $column->setAlias($field->name);
+            $column->setTableAlias($field->table);
+            $column->setCatalog($field->catalog);
+            $column->setOrdinalPosition($idx + 1);
+            $column->setDataType($datatype['type']);
+            $column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
+            $column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
+            $column->setColumnDefault($field->def);
 
-		}
-		
-		return $metadata;
-	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * @param string $sql
-	 * @throws Exception\ConnectionException
-	 */
-	protected function readFields($sql)
-	{
-		if (trim($sql) == '') {
-			throw new Exception\EmptyQueryException();
-		}
- 		
-		$sql = $this->makeQueryEmpty($sql);
-		
-		if ($this->mysqli->connect_error) {
-			$errno = $this->mysqli->connect_errno;
-			$message = $this->mysqli->connect_error;
-			throw new Exception\ConnectionException("Connection error: $message ($errno)");
-		}
-		
-		$stmt = $this->mysqli->prepare($sql);
+            if (($field->flags & MYSQLI_SET_FLAG) > 0) {
+                $column->setNativeDataType('SET');
+            } elseif (($field->flags & MYSQLI_ENUM_FLAG) > 0) {
+                $column->setNativeDataType('ENUM');
+            } else {
+                $column->setNativeDataType($datatype['native']);
+            }
 
-		if (!$stmt) {
-			$message = $this->mysqli->error;
-			throw new Exception\InvalidQueryException("Sql is not correct : $message");
-		}
-		$result = $stmt->execute();
-		
-		// to check if query is empty
-		/*
-			$stmt->store_result();
-			var_dump($stmt->num_rows);
-			var_dump(
-		 */
-		
-		$result = $stmt->result_metadata();
-		$metaFields = $result->fetch_fields();
-		$result->close();
-		$stmt->close();
-		return $metaFields;
-	}
-	
-	
+            if ($field->table == '') {
+                $column->setIsGroup(($field->flags & MYSQLI_GROUP_FLAG) > 0);
+            }
+
+            if ($column instanceof Column\Definition\NumericColumnInterface) {
+                $column->setNumericUnsigned(($field->flags & MYSQLI_UNSIGNED_FLAG) > 0);
+            }
+
+            if ($column instanceof Column\Definition\IntegerColumn) {
+                $column->setIsAutoIncrement(($field->flags & MYSQLI_AUTO_INCREMENT_FLAG) > 0);
+            }
+
+            if ($column instanceof Column\Definition\DecimalColumn) {
+                // salary DECIMAL(5,2)
+                // In this example, 5 is the precision and 2 is the scale.
+                // Standard SQL requires that DECIMAL(5,2) be able to store any value
+                // with five digits and two decimals, so values that can be stored in
+                // the salary column range from -999.99 to 999.99.
+
+                $column->setNumericScale($field->length - $field->decimals + 1);
+                $column->setNumericPrecision($field->decimals);
+            }
+
+            if ($column instanceof Column\Definition\StringColumn) {
+                $column->setCharacterMaximumLength($field->length);
+            }
+
+            if ($column instanceof Column\Definition\BlobColumn) {
+                $column->setCharacterOctetLength($field->length);
+            }
+
+            $alias = $column->getAlias();
+            if ($metadata->offsetExists($alias)) {
+                throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query.");
+            }
+
+            $metadata->offsetSet($alias, $column);
+
+        }
+
+        return $metadata;
+    }
 
 
 
-	/**
-	 * 
-	 * @return ArrayObject
-	 */
-	protected function getDatatypeMapping() {
 
-		// ALL the following fields are not supported yet
-		// Maybe todo in a later release or choose to map them to approximative
-		// types (i.e. MYSQLI_YEAR could be a integer) ?
-		/*
-		  MYSQLI_TYPE_NULL
-		  MYSQLI_TYPE_YEAR
-		  MYSQLI_TYPE_ENUM
-		  MYSQLI_TYPE_SET
-		  MYSQLI_TYPE_GEOMETRY
-		 */
+    /**
+     *
+     * @param string $sql
+     * @throws Exception\ConnectionException
+     */
+    protected function readFields($sql)
+    {
+        if (trim($sql) == '') {
+            throw new Exception\EmptyQueryException();
+        }
 
-		$mapping = new ArrayObject(array(
-			MYSQLI_TYPE_STRING		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
-			MYSQLI_TYPE_CHAR		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
-			MYSQLI_TYPE_VAR_STRING	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
-			
-			MYSQLI_TYPE_ENUM => array('type' => Column\Type::TYPE_STRING, 'native' => 'ENUM'),
+        $sql = $this->makeQueryEmpty($sql);
 
-			// BLOBS ARE CURRENTLY SENT AS TEXT
-			// I DIDN'T FIND THE WAY TO MAKE THE DIFFERENCE !!!
+        if ($this->mysqli->connect_error) {
+            $errno = $this->mysqli->connect_errno;
+            $message = $this->mysqli->connect_error;
+            throw new Exception\ConnectionException("Connection error: $message ($errno)");
+        }
+
+        $stmt = $this->mysqli->prepare($sql);
+
+        if (!$stmt) {
+            $message = $this->mysqli->error;
+            throw new Exception\InvalidQueryException("Sql is not correct : $message");
+        }
+        $result = $stmt->execute();
+
+        // to check if query is empty
+        /*
+            $stmt->store_result();
+            var_dump($stmt->num_rows);
+            var_dump(
+         */
+
+        $result = $stmt->result_metadata();
+        $metaFields = $result->fetch_fields();
+        $result->close();
+        $stmt->close();
+        return $metaFields;
+    }
 
 
-			MYSQLI_TYPE_TINY_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'TINYBLOB'),
-			MYSQLI_TYPE_MEDIUM_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'MEDIUMBLOB'),
-			MYSQLI_TYPE_LONG_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'LONGBLOB'),
-			MYSQLI_TYPE_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
 
 
-			
-			
-			// integer
-			MYSQLI_TYPE_TINY => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
-			MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
-			MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
-			MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
-			MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'INTEGER'),
-			MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
 
-			// timestamps
-			MYSQLI_TYPE_TIMESTAMP => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'TIMESTAMP'),
-			MYSQLI_TYPE_DATETIME => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'DATETIME'),
+    /**
+     *
+     * @return ArrayObject
+     */
+    protected function getDatatypeMapping()
+    {
+        // ALL the following fields are not supported yet
+        // Maybe todo in a later release or choose to map them to approximative
+        // types (i.e. MYSQLI_YEAR could be a integer) ?
+        /*
+          MYSQLI_TYPE_NULL
+          MYSQLI_TYPE_YEAR
+          MYSQLI_TYPE_ENUM
+          MYSQLI_TYPE_SET
+          MYSQLI_TYPE_GEOMETRY
+         */
 
-			// dates
-			MYSQLI_TYPE_DATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
-			MYSQLI_TYPE_NEWDATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+        $mapping = new ArrayObject(array(
+            MYSQLI_TYPE_STRING		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+            MYSQLI_TYPE_CHAR		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
+            MYSQLI_TYPE_VAR_STRING	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
 
-			// time
-			MYSQLI_TYPE_TIME => array('type' => Column\Type::TYPE_TIME, 'native' => 'TIME'),
+            MYSQLI_TYPE_ENUM => array('type' => Column\Type::TYPE_STRING, 'native' => 'ENUM'),
 
-			// decimals
-			MYSQLI_TYPE_DECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
-			MYSQLI_TYPE_NEWDECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+            // BLOBS ARE CURRENTLY SENT AS TEXT
+            // I DIDN'T FIND THE WAY TO MAKE THE DIFFERENCE !!!
 
-			MYSQLI_TYPE_FLOAT => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'FLOAT'),
-			MYSQLI_TYPE_DOUBLE => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'DOUBLE'),
 
-			
-			
-			// boolean
-			
-			MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
-			MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
-			
-		));
-		
+            MYSQLI_TYPE_TINY_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'TINYBLOB'),
+            MYSQLI_TYPE_MEDIUM_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'MEDIUMBLOB'),
+            MYSQLI_TYPE_LONG_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'LONGBLOB'),
+            MYSQLI_TYPE_BLOB => array('type' => Column\Type::TYPE_BLOB, 'native' => 'BLOB'),
 
-		// enum
 
-		return $mapping;
-	}
+
+
+            // integer
+            MYSQLI_TYPE_TINY => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'TINYINT'),
+            MYSQLI_TYPE_YEAR => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'YEAR'),
+            MYSQLI_TYPE_SHORT => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'SMALLINT'),
+            MYSQLI_TYPE_INT24 => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'MEDIUMINT'),
+            MYSQLI_TYPE_LONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'INTEGER'),
+            MYSQLI_TYPE_LONGLONG => array('type' => Column\Type::TYPE_INTEGER, 'native' => 'BIGINT'),
+
+            // timestamps
+            MYSQLI_TYPE_TIMESTAMP => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'TIMESTAMP'),
+            MYSQLI_TYPE_DATETIME => array('type' => Column\Type::TYPE_DATETIME, 'native' => 'DATETIME'),
+
+            // dates
+            MYSQLI_TYPE_DATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+            MYSQLI_TYPE_NEWDATE => array('type' => Column\Type::TYPE_DATE, 'native' => 'DATE'),
+
+            // time
+            MYSQLI_TYPE_TIME => array('type' => Column\Type::TYPE_TIME, 'native' => 'TIME'),
+
+            // decimals
+            MYSQLI_TYPE_DECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+            MYSQLI_TYPE_NEWDECIMAL => array('type' => Column\Type::TYPE_DECIMAL, 'native' => 'DECIMAL'),
+
+            MYSQLI_TYPE_FLOAT => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'FLOAT'),
+            MYSQLI_TYPE_DOUBLE => array('type' => Column\Type::TYPE_FLOAT, 'native' => 'DOUBLE'),
+
+
+
+            // boolean
+
+            MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
+            MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
+
+        ));
+
+
+        // enum
+
+        return $mapping;
+    }
 
 
 }

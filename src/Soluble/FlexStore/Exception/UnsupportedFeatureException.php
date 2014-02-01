@@ -6,5 +6,5 @@ namespace Soluble\FlexStore\Exception;
 
 class UnsupportedFeatureException extends \ErrorException
 {
-	
+
 }

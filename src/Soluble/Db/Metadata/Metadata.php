@@ -4,7 +4,7 @@ namespace Soluble\Db\Metadata;
 
 use Zend\Db\Adapter\Adapter;
 
-class Metadata 
+class Metadata
 {
     /**
      * Adapter
@@ -28,17 +28,17 @@ class Metadata
         $this->adapter = $adapter;
         $this->source = $this->createSourceFromAdapter($adapter);
     }
-	
-	
-	/**
-	 * 
-	 * @return \Soluble\Db\Metadata\Source\AbstractSource
-	 */
-	public function getSource()
-	{
-		return $this->source;
-	}
-	
+
+
+    /**
+     *
+     * @return \Soluble\Db\Metadata\Source\AbstractSource
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
     /**
      * Create source from adapter
      *

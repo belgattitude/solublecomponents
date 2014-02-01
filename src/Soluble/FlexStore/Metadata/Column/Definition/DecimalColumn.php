@@ -3,9 +3,8 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class DecimalColumn extends AbstractColumn implements NumericColumnInterface {
-	
-
+class DecimalColumn extends AbstractColumn implements NumericColumnInterface
+{
     /**
      *
      * @var int
@@ -17,15 +16,15 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface {
      * @var int
      */
     protected $numericScale = null;
-	
-	
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $numericUnsigned = null;
-	
-	
+
+
+    /**
+     *
+     * @var boolean
+     */
+    protected $numericUnsigned = null;
+
+
     /**
      * @return bool
      */
@@ -43,24 +42,24 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface {
         $this->numericUnsigned = $numericUnsigned;
         return $this;
     }
-	
-	
+
+
     /**
      * @return bool
      */
     public function isNumericUnsigned()
     {
         return $this->numericUnsigned;
-    }		
+    }
 
     /**
-	 * Return the precision, for example
-	 * salary DECIMAL(5,2)
-	 * In this example, 5 is the precision and 2 is the scale.
-	 * Standard SQL requires that DECIMAL(5,2) be able to store any value 
-	 * with five digits and two decimals, so values that can be stored in 
-	 * the salary column range from -999.99 to 999.99. 
-	 *
+     * Return the precision, for example
+     * salary DECIMAL(5,2)
+     * In this example, 5 is the precision and 2 is the scale.
+     * Standard SQL requires that DECIMAL(5,2) be able to store any value
+     * with five digits and two decimals, so values that can be stored in
+     * the salary column range from -999.99 to 999.99.
+     *
      * @return int the $numericPrecision
      */
     public function getNumericPrecision()
@@ -79,12 +78,12 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface {
     }
 
     /**
-	 * Return the scale (number of decimal digits) 
- 	 * salary DECIMAL(5,2)
-	 * In this example, 5 is the precision and 2 is the scale.
-	 * Standard SQL requires that DECIMAL(5,2) be able to store any value 
-	 * with five digits and two decimals, so values that can be stored in 
-	 * the salary column range from -999.99 to 999.99. 
+     * Return the scale (number of decimal digits)
+     * salary DECIMAL(5,2)
+     * In this example, 5 is the precision and 2 is the scale.
+     * Standard SQL requires that DECIMAL(5,2) be able to store any value
+     * with five digits and two decimals, so values that can be stored in
+     * the salary column range from -999.99 to 999.99.
      *
      * @return int the $numericScale
      */
@@ -102,6 +101,6 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface {
         $this->numericScale = $numericScale;
         return $this;
     }
-	
-	
+
+
 }

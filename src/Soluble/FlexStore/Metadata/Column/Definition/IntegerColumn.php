@@ -2,20 +2,20 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class IntegerColumn extends AbstractColumn implements NumericColumnInterface {
-	
+class IntegerColumn extends AbstractColumn implements NumericColumnInterface
+{
     /**
      *
      * @var bool
      */
     protected $numericUnsigned = null;
 
-	/**
-	 *
-	 * @var bool
-	 */
-	protected $isAutoIncrement;	
-	
+    /**
+     *
+     * @var bool
+     */
+    protected $isAutoIncrement;
+
     /**
      * @return bool
      */
@@ -33,16 +33,16 @@ class IntegerColumn extends AbstractColumn implements NumericColumnInterface {
         $this->numericUnsigned = $numericUnsigned;
         return $this;
     }
-	
-	
+
+
     /**
      * @return bool
      */
     public function isNumericUnsigned()
     {
         return $this->numericUnsigned;
-    }	
-	
+    }
+
     /**
      * @return bool $isAutoIncrement
      */
@@ -68,6 +68,6 @@ class IntegerColumn extends AbstractColumn implements NumericColumnInterface {
     {
         return $this->isAutoIncrement;
     }
-	
-	
+
+
 }

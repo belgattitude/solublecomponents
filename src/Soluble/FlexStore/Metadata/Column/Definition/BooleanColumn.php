@@ -2,7 +2,6 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class BooleanColumn extends AbstractColumn {
-	
-	
+class BooleanColumn extends AbstractColumn
+{
 }

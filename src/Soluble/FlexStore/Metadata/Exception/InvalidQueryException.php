@@ -6,5 +6,5 @@ namespace Soluble\FlexStore\Metadata\Exception;
 
 class InvalidQueryException extends \RuntimeException
 {
-	
+
 }

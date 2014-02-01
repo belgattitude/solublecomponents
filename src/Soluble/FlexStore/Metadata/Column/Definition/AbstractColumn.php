@@ -53,36 +53,36 @@ abstract class AbstractColumn
      * @var string
      */
     protected $nativeDataType = null;
-	
-	
-	/**
-	 * @var string
-	 */
-	protected $alias;
-	
-	/**
-	 * @var string;
-	 */
-	protected $tableAlias;
-	
-	/**
-	 * @var string
-	 */
-	protected $catalog;
-	
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $isPrimary = false;
 
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $isGroup = false;
-	
-	
+
+    /**
+     * @var string
+     */
+    protected $alias;
+
+    /**
+     * @var string;
+     */
+    protected $tableAlias;
+
+    /**
+     * @var string
+     */
+    protected $catalog;
+
+    /**
+     *
+     * @var boolean
+     */
+    protected $isPrimary = false;
+
+    /**
+     *
+     * @var boolean
+     */
+    protected $isGroup = false;
+
+
 
 
     /**
@@ -103,12 +103,12 @@ abstract class AbstractColumn
      * Set name
      *
      * @param string $name
-	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
      */
     public function setName($name)
     {
         $this->name = $name;
-		return $this;
+        return $this;
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class AbstractColumn
      */
     public function setTableName($tableName)
     {
-		if (trim($tableName) == '') $tableName = null;
+        if (trim($tableName) == '') $tableName = null;
         $this->tableName = $tableName;
         return $this;
     }
@@ -148,13 +148,13 @@ abstract class AbstractColumn
      * Set schema name
      *
      * @param string $schemaName
-	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
      */
     public function setSchemaName($schemaName)
     {
-		if (trim($schemaName) == '') $schemaName = null;		
+        if (trim($schemaName) == '') $schemaName = null;
         $this->schemaName = $schemaName;
-		return $this;
+        return $this;
     }
 
     /**
@@ -262,7 +262,7 @@ abstract class AbstractColumn
     {
         return $this->dataType;
     }
-	
+
     /**
      * @param string $dataType the $dataType to set
      * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
@@ -282,8 +282,8 @@ abstract class AbstractColumn
         return $this->nativeDataType;
     }
 
-	
-	
+
+
     /**
      * @param string $nativeDataType the $dataType to set
      * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
@@ -293,69 +293,69 @@ abstract class AbstractColumn
         $this->nativeDataType = $nativeDataType;
         return $this;
     }
-	
-	
-	/**
-	 * 
-	 * @param string $alias column alias name
-	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
-	 */
-	public function setAlias($alias) 
-	{
-		$this->alias = $alias;
-		return $this;
-	}		
-		
-	/**
-	 * @return string column alais
-	 */
-	public function getAlias() 
-	{
-		return $this->alias;
-	}		
-	
-	/**
-	 * 
-	 * @param string $tableAlias table alias name
-	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
-	 */
-	public function setTableAlias($tableAlias) 
-	{
-		if (trim($tableAlias) == '') $tableAlias = null;
-		$this->tableAlias = $tableAlias;
-		return $this;
-	}		
 
-	/**
-	 * 
-	 * @return string table alias
-	 */
-	public function getTableAlias() 
-	{
-		return $this->tableAlias;
-		
-	}			
-	
-	/**
-	 * 
-	 * @param string $catalog db catalog
-	 * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
-	 */
-	public function setCatalog($catalog) 
-	{
-		$this->catalog = $catalog;
-		return $this;
-	}		
-		
-	/**
-	 * @return string catalog
-	 */
-	public function getCatalog() 
-	{
-		return $this->catalog;
-		
-	}		
-	
+
+    /**
+     *
+     * @param string $alias column alias name
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+        return $this;
+    }
+
+    /**
+     * @return string column alais
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     *
+     * @param string $tableAlias table alias name
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setTableAlias($tableAlias)
+    {
+        if (trim($tableAlias) == '') $tableAlias = null;
+        $this->tableAlias = $tableAlias;
+        return $this;
+    }
+
+    /**
+     *
+     * @return string table alias
+     */
+    public function getTableAlias()
+    {
+        return $this->tableAlias;
+
+    }
+
+    /**
+     *
+     * @param string $catalog db catalog
+     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     */
+    public function setCatalog($catalog)
+    {
+        $this->catalog = $catalog;
+        return $this;
+    }
+
+    /**
+     * @return string catalog
+     */
+    public function getCatalog()
+    {
+        return $this->catalog;
+
+    }
+
 
     /**
      * @return bool $isGroup
@@ -381,16 +381,16 @@ abstract class AbstractColumn
     public function isGroup()
     {
         return $this->isGroup;
-    }	
-	
-	
-	/**
-	 * @return boolean
-	 */
-	public function isComputed()
-	{
-		return ($this->tableName == '');
-	}
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function isComputed()
+    {
+        return ($this->tableName == '');
+    }
 
 
 }

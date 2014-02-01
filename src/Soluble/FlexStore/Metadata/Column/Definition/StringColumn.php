@@ -2,8 +2,8 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class StringColumn extends AbstractColumn {
-	
+class StringColumn extends AbstractColumn
+{
     /**
      *
      * @var int
@@ -11,7 +11,7 @@ class StringColumn extends AbstractColumn {
     protected $characterMaximumLength = null;
 
 
-	
+
     /**
      * @return int|null the $characterMaximumLength
      */
@@ -30,7 +30,7 @@ class StringColumn extends AbstractColumn {
         return $this;
     }
 
-	
-	
-	
+
+
+
 }

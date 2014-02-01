@@ -2,14 +2,14 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class BlobColumn extends AbstractColumn {
-
+class BlobColumn extends AbstractColumn
+{
     /**
      *
      * @var int
      */
-    protected $characterOctetLength = null;		
-	
+    protected $characterOctetLength = null;
+
     /**
      * @return int|null the $characterOctetLength
      */
@@ -27,6 +27,6 @@ class BlobColumn extends AbstractColumn {
         $this->characterOctetLength = $characterOctetLength;
         return $this;
     }
-	
-	
+
+
 }

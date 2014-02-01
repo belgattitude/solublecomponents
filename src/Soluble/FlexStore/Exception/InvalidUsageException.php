@@ -6,5 +6,5 @@ namespace Soluble\FlexStore\Exception;
 
 class InvalidUsageException extends \InvalidArgumentException
 {
-	
+
 }

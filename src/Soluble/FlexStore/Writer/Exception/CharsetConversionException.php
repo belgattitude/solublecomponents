@@ -6,5 +6,5 @@ namespace Soluble\FlexStore\Writer\Exception;
 
 class CharsetConversionException extends \RuntimeException
 {
-	
+
 }

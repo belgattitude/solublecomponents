@@ -5,15 +5,14 @@
 
 namespace Soluble\FlexStore;
 
-interface FlexStoreInterface {
-	
-	
-	/**
-	 * 
-	 * @return Source\SourceInterface
-	 */
-	public function getSource();
-	
-	
-	
+interface FlexStoreInterface
+{
+    /**
+     *
+     * @return Source\SourceInterface
+     */
+    public function getSource();
+
+
+
 }

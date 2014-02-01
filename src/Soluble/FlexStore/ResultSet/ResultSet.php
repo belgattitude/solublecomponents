@@ -33,30 +33,30 @@ class ResultSet extends AbstractResultSet
      */
     protected $returnType = self::TYPE_ARRAYOBJECT;
 
-	
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $columnsChecked = false;	
 
-	/**
-	 *
-	 * @var array
-	 */
-	protected $columns;
-	
-	/**
-	 *
-	 * @var integer
-	 */
-	protected $totalRows;
-	
-	/**
-	 * @var \Soluble\FlexStore\Source\AbstractSource
-	 */
-	protected $source;
-	
+    /**
+     *
+     * @var boolean
+     */
+    protected $columnsChecked = false;
+
+    /**
+     *
+     * @var array
+     */
+    protected $columns;
+
+    /**
+     *
+     * @var integer
+     */
+    protected $totalRows;
+
+    /**
+     * @var \Soluble\FlexStore\Source\AbstractSource
+     */
+    protected $source;
+
     /**
      * Constructor
      *
@@ -70,67 +70,67 @@ class ResultSet extends AbstractResultSet
             $this->setArrayObjectPrototype(($arrayObjectPrototype) ?: new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS));
         }
     }
-	
-	/**
-	 * 
-	 * @return \Soluble\FlexStore\Helper\Paginator
-	 */
-	function getPaginator()
-	{
-		if ($this->paginator === null) {
-			$this->paginator = new Paginator($this->getTotalRows(), 
-											 $this->getSource()->getOptions()->getLimit(), 
-											 $this->getSource()->getOptions()->getOffset());
-		}
-		return $this->paginator;
-	}
-	
-	
 
-	/**
-	 * 
-	 * @param \Soluble\FlexStore\Source\AbstractSource $source
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet
-	 */
-	function setSource(AbstractSource $source)
-	{
-		$this->source = $source;
-		return $this;
-	}
-	
-	/**
-	 * 
-	 * @return \Soluble\FlexStore\Source\AbstractSource
-	 */
-	function getSource()
-	{
-		return $this->source;
-	}
-	
-	
-	/**
-	 * Set the total rows 
-	 * @param int $totalRows
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet
-	 */
-	function setTotalRows($totalRows)
-	{
-		$this->totalRows = (int) $totalRows;
-		return $this;
-	}
-	
-	
-	/**
-	 * @return int
-	 */
-	function getTotalRows()
-	{
-		return $this->totalRows;
-	}
-	
-	
-	
-	
+    /**
+     *
+     * @return \Soluble\FlexStore\Helper\Paginator
+     */
+    public function getPaginator()
+    {
+        if ($this->paginator === null) {
+            $this->paginator = new Paginator($this->getTotalRows(),
+                                             $this->getSource()->getOptions()->getLimit(),
+                                             $this->getSource()->getOptions()->getOffset());
+        }
+        return $this->paginator;
+    }
+
+
+
+    /**
+     *
+     * @param \Soluble\FlexStore\Source\AbstractSource $source
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     */
+    public function setSource(AbstractSource $source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    /**
+     *
+     * @return \Soluble\FlexStore\Source\AbstractSource
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+
+    /**
+     * Set the total rows
+     * @param int $totalRows
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     */
+    public function setTotalRows($totalRows)
+    {
+        $this->totalRows = (int) $totalRows;
+        return $this;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getTotalRows()
+    {
+        return $this->totalRows;
+    }
+
+
+
+
 
     /**
      * Set the row object prototype
@@ -170,61 +170,61 @@ class ResultSet extends AbstractResultSet
     {
         return $this->returnType;
     }
-	
-	
-	/**
-	 * 
-	 * @param array $columns
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet
-	 */
-	public function setColumns(array $columns) 
-	{
-		$this->columnsChecked = false;
-		$this->columns = $columns;
-		return $this;
-	}
-	
-	
-	/**
-	 * 
-	 * @return \Soluble\FlexStore\ResultSet\ResultSet
-	 */
-	public function unsetColumns() 
-	{
-		$this->columnsChecked = false;
-		$this->columns = null;
-		return $this;
-	}
+
 
     /**
-	 * 
-	 * @throws Exception\UnknownColumnException
+     *
+     * @param array $columns
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     */
+    public function setColumns(array $columns)
+    {
+        $this->columnsChecked = false;
+        $this->columns = $columns;
+        return $this;
+    }
+
+
+    /**
+     *
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     */
+    public function unsetColumns()
+    {
+        $this->columnsChecked = false;
+        $this->columns = null;
+        return $this;
+    }
+
+    /**
+     *
+     * @throws Exception\UnknownColumnException
      * @return array|\ArrayObject|null
      */
     public function current()
     {
         $data = parent::current();
-		
-		if ($this->columns !== null) {
-			
-			$d = new \ArrayObject();
-			if (!$this->columnsChecked) {
-				foreach($this->columns as $column) {
-					if (!$data->offsetExists($column)) {
-						$msg = "Column '$column' does not exists";
-						throw new Exception\UnknownColumnException($msg);
-					}
-				}
-				$this->columnsChecked;
-			}
-			
-			foreach($this->columns as $column) {
-				$d[$column] = $data[$column];
-			}
-			$data = $d;
-			
-			
-		}
+
+        if ($this->columns !== null) {
+
+            $d = new \ArrayObject();
+            if (!$this->columnsChecked) {
+                foreach($this->columns as $column) {
+                    if (!$data->offsetExists($column)) {
+                        $msg = "Column '$column' does not exists";
+                        throw new Exception\UnknownColumnException($msg);
+                    }
+                }
+                $this->columnsChecked;
+            }
+
+            foreach($this->columns as $column) {
+                $d[$column] = $data[$column];
+            }
+            $data = $d;
+
+
+        }
         if ($this->returnType === self::TYPE_ARRAYOBJECT && is_array($data)) {
             /** @var $ao ArrayObject */
             $ao = clone $this->arrayObjectPrototype;
@@ -236,6 +236,6 @@ class ResultSet extends AbstractResultSet
         }
         return $data;
     }
-	
-	
+
+
 }

@@ -1,98 +1,101 @@
 <?php
 
-namespace Soluble\Flexstore\Writer;
+namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\FlexStore\Exception;
 use Traversable;
 
-abstract class AbstractWriter {
-	
-	/**
-	 *
-	 * @var \Soluble\FlexStore\Source\AbstractSource
-	 */
-	protected $source; 
-	
-	/**
-	 *
-	 * @var array
-	 */
-	protected $options = array(
-		'debug' => false,
-		'charset' => 'UTF-8'
-	);
-	
-	/**
-	 * 
-	 * @param array|Traversable $options
-	 */
-	function __construct(SourceInterface $source=null, $options=null) {
-		if ($source !== null) {
-			$this->setSource($source);
-		}
-		if ($options !== null) {
-			$this->setOptions($options);
-		}
-	}
-	
-	
-	/**
-	 * 
-	 * @param \Soluble\FlexStore\Source\SourceInterface $source
-	 * @return \Soluble\FlexStore\Writer\Json
-	 */
-	function setSource(SourceInterface $source) {
-		$this->source = $source;
-		return $this;
-	}
-	
-	
-	/**
-	 * @return string
-	 */
-	abstract function getData();
-	
+abstract class AbstractWriter
+{
+    /**
+     *
+     * @var \Soluble\FlexStore\Source\AbstractSource
+     */
+    protected $source;
 
-	/**
-	 * @param SendHeaders $headers
-	 * @return void
-	 */
-	abstract function send(SendHeaders $headers=null);
-	
-	
-	/**
-	 * 
-	 * @param string $filename
-	 * @param string $charset
-	 * 
-	 */
-	public function save($filename, $charset=null)
-	{
-		$data = $this->getData();
-		if ($charset === null) { 
-			$charset = $this->options['charset'];
-		}
-		// UTF-8 : file_put_contents("file.txt", "\xEF\xBB\xBF" . $data);	
-		$ret = file_put_contents($filename, $data);
-		if (!$ret) {
-			throw new \Exception("Filename $filename cannot be written");
-		}
-		
-				
-	}
-	
-	/**
-	 * 
-	 * @param boolean $debug
-	 * @return \Soluble\Flexstore\Writer\AbstractWriter
-	 */
-	function setDebug($debug=true) {
-		$this->options['debug'] = $debug;
-		return $this;
-	}
-	
-	
+    /**
+     *
+     * @var array
+     */
+    protected $options = array(
+        'debug' => false,
+        'charset' => 'UTF-8'
+    );
+
+    /**
+     *
+     * @param array|Traversable $options
+     */
+    public function __construct(SourceInterface $source=null, $options=null)
+    {
+        if ($source !== null) {
+            $this->setSource($source);
+        }
+        if ($options !== null) {
+            $this->setOptions($options);
+        }
+    }
+
+
+    /**
+     *
+     * @param \Soluble\FlexStore\Source\SourceInterface $source
+     * @return \Soluble\FlexStore\Writer\Json
+     */
+    public function setSource(SourceInterface $source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    abstract public function getData();
+
+
+    /**
+     * @param SendHeaders $headers
+     * @return void
+     */
+    abstract public function send(SendHeaders $headers=null);
+
+
+    /**
+     *
+     * @param string $filename
+     * @param string $charset
+     *
+     */
+    public function save($filename, $charset=null)
+    {
+        $data = $this->getData();
+        if ($charset === null) {
+            $charset = $this->options['charset'];
+        }
+        // UTF-8 : file_put_contents("file.txt", "\xEF\xBB\xBF" . $data);
+        $ret = file_put_contents($filename, $data);
+        if (!$ret) {
+            throw new \Exception("Filename $filename cannot be written");
+        }
+
+
+    }
+
+    /**
+     *
+     * @param boolean $debug
+     * @return \Soluble\Flexstore\Writer\AbstractWriter
+     */
+    public function setDebug($debug=true)
+    {
+        $this->options['debug'] = $debug;
+        return $this;
+    }
+
+
     /**
      * @param  array|Traversable $options
      * @return self
@@ -111,7 +114,7 @@ abstract class AbstractWriter {
         foreach ($options as $key => $value) {
             $setter = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
             if (method_exists($this, $setter)) {
-				
+
                 $this->{$setter}($value);
             } elseif (array_key_exists($key, $this->options)) {
                 $this->options[$key] = $value;
@@ -134,5 +137,5 @@ abstract class AbstractWriter {
     {
         return $this->options;
     }
-	
+
 }

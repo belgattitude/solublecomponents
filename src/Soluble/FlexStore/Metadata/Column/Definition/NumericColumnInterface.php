@@ -1,9 +1,9 @@
 <?php
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
-interface NumericColumnInterface {
-
-	/**
+interface NumericColumnInterface
+{
+    /**
      * @return bool
      */
     public function getNumericUnsigned();
@@ -13,8 +13,8 @@ interface NumericColumnInterface {
      * @return ColumnObject
      */
     public function setNumericUnsigned($numericUnsigned);
-	
-	
+
+
     /**
      * @return bool
      */

@@ -47,19 +47,19 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
         if (is_array($this->buffer)) {
             $this->buffer = array();
         }
-		
-		
+
+
         if ($dataSource instanceof ResultInterface) {
-			
+
             $this->count = $dataSource->count();
             $this->fieldCount = $dataSource->getFieldCount();
             $this->dataSource = $dataSource;
             if ($dataSource->isBuffered()) {
                 $this->buffer = -1;
             }
-			
+
             if (is_array($this->buffer)) {
-				
+
                 $this->dataSource->rewind();
             }
             return $this;
@@ -222,15 +222,15 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     {
         if (!is_array($this->buffer)) {
             if ($this->dataSource instanceof Iterator) {
-				$this->buffer();
-				$this->dataSource->rewind();
-				/*
-				try {
-					$this->dataSource->rewind();
-				} catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
-					$this->buffer();
-					$this->dataSource->rewind();
-				}*/
+                $this->buffer();
+                $this->dataSource->rewind();
+                /*
+                try {
+                    $this->dataSource->rewind();
+                } catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
+                    $this->buffer();
+                    $this->dataSource->rewind();
+                }*/
             } else {
                 reset($this->dataSource);
             }

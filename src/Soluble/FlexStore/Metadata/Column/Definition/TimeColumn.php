@@ -2,7 +2,6 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class TimeColumn extends AbstractColumn {
-	
-	
+class TimeColumn extends AbstractColumn
+{
 }
