@@ -40,7 +40,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $this->tableManager = new TableManager($adapter);
         $this->tableManager->setMetadata($metadata);
 
-        $this->table = $this->tableManager->getTable('product_category');
+        $this->table = $this->tableManager->table('product_category');
     }
 
     /**
@@ -355,6 +355,4 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(12, $results['AC']);        
     }
     
-
-
 }

@@ -102,22 +102,13 @@ class Table
      */
     protected function setTableName($table)
     {
-        if (is_array($table)) {
-            if (count($table) != 1) {
-                throw new Exception\InvalidArgumentException("If given as array, table name must only contain one record");
-            }
-            $alias = array_pop(array_keys($table));
-            $table_name = $table[$alias];
-        } elseif (is_string($table)) {
-            $table_name = $table;
-            $alias = $table;
-        } else {
-            throw new Exception\InvalidArgumentException("Table name must be a string or an array");
+        if (!is_string($table)) {
+            throw new Exception\InvalidArgumentException("Table name must be a string");
         }
 
         $this->table = $table;
         $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
-        $this->setTableAlias($alias);
+        
     }
 
     /**
@@ -274,7 +265,7 @@ class Table
         $select = new Select();
         $select->setDbAdapter($this->tableManager->getDbAdapter());
         if ($table_alias === null) {
-            $table_spec = $this->table_alias;
+            $table_spec = $this->table;
         } else {
             $table_spec = array($table_alias => $prefixed_table);
         }
@@ -386,13 +377,14 @@ class Table
             $message = join(', ', array_unique($messages));
 
             $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
-            if (strpos($lmsg, 'constraint violation') !== false ||
-                strpos($lmsg, 'foreign key') !== false ||
-                strpos($lmsg, 'sqlstate[23000]') !== false) {
-                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
-                throw $rex;
-            } elseif (strpos($lmsg, 'duplicate entry') !== false ) {
+
+            if (strpos($lmsg, 'duplicate entry') !== false ) {
                 $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
+                throw $rex;
+            
+            } elseif (strpos($lmsg, 'constraint violation') !== false ||
+                strpos($lmsg, 'foreign key') !== false ) {
+                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
                 throw $rex;
             } else {
                 $sql_string = $insert->getSqlString($this->sql->getAdapter()->getPlatform());
@@ -618,38 +610,5 @@ class Table
         return $this->prefixed_table;
     }
 
-    /**
-     * Set table alias when referencing this table in a join
-     *
-     * @param string $table_alias alias name for table when using join
-     * @throws Exception\InvalidArgumentException
-     * @return Table
-     */
-    public function setTableAlias($table_alias)
-    {
-        if (!is_string($table_alias)) {
-            throw new Exception\InvalidArgumentException("Table alias must be a string");
-        }
-
-        if (!preg_match('/^[A-Za-z]([A-Za-z0-9_-])+$/', $table_alias)) {
-            throw new Exception\InvalidArgumentException("Invalid table alias '$table_alias'");
-        }
-        $this->table_alias = $table_alias;
-        return $this;
-    }
-
-
-    /**
-     * Return the table alias, if not set will return the table name
-     *
-     * @return string
-     */
-    public function getTableAlias()
-    {
-        if ($this->table_alias == '') {
-            return $this->getTableName();
-        }
-        return $this->table_alias;
-    }
 
 }

@@ -2,8 +2,6 @@
 namespace Soluble\Normalist\Synthetic;
 
 
-use Soluble\Normalist\SyntheticRecord;
-use Soluble\Normalist\Exception;
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
 
@@ -17,7 +15,7 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class TableManager implements AdapterAwareInterface
+class TableManager 
 {
     /**
      *
@@ -45,6 +43,12 @@ class TableManager implements AdapterAwareInterface
      * @var Zend\Db\Sql\Sql
      */
     protected $sql;
+    
+    /**
+     * @var ArrayObject
+     */
+    
+    protected $cachedTables;
 
     /**
      *
@@ -55,74 +59,50 @@ class TableManager implements AdapterAwareInterface
     {
         $this->setDbAdapter($adapter);
         $this->sql = new Sql($adapter);
+        $this->cachedTables = new \ArrayObject();
     }
+    
+
 
     /**
      * Return a synthetic table
      *
+     * @param string $table_name table name
+     * 
+     * @throws Exception\InvalidArgumentException if table name is not valid
+     * 
      * @return Table
      */
-    public function table($table)
+    public function table($table_name)
     {
-        return new Table($table, $this);
+        if (!is_string($table_name)) {
+            throw new Exception\InvalidArgumentException("Table name must be a string");
+        }
+        
+        
+        if (!$this->cachedTables->offsetExists($table_name)) {
+            try {
+                $table = new Table($table_name, $this);
+            } catch (\Soluble\Db\Metadata\Exception\TableNotExistException $e) {
+                throw new Exception\TableNotFoundException($e->getMessage(), $e->getCode(), $e);
+            }
+            $this->cachedTables->offsetSet($table_name, $table);
+        }
+        return $this->cachedTables->offsetGet($table_name);
     }
-
-    /**
-     * Return a synthetic table
-     *
-     * @return Table
-     */
-    public function getTable($table)
-    {
-         return new Table($table, $this);
-    }
-
-    /**
-     * Return underlyng Zend\Db\Adapter
-     *
-     * @return \Zend\Db\Adapter\Adapter $adapter
-     */
-    public function getDbAdapter()
-    {
-        return $this->adapter;
-    }
-
-
+    
     /**
      * Return a generic select
      *
      * @return \Soluble\Db\Sql\Select
      */
-    public function getSelect()
+    public function select()
     {
         $select = new Select();
         $select->setDbAdapter($this->adapter);
         return $select;
     }
-
-
-    /**
-     * Set global table prefix
-     *
-     * @param string $table_prefix
-     * @return TableManager
-     */
-    public function setTablePrefix($table_prefix)
-    {
-       $this->table_prefix = $table_prefix;
-       return $this;
-    }
-
-    /**
-     * Return global table prefix
-     *
-     * @return string
-     */
-    public function getTablePrefix()
-    {
-        return $this->table_prefix;
-    }
-
+    
 
     /**
      * Update data into table
@@ -159,6 +139,79 @@ class TableManager implements AdapterAwareInterface
         return $affectedRows;
 
     }
+    
+    
+    /**
+     * Start a new transaction
+     * 
+     * @return \Soluble\Normalist\Synthetic\TableManager
+     */
+    public function beginTransaction()
+    {
+        $this->adapter->getDriver()->getConnection()->beginTransaction();        
+        return $this;
+    }
+    
+    /**
+     * Commit changes
+     * 
+     * @return \Soluble\Normalist\Synthetic\TableManager
+     */
+    public function commit()
+    {
+        $this->adapter->getDriver()->getConnection()->commit();
+        return $this;
+    }
+
+    /**
+     * Rollback transaction
+     * 
+     * @return \Soluble\Normalist\Synthetic\TableManager
+     */
+    public function rollback()
+    {
+        $this->adapter->getDriver()->getConnection()->rollback();
+        return $this;
+    }
+
+    
+
+    /**
+     * Return underlyng Zend\Db\Adapter
+     *
+     * @return \Zend\Db\Adapter\Adapter $adapter
+     */
+    public function getDbAdapter()
+    {
+        return $this->adapter;
+    }
+
+
+
+
+    /**
+     * Set global table prefix
+     *
+     * @param string $table_prefix
+     * @return TableManager
+     */
+    public function setTablePrefix($table_prefix)
+    {
+       $this->table_prefix = $table_prefix;
+       return $this;
+    }
+
+    /**
+     * Return global table prefix
+     *
+     * @return string
+     */
+    public function getTablePrefix()
+    {
+        return $this->table_prefix;
+    }
+
+
 
 
     /**
@@ -170,19 +223,6 @@ class TableManager implements AdapterAwareInterface
     public function getPrefixedTable($table)
     {
        return $this->table_prefix . $table;
-    }
-
-
-    /**
-     *
-     * @param string $table
-     * @param array $data
-     * @return \Soluble\Normalist\SyntheticRecord
-     */
-    protected function makeRecord($table, $data)
-    {
-        $record = new SyntheticRecord($this, $table, $data);
-        return $record;
     }
 
 
@@ -274,9 +314,9 @@ class TableManager implements AdapterAwareInterface
     /**
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
-     * @return \Soluble\Normalist\SyntheticTable
+     * @return \Soluble\Normalist\Synthetic\TableManager
      */
-    public function setDbAdapter(Adapter $adapter)
+    protected function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
         return $this;
@@ -304,15 +344,13 @@ class TableManager implements AdapterAwareInterface
     /**
      *
      * @param \Soluble\Db\Metadata\Source\AbstractSource $metadata
-     * @return \Soluble\Normalist\SyntheticTable
+     * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function setMetadata(Source\AbstractSource $metadata)
     {
         $this->metadata = $metadata;
         return $this;
     }
-
-
 
 
 }
