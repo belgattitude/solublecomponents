@@ -50,18 +50,12 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::table
-     */
     public function testTable()
     {
         $medias = $this->tableManager->table('media');
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Table', $medias);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::table
-     */
     public function testTableThrowsInvalidArgumentException()
     {
         $this->setExpectedException("\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException");
@@ -69,18 +63,12 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
     
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::table
-     */
     public function testTableThrowsTableNotFoundException()
     {
         $this->setExpectedException("\Soluble\Normalist\Synthetic\Exception\TableNotFoundException");
         $medias = $this->tableManager->table('table_that_does_not_exists');
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::select
-     */
     public function testSelect()
     {
         $select = $this->tableManager->select('media');
@@ -88,7 +76,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::update
      * @todo   Implement testUpdate().
      */
     public function testUpdate()
@@ -99,11 +86,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::beginTransaction
-     * @covers Soluble\Normalist\Synthetic\TableManager::rollback
-     * @covers Soluble\Normalist\Synthetic\TableManager::commit
-     */
     public function testTransaction()
     {
         $tm = $this->tableManager;
@@ -136,9 +118,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getDbAdapter
-     */
     public function testGetDbAdapter()
     {
         $adapter = $this->tableManager->getDbAdapter();
@@ -147,7 +126,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::setTablePrefix
      * @todo   Implement testSetTablePrefix().
      */
     public function testSetTablePrefix()
@@ -159,7 +137,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getTablePrefix
      * @todo   Implement testGetTablePrefix().
      */
     public function testGetTablePrefix()
@@ -171,7 +148,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getPrefixedTable
      * @todo   Implement testGetPrefixedTable().
      */
     public function testGetPrefixedTable()
@@ -183,7 +159,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getRelations
      * @todo   Implement testGetRelations().
      */
     public function testGetRelations()
@@ -195,7 +170,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getColumnsInformation
      * @todo   Implement testGetColumnsInformation().
      */
     public function testGetColumnsInformation()
@@ -207,7 +181,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getRecordCleanedData
      * @todo   Implement testGetRecordCleanedData().
      */
     public function testGetRecordCleanedData()
@@ -218,9 +191,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getPrimaryKeys
-     */
     public function testGetPrimaryKeys()
     {
         $pks = $this->tableManager->getPrimaryKeys('media');
@@ -229,9 +199,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('media_id', $pks[0]);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getPrimaryKey
-     */
     public function testGetPrimaryKey()
     {
         $pk = $this->tableManager->getPrimaryKey('media');
@@ -239,9 +206,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('media_id', $pk);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::getMetadata
-     */
     public function testGetMetadata()
     {
         $metadata = $this->tableManager->getMetadata();
@@ -251,9 +215,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableManager::setMetadata
-     */
+
     public function testSetMetadata()
     {
         $metadata = new Source\MysqlISMetadata($this->adapter);

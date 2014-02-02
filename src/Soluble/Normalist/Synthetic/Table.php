@@ -69,14 +69,20 @@ class Table
      *
      * @param array|string $table table name
      * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
+     * 
+     * @throws Exception\InvalidArgumentException
      */
     public function __construct($table, TableManager $tableManager)
     {
         $this->tableManager = $tableManager;
         $this->sql = new Sql($tableManager->getDbAdapter());
-        $this->setTableName($table);
-        $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
+        if (!is_string($table)) {
+            throw new Exception\InvalidArgumentException("Table name must be a string");
+        }
 
+        $this->table = $table;
+        $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
+        $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
     }
 
 
@@ -96,20 +102,6 @@ class Table
 
 
 
-    /**
-     * Set internal table name
-     * @param array|string $table
-     */
-    protected function setTableName($table)
-    {
-        if (!is_string($table)) {
-            throw new Exception\InvalidArgumentException("Table name must be a string");
-        }
-
-        $this->table = $table;
-        $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
-        
-    }
 
     /**
      *
@@ -177,15 +169,45 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     * @throws Exception\UnexpectedValueException
-     *
+     * @throws Exception\UnexistentColumnException when a column in the predicate does not exists
+     * @throws Exception\UnexpectedValueException when more than one record match the predicate
+     * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
+     * 
      * @return Record|false
      */
     public function findOneBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
     {
         $select = $this->select($this->table);
         $select->where($predicate, $combination);
-        $results = $select->execute()->toArray();
+        try {
+            $results = $select->execute()->toArray();
+        } catch (\Exception $e) {
+
+            $messages = array();
+            $ex = $e;
+            do {
+                $messages[] = $ex->getMessage();
+            } while ($ex = $ex->getPrevious());
+            $message = join(', ', array_unique($messages));
+
+            $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
+
+            if (strpos($lmsg, 'column not found') !== false ||
+                    strpos($lmsg, 'unknown column') !== false) {
+                //"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'media_id' in 'where clause
+                $rex = new Exception\UnexistentColumnException($message);
+                throw $rex;
+            
+            } else {
+
+                
+                $sql_string = $select->getSqlString($this->sql->getAdapter()->getPlatform());
+                $iqex = new Exception\InvalidArgumentException("$message - $sql_string");
+                throw $iqex;
+            }
+            
+        }
+        
         if (count($results) == 0) return false;
         if (count($results) > 1) throw new Exception\UnexpectedValueException("Table::findOneBy return more than one record");
         return $this->makeRecord($this->table, $results[0]);
@@ -197,8 +219,10 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     * @throws Exception\NotFoundException
-     * @throws Exception\UnexpectedValueException
+     * @throws Exception\NotFoundException when the record is not found
+     * @throws Exception\UnexistentColumnException when a column in the predicate does not exists
+     * @throws Exception\UnexpectedValueException when more than one record match the predicate
+     * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
      *
      * @return Record
      */
@@ -214,7 +238,6 @@ class Table
     /**
      * Count the number of record in table
      *
-     * @throws Exception\UnexpectedValueException when the returned count is not numeric (should not happen)
      *
      * @return int
      */
@@ -224,9 +247,6 @@ class Table
                       ->columns(array('count' => new Expression('count(*)')))
                       ->execute()->toArray();
         $count = $result[0]['count'];
-        if (!is_numeric($count)) {
-            throw new Exception\UnexpectedValueException("Table::count() return a non numeric value");
-        }
         return (int) $result[0]['count'];
     }
 
@@ -342,7 +362,7 @@ class Table
      */
     public function insert($data)
     {
-        if ($data instanceOf ArrayObject) {
+        if ($data instanceof \ArrayObject) {
             $d = (array) $data;
         } elseif (is_array($data)) {
             $d = $data;
@@ -396,7 +416,7 @@ class Table
 
         if (array_key_exists($this->primary_key, $d)) {
             // not using autogenerated value
-            $id = $d['primary'];
+            $id = $d[$this->primary_key];
         } else {
             $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
         }

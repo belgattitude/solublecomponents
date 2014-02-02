@@ -40,9 +40,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }
     
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::getColumnsInformation
-     */
     public function testGetColumnsInformation()
     {
         $table = $this->tableManager->table('product_category');
@@ -59,18 +56,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
     
 
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::select
-     */
     public function testSelect()
     {
         $select = $this->tableManager->table('product_category')->select();
         $this->assertInstanceOf('\Soluble\Db\Sql\Select', $select);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::find
-     */
     public function testFind()
     {
         $table = $this->tableManager->table('product_category');        
@@ -82,11 +73,19 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->find(984546465);
         $this->assertFalse($record);
     }
+    
+    public function testFindOrFail()
+    {
+        $table = $this->tableManager->table('product_category');        
+        $record = $table->findOrFail(1);
+        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
+        $this->assertEquals(1, $record->category_id);
+        $this->assertEquals(1, $record['category_id']);
+
+    }
+    
 
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::find
-     */
     public function testFindThrowsInvalidArgumentException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -94,9 +93,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->find(array('cool'));
     }    
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::find
-     */
     public function testFindOrFailThrowsNotFoundException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\NotFoundException');
@@ -104,9 +100,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->findOrFail('cool');
     }        
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::findOneBy
-     */
     public function testFindOneBy()
     {
         $table = $this->tableManager->table('product_category');                
@@ -119,11 +112,22 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($record);        
     }
 
+
+    public function testFindOneByThrowsUnexistentColumnException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexistentColumnException');
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneBy(array('column_not_exists' => 50));
+    }    
+
+    public function testFindOneByThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneBy('count(*) <> media_id');
+    }    
     
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::findOneBy
-     */
     public function testFindOneByThrowsUnexpectedException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexpectedValueException');
@@ -131,9 +135,45 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->findOneBy(array('sort_index' => 50));
     }
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::count
-     */
+    public function testFindOneByOrFail()
+    {
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneByOrFail(array('category_id' => 12));
+        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
+        $this->assertEquals(12, $record->category_id);
+        $this->assertEquals(12, $record['category_id']);
+
+    }
+
+    public function testFindOneByOrFailThrowsNotFoundException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\NotFoundException');
+        $table = $this->tableManager->table('product_category');        
+        $record = $table->findOneByOrFail(array('category_id' => 'cool'));
+    }        
+
+    public function testFindOneByOrFailThrowsUnexistentColumnException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexistentColumnException');
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneByOrFail(array('column_not_exists' => 50));
+    }    
+
+    public function testFindOneByOrFailThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneByOrFail('count(*) <> media_id');
+    }    
+    
+    public function testFindOneByOrFailThrowsUnexpectedException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexpectedValueException');
+        $table = $this->tableManager->table('product_category');                
+        $record = $table->findOneByOrFail(array('sort_index' => 50));
+    }
+    
+    
     public function testCount()
     {
         $tm = $this->tableManager;
@@ -145,12 +185,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = $tm->table('product_media');                
         $count = $table->count();
         $this->assertEquals(0, $count);
-        
     }
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::exists
-     */
     public function testExists()
     {
         $table = $this->tableManager->table('product_category');                
@@ -163,9 +199,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('boolean', $exists);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::search
-     */
+    public function testExistsThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        
+        $table = $this->tableManager->table('product_category');                
+        $exists = $table->exists(array(10,10));
+    }
+    
+    
+    
     public function testSearch()
     {
         $table = $this->tableManager->table('product_category');                
@@ -173,9 +216,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableSearch', $search);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::insert
-     */
     public function testInsertThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -183,11 +223,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table->insert('cool');
         
     }
- 
-    
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::insert
-     */
+
     public function testInsertThrowsUnexistentColumnException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\UnexistentColumnException');
@@ -200,9 +236,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table->insert($data);
     }
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::insert
-     */
     public function testInsertThrowsForeignKeyException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ForeignKeyException');
@@ -260,9 +293,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }
     */
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::delete
-     */
     public function testDelete()
     {
         $medias = $this->tableManager->table('media');
@@ -281,9 +311,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         
     }    
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::deleteOrFail
-     */
     public function testDeleteThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -291,9 +318,23 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $nb = $medias->delete(array('cool'));
     }        
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::deleteOrFail
-     */
+    public function testDeleteOrFail()
+    {
+        $medias = $this->tableManager->table('media');
+
+        $media = $medias->findOneBy(array('legacy_mapping' => 'tobedeleted_phpunit_testdelete'));
+        if ($media) {
+            $medias->delete($media->media_id);
+        }
+        
+        $data   = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
+        $media  = $medias->insert($data);
+        $ret = $medias->deleteOrFail($media->media_id);
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\Table', $ret);
+        
+    }    
+
+    
     public function testDeleteOrFailThrowsNotFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\NotFoundException');
@@ -302,9 +343,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }    
     
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::insert
-     */
     public function testInsertThrowsDuplicateEntryException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');
@@ -329,9 +367,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }    
     
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::insert
-     */
     public function testInsert()
     {
         $legacy_mapping = 'phpunit_testInsert';
@@ -354,15 +389,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($media) {
             $medias->delete($media['media_id']);
         }
+        
+        $data['media_id'] = 999999999;
+        $media = $medias->find(999999999);
+        if ($media) {
+            $medias->delete(999999999);
+        }
+        $media = $medias->insert($data);
+        $this->assertEquals(999999999, $data['media_id']);
+        $medias->delete(999999999);
 
     }
 
 
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Table::all
-     * @covers Soluble\Normalist\Synthetic\Table::count
-     */
     public function testAll()
     {
         $tm = $this->tableManager->table('media');
@@ -378,7 +418,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::insertOnDuplicateKey
      * @todo   Implement testInsertOnDuplicateKey().
      */
     public function testInsertOnDuplicateKey()
@@ -392,7 +431,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::getRelations
      * @todo   Implement testGetRelations().
      */
     public function testGetRelations()
@@ -405,7 +443,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::getRecordCleanedData
      * @todo   Implement testGetRecordCleanedData().
      */
     public function testGetRecordCleanedData()
@@ -417,7 +454,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::getPrimaryKeys
      * @todo   Implement testGetPrimaryKeys().
      */
     public function testGetPrimaryKeys()
@@ -429,7 +465,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::getPrimaryKey
      * @todo   Implement testGetPrimaryKey().
      */
     public function testGetPrimaryKey()
@@ -442,7 +477,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Soluble\Normalist\Synthetic\Table::setTablePrefix
      * @todo   Implement testSetTablePrefix().
      */
     public function testSetTablePrefix()

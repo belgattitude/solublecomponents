@@ -52,9 +52,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::limit
-     */
     public function testLimit()
     {
         $results = $this->table->search()->limit(10)->toArray();
@@ -62,10 +59,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::offset
-     * @todo   Implement testOffset().
-     */
     public function testOffset()
     {
         $rs1 = $this->table->search()->limit(10)->toArray();
@@ -79,9 +72,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     
     
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::columns
-     */
     public function testColumns()
     {
         $results = $this->table->search()->columns(array('reference'))->limit(1)->toArray();
@@ -91,7 +81,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::group
      * @todo   Implement testGroup().
      */
     public function testGroup()
@@ -102,9 +91,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::order
-     */
+
     public function testOrder()
     {
         $rs1 = $this->table->search()
@@ -128,9 +115,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::where
-     */
     public function testWhere()
     {
         // Simple where
@@ -268,9 +252,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
     }
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::orWhere
-     */
     public function testOrWhere() {
         
         $results = $this->table->search()
@@ -287,9 +268,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     }    
     
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::join
-     */
     public function testJoin()
     {
         
@@ -298,19 +276,12 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::getSelect
-     */
     public function testGetSelect()
     {
         $select = $this->table->search()->getSelect();
         $this->assertInstanceOf('Soluble\Db\Sql\Select', $select);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::getSql
-     * @todo   Implement testGetSql().
-     */
     public function testGetSql()
     {
         $sql = $this->table->search()->getSql();
@@ -318,32 +289,23 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('SELECT', $sql);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::toJson
-     */
     public function testToJson()
     {
-        $results = $this->table->search()->toJson();
+        $results = $this->table->search()->limit(10)->toJson();
         $this->assertInternalType('string', $results);
         $decoded = json_decode($results, $assoc=true);
         
-        $results = $this->table->search()->toArray();
+        $results = $this->table->search()->limit(10)->toArray();
         $this->assertEquals($results, $decoded);
         
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::toArray
-     */
     public function testToArray()
     {
         $results = $this->table->search()->toArray();
         $this->assertInternalType('array', $results);
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\TableSearch::toArrayColumn
-     */
     public function testToArrayColumn()
     {
         $results = $this->table->search()
