@@ -10,7 +10,7 @@
 namespace Soluble\Normalist\Synthetic\Exception;
 
 
-class UnexistentColumnException extends \RuntimeException
+class NotNullException extends \RuntimeException
                                 implements SyntheticExceptionInterface
 {
 

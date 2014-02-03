@@ -82,23 +82,11 @@ class Table
 
         $this->table = $table;
         $this->prefixed_table = $this->tableManager->getTablePrefix() . $table;
-        $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
+        
     }
 
-
-    /**
-     * Return list of table columns
-     * @return array
-     */
-    public function getColumnsInformation()
-    {
-        if ($this->column_information === null) {
-            $this->column_information = $this->tableManager
-                                ->getMetadata()
-                                ->getColumnsInformation($this->prefixed_table);
-        }
-        return $this->column_information;
-    }
+    
+    
 
 
 
@@ -139,7 +127,7 @@ class Table
             $type = gettype($id);
             throw new Exception\InvalidArgumentException("Table::find(id) only accept a scale id (numeric, string,...), type '$type' given");
         }
-        $record =  $this->findOneBy(array($this->primary_key => $id));
+        $record =  $this->findOneBy(array($this->getPrimaryKey() => $id));
         return $record;
     }
 
@@ -169,7 +157,7 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     * @throws Exception\UnexistentColumnException when a column in the predicate does not exists
+     * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
      * @throws Exception\UnexpectedValueException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
      * 
@@ -195,7 +183,7 @@ class Table
             if (strpos($lmsg, 'column not found') !== false ||
                     strpos($lmsg, 'unknown column') !== false) {
                 //"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'media_id' in 'where clause
-                $rex = new Exception\UnexistentColumnException($message);
+                $rex = new Exception\ColumnNotFoundException($message);
                 throw $rex;
             
             } else {
@@ -220,7 +208,7 @@ class Table
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
      * @throws Exception\NotFoundException when the record is not found
-     * @throws Exception\UnexistentColumnException when a column in the predicate does not exists
+     * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
      * @throws Exception\UnexpectedValueException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
      *
@@ -237,17 +225,33 @@ class Table
 
     /**
      * Count the number of record in table
-     *
-     *
-     * @return int
+     * 
+     * @return int number of record in table
      */
     public function count()
     {
+        return $this->countBy(true);
+    }
+    
+    /**
+     * Find a record by unique key
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
+     * 
+     * @return int number of record matching predicates
+     */
+    public function countBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
+    {
+
         $result = $this->select()
                       ->columns(array('count' => new Expression('count(*)')))
+                      ->where($predicate, $combination)
                       ->execute()->toArray();
         $count = $result[0]['count'];
         return (int) $result[0]['count'];
+        
     }
 
     /**
@@ -265,14 +269,39 @@ class Table
             $type = gettype($id);
             throw new Exception\InvalidArgumentException("Table::exists(id) only accept a scale id (numeric, string,...), type '$type' given");
         }
-        $result = $this->select()->where(array($this->primary_key => $id))
+        $result = $this->select()->where(array($this->getPrimaryKey() => $id))
                       ->columns(array('count' => new Expression('count(*)')))
                       ->execute()->toArray();
 
-        return ($result[0]['count'] == 1);
+        return ($result[0]['count'] > 0);
     }
 
 
+    /**
+     * Test if a record exists by a predicate
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
+     * @throws Exception\InvalidArgumentException when the predicate is not correct
+     *
+     * @return boolean
+     */
+    public function existsBy($predicate, $combination=Predicate\PredicateSet::OP_AND)
+    {
+        
+        try {
+            $select = $this->select()->where($predicate, $combination)
+                          ->columns(array('count' => new Expression('count(*)')));
+            $result = $select->execute()->toArray();
+        } catch (\Exception $e) {
+            throw new Exception\InvalidArgumentException("Table::existsBy(), invaid usage ({$e->getMessage()})");
+        }
+        
+        return ($result[0]['count'] > 0);
+    }
+    
+    
     /**
      * Get a Soluble\Db\Select object
      *
@@ -295,7 +324,7 @@ class Table
 
 
     /**
-     * Delete a record
+     * Delete a record by primary key value
      *
      * @param integer|strig $id primary key value
      *
@@ -309,25 +338,29 @@ class Table
             $type = gettype($id);
             throw new Exception\InvalidArgumentException("Table::delete(id) only accept a scale id (numeric, string,...), type '$type' given");
         }
+        return $this->deleteBy(array($this->getPrimaryKey() => $id));
+    }
 
+    /**
+     * Delete a record by predicate
+     *
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
+     * @return boolean
+     */
+    public function deleteBy($predicate, $combination=Predicate\PredicateSet::OP_AND) 
+    {
         $delete = $this->sql->delete($this->prefixed_table)
-                  ->where(array($this->primary_key => $id));
+                  ->where($predicate);
 
         $statement = $this->sql->prepareStatementForSqlObject($delete);
         $result    = $statement->execute();
         $affected  = $result->getAffectedRows();
-        /**
-        Removed in case of trigger, a deletion may provoque
-        multiple deletion or a foreign key cascade.
-        Test before implementing;
-        if ($affected > 1) {
-            throw new Exception\UnexpectedValueException("Table delete returned more than one affected row");
-        }
-         *
-         */
         return $affected;
+        
     }
-
+    
     /**
      * Delete a record or throw an Exception
      *
@@ -353,11 +386,12 @@ class Table
      * @param array|ArrayObject $data
      *
      * @throws Exception\InvalidArgumentException when data is not an array or an ArrayObject
-     * @throws Exception\UnexistentColumnException when $data contains columns that does not exists in table
+     * @throws Exception\ColumnNotFoundException when $data contains columns that does not exists in table
      * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
      * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
+     * @throws Exception\NotNullException when insertion failed because a column cannot be null
      * @throws Exception\RuntimeException when insertion failed for another reason
-     *
+     * 
      * @return \Soluble\Normalist\Synthetic\Record
      */
     public function insert($data)
@@ -374,7 +408,7 @@ class Table
         $diff = array_diff_key($d, $this->getColumnsInformation());
         if (count($diff) > 0) {
             $msg = join(',', array_keys($diff));
-            throw new Exception\UnexistentColumnException("Table::insert(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
+            throw new Exception\ColumnNotFoundException("Table::insert(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
         }
 
         $insert = $this->sql->insert($this->prefixed_table);
@@ -398,7 +432,13 @@ class Table
 
             $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
 
-            if (strpos($lmsg, 'duplicate entry') !== false ) {
+            
+            if (strpos($lmsg, 'cannot be null') !== false ) {
+                // Integrity constraint violation: 1048 Column 'non_null_column' cannot be null
+                $rex = new Exception\NotNullException($message, $e->getCode(), $e);
+                throw $rex;
+                
+            } elseif (strpos($lmsg, 'duplicate entry') !== false ) {
                 $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
                 throw $rex;
             
@@ -414,31 +454,53 @@ class Table
 
         }
 
-        if (array_key_exists($this->primary_key, $d)) {
+        if (array_key_exists($this->getPrimaryKey(), $d)) {
             // not using autogenerated value
-            $id = $d[$this->primary_key];
+            $id = $d[$this->getPrimaryKey()];
         } else {
             $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
         }
-        $record = $this->find($id);
-        if (!$record) {
-            throw new Exception\ErrorException("Insert may have failed, cannot retrieve inserted record with id='$id' on table '$table'");
-        }
+        $record = $this->findOrFail($id);
         return $record;
     }
 
+    
+    /**
+     * Update data in a table
+     * 
+     * @param array|ArrayObject $data
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet     
+     * 
+     * @throws Exception\InvalidArgumentException when one of the argument is invalid
+     * 
+     * @return int number of affected rows
+     */
+    public function update($data, $predicate=null, $combination=Predicate\PredicateSet::OP_AND)
+    {
+        try {
+            $affected_rows =  $this->tableManager->update($this->table, $data, $predicate, $combination);
+        } catch (Exception\InvalidArgumentException $e) {
+            throw new Exception\InvalidArgumentException("Table::update(data) requires data to be array or an ArrayObject");
+        } 
+        return $affected_rows;
+    }
+    
+    
     /**
      *
      * @param array|ArrayObject $data
      * @param array|null $duplicate_exclude
+     * 
+     * @throws Exception\ColumnNotFoundException
+     * 
      * @return Record
-     * @throws \Exception
      */
-    public function insertOnDuplicateKey($table, $data, $duplicate_exclude=array())
+    public function insertOnDuplicateKey($data, $duplicate_exclude=array())
     {
-        $platform = $this->adapter->platform;
-        $prefixed_table = $this->prefixTable($table);
-        $primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
+        $platform = $this->tableManager->getDbAdapter()->platform;
+        
+        $primary = $this->getPrimaryKey();
 
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
@@ -446,14 +508,23 @@ class Table
             $d = $data;
         }
 
+        
+        $diff = array_diff_key($d, $this->getColumnsInformation());
+        if (count($diff) > 0) {
+            $msg = join(',', array_keys($diff));
+            throw new Exception\ColumnNotFoundException("Table::insertOnDuplicateKey(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
+        }
+        
 
-        $insert = $this->sql->insert($prefixed_table);
+        $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
 
         $sql_string = $this->sql->getSqlStringForSqlObject($insert);
         $extras = array();
         $excluded_columns = array_merge($duplicate_exclude, array($primary));
+        
         foreach($d as $column => $value) {
+            
             if (!in_array($column, $excluded_columns)) {
                 if ($value === null) {
                     $v = 'NULL';
@@ -466,32 +537,40 @@ class Table
         $sql_string .= ' on duplicate key update ' . join (',', $extras);
 
         try {
-            //$result = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
-
-            $stmt = $this->adapter->query($sql_string, Adapter::QUERY_MODE_PREPARE);
+            $stmt = $this->tableManager->getDbAdapter()->query($sql_string, Adapter::QUERY_MODE_PREPARE);
             $result = $stmt->execute();
             unset($stmt);
 
         } catch (\Exception $e) {
-            $message ="Cannot execute sql [ $sql_string ]";
-            throw new Exception\ErrorException($message, $code=1, $e);
+            
+            $messages = array();
+            $ex = $e;
+            do {
+                $messages[] = $ex->getMessage();
+            } while ($ex = $ex->getPrevious());
+            $msg = join(', ', array_unique($messages));
+            $message ="Table::insertOnDuplicateKey failed, $msg [ $sql_string ]";
+            throw new Exception\RuntimeException($message);
         }
 
         if (array_key_exists($primary, $d)) {
             // not using autogenerated value
             $pk_value = $d[$primary];
+            $record = $this->find($pk_value);
 
         } else {
 
-            $id = $this->adapter->getDriver()->getLastGeneratedValue();
+            $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
 
             // This test is not made with id !== null, understand why before changing
             if ($id > 0) {
                 $pk_value = $id;
+                $record = $this->find($pk_value);
+                
             } else {
                 // if the id was not generated, we have to guess on which key
                 // the duplicate has been fired
-                $unique_keys = $this->getMetadata()->getUniqueKeys($prefixed_table);
+                $unique_keys = $this->tableManager->getMetadata()->getUniqueKeys($this->prefixed_table);
                 $data_columns = array_keys($d);
                 $found = false;
                 foreach($unique_keys as $index_name => $unique_columns) {
@@ -503,8 +582,7 @@ class Table
                         foreach($intersect as $key) {
                             $conditions[$key] = $d[$key];
                         }
-
-                        $record = $this->findOneBy($table, $conditions);
+                        $record = $this->findOneBy($conditions);
                         if ($record) {
                             $found = true;
                             $pk_value = $record[$primary];
@@ -519,12 +597,7 @@ class Table
             }
         }
 
-        $record = $this->find($table, $pk_value);
-        if (!$record) {
-            throw new \Exception("insertOnDuplicateKey cannot retrieve record with $primary=$pk_value");
-        } elseif ($record[$primary] != $pk_value) {
-            throw new \Exception("System error, returned primary key value is different, check \"$sql_string\"");
-        }
+        
         return $record;
     }
 
@@ -588,10 +661,9 @@ class Table
 
     /**
      * Return table primary keys
-     * @param string $table
      * @return array
      */
-    public function getPrimaryKeys($table)
+    public function getPrimaryKeys()
     {
         $prefixed_table = $this->prefixTable($table);
         return $this->getMetadata()->getPrimaryKeys($prefixed_table);
@@ -603,13 +675,31 @@ class Table
      * @throws Exception
      * @return int|string
      */
-    public function getPrimaryKey($table)
+    public function getPrimaryKey()
     {
-        $prefixed_table = $this->prefixTable($table);
-        return $this->getMetadata()->getPrimaryKey($prefixed_table);
+        if (!$this->primary_key) {
+            $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
+        }
+        return $this->primary_key;
     }
 
 
+
+    /**
+     * Return list of table columns
+     * @return array
+     */
+    public function getColumnsInformation()
+    {
+        if ($this->column_information === null) {
+            $this->column_information = $this->tableManager
+                                ->getMetadata()
+                                ->getColumnsInformation($this->prefixed_table);
+        }
+        return $this->column_information;
+    }
+    
+    
     /**
      * Return the original table name
      *

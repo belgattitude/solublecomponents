@@ -79,13 +79,13 @@ class TableManager
             throw new Exception\InvalidArgumentException("Table name must be a string");
         }
         
-        
         if (!$this->cachedTables->offsetExists($table_name)) {
-            try {
-                $table = new Table($table_name, $this);
-            } catch (\Soluble\Db\Metadata\Exception\TableNotExistException $e) {
-                throw new Exception\TableNotFoundException($e->getMessage(), $e->getCode(), $e);
+            $tables = $this->getMetadata()->getTables();
+            if (!in_array($table_name, $tables)) {
+                throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
             }
+            $table = new Table($table_name, $this);
+
             $this->cachedTables->offsetSet($table_name, $table);
         }
         return $this->cachedTables->offsetGet($table_name);
@@ -98,6 +98,13 @@ class TableManager
      */
     public function select()
     {
+        /**
+// search for at most 2 artists who's name starts with Brit, ascending
+$rowset = $artistTable->select(function (Select $select) {
+     $select->where->like('name', 'Brit%');
+     $select->order('name ASC')->limit(2);
+});         
+         */
         $select = new Select();
         $select->setDbAdapter($this->adapter);
         return $select;
@@ -107,32 +114,31 @@ class TableManager
     /**
      * Update data into table
      *
-     * @param string $table
+     * @param string $table_name name of the table (un-prefixed)
      * @param array|ArrayObject $data
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet          
+     * 
+     * @throws Exception\InvalidArgumentException
+     * 
      * @return int number of affected rows
      */
-    public function update($table, $data, $predicate)
+    public function update($table_name, $data, $predicate, $combination=Predicate\PredicateSet::OP_AND)
     {
-        //$platform = $this->adapter->platform;
-        $prefixed_table = $this->prefixTable($table);
-        //$primary = $this->getMetadata()->getPrimaryKey($prefixed_table);
+        $prefixed_table = $this->getPrefixedTable($table_name);
 
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
-        } else {
+        } elseif (is_array($data)) {
             $d = $data;
+        } else {
+            throw new Exception\InvalidArgumentException("TableManager::update(table_name, data) requires data to be array or an ArrayObject");
         }
-
 
         $update = $this->sql->update($prefixed_table);
         $update->set($d);
-        //$update->where($platform->quoteIdentifier($primary) . " = " . $platform->quoteValue($where));
         $update->where($predicate);
-
-        //$sql_string = $sql->getSqlStringForSqlObject($update);
-        //var_dump($sql_string);
-        //die();
+        
         $statement = $this->sql->prepareStatementForSqlObject($update);
         $result    = $statement->execute();
         $affectedRows =  $result->getAffectedRows();

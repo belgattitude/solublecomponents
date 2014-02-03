@@ -2,8 +2,8 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Exception;
-use Soluble\Normalist\SyntheticTable;
-//use Zend\Db\Adapter\Adapter;
+
+
 use ArrayAccess;
 
 class Record implements ArrayAccess
