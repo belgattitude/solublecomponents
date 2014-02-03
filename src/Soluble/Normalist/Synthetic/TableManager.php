@@ -149,33 +149,50 @@ $rowset = $artistTable->select(function (Select $select) {
     /**
      * Start a new transaction
      * 
+     * @throws Exception\TransactionException
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function beginTransaction()
     {
-        $this->adapter->getDriver()->getConnection()->beginTransaction();        
+        try {
+            $this->adapter->getDriver()->getConnection()->beginTransaction();        
+        } catch (\Exception $e) {
+            throw new Exception\TransactionException("TableManager::beginTransation(), cannot start transaction '{$e->getMessage()}'.");
+        }
         return $this;
     }
     
     /**
      * Commit changes
      * 
+     * @throws Exception\TransactionException     
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function commit()
     {
-        $this->adapter->getDriver()->getConnection()->commit();
+        try {
+            $this->adapter->getDriver()->getConnection()->commit();
+        } catch (\Exception $e) {
+            throw new Exception\TransactionException("TableManager::commit(), cannot commit transaction '{$e->getMessage()}'.");
+        }
+        
         return $this;
     }
 
     /**
      * Rollback transaction
      * 
+     * @throws Exception\TransactionException
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function rollback()
     {
-        $this->adapter->getDriver()->getConnection()->rollback();
+        try {
+            $this->adapter->getDriver()->getConnection()->rollback();
+        } catch (\Exception $e) {
+            throw new Exception\TransactionException("TableManager::rollback(), cannot rollback transaction '{$e->getMessage()}'.");
+        }
+        
         return $this;
     }
 

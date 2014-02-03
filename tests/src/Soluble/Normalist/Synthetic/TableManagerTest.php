@@ -120,7 +120,48 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $medias->delete($media_id_commit);
     }
 
+    public function testBeginTransactionThrowsTransactionException()
+    {
+        $catched = false;
+        $tm = $this->tableManager;
+        $tm->beginTransaction();
+        try {
+            $tm->beginTransaction();
+        } catch (Exception\TransactionException $e) {
+            $catched = true;
+            $tm->rollback();
+        }
+        $this->assertTrue($catched);
+    }    
+    
 
+    public function testCommitThrowsTransactionException()
+    {
+        $catched = false;
+        $tm = $this->tableManager;
+        
+        try {
+            $tm->commit();
+        } catch (Exception\TransactionException $e) {
+            $catched = true;
+        }
+        $this->assertTrue($catched);
+    }    
+    
+    public function testRollbackThrowsTransactionException()
+    {
+        $catched = false;
+        $tm = $this->tableManager;
+        
+        try {
+            $tm->rollback();
+        } catch (Exception\TransactionException $e) {
+            $catched = true;
+        }
+        $this->assertTrue($catched);
+    }    
+
+    
     public function testGetDbAdapter()
     {
         $adapter = $this->tableManager->getDbAdapter();
