@@ -230,6 +230,7 @@ class Table
             return false;
         if (count($results) > 1)
             throw new Exception\UnexpectedValueException("Table::findOneBy return more than one record");
+        
         return $this->newRecord($results[0], false);
         
         
@@ -661,6 +662,8 @@ class Table
      */
     public function newRecord($data = array(), $check_columns = false)
     {
+        //return new \ArrayObject($data);
+        
         $record = new Record($this, $data, $check_columns);
         return $record;
     }

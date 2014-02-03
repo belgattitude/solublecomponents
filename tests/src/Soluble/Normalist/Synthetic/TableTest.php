@@ -8,6 +8,9 @@ use Soluble\Db\Metadata\Source;
 class TableTest extends \PHPUnit_Framework_TestCase
 {
 
+    //protected $recordclass = 'ArrayObject';
+    protected $recordclass = 'Soluble\Normalist\Synthetic\Record';
+    
     /**
      * @var TableManager
      */
@@ -52,7 +55,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $tm = $this->tableManager;
         $product = $tm->table('product');
         $record = $product->newRecord();
-        $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
+        $this->assertInstanceOf($this->recordclass, $record);
         
     }
     
@@ -94,8 +97,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $table = $this->tableManager->table('product_category');        
         $record = $table->find(1);
-        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
-        $this->assertEquals(1, $record->category_id);
+        $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(1, $record['category_id']);
 
         $record = $table->find(984546465);
@@ -106,8 +108,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $table = $this->tableManager->table('product_category');        
         $record = $table->findOrFail(1);
-        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
-        $this->assertEquals(1, $record->category_id);
+        $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(1, $record['category_id']);
 
     }
@@ -154,8 +155,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $table = $this->tableManager->table('product_category');                
         $record = $table->findOneBy(array('category_id' => 12));
-        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
-        $this->assertEquals(12, $record->category_id);
+        $this->assertInstanceOf($this->recordclass, $record);
+ 
         $this->assertEquals(12, $record['category_id']);
 
         $record = $table->find(984546465);
@@ -189,8 +190,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $table = $this->tableManager->table('product_category');                
         $record = $table->findOneByOrFail(array('category_id' => 12));
-        $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Record', $record);
-        $this->assertEquals(12, $record->category_id);
+        $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(12, $record['category_id']);
 
     }
@@ -381,12 +381,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $media = $medias->findOneBy(array('legacy_mapping' => 'tobedeleted_phpunit_testdelete'));
         if ($media) {
-            $medias->deleteOrFail($media->media_id);
+            $medias->deleteOrFail($media['media_id']);
         }
         
         $data   = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
         $media  = $medias->insert($data);
-        $nb = $medias->delete($media->media_id);
+        $nb = $medias->delete($media['media_id']);
         $this->assertEquals(1, $nb);
         
     }    
@@ -430,12 +430,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $media = $medias->findOneBy(array('legacy_mapping' => 'tobedeleted_phpunit_testdelete'));
         if ($media) {
-            $medias->delete($media->media_id);
+            $medias->delete($media['media_id']);
         }
         
         $data   = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
         $media  = $medias->insert($data);
-        $ret = $medias->deleteOrFail($media->media_id);
+        $ret = $medias->deleteOrFail($media['media_id']);
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\Table', $ret);
         
     }    
@@ -455,7 +455,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias = $this->tableManager->table('media');                
         $media = $medias->findOneBy(array('legacy_mapping' => 'duplicate_key_phpunit'));
         if ($media) {
-            $medias->delete($media->media_id);
+            $medias->delete($media['media_id']);
         }
         
         $data = array(
@@ -558,23 +558,23 @@ class TableTest extends \PHPUnit_Framework_TestCase
         
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
-        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media->media_id));
+        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']));
         $this->assertEquals(1, $affectedRows);
         
-        $new_media = $medias->find($media->media_id);
+        $new_media = $medias->find($media['media_id']);
 
-        $this->assertEquals($new_media->filename, 'phpunit');
+        $this->assertEquals($new_media['filename'], 'phpunit');
 
         $data = new \ArrayObject($this->createMediaRecordData('phpunit_testUpdate_2'));
         $medias->insertOnDuplicateKey($data);
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
-        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media->media_id));
+        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']));
         $this->assertEquals(1, $affectedRows);
         
-        $new_media = $medias->find($media->media_id);
+        $new_media = $medias->find($media['media_id']);
 
-        $this->assertEquals($new_media->filename, 'phpunit');
+        $this->assertEquals($new_media['filename'], 'phpunit');
         
         // test mass update
         
@@ -663,7 +663,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
-        $affectedRows = $medias->update('cool', array('media_id' => $media->media_id));
+        $affectedRows = $medias->update('cool', array('media_id' => $media['media_id']));
     
     }
     
@@ -859,7 +859,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
     protected function createMediaRecordData($legacy_mapping=null)
     {
         $tm = $this->tableManager;
-        $container_id = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'))->get('container_id');
+        $container = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'));
+        $container_id = $container['container_id'];
+
         $data  = array(
             'filename'  => 'phpunit_test.pdf',
             'filemtime' => 111000,

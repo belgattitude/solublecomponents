@@ -101,14 +101,17 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         }
         
         $tm->beginTransaction();
-        $media_id_rollback = $medias->insert($data)->media_id;
+        
+        $m = $medias->insert($data);
+        $media_id_rollback = $m['media_id'];
         $this->assertTrue(is_numeric($media_id_rollback));
         $tm->rollback();
         
         $this->assertFalse($medias->find($media_id_rollback));
         
         $tm->beginTransaction();
-        $media_id_commit = $medias->insert($data)->media_id;
+        $m = $medias->insert($data);
+        $media_id_commit = $m['media_id'];
         $this->assertTrue(is_numeric($media_id_commit));
         $tm->commit();
         
@@ -222,7 +225,8 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     protected function createMediaRecordData($legacy_mapping=null)
     {
         $tm = $this->tableManager;
-        $container_id = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'))->get('container_id');
+        $container = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'));
+        $container_id = $container['container_id'];
         $data  = array(
             'filename'  => 'phpunit_tablemanager.pdf',
             'filemtime' => 111000,
