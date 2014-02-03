@@ -22,16 +22,16 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @var \Soluble\Normalist\Synthetic\TableManager
+     * @var \Soluble\Normalist\Synthetic\Table
      */
-    protected $tableManager;
+    protected $table;
 
 
     /**
      *
      * @var string
      */
-    protected $primaryKey;
+    protected $primary_keys;
 
     /**
      *
@@ -41,17 +41,42 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
-     * @param string $tableName
+     * @param \Soluble\Normalist\Synthetic\Table $table
      * @param array $data
      */
-    public function __construct(TableManager $tableManager, $tableName, $data)
+    public function __construct(Table $table, array $data, $check_columns=true)
     {
-        $this->data  = new \ArrayObject($data);
-        $this->clean = true;
-        $this->tableName = $tableName;
-        $this->primaryKey = $tableManager->getPrimaryKey($tableName);
-        $this->tableManager = $tableManager;
+        
+        $this->clean     = true;
+        $this->tableName = $table->getTableName();
+        $this->table     = $table;
+        
+        $this->primary_keys = $table->getPrimaryKeys();
+        //$this->data = new \ArrayObject($data);
+        $this->setData($data);
+    }
+    
+    /**
+     * 
+     * @param array $data
+     * @param boolean $check_columns
+     * @return Record
+     * @throws Exception\InvalidColumnException
+     */
+    function setData($data, $check_columns=true) 
+    {
+        $d = new \ArrayObject();
+        $ci = $this->table->getColumnsInformation();
+        $columns = array_keys($ci);
+        foreach ($data as $column => $value) {
+            if (in_array($column, $columns)) {
+                $d->offsetSet($column, $value);
+            } elseif ($check_columns) {
+                throw new Exception\InvalidColumnException("Column '$column' does not exists in table '$table'");
+            }
+        }
+        $this->data = $d;
+        return $this;
     }
 
     /**
@@ -89,7 +114,6 @@ class Record implements ArrayAccess
         } else {
             // insert
             $record = $this->tableManager->insert($this->tableName, $this->toArray());
-
         }
 
         $this->data = new \ArrayObject($record->toArray());

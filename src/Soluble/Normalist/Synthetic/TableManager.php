@@ -23,7 +23,6 @@ class TableManager
      */
     protected $adapter;
 
-
     /**
      *
      * @var Source\AbstractSource
@@ -37,7 +36,6 @@ class TableManager
      */
     protected $table_prefix;
 
-
     /**
      *
      * @var Zend\Db\Sql\Sql
@@ -48,7 +46,7 @@ class TableManager
      * @var ArrayObject
      */
     
-    protected $cachedTables;
+    static protected $cachedTables;
 
     /**
      *
@@ -59,7 +57,6 @@ class TableManager
     {
         $this->setDbAdapter($adapter);
         $this->sql = new Sql($adapter);
-        $this->cachedTables = new \ArrayObject();
     }
     
 
@@ -78,17 +75,19 @@ class TableManager
         if (!is_string($table_name)) {
             throw new Exception\InvalidArgumentException("Table name must be a string");
         }
+        if (!self::$cachedTables instanceof \ArrayObject) {
+            self::$cachedTables = new \ArrayObject();
+        };        
         
-        if (!$this->cachedTables->offsetExists($table_name)) {
+        if (!self::$cachedTables->offsetExists($table_name)) {
             $tables = $this->getMetadata()->getTables();
             if (!in_array($table_name, $tables)) {
                 throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
             }
             $table = new Table($table_name, $this);
-
-            $this->cachedTables->offsetSet($table_name, $table);
+            self::$cachedTables->offsetSet($table_name, $table);
         }
-        return $this->cachedTables->offsetGet($table_name);
+        return self::$cachedTables->offsetGet($table_name);
     }
     
     /**
@@ -232,57 +231,6 @@ $rowset = $artistTable->select(function (Select $select) {
     }
 
 
-
-    /**
-     * Return table relations
-     * @param string $table
-     * @return array
-     */
-    public function getRelations($table)
-    {
-        $prefixed_table = $this->prefixTable($table);
-        $rel = $this->getMetadata()->getRelations($prefixed_table);
-        return $rel;
-    }
-
-
-    /**
-     * Return table columns
-     * @param string $table
-     * @return array
-     */
-    public function getColumnsInformation($table)
-    {
-        $prefixed_table = $this->prefixTable($table);
-        return $this->getMetadata()->getColumnsInformation($prefixed_table);
-    }
-
-
-    /**
-     * Return cleaned data suitable for inserting/updating a table
-     * If $throwException is true, if any non existing column is found
-     * an error will be thrown
-     *
-     * @param string $table table name
-     * @param array|ArrayObject $data associative array containing data to insert
-     * @param boolean $throwException if true will throw an exception if a column does not exists
-     * @return \ArrayObject
-     * @throws Exception\InvalidColumnException
-     */
-    public function getRecordCleanedData($table, $data, $throwException=false)
-    {
-        $d = new \ArrayObject();
-        $ci = $this->getColumnsInformation($table);
-        $columns = array_keys($ci);
-        foreach($data as $column => $value) {
-            if (in_array($column, $columns)) {
-                $d->offsetSet($column, $value);
-            } elseif ($throwException) {
-                throw new Exception\InvalidColumnException("Column '$column' does not exists in table '$table'");
-            }
-        }
-        return $d;
-    }
 
     /**
      * Return table primary keys

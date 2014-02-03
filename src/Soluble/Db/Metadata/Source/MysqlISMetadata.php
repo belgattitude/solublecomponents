@@ -75,7 +75,11 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     public function getPrimaryKey($table, $schema=null)
     {
-        return $this->getFromLocalCache('primary_key', $table, $schema);
+        $pk = $this->getFromLocalCache('primary_key', $table, $schema);
+        if ($pk === null) {
+            throw new Exception\NoPrimaryKeyException("MysqlISMetadata::getPrimaryKey(), no primary key or multiple pks on table '$table'");
+        }
+        return $pk;
     }
 
     /**
@@ -296,7 +300,8 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
     {
         $pks = $this->getPrimaryKeys($table, $schema);
         if (count($pks) > 1) {
-            throw new Exception\ErrorException("getPrimaryKey doesn't support multiple columns pk, see table '$table'");
+            return null;
+            //throw new Exception\ErrorException("getPrimaryKey doesn't support multiple columns pk, see table '$table'");
         }
         return $pks[0];
     }
@@ -346,8 +351,10 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 
         $columns = $this->getColumnsInformation($table, $schema);
         $primary_keys = array();
+        
         foreach($columns as $key => $column) {
             if ($column['COLUMN_KEY'] == 'PRI') {
+
                 $primary_keys[] = $key;
             }
         }

@@ -47,6 +47,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = new Table(array('cool'), $this->tableManager);
     }        
     
+    public function testNewRecord()
+    {
+        $tm = $this->tableManager;
+        $product = $tm->table('product');
+        $record = $product->newRecord();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
+        
+    }
+    
     public function testGetPrimaryKey()
     {
         $medias = $this->tableManager->table('media');
@@ -110,7 +119,29 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
         $table = $this->tableManager->table('product_category');        
         $record = $table->find(array('cool'));
+    }
+    
+    public function testFindThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $table = $this->tableManager->table('test_table_with_multipk');        
+        $record = $table->find(array('cool'));
+    }
+
+    public function testFindThrowsInvalidArgumentException3()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $table = $this->tableManager->table('test_table_with_multipk');        
+        $record = $table->find(1);
     }    
+    
+    public function testFindThrowsPrimaryKeyNotFoundException()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
+        $table = $this->tableManager->table('test_table_without_pk');        
+        $record = $table->find(array('cool'));
+    }    
+    
 
     public function testFindOrFailThrowsNotFoundException()
     {
@@ -495,8 +526,25 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(999999999, $data['media_id']);
         $medias->delete(999999999);
 
+        // On a table with multiple pk
 
+        $tm = $this->tableManager;
+        $ttwm = $tm->table('test_table_with_multipk');
+        $multi_key = array(
+            'pk_1' => 1,
+            'pk_2' => 1,
+        );
+        $rec = $ttwm->find($multi_key);
         
+        if ($rec) {
+            $ttwm->delete($multi_key);
+        }
+
+        $record = $ttwm->insert(array_merge($multi_key, array('comment' => 'mmmmm')));
+        $this->assertEquals('mmmmm', $record['comment']);
+        $this->assertEquals('1', $record['pk_1']);
+        $this->assertEquals('1', $record['pk_2']);
+         
     }
     
     
@@ -511,7 +559,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
         $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media->media_id));
-
+        $this->assertEquals(1, $affectedRows);
+        
         $new_media = $medias->find($media->media_id);
 
         $this->assertEquals($new_media->filename, 'phpunit');
@@ -521,7 +570,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
         $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media->media_id));
-
+        $this->assertEquals(1, $affectedRows);
+        
         $new_media = $medias->find($media->media_id);
 
         $this->assertEquals($new_media->filename, 'phpunit');
@@ -529,6 +579,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         // test mass update
         
         $affected = $medias->update(array('created_by' => null), true);
+        $this->assertEquals(1, $affectedRows);
         
         $tm->beginTransaction();
         
@@ -544,6 +595,30 @@ class TableTest extends \PHPUnit_Framework_TestCase
         
         $count_matching = $medias->countBy(array('created_by' => 'unit_rollback'));
         $this->assertEquals(0, $count_matching);
+        
+        // On a table with multiple pk
+
+        $tm = $this->tableManager;
+        $ttwm = $tm->table('test_table_with_multipk');
+        $multi_key = array(
+            'pk_1' => 1,
+            'pk_2' => 1,
+        );
+        $rec = $ttwm->findOneBy($multi_key);
+        if ($rec) {
+            $ttwm->deleteBy($multi_key);
+        }
+        $record = $ttwm->insert(array_merge($multi_key, array('comment' => 'mmmmm')));
+        $this->assertEquals('mmmmm', $record['comment']);
+        $this->assertEquals('1', $record['pk_1']);
+        $this->assertEquals('1', $record['pk_2']);
+
+        $affected = $ttwm->update(array('comment' => 'aaaaaa'), $multi_key);
+        $this->assertEquals(1, $affectedRows);
+        $record = $ttwm->find($multi_key);
+        $this->assertEquals('1', $record['pk_1']);
+        $this->assertEquals('1', $record['pk_2']);
+        $this->assertEquals('aaaaaa', $record['comment']);
         
         
     }
@@ -724,15 +799,18 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
 
-    /**
-     * @todo   Implement testGetRelations().
-     */
     public function testGetRelations()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $relations = $this->tableManager->table('product')->getRelations();
+        
+
+        $this->assertInternalType('array', $relations);
+        $this->assertArrayHasKey('brand_id', $relations);
+        $this->assertArrayHasKey('column_name', $relations['unit_id']);
+        $this->assertArrayHasKey('table_schema', $relations['unit_id']);
+        $this->assertArrayHasKey('table_name', $relations['unit_id']);
+        $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
+        
     }
 
 
@@ -747,29 +825,31 @@ class TableTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @todo   Implement testGetPrimaryKeys().
-     */
+
     public function testGetPrimaryKeys()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        
+        $tm = $this->tableManager;
+        $ttwm = $tm->table('test_table_with_multipk');
+        $pks = $ttwm->getPrimaryKeys();
+        $this->assertInternalType('array', $pks);
+        $this->assertEquals('pk_1', $pks[0]);
+        $this->assertEquals('pk_2', $pks[1]);
+        
     }
 
-
-
-    /**
-     * @todo   Implement testSetTablePrefix().
-     */
-    public function testSetTablePrefix()
+    public function testGetPrefixedTableName()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        
+        $tm = $this->tableManager;
+        $ttwm = $tm->table('test_table_with_multipk');
+        $name = $ttwm->getPrefixedTableName();
+        $this->assertEquals('test_table_with_multipk', $name);
+        
     }
+
+
+
     
 
     /**

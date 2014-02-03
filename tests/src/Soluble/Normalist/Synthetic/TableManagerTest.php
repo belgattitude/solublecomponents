@@ -180,16 +180,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @todo   Implement testGetRecordCleanedData().
-     */
-    public function testGetRecordCleanedData()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
+
 
     public function testGetPrimaryKeys()
     {
