@@ -122,6 +122,7 @@ $rowset = $artistTable->select(function (Select $select) {
      * 
      * @return int number of affected rows
      */
+    
     public function update($table_name, $data, $predicate, $combination=Predicate\PredicateSet::OP_AND)
     {
         $prefixed_table = $this->getPrefixedTable($table_name);
@@ -306,7 +307,7 @@ $rowset = $artistTable->select(function (Select $select) {
                 $metadata = new Source\MysqlISMetadata($adapter);
                 break;
             default :
-                throw new \Exception("Cannot load metadata source from adapter '$adapterName', it's not supported.");
+                throw new Exception\UnsupportedFeatureException("TableManager::getDefaultMetadata() Adapter '$adapterName' is not yet supported.");
         }
         return $metadata;
 

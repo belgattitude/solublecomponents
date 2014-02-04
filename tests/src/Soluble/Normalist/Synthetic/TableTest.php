@@ -569,7 +569,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias->insertOnDuplicateKey($data);
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
-        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']));
+        $affectedRows = $medias->update(new \ArrayObject(array('filename' => 'phpunit')), array('media_id' => $media['media_id']));
         $this->assertEquals(1, $affectedRows);
         
         $new_media = $medias->find($media['media_id']);
