@@ -23,10 +23,11 @@ abstract class AbstractWriter
         'charset' => 'UTF-8'
     );
 
-    /**
-     *
-     * @param array|Traversable $options
-     */
+     /**
+      * 
+      * @param \Soluble\FlexStore\Source\SourceInterface $source
+      * @param array|Traversable $options
+      */
     public function __construct(SourceInterface $source=null, $options=null)
     {
         if ($source !== null) {

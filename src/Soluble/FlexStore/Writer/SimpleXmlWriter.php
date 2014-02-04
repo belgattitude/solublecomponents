@@ -5,6 +5,9 @@ use Soluble\FlexStore\Writer\AbstractWriter;
 
 class SimpleXmlWriter extends AbstractWriter
 {
+    
+    protected $php_54_compatibility = true;
+    
     /**
      * @var array
      */
@@ -20,6 +23,22 @@ class SimpleXmlWriter extends AbstractWriter
 
         'encoding' => 'UTF-8'
     );
+    
+
+     /**
+      * 
+      * @param \Soluble\FlexStore\Source\SourceInterface $source
+      * @param array|Traversable $options
+      */
+    public function __construct(SourceInterface $source=null, $options=null)
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {        
+            $this->php_54_compatibility = false;
+        };
+        
+        parent::__construct($source, $options);
+    }    
+    
 
     /**
      *
@@ -91,7 +110,23 @@ class SimpleXmlWriter extends AbstractWriter
                 }
             } else {
 
-                $xml->addChild("$key", htmlspecialchars($value, ENT_XML1, $this->options->encoding));
+                if ($this->php_54_compatibility) {
+                    // assuming php 5.4+
+                    $encoded = htmlspecialchars($value, ENT_XML1, $this->options->encoding);
+                } else {
+                    $encoded = '';
+
+                    foreach (str_split(utf8_decode(htmlspecialchars($value))) as $char) {
+                        $num = ord($char);
+                        if ($num > 127) {
+                            $encoded .= '&#' . $num . ';';
+                        } else {
+                            $encoded .= $char;
+                        }
+                    }
+}                    
+                }
+                $xml->addChild($key, $encoded);
 
             }
         }
