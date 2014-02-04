@@ -9,6 +9,8 @@ use ArrayObject;
 
 class PDOMysqlMetadataSource extends AbstractMetadataSource
 {
+    
+    
     /**
      * @var \PDO
      */
@@ -30,6 +32,8 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
 
     public function __construct(\PDO $pdo)
     {
+        
+        
         $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         if (strtolower($driver) != 'mysql') {
             throw new \Exception(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
