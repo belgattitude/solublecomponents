@@ -5,6 +5,7 @@ namespace Soluble\FlexStore\Metadata\Source;
 use Soluble\FlexStore\Metadata\Column;
 
 /**
+ * 
  * @requires extension mysqli
  */
 class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
