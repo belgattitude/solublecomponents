@@ -1,0 +1,7 @@
+filter:
+    paths:
+        - '/src/*'
+tools:
+    php_cs_fixer:
+        config:
+            level: psr2

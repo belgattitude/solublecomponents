@@ -24,22 +24,25 @@ class SolubleTestFactories
     public static function getDbAdapter(array $mysql_config=null, $driver=null)
     {
         if ($mysql_config === null) {
-            /**
-             * Those values must be defined in phpunit.xml configuration file
-             */
-            $mysql_config = array();
+            
+            if ($mysql_config === null) {
+                /**
+                 * Those values must be defined in phpunit.xml configuration file
+                 */
+                
+                $mysql_config = array();
+                $mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
+                $mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
+                $mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];
+                $mysql_config['database'] = $_SERVER['MYSQL_DATABASE'];
+                $mysql_config['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
+                $mysql_config['charset'] = 'UTF8';
+            }
             if ($driver !== null) {
                 $mysql_config['driver']   = $driver;
             } else {
                 $mysql_config['driver']   = $_SERVER['MYSQL_DRIVER'];
             }
-            $mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
-            $mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
-            $mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];
-            $mysql_config['database'] = $_SERVER['MYSQL_DATABASE'];
-            $mysql_config['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-            $mysql_config['charset'] = 'UTF8';
-
         }
 
         $key = md5(serialize($mysql_config));

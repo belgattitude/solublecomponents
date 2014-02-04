@@ -48,6 +48,19 @@ class SelectSource extends AbstractSource
 
     /**
      *
+     * @var \Zend\Db\Adapter\Driver\Mysqli\Statement
+     */
+    protected static $cache_stmt_prototype;
+
+    /**
+     *
+     * @var Zend\Db\Adapter\Driver\ResultInterface
+     */
+    protected static $cache_result_prototype;
+    
+    
+    /**
+     *
      * @param array|ArrayObject $params
      * @throws Exception\InvalidArgumentException
      * @throws Exception\MissingArgumentException
@@ -121,30 +134,82 @@ class SelectSource extends AbstractSource
             throw new Exception\EmptyQueryException('Query was empty');
         }
         $this->query_string = $sql_string;
-//var_dump($sql_string);
-        try {
 
+        // In case of unbuffered results (default on mysqli) !!!
+        $is_mysqli = ($this->adapter->getDriver() instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli);
+        if ($is_mysqli) {
+            $stmt_prototype_backup = $this->adapter->getDriver()->getStatementPrototype();
+            if (self::$cache_stmt_prototype === null) {
+                // With buffer results
+                self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
+            }
+            if (self::$cache_stmt_prototype === null) {
+                // With buffer results
+                self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
+            }
+            
+            $this->adapter->getDriver()->registerStatementPrototype(self::$cache_stmt_prototype);            
+            
+        }
+/*
+ * @todo optimize
+        // Setting result prototype
+        if (self::$cache_result_prototype === null) {
+             self::$cache_result_prototype = new \Soluble\FlexStore\ResultSet\ResultSet();
+        }
+        try {
+        $result_prototype_backup = $this->adapter->getDriver()->getResultPrototype();
+        $this->adapter->getDriver()->registerResultPrototype(self::$cache_result_prototype);        
+        } catch(\Exception $e) {
+            var_dump($e->getMessage());
+            die();
+        }
+ * 
+ */
+        try {
+            
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+
+            //$stmt = $sql->prepareStatementForSqlObject( $select );
+            //$results = $stmt->execute();
+            
+
             $r = new ResultSet();
             $r->initialize($results);
             $r->setSource($this);
-
-            if ($this->columns !== null) {
-                $r->setColumns($this->columns);
-            }
-
+            
             if ($options->hasLimit()) {
                 $row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
                 $r->setTotalRows($row['total_count']);
             } else {
+                
                 $r->setTotalRows($r->count());
             }
 
+            
+            if ($this->columns !== null) {
+                $r->setColumns($this->columns);
+            }
+            
+            // restore result prototype
+     //       $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);        
+            
+            // restore statement prototype
+            if ($is_mysqli) {
+                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);            
+            }
 
         } catch (\Exception $e) {
-            echo "Error " . $e->getMessage();
-            var_dump($sql_string);
-            die();
+            // restore result prototype
+       //     $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);        
+            
+            if ($is_mysqli) {
+                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);            
+            }
+            
+            throw $e;
+
+            
         }
         return $r;
     }

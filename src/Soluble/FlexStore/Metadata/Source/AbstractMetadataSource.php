@@ -3,6 +3,24 @@
 namespace Soluble\FlexStore\Metadata\Source;
 abstract class AbstractMetadataSource
 {
+    
+    /**
+     * Keep static cache in memory
+     * @var boolean
+     */
+    protected $cache_active = true;
+
+    /**
+     * 
+     * @param boolean $active
+     * @return \Soluble\FlexStore\Metadata\Source\AbstractMetadataSource
+     */
+    public function setStaticCache($active=true)
+    {
+        $this->cache_active = $active;
+        return $this;
+    }
+    
     /**
      * Return
      *
@@ -13,6 +31,7 @@ abstract class AbstractMetadataSource
      */
     public function getColumnsMetadata($sql)
     {
+
 
         if ($this->cache_active) {
             $cache_key = md5($sql);

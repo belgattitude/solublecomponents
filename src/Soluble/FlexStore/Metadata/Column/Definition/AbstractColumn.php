@@ -152,6 +152,7 @@ abstract class AbstractColumn
      */
     public function setSchemaName($schemaName)
     {
+            
         if (trim($schemaName) == '') $schemaName = null;
         $this->schemaName = $schemaName;
         return $this;
@@ -203,13 +204,6 @@ abstract class AbstractColumn
         return $this;
     }
 
-    /**
-     * @return bool $isNullable
-     */
-    public function getIsNullable()
-    {
-        return $this->isNullable;
-    }
 
     /**
      * @param bool $isNullable to set
@@ -229,13 +223,6 @@ abstract class AbstractColumn
         return $this->isNullable;
     }
 
-    /**
-     * @return bool $isPrimary
-     */
-    public function getIsPrimary()
-    {
-        return $this->isPrimary;
-    }
 
     /**
      * @param bool $isPrimary to set
@@ -357,17 +344,10 @@ abstract class AbstractColumn
     }
 
 
-    /**
-     * @return bool $isGroup
-     */
-    public function getIsGroup()
-    {
-        return $this->isGroup;
-    }
 
     /**
      * @param bool $isGroup when the column is grouped
-     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setIsGroup($isGroup)
     {

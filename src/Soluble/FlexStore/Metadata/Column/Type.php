@@ -1,7 +1,7 @@
 <?php
 namespace Soluble\FlexStore\Metadata\Column;
 
-use Soluble\FlexStore\Metadata\Column\Definition;
+
 use Soluble\FlexStore\Metadata\Exception;
 
 

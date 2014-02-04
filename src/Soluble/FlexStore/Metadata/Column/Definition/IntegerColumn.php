@@ -26,7 +26,7 @@ class IntegerColumn extends AbstractColumn implements NumericColumnInterface
 
     /**
      * @param  bool $numericUnsigned
-     * @return \Soluble\FlexStore\Metadata\Column\IntegerColumn
+     * @return IntegerColumn
      */
     public function setNumericUnsigned($numericUnsigned)
     {
@@ -43,17 +43,10 @@ class IntegerColumn extends AbstractColumn implements NumericColumnInterface
         return $this->numericUnsigned;
     }
 
-    /**
-     * @return bool $isAutoIncrement
-     */
-    public function getIsAutoIncrement()
-    {
-        return $this->isAutoIncrement;
-    }
 
     /**
      * @param bool $isAutoIncrement to set
-     * @return \Soluble\FlexStore\Metadata\Column\AbstractColumn
+     * @return IntegerColumn
      */
     public function setIsAutoIncrement($isAutoIncrement)
     {

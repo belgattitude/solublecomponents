@@ -4,7 +4,8 @@
 [![Coverage Status](https://coveralls.io/repos/belgattitude/solublecomponents/badge.png)](https://coveralls.io/r/belgattitude/solublecomponents)
 [![Total Downloads](https://poser.pugx.org/soluble/solublecomponents/downloads.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![Dependency Status](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3/badge.png)](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3)
-
+[![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
+[![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
 
 ## Installation

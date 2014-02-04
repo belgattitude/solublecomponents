@@ -3,6 +3,7 @@
 namespace Soluble\FlexStore\Metadata\Source;
 
 use Soluble\FlexStore\Metadata\Column;
+use Zend\Db\Adapter\Adapter;
 
 
 /**
@@ -36,6 +37,15 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testConstructThrowsUnsupportedDriverException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
+        // Fake adapter
+        $conn = new \PDO('sqlite::memory:');
+        $this->metadata = new PDOMysqlMetadataSource($conn);
+    }    
+    
+    
     public function testGetColumnsMetadata()
     {
 
@@ -50,6 +60,11 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $md['id']->getOrdinalPosition());
         $this->assertEquals(null, $md['id']->getCatalog());
         $this->assertEquals(null, $md['id']->isAutoIncrement());
+        
+        // IN PDO We cannot tell if numeric unsigned or not
+        $this->assertEquals(null, $md['id']->isNumericUnsigned());
+        $this->assertEquals(null, $md['id']->getNumericUnsigned());
+        
 
         $this->assertEquals(Column\Type::TYPE_STRING, $md['test_varchar_255']->getDatatype());
         $this->assertEquals('VARCHAR', $md['test_varchar_255']->getNativeDatatype());
@@ -58,6 +73,13 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         // This does not work (bug in mysqli)
         //$this->assertEquals($md['test_char_10']->getCharacterMaximumLength(), 10);
 
+        // This does not work (cause utf8 store in multibyte)
+        // @todo utf8 support in getCharacterMaximumLength
+        //  Divide by 3
+        // Sould be $this->assertEquals(10, $md['test_char_10']->getCharacterMaximumLength());
+        // But returned
+        $this->assertEquals(30, $md['test_char_10']->getCharacterMaximumLength());        
+        
         $this->assertEquals(Column\Type::TYPE_BLOB, $md['test_text_2000']->getDatatype());
         $this->assertEquals('BLOB', $md['test_text_2000']->getNativeDatatype());
 
@@ -67,6 +89,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($md['test_varbinary_10']->getDatatype(), Column\Type::TYPE_STRING);
         $this->assertEquals($md['test_varbinary_10']->getNativeDatatype(), 'VARCHAR');
 
+        
         $this->assertEquals($md['test_int_unsigned']->getDatatype(), Column\Type::TYPE_INTEGER);
         // Cannot tell in PDO
         //$this->assertTrue($md['test_int_unsigned']->isNumericUnsigned());
@@ -80,7 +103,8 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($md['test_decimal_10_3']->getNativeDatatype(), 'DECIMAL');
         $this->assertEquals(3, $md['test_decimal_10_3']->getNumericPrecision());
         $this->assertEquals(10, $md['test_decimal_10_3']->getNumericScale());
-
+        $this->assertFalse($md['test_decimal_10_3']->getNumericUnsigned());
+        $this->assertFalse($md['test_decimal_10_3']->isNumericUnsigned());
 
 
         $this->assertEquals($md['test_float']->getDatatype(), Column\Type::TYPE_FLOAT);
@@ -121,6 +145,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($md['test_tinyblob']->getDatatype(), Column\Type::TYPE_BLOB);
         $this->assertEquals($md['test_tinyblob']->getNativeDatatype(), 'BLOB');
 
+        
 
         $this->assertEquals($md['test_mediumblob']->getDatatype(), Column\Type::TYPE_BLOB);
         $this->assertEquals($md['test_mediumblob']->getNativeDatatype(), 'BLOB');
@@ -128,6 +153,12 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($md['test_longblob']->getDatatype(), Column\Type::TYPE_BLOB);
         $this->assertEquals($md['test_longblob']->getNativeDatatype(), 'BLOB');
 
+        $this->assertEquals(255, $md['test_tinyblob']->getCharacterOctetLength());
+        $this->assertEquals(16777215, $md['test_mediumblob']->getCharacterOctetLength());
+        $this->assertEquals(4294967295, $md['test_longblob']->getCharacterOctetLength());
+        
+        
+        
         $this->assertEquals($md['test_enum']->getDatatype(), Column\Type::TYPE_STRING);
         $this->assertEquals($md['test_enum']->getNativeDatatype(), 'CHAR');
 
@@ -139,6 +170,136 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetColumnsMetadataThrowsAmbiguousColumnException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
+        $sql = "select id, id from test_table_types";
+        $md = $this->metadata->getColumnsMetadata($sql);
+
+    }
+    
+    public function testGetColumnsMetadataThrowsEmptyQueryException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\EmptyQueryException');
+        $sql = "";
+        $md = $this->metadata->getColumnsMetadata($sql);
+    }
+    
+    
+    public function testGetColumsMetadataMultipleTableFunctions()
+    {
+        $sql = "
+                SELECT 'cool' as test_string,
+                        1.1 as test_float,
+                        (10/2*3)+1 as test_calc,
+                        (1+ mc.container_id) as test_calc_2,
+                        m.container_id,
+                        mc.container_id as mcid,
+                        mc.title,
+                        filesize,
+                        count(*),
+                        max(filemtime),
+                        min(filemtime),
+                        group_concat(filename),
+                        avg(filemtime),
+                        count(*) as count_media,
+                        max(filemtime) as max_time,
+                        min(filemtime) as min_time,
+                        group_concat(filename) as files,
+                        avg(filemtime) as avg_time,
+                        sum(filesize) as sum_filesize
+
+                FROM media m
+                inner join media_container mc
+                on mc.container_id = m.container_id
+                group by 1,2,3,4,5,6,7,8
+                order by 9 desc
+        ";
+
+        $md = $this->metadata->getColumnsMetadata($sql);
+
+        $this->assertEquals(false, $md['test_string']->isPrimary());
+        $this->assertEquals(Column\Type::TYPE_STRING, $md['test_string']->getDatatype());
+        $this->assertEquals(null, $md['test_string']->getTableName());
+        $this->assertEquals(false, $md['test_string']->isNullable());
+        $this->assertEquals(null, $md['test_string']->getTableAlias());
+        $this->assertEquals(1, $md['test_string']->getOrdinalPosition());
+        // PDO-NOT-POSSIBLE: $this->assertEquals('def', $md['test_string']->getCatalog());
+
+
+        $this->assertEquals(Column\Type::TYPE_DECIMAL, $md['test_calc']->getDatatype());
+        $this->assertEquals(null, $md['test_calc']->getTableName());
+
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['test_calc_2']->getDatatype());
+        $this->assertEquals(false, $md['test_calc_2']->isAutoIncrement());
+        $this->assertEquals(null, $md['test_calc_2']->getTableName());
+
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['filesize']->getDatatype());
+        // PDO-NOT-POSSIBLE: $this->assertEquals('media', $md['filesize']->getTableName());
+        // INSTEAD USE
+        $this->assertEquals('m', $md['filesize']->getTableName());
+        
+        $this->assertEquals('m', $md['filesize']->getTableAlias());
+        
+        $this->assertEquals(null, $md['test_string']->getSchemaName());
+        // PDO-NOT-POSSIBLE: $this->assertEquals($this->adapter->getCurrentSchema(), $md['filesize']->getSchemaName());
+        // INSTEAD USE
+        $this->assertEquals(null, $md['filesize']->getSchemaName());
+        
+
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['container_id']->getDatatype());
+        // PDO-NOT-POSSIBLE: $this->assertEquals('media', $md['container_id']->getTableName());
+        $this->assertEquals('m', $md['container_id']->getTableAlias());
+
+
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['mcid']->getDatatype());
+        // PDO-NOT-POSSIBLE: $this->assertEquals('media_container', $md['mcid']->getTableName());
+        $this->assertEquals('mc', $md['mcid']->getTableAlias());
+
+
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['max(filemtime)']->getDatatype());
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['max_time']->getDatatype());
+        $this->assertEquals('INTEGER', $md['max_time']->getNativeDatatype());
+
+        // Testing computed
+        $this->assertTrue($md['min_time']->isComputed());
+        $this->assertTrue($md['max_time']->isComputed());
+        $this->assertTrue($md['avg_time']->isComputed());
+        $this->assertTrue($md['files']->isComputed());
+        $this->assertTrue($md['test_string']->isComputed());
+        $this->assertTrue($md['test_float']->isComputed());
+        $this->assertTrue($md['test_calc']->isComputed());
+        $this->assertTrue($md['test_calc_2']->isComputed());
+        $this->assertFalse($md['container_id']->isComputed());
+
+        // TESTING Aliased
+
+        $this->assertEquals('mcid', $md['mcid']->getAlias());
+        // PDO-NOT-POSSIBLE: $this->assertEquals('container_id', $md['mcid']->getName());
+        $this->assertEquals('min_time', $md['min_time']->getName());
+        $this->assertEquals('min_time', $md['min_time']->getAlias());
+
+        // TEST if column is part of a group
+        // PDO-NOT-POSSIBLE: $this->assertTrue($md['count_media']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertTrue($md['min_time']->isGroup());
+
+        // PDO-NOT-POSSIBLE: $this->assertTrue($md['max_time']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertTrue($md['min(filemtime)']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertTrue($md['max(filemtime)']->isGroup());
+
+        // WARNING BUGS IN MYSQL (should be true)
+        // PDO-NOT-POSSIBLE: $this->assertFalse($md['avg(filemtime)']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertFalse($md['avg_time']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertFalse($md['files']->isGroup());
+        // PDO-NOT-POSSIBLE: $this->assertFalse($md['group_concat(filename)']->isGroup());
+
+        // Various type returned by using functions
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['count_media']->getDatatype());
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['max_time']->getDatatype());
+        $this->assertEquals(Column\Type::TYPE_INTEGER, $md['min_time']->getDatatype());
+        $this->assertEquals(Column\Type::TYPE_DECIMAL, $md['avg_time']->getDatatype());
+
+    }    
 
     /**
      * Tears down the fixture, for example, closes a network connection.

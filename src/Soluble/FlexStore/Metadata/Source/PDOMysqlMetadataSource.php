@@ -29,14 +29,24 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
      */
     protected static $metadata_cache = array();
 
-
+    /**
+     * 
+     * @param \PDO $pdo
+     * @throws Exception\UnsupportedDatatypeException
+     * @throws Exception\UnsupportedDriverException
+     */
     public function __construct(\PDO $pdo)
     {
-        
+        //@codeCoverageIgnoreStart
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {        
+            $msg = "PDOMysqlMetadataSource only supported on PHP 5.4+, try to use MysqliMetadatSource instead.";
+            throw new Exception\UnsupportedDatatypeException($msg);
+        };
+        //@codeCoverageIgnoreEnd         
         
         $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         if (strtolower($driver) != 'mysql') {
-            throw new \Exception(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
+            throw new Exception\UnsupportedDriverException(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
         }
 
         $this->pdo = $pdo;
@@ -65,12 +75,14 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
 
             $name = $field['name'];
             $tableName = $field['table'];
-
-
+            
+            
             $datatype = strtoupper($field['native_type']);
+            //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
                 throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
             }
+            //@codeCoverageIgnoreEnd
 
             $datatype = $type_map->offsetGet($datatype);
 
@@ -102,7 +114,7 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
                 // with five digits and two decimals, so values that can be stored in
                 // the salary column range from -999.99 to 999.99.
 
-
+                $column->setNumericUnsigned(false);   
                 $column->setNumericPrecision($field['precision']);
                 $column->setNumericScale($field['len'] - $field['precision'] + 1);
 

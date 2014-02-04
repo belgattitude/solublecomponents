@@ -27,7 +27,10 @@ class MysqliMetadataSource extends AbstractMetadataSource
      */
     protected static $metadata_cache = array();
 
-
+    /**
+     * 
+     * @param \Mysqli $mysqli
+     */
     public function __construct(\Mysqli $mysqli)
     {
         $this->mysqli = $mysqli;
@@ -59,9 +62,12 @@ class MysqliMetadataSource extends AbstractMetadataSource
             $schemaName = $field->db;
 
             $datatype = $field->type;
+            
+            //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
                 throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
             }
+            //@codeCoverageIgnoreEnd
 
             $datatype = $type_map->offsetGet($datatype);
 
@@ -91,6 +97,7 @@ class MysqliMetadataSource extends AbstractMetadataSource
             $column->setDataType($datatype['type']);
             $column->setIsNullable(!($field->flags & MYSQLI_NOT_NULL_FLAG) > 0 && ($field->orgtable != ''));
             $column->setIsPrimary(($field->flags & MYSQLI_PRI_KEY_FLAG) > 0);
+            
             $column->setColumnDefault($field->def);
 
             if (($field->flags & MYSQLI_SET_FLAG) > 0) {
@@ -160,11 +167,8 @@ class MysqliMetadataSource extends AbstractMetadataSource
 
         $sql = $this->makeQueryEmpty($sql);
 
-        if ($this->mysqli->connect_error) {
-            $errno = $this->mysqli->connect_errno;
-            $message = $this->mysqli->connect_error;
-            throw new Exception\ConnectionException("Connection error: $message ($errno)");
-        }
+        
+
 
         $stmt = $this->mysqli->prepare($sql);
 

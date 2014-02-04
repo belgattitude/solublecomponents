@@ -35,7 +35,7 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface
 
     /**
      * @param  bool $numericUnsigned
-     * @return ColumnObject
+     * @return DecimalColumn
      */
     public function setNumericUnsigned($numericUnsigned)
     {
