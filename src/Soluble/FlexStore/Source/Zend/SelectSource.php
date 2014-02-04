@@ -143,10 +143,7 @@ class SelectSource extends AbstractSource
                 // With buffer results
                 self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
             }
-            if (self::$cache_stmt_prototype === null) {
-                // With buffer results
-                self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
-            }
+
             
             $this->adapter->getDriver()->registerStatementPrototype(self::$cache_stmt_prototype);            
             
