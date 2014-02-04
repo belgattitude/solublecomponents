@@ -124,7 +124,7 @@ class SimpleXmlWriter extends AbstractWriter
                             $encoded .= $char;
                         }
                     }
-}                    
+                  
                 }
                 $xml->addChild($key, $encoded);
 
