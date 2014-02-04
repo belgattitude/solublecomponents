@@ -5,10 +5,9 @@ namespace Soluble\FlexStore\Metadata\Source;
 use Soluble\FlexStore\Metadata\Column;
 use Zend\Db\Adapter\Adapter;
 
-
 /**
  * PDO_MySQL in PHP 5.3 does not return column names 
- * @requires PHP 5.4
+ * @requires PHP 5.4.0
  */
 class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,6 +36,9 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @requires PHP 5.4.0
+     */
     public function testConstructThrowsUnsupportedDriverException()
     {
         $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
