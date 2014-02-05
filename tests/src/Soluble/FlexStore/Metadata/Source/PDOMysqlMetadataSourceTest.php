@@ -30,10 +30,20 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
     {
         $driver = 'PDO_Mysql';
         $this->adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
-        $conn = $this->adapter->getDriver()->getConnection()->getResource();
-        $this->metadata = new PDOMysqlMetadataSource($conn);
 
     }
+    
+    /**
+     * 
+     * @return \Soluble\FlexStore\Metadata\Source\PDOMysqlMetadataSource
+     */
+    public function getSource($conn)
+    {
+        
+        return new PDOMysqlMetadataSource($conn);
+        
+    }        
+    
 
 
     public function testConstructThrowsUnsupportedFeatureException()
@@ -41,9 +51,8 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {                
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
-
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = new PDOMysqlMetadataSource($conn);
+            $metadata = $this->getSource($conn);
         } else {
             $this->assertTrue(true);
         }
@@ -52,10 +61,19 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
     
     public function testConstructThrowsUnsupportedDriverException()
     {
-        $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
-        // Fake adapter
-        $conn = new \PDO('sqlite::memory:');
-        $metadata = new PDOMysqlMetadataSource($conn);
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {                
+
+            $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $metadata = $this->getSource($conn);
+            
+        } else {
+            $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
+            // Fake adapter
+            $conn = new \PDO('sqlite::memory:');
+            $metadata = $this->getSource($conn);
+        }
+        
     }    
     
     
