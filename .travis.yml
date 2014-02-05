@@ -22,6 +22,7 @@ before_script:
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --prefer-dist --dev
+  - mkdir build
   - mkdir -p build/logs
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 

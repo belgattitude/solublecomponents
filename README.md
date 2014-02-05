@@ -1,4 +1,4 @@
-# Soluble components
+# Soluble
 
 [![Build Status](https://travis-ci.org/belgattitude/solublecomponents.png?branch=master)](https://travis-ci.org/belgattitude/solublecomponents)
 [![Coverage Status](https://coveralls.io/repos/belgattitude/solublecomponents/badge.png)](https://coveralls.io/r/belgattitude/solublecomponents)
@@ -8,6 +8,16 @@
 [![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
+
+Soluble is a set of high quality PHP 5.3+ components designed to make life easier.
+
+## Components
+
+DB
+
+Normalist
+
+FlexStore
 
 ## Installation
 
@@ -22,11 +32,6 @@ php composer.phar require soluble/solublecomponents:0.*
 
 Documentation is hosted on [Read the docs](http://soluble-components.readthedocs.org/en/latest/)
 
-## Components
-
-### Normalist
-
-Normalist is not an ORM
 
 
 
