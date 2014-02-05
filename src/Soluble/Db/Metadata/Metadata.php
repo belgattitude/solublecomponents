@@ -20,7 +20,7 @@ class Metadata
 
     /**
      * Constructor
-     *
+     * @throws Exception\UnsupportedDriverException     
      * @param Adapter $adapter
      */
     public function __construct(Adapter $adapter)
@@ -39,20 +39,27 @@ class Metadata
         return $this->source;
     }
 
+
     /**
-     * Create source from adapter
-     *
-     * @param  Adapter $adapter
-     * @return \Soluble\Db\Metadata\Source\AbstractSource
+     * Automatically create source from adapter
+     * 
+     * @throws Exception\UnsupportedDriverException
+     * @param \Zend\Db\Adapter\Adapter $adapter
+     * @return \Soluble\Db\Metadata\Source\MysqlISMetadata
      */
     protected function createSourceFromAdapter(Adapter $adapter)
     {
-        switch ($adapter->getPlatform()->getName()) {
-            case 'MySQL':
-                return new Source\MysqlISMetadata($adapter);
+        $adapter_name = strtolower($adapter->getPlatform()->getName());
+        switch ($adapter_name) {
+            case 'mysql':
+                $source =  new Source\MysqlISMetadata($adapter);
+                break;
+            default:
+                throw new Exception\UnsupportedDriverException("Currently only MySQL is supported, driver set '$adapter_name'");
         }
 
-        throw new \Exception('cannot create source from adapter');
+        return $source;
+        
     }
 
 }

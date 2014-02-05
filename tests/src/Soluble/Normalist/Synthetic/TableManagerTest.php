@@ -133,7 +133,10 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $driver = $this->adapter->getDriver();
         if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
+            // TEST with PDO_MYSQL instead
             $this->assertTrue(true);
+            
+            
         } else {
             $catched = false;
             $tm = $this->tableManager;
@@ -153,20 +156,56 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     public function testCommitThrowsTransactionException()
     {
         $driver = $this->adapter->getDriver();
-        if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
-            $this->assertTrue(true);
-        } else {
         
+        if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
+            // testing PDO_MYSQL instead, Mysqli won't throw any exception
+            // on invalid commit, rollback, start...
+            $driver = 'PDO_Mysql';
+            $adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
+            $tm = new TableManager($adapter);            
+            
+            // test than Mysqli does not throw exception
             $catched = false;
-            $tm = $this->tableManager;
-
             try {
-                $tm->commit();
+                $this->tableManager->commit();
             } catch (Exception\TransactionException $e) {
                 $catched = true;
             }
-            $this->assertTrue($catched);
+            $this->assertFalse($catched, "Mysqli should not throw a transaction exception");
+            
+        } else {
+            $tm = $this->tableManager;
         }
+        
+        $catched = false;
+        
+        
+        try {
+            $tm->commit();
+        } catch (Exception\TransactionException $e) {
+            $catched = true;
+        }
+        $this->assertTrue($catched, "Commit without starting a transaction should fail");
+
+        $catched = false;
+        try {
+            $tm->rollback();
+        } catch (Exception\TransactionException $e) {
+            $catched = true;
+        }
+        $this->assertTrue($catched, "Rollback without starting a transaction should fail");
+
+        $catched = false;
+        try {
+            $tm->beginTransaction();
+            $tm->beginTransaction();
+        } catch (Exception\TransactionException $e) {
+            $tm->rollback();
+            $catched = true;
+        }
+        $this->assertTrue($catched, "Double begin transaction should fail");
+        
+        
     }    
     
     public function testRollbackThrowsTransactionException()

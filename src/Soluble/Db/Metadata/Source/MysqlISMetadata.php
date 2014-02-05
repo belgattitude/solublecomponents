@@ -3,7 +3,6 @@ namespace Soluble\Db\Metadata\Source;
 
 
 
-use Soluble\Db\Metadata\Source\AbstractSource;
 use Soluble\Db\Metadata\Cache\CacheAwareInterface;
 use Soluble\Db\Metadata\Exception;
 
@@ -14,6 +13,12 @@ use Zend\Cache\Storage\StorageInterface;
 class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 {
 
+    /**
+     * Schema name
+     * @var string 
+     */
+    protected $schema;
+    
     /**
      * @var \Zend\Db\Adapter\Adapter
      */
@@ -48,15 +53,14 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @param string $schema default schema, taken from adapter if not given
-     * @throws \Exception
      */
     public function __construct(Adapter $adapter, $schema=null)
     {
+        
         $this->adapter = $adapter;
         if ($schema === null) {
             $this->schema = $adapter->getCurrentSchema();
         }
-
 
     }
 
@@ -70,13 +74,13 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      * @return string
      */
     public function getPrimaryKey($table, $schema=null)
     {
         $pk = $this->getFromLocalCache('primary_key', $table, $schema);
-        if ($pk === null) {
+        if ($pk === false) {
             throw new Exception\NoPrimaryKeyException("MysqlISMetadata::getPrimaryKey(), no primary key or multiple pks on table '$table'");
         }
         return $pk;
@@ -91,13 +95,17 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
     public function getPrimaryKeys($table, $schema=null)
     {
-        return $this->getFromLocalCache('primary_keys', $table, $schema);
+        $pks = $this->getFromLocalCache('primary_keys', $table, $schema);
+        if ($pks === false) {
+            throw new Exception\NoPrimaryKeyException("MysqlISMetadata::getPrimaryKeys(), no primary keys on table '$table'");
+        }
+        return $pks;
 
     }
 
@@ -111,7 +119,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      * @return array
      */
     public function getUniqueKeys($table, $schema=null, $include_primary=false)
@@ -129,7 +137,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
@@ -147,7 +155,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
@@ -165,7 +173,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      * s
      * @return array
      */
@@ -293,15 +301,15 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
-     * @return string
+     * @throws Exception\TableNotFoundException
+     * @return string|false null if multiple or no pk
      */
     protected function loadPrimaryKey($table, $schema=null)
     {
         $pks = $this->getPrimaryKeys($table, $schema);
-        if (count($pks) > 1) {
-            return null;
-            //throw new Exception\ErrorException("getPrimaryKey doesn't support multiple columns pk, see table '$table'");
+        if (count($pks) !== 1) {
+            return false;
+            
         }
         return $pks[0];
     }
@@ -316,7 +324,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      * @return array
      */
     protected function loadUniqueKeys($table, $schema=null, $include_primary=false)
@@ -342,24 +350,22 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
-     * @return array
+     * @return string|false null if multiple or no pk
      */
     protected function loadPrimaryKeys($table, $schema=null)
     {
 
         $columns = $this->getColumnsInformation($table, $schema);
         $primary_keys = array();
-        
         foreach($columns as $key => $column) {
             if ($column['COLUMN_KEY'] == 'PRI') {
-
                 $primary_keys[] = $key;
             }
         }
         if (count($primary_keys) == 0) {
-            throw new Exception\NoPrimaryKeyException("Cannot find a primary key on table '$table'");
+            return false;
         }
         return $primary_keys;
     }
@@ -374,7 +380,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
@@ -393,7 +399,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 
         $tables = $this->getTables($schema);
         if (!in_array($table, $tables)) {
-            throw new Exception\TableNotExistException("Table '$table' does not exists in database '$schema'");
+            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
         }
         $query = "
                 SELECT *
@@ -442,7 +448,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
@@ -461,7 +467,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         $tables = $this->getTables($schema);
 
         if (!in_array($table, $tables)) {
-            throw new Exception\TableNotExistException("Table '$table' does not exists in database '$schema'");
+            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
         }
         $query = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$schema' and TABLE_NAME = '$table'";
 
@@ -536,7 +542,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotExistException
+     * @throws Exception\TableNotFoundException
      *
      * @return array
      */
@@ -553,7 +559,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 
         $tables = $this->getTables($schema);
         if (!in_array($table, $tables)) {
-            throw new Exception\TableNotExistException("Table '$table' does not exists in database '$schema'");
+            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
         }
 
         $query = "

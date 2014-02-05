@@ -32,7 +32,7 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
     /**
      * 
      * @param \PDO $pdo
-     * @throws Exception\UnsupportedDatatypeException
+     * @throws Exception\UnsupportedFeatureException
      * @throws Exception\UnsupportedDriverException
      */
     public function __construct(\PDO $pdo)
@@ -40,7 +40,7 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
         //@codeCoverageIgnoreStart
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {        
             $msg = "PDOMysqlMetadataSource only supported on PHP 5.4+, try to use MysqliMetadatSource instead.";
-            throw new Exception\UnsupportedDatatypeException($msg);
+            throw new Exception\UnsupportedFeatureException($msg);
         };
         //@codeCoverageIgnoreEnd         
         

@@ -42,10 +42,6 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getUniqueKeys
-     * @todo   Implement testGetUniqueKeys().
-     */
     public function testGetUniqueKeys()
     {
         // Remove the following lines when you implement this test.
@@ -54,9 +50,6 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKey
-     */
     public function testGetPrimaryKey()
     {
         $primary = $this->metadata->getPrimaryKey('user');
@@ -64,9 +57,42 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('user_id', $primary);
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getPrimaryKeys
-     */
+    public function testGetPrimaryKeyThrowsTableNotFoundException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
+        $primary = $this->metadata->getPrimaryKey('table_not_found');
+    }    
+    
+    
+    public function testgetPrimaryKeyThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $primary = $this->metadata->getPrimaryKey(array('cool'));
+        
+    }
+
+     public function testgetPrimaryKeyThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $primary = $this->metadata->getPrimaryKey('product', $schema=array('cool'));
+        
+    }   
+    
+    public function testgetPrimaryKeysThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $primary = $this->metadata->getPrimaryKeys(array('cool'));
+        
+    }
+    
+    
+    
+    public function testGetPrimaryKeyThrowsNoPrimaryKeyException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
+        $primary = $this->metadata->getPrimaryKey('test_table_without_pk');
+    }    
+    
     public function testGetPrimaryKeys()
     {
         $keys = $this->metadata->getPrimaryKeys('user');
@@ -74,10 +100,6 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getIndexesInformation
-     * @todo   Implement testGetIndexInformation().
-     */
     public function testGetIndexesInformation()
     {
         $indexes = $this->metadata->getIndexesInformation('product');
@@ -86,9 +108,6 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getColumnsInformation
-     */
     public function testGetColumnsInformation()
     {
         $infos = $this->metadata->getColumnsInformation('product');
@@ -96,10 +115,31 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('product_id', $infos);
 
     }
+    
+    public function testGetColumns()
+    {
+        $infos = $this->metadata->getColumns('product');
+        $this->assertInternalType('array', $infos);
+        $this->assertArrayNotHasKey('product_id', $infos);
+        $this->assertTrue(in_array('product_id', $infos));
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getRelations
-     */
+    }
+    
+    public function testGetRelationsThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $relations = $this->metadata->getRelations(array('cool'));
+        
+    }
+
+    public function testGetRelationsThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $relations = $this->metadata->getRelations('product', array('cool'));
+        
+    }
+    
+    
     public function testGetRelations()
     {
         $relations = $this->metadata->getRelations('product');
@@ -112,16 +152,23 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
     }
 
-    /**
-     * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::getTablesInformation
-     */
+
     public function testGetTablesInformation()
+    {
+        $infos = $this->metadata->getTablesInformation();
+        $this->assertInternalType('array', $infos);
+        $this->assertArrayHasKey('wp_users', $infos);
+    }
+    
+    
+    public function testGetTableInformation()
     {
         $infos = $this->metadata->getTableInformation('user');
         $this->assertInternalType('array', $infos);
         $this->assertArrayHasKey('TABLE_NAME', $infos);
     }
 
+    
     /**
      * @covers Soluble\Db\Metadata\Source\MysqlISMetadata::setCache
      * @todo   Implement testSetCache().

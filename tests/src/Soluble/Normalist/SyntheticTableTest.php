@@ -146,10 +146,10 @@ class SyntheticTableTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testTableThrowsTableNotExistsException()
+    public function testTableThrowsTableNotFoundException()
     {
         //$this->setExpectedException('InvalidArgumentException', 'Invalid magic');
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotExistException');
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
         $this->table->find("table_that_not_exists", 1);
 
     }
