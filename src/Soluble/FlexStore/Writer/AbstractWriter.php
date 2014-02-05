@@ -24,7 +24,7 @@ abstract class AbstractWriter
     );
 
      /**
-      * 
+      *
       * @param \Soluble\FlexStore\Source\SourceInterface $source
       * @param array|Traversable $options
       */

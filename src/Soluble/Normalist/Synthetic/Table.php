@@ -71,7 +71,7 @@ class Table
      *
      * @param array|string $table table name
      * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($table, TableManager $tableManager)
@@ -112,7 +112,7 @@ class Table
      * @param integer|string|array $id
      *
      * @throws Exception\InvalidArgumentException when id is invalid
-     * @throws Exception\PrimaryKeyNotFoundException     
+     * @throws Exception\PrimaryKeyNotFoundException
      *
      * @return Record|false
      */
@@ -123,7 +123,7 @@ class Table
     }
 
     /**
-     * 
+     *
      * @param integer|string|array $id
      *
      * @throws Exception\InvalidArgumentException
@@ -171,7 +171,7 @@ class Table
      *
      * @throws Exception\NotFoundException
      * @throws Exception\InvalidArgumentException when the id is not valid
-     * @throws Exception\PrimaryKeyNotFoundException          
+     * @throws Exception\PrimaryKeyNotFoundException
      *
      * @return Record
      */
@@ -193,7 +193,7 @@ class Table
      * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
      * @throws Exception\UnexpectedValueException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
-     * 
+     *
      * @return Record|false
      */
     public function findOneBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
@@ -230,10 +230,10 @@ class Table
             return false;
         if (count($results) > 1)
             throw new Exception\UnexpectedValueException("Table::findOneBy return more than one record");
-        
+
         return $this->newRecord($results[0], false);
-        
-        
+
+
     }
 
     /**
@@ -260,7 +260,7 @@ class Table
 
     /**
      * Count the number of record in table
-     * 
+     *
      * @return int number of record in table
      */
     public function count()
@@ -274,7 +274,7 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     * 
+     *
      * @return int number of record matching predicates
      */
     public function countBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
@@ -294,7 +294,7 @@ class Table
      * @param integer|string|array $id
      *
      * @throws Exception\InvalidArgumentException when the id is invalid
-     * @throws Exception\PrimaryKeyNotFoundException          
+     * @throws Exception\PrimaryKeyNotFoundException
      *
      * @return boolean
      */
@@ -389,7 +389,7 @@ class Table
      *
      * @param integer|string|array $id primary key value
      *
-     * @throws Exception\InvalidArgumentException if $id is not valid 
+     * @throws Exception\InvalidArgumentException if $id is not valid
      * @throws Exception\NotFoundException if record does not exists
      *
      * @return Table
@@ -414,7 +414,7 @@ class Table
      * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
      * @throws Exception\NotNullException when insertion failed because a column cannot be null
      * @throws Exception\RuntimeException when insertion failed for another reason
-     * 
+     *
      * @return \Soluble\Normalist\Synthetic\Record
      */
     public function insert($data)
@@ -496,13 +496,13 @@ class Table
 
     /**
      * Update data in a table
-     * 
+     *
      * @param array|ArrayObject $data
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet     
-     * 
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
      * @throws Exception\InvalidArgumentException when one of the argument is invalid
-     * 
+     *
      * @return int number of affected rows
      */
     public function update($data, $predicate = null, $combination = Predicate\PredicateSet::OP_AND)
@@ -519,9 +519,9 @@ class Table
      *
      * @param array|ArrayObject $data
      * @param array|null $duplicate_exclude
-     * 
+     *
      * @throws Exception\ColumnNotFoundException
-     * 
+     *
      * @return Record
      */
     public function insertOnDuplicateKey($data, $duplicate_exclude = array())
@@ -604,8 +604,8 @@ class Table
                 //      'unique_idx_2' => array('test', 'test2')
                 //      )
                 //
-                
-                
+
+
                 foreach ($unique_keys as $index_name => $unique_columns) {
                     //echo "On duplicate key\n\n $index_name \n";
                     $intersect = array_intersect($data_columns, $unique_columns);
@@ -663,7 +663,7 @@ class Table
     public function newRecord($data = array(), $check_columns = false)
     {
         //return new \ArrayObject($data);
-        
+
         $record = new Record($this, $data, $check_columns);
         return $record;
     }

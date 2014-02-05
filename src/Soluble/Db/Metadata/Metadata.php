@@ -20,7 +20,7 @@ class Metadata
 
     /**
      * Constructor
-     * @throws Exception\UnsupportedDriverException     
+     * @throws Exception\UnsupportedDriverException
      * @param Adapter $adapter
      */
     public function __construct(Adapter $adapter)
@@ -42,7 +42,7 @@ class Metadata
 
     /**
      * Automatically create source from adapter
-     * 
+     *
      * @throws Exception\UnsupportedDriverException
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @return \Soluble\Db\Metadata\Source\MysqlISMetadata
@@ -59,7 +59,7 @@ class Metadata
         }
 
         return $source;
-        
+
     }
 
 }

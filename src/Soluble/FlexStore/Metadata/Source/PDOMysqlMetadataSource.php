@@ -9,8 +9,8 @@ use ArrayObject;
 
 class PDOMysqlMetadataSource extends AbstractMetadataSource
 {
-    
-    
+
+
     /**
      * @var \PDO
      */
@@ -30,7 +30,7 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
     protected static $metadata_cache = array();
 
     /**
-     * 
+     *
      * @param \PDO $pdo
      * @throws Exception\UnsupportedFeatureException
      * @throws Exception\UnsupportedDriverException
@@ -38,12 +38,12 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
     public function __construct(\PDO $pdo)
     {
         //@codeCoverageIgnoreStart
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {        
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $msg = "PDOMysqlMetadataSource only supported on PHP 5.4+, try to use MysqliMetadatSource instead.";
             throw new Exception\UnsupportedFeatureException($msg);
         };
-        //@codeCoverageIgnoreEnd         
-        
+        //@codeCoverageIgnoreEnd
+
         $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
         if (strtolower($driver) != 'mysql') {
             throw new Exception\UnsupportedDriverException(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
@@ -75,8 +75,8 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
 
             $name = $field['name'];
             $tableName = $field['table'];
-            
-            
+
+
             $datatype = strtoupper($field['native_type']);
             //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
@@ -114,7 +114,7 @@ class PDOMysqlMetadataSource extends AbstractMetadataSource
                 // with five digits and two decimals, so values that can be stored in
                 // the salary column range from -999.99 to 999.99.
 
-                $column->setNumericUnsigned(false);   
+                $column->setNumericUnsigned(false);
                 $column->setNumericPrecision($field['precision']);
                 $column->setNumericScale($field['len'] - $field['precision'] + 1);
 

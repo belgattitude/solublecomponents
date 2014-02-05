@@ -15,7 +15,7 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 
 use ArrayObject;
 
-class TableManager 
+class TableManager
 {
     /**
      *
@@ -41,12 +41,12 @@ class TableManager
      * @var Zend\Db\Sql\Sql
      */
     protected $sql;
-    
+
     /**
      * @var ArrayObject
      */
-    
-    static protected $cachedTables;
+
+    protected static $cachedTables;
 
     /**
      *
@@ -58,16 +58,16 @@ class TableManager
         $this->setDbAdapter($adapter);
         $this->sql = new Sql($adapter);
     }
-    
+
 
 
     /**
      * Return a synthetic table
      *
      * @param string $table_name table name
-     * 
+     *
      * @throws Exception\InvalidArgumentException if table name is not valid
-     * 
+     *
      * @return Table
      */
     public function table($table_name)
@@ -77,8 +77,8 @@ class TableManager
         }
         if (!self::$cachedTables instanceof \ArrayObject) {
             self::$cachedTables = new \ArrayObject();
-        };        
-        
+        };
+
         if (!self::$cachedTables->offsetExists($table_name)) {
             $tables = $this->getMetadata()->getTables();
             if (!in_array($table_name, $tables)) {
@@ -89,7 +89,7 @@ class TableManager
         }
         return self::$cachedTables->offsetGet($table_name);
     }
-    
+
     /**
      * Return a generic select
      *
@@ -102,13 +102,13 @@ class TableManager
 $rowset = $artistTable->select(function (Select $select) {
      $select->where->like('name', 'Brit%');
      $select->order('name ASC')->limit(2);
-});         
+});
          */
         $select = new Select();
         $select->setDbAdapter($this->adapter);
         return $select;
     }
-    
+
 
     /**
      * Update data into table
@@ -116,13 +116,13 @@ $rowset = $artistTable->select(function (Select $select) {
      * @param string $table_name name of the table (un-prefixed)
      * @param array|ArrayObject $data
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet          
-     * 
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
      * @throws Exception\InvalidArgumentException
-     * 
+     *
      * @return int number of affected rows
      */
-    
+
     public function update($table_name, $data, $predicate, $combination=Predicate\PredicateSet::OP_AND)
     {
         $prefixed_table = $this->getPrefixedTable($table_name);
@@ -138,35 +138,35 @@ $rowset = $artistTable->select(function (Select $select) {
         $update = $this->sql->update($prefixed_table);
         $update->set($d);
         $update->where($predicate);
-        
+
         $statement = $this->sql->prepareStatementForSqlObject($update);
         $result    = $statement->execute();
         $affectedRows =  $result->getAffectedRows();
         return $affectedRows;
 
     }
-    
-    
+
+
     /**
      * Start a new transaction
-     * 
+     *
      * @throws Exception\TransactionException
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function beginTransaction()
     {
         try {
-            $this->adapter->getDriver()->getConnection()->beginTransaction();        
+            $this->adapter->getDriver()->getConnection()->beginTransaction();
         } catch (\Exception $e) {
             throw new Exception\TransactionException("TableManager::beginTransation(), cannot start transaction '{$e->getMessage()}'.");
         }
         return $this;
     }
-    
+
     /**
      * Commit changes
-     * 
-     * @throws Exception\TransactionException     
+     *
+     * @throws Exception\TransactionException
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
     public function commit()
@@ -176,13 +176,13 @@ $rowset = $artistTable->select(function (Select $select) {
         } catch (\Exception $e) {
             throw new Exception\TransactionException("TableManager::commit(), cannot commit transaction '{$e->getMessage()}'.");
         }
-        
+
         return $this;
     }
 
     /**
      * Rollback transaction
-     * 
+     *
      * @throws Exception\TransactionException
      * @return \Soluble\Normalist\Synthetic\TableManager
      */
@@ -193,11 +193,11 @@ $rowset = $artistTable->select(function (Select $select) {
         } catch (\Exception $e) {
             throw new Exception\TransactionException("TableManager::rollback(), cannot rollback transaction '{$e->getMessage()}'.");
         }
-        
+
         return $this;
     }
 
-    
+
 
     /**
      * Return underlyng Zend\Db\Adapter

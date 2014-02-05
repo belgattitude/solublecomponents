@@ -152,7 +152,7 @@ abstract class AbstractColumn
      */
     public function setSchemaName($schemaName)
     {
-            
+
         if (trim($schemaName) == '') $schemaName = null;
         $this->schemaName = $schemaName;
         return $this;

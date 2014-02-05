@@ -15,10 +15,10 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
 
     /**
      * Schema name
-     * @var string 
+     * @var string
      */
     protected $schema;
-    
+
     /**
      * @var \Zend\Db\Adapter\Adapter
      */
@@ -56,7 +56,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     public function __construct(Adapter $adapter, $schema=null)
     {
-        
+
         $this->adapter = $adapter;
         if ($schema === null) {
             $this->schema = $adapter->getCurrentSchema();
@@ -309,7 +309,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         $pks = $this->getPrimaryKeys($table, $schema);
         if (count($pks) !== 1) {
             return false;
-            
+
         }
         return $pks[0];
     }

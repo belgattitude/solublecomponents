@@ -3,7 +3,7 @@
 namespace Soluble\FlexStore\Metadata\Source;
 abstract class AbstractMetadataSource
 {
-    
+
     /**
      * Keep static cache in memory
      * @var boolean
@@ -11,7 +11,7 @@ abstract class AbstractMetadataSource
     protected $cache_active = true;
 
     /**
-     * 
+     *
      * @param boolean $active
      * @return \Soluble\FlexStore\Metadata\Source\AbstractMetadataSource
      */
@@ -20,7 +20,7 @@ abstract class AbstractMetadataSource
         $this->cache_active = $active;
         return $this;
     }
-    
+
     /**
      * Return
      *

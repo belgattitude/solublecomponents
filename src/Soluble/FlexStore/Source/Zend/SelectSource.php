@@ -57,8 +57,8 @@ class SelectSource extends AbstractSource
      * @var Zend\Db\Adapter\Driver\ResultInterface
      */
     protected static $cache_result_prototype;
-    
-    
+
+
     /**
      *
      * @param array|ArrayObject $params
@@ -144,9 +144,9 @@ class SelectSource extends AbstractSource
                 self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
             }
 
-            
-            $this->adapter->getDriver()->registerStatementPrototype(self::$cache_stmt_prototype);            
-            
+
+            $this->adapter->getDriver()->registerStatementPrototype(self::$cache_stmt_prototype);
+
         }
 /*
  * @todo optimize
@@ -156,57 +156,57 @@ class SelectSource extends AbstractSource
         }
         try {
         $result_prototype_backup = $this->adapter->getDriver()->getResultPrototype();
-        $this->adapter->getDriver()->registerResultPrototype(self::$cache_result_prototype);        
+        $this->adapter->getDriver()->registerResultPrototype(self::$cache_result_prototype);
         } catch(\Exception $e) {
             var_dump($e->getMessage());
             die();
         }
- * 
+ *
  */
         try {
-            
+
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
 
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
-            
+
 
             $r = new ResultSet();
             $r->initialize($results);
             $r->setSource($this);
-            
+
             if ($options->hasLimit()) {
                 $row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
                 $r->setTotalRows($row['total_count']);
             } else {
-                
+
                 $r->setTotalRows($r->count());
             }
 
-            
+
             if ($this->columns !== null) {
                 $r->setColumns($this->columns);
             }
-            
+
             // restore result prototype
-     //       $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);        
-            
+     //       $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
+
             // restore statement prototype
             if ($is_mysqli) {
-                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);            
+                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
             }
 
         } catch (\Exception $e) {
             // restore result prototype
-       //     $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);        
-            
+       //     $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
+
             if ($is_mysqli) {
-                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);            
+                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
             }
-            
+
             throw $e;
 
-            
+
         }
         return $r;
     }

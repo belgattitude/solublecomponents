@@ -46,24 +46,24 @@ class Record implements ArrayAccess
      */
     public function __construct(Table $table, array $data, $check_columns=true)
     {
-        
+
         $this->clean     = true;
         $this->tableName = $table->getTableName();
         $this->table     = $table;
-        
+
         $this->primary_keys = $table->getPrimaryKeys();
         //$this->data = new \ArrayObject($data);
         $this->setData($data);
     }
-    
+
     /**
-     * 
+     *
      * @param array $data
      * @param boolean $check_columns
      * @return Record
      * @throws Exception\InvalidColumnException
      */
-    function setData($data, $check_columns=true) 
+    public function setData($data, $check_columns=true)
     {
         $d = new \ArrayObject();
         $ci = $this->table->getColumnsInformation();
