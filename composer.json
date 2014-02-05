@@ -25,7 +25,7 @@
 		"ext-iconv": "*"
 	},
 	"require-dev": {
-        "satooshi/php-coveralls": "dev-master",	
+        "satooshi/php-coveralls": "0.6.*",	
 		"sami/sami": "1.*"
 	},
 	"suggest": {

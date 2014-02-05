@@ -30,7 +30,8 @@ script:
     
   - phpunit -v --configuration tests/config/phpunit.$DB.travis.xml 
   #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
-  #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 25
+  #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 50
 
 after_script:
-  - php ./bin/coveralls -v
+  - ls build/logs  
+  - ./bin/coveralls -c=./coveralls.yml -v 
