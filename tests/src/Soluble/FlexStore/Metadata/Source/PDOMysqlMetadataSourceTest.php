@@ -83,7 +83,11 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {                        
             $sql = "select * from test_table_types";
-            $md = $this->metadata->getColumnsMetadata($sql);
+            
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $metadata = $this->getSource($conn);
+            
+            $md = $metadata->getColumnsMetadata($sql);
 
             $this->assertTrue($md['id']->isPrimary());
             $this->assertEquals(Column\Type::TYPE_INTEGER, $md['id']->getDatatype());
@@ -210,7 +214,10 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
             $sql = "select id, id from test_table_types";
-            $md = $this->metadata->getColumnsMetadata($sql);
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $metadata = $this->getSource($conn);
+            
+            $md = $metadata->getColumnsMetadata($sql);
         } else {
             $this->assertTrue(true);
         }
@@ -222,7 +229,10 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\EmptyQueryException');
             $sql = "";
-            $md = $this->metadata->getColumnsMetadata($sql);
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $metadata = $this->getSource($conn);
+            
+            $md = $metadata->getColumnsMetadata($sql);
         } else {
             $this->assertTrue(true);
         }
@@ -260,7 +270,10 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
                     order by 9 desc
             ";
 
-            $md = $this->metadata->getColumnsMetadata($sql);
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $metadata = $this->getSource($conn);
+
+            $md = $metadata->getColumnsMetadata($sql);
 
             $this->assertEquals(false, $md['test_string']->isPrimary());
             $this->assertEquals(Column\Type::TYPE_STRING, $md['test_string']->getDatatype());
