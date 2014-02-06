@@ -44,10 +44,22 @@ class TableManager
 
     /**
      * @var ArrayObject
-     */
-
+     
+    // removed use of static 
     protected static $cachedTables;
-
+    */
+    
+    /**
+     *
+     * @var \ArrayObject
+     */
+    protected $localTableCache;
+    
+    /**
+     * @var boolean
+     */
+    protected $useLocalCache = true;
+    
     /**
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
@@ -55,6 +67,7 @@ class TableManager
      */
     public function __construct(Adapter $adapter)
     {
+        $this->localTableCache = new \ArrayObject();
         $this->setDbAdapter($adapter);
         $this->sql = new Sql($adapter);
     }
@@ -75,21 +88,56 @@ class TableManager
         if (!is_string($table_name)) {
             throw new Exception\InvalidArgumentException("Table name must be a string");
         }
-        if (!self::$cachedTables instanceof \ArrayObject) {
-            self::$cachedTables = new \ArrayObject();
+        $tables = $this->getMetadata()->getTables();
+        if (!in_array($table_name, $tables)) {
+            throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
+        }
+        
+        if ($this->useLocalCache) {
+
+            if (!$this->localTableCache->offsetExists($table_name)) {
+                $table = new Table($table_name, $this);
+                $this->localTableCache->offsetSet($table_name, $table);
+            }
+            return $this->localTableCache->offsetGet($table_name);    
+                    
+        } else {
+            $table = new Table($table_name, $this);
+            return $table;
+        }
+
+    }
+    /**
+     * Return a synthetic table
+     *
+     * @param string $table_name table name
+     *
+     * @throws Exception\InvalidArgumentException if table name is not valid
+     *
+     * @return Table
+    // REMOVED with static cache 
+    
+    public function table($table_name)
+    {
+        if (!is_string($table_name)) {
+            throw new Exception\InvalidArgumentException("Table name must be a string");
+        }
+        if (!$this->localTableCache instanceof \ArrayObject) {
+            $this->localTableCache = new \ArrayObject();
         };
 
-        if (!self::$cachedTables->offsetExists($table_name)) {
+        if (!$this->localTableCache->offsetExists($table_name)) {
             $tables = $this->getMetadata()->getTables();
             if (!in_array($table_name, $tables)) {
                 throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
             }
             $table = new Table($table_name, $this);
-            self::$cachedTables->offsetSet($table_name, $table);
+            $this->localTableCache->offsetSet($table_name, $table);
         }
-        return self::$cachedTables->offsetGet($table_name);
+        return $this->localTableCache->offsetGet($table_name);
     }
-
+    */
+    
     /**
      * Return a generic select
      *

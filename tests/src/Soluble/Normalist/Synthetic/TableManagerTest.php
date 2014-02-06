@@ -38,6 +38,8 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->tableManager = new TableManager($this->adapter);
         $this->tableManager->setMetadata($metadata);
+        
+        $this->table = $this->tableManager->table('product_category');        
 
     }
 

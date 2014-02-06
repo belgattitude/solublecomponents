@@ -727,5 +727,16 @@ class Table
     {
         return $this->prefixed_table;
     }
+    
+    
+    /**
+     * Return underlying table manager
+     * 
+     * @return TableManager
+     */
+    public function getTableManager()
+    {
+       return $this->tableManager; 
+    }
 
 }

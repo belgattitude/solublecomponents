@@ -66,7 +66,7 @@ class Record implements ArrayAccess
     public function setData($data, $check_columns=true)
     {
         $d = new \ArrayObject();
-        $ci = $this->table->getColumnsInformation();
+        $ci = $this->getTable()->getColumnsInformation();
         $columns = array_keys($ci);
         foreach ($data as $column => $value) {
             if (in_array($column, $columns)) {
@@ -95,25 +95,26 @@ class Record implements ArrayAccess
      */
     public function save()
     {
-        $primary = $this->primaryKey;
-        if ($this[$primary] != '') {
-            // update
-            $pkvalue = $this[$primary];
+        
+        $table   = $this->getTable();
+        $primary = $table->getPrimaryKey();
+        
+        $pkvalue = $this->offsetGet($primary);
+        
+        if ($pkvalue === null) {
+
+            // INSERT
+            $record = $table->insert($this->toArray());
+
+        } else {
+            
+            // TODO implement dirty records
             $predicate = array($primary => $pkvalue);
             $data = $this->toArray();
             unset($data[$primary]);
-
-
-            $affectedRows = $this->tableManager->update($this->tableName, $data, $predicate);
-            if ($affectedRows > 1) {
-                // Should never happen
-                throw new Exception\ErrorException("Saving record returned more than one affected row");
-            }
-            $record = $this->tableManager->find($this->tableName, $pkvalue);
-
-        } else {
-            // insert
-            $record = $this->tableManager->insert($this->tableName, $this->toArray());
+            $table->update($data, $predicate);
+            $record = $table->findOneBy($predicate);
+            
         }
 
         $this->data = new \ArrayObject($record->toArray());
@@ -123,30 +124,21 @@ class Record implements ArrayAccess
 
     /**
      * @throws \Exception
-     * @return \Soluble\Normalist\Synthetic\Record
+     * @return void
      */
     public function delete()
     {
-        $primary = $this->primaryKey;
-        $id = $this[$primary];
+        $table   = $this->getTable();
+        $primary = $table->getPrimaryKey();
+        
+        $pk_value = $this->offsetGet('primary');
         if (!$this->clean) {
-            throw new \Exception("Cannot delete record '$id', it is not in clean state (not in saved in database state)");
+            $tableName = $table->getTableName();
+            throw new \Exception("Cannot delete record '$pk_value' on table '$tableName', it is not in clean state (not in saved state in database)");
         }
-        return $this->tableManager->delete($this->tableName, $id);
+        $this->table->delete($pk_value);
+        unset($this);
     }
-
-
-    /**
-     * Get field value
-     * @param string $field
-     * @return mixed
-     * @throws Exception\FieldNotFoundException
-     */
-    public function get($field)
-    {
-        return $this->offsetGet($field);
-    }
-
 
 
     /**
@@ -170,7 +162,6 @@ class Record implements ArrayAccess
         if (!$this->data->offsetExists($field)) {
             throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
         }
-
         return $this->data->offsetGet($field);
     }
 
@@ -188,14 +179,15 @@ class Record implements ArrayAccess
     }
 
     /**
-     *
+     * Always throws a LogicException
+     * 
+     * @throws Exception\LogicException
      * @param string $field
-     * @return \Soluble\Normalist\Record
+     * @return void
      */
     public function offsetUnset($field)
     {
-        $this->data->offsetUnset($field);
-        return $this;
+        throw new Exception\LogicException("Cannot unset record fields");
     }
 
     /**
@@ -204,14 +196,16 @@ class Record implements ArrayAccess
      */
     public function getParent($parent_table)
     {
-        $relations = $this->tableManager->getRelations($this->tableName);
+        $table = $this->getTable();
+        $tableName = $table->getTableName();
+        $relations = $table->getTableManager()->getRelations($tableName);
         //$rels = array();
         foreach($relations as $column => $parent) {
             if ($parent['table_name'] == $parent_table) {
                 // @todo, check the case when
                 // table has many relations to the same parent
                 // we'll have to throw an exception
-                $record = $this->tableManager->findOneBy($parent_table, array(
+                $record = $table->getTableManager()->findOneBy($parent_table, array(
                     $parent['column_name'] => $this->get($column)
                 ));
                 return $record;
@@ -223,23 +217,44 @@ class Record implements ArrayAccess
 
     /**
      *
+     * @throws Exception\FieldNotFoundException
      * @param string $field
      * @param mixed $value
+     * @return void
      */
     public function __set($field, $value)
     {
+        if (!$this->data->offsetExists($field)) {
+            throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+        }
         $this->data->offsetSet($field, $value);
     }
 
     /**
-     *
+     * Magical method
+     * 
      * @param string $field
-     * @return mixed
      * @throws Exception\FieldNotFoundException
+     * @return mixed
      */
     public function __get($field)
     {
+        
+        if (!$this->data->offsetExists($field)) {
+            throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+        }
         return $this->data->offsetGet($field);
+    }
+    
+    
+    /**
+     * Return underlying table instance
+     * 
+     * @return Table
+     */
+    public function getTable()
+    {
+        return $this->table;
     }
 
 

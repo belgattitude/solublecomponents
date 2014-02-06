@@ -41,6 +41,18 @@ class TableTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
+    
+    
+    public function testGetTableManager()
+    {
+        $table = $this->tableManager->table('media');
+        $tm = $table->getTableManager();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\TableManager', $tm);
+        $this->assertEquals($this->tableManager->getMetadata(), $tm->getMetadata());
+        $this->assertEquals($this->tableManager, $tm);
+    }        
+            
+            
 
 
     public function testConstructThrowsInvalidArgumentException()

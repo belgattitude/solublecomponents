@@ -1,8 +1,6 @@
 <?php
 namespace Soluble\Db\Metadata\Source;
 
-
-
 use Soluble\Db\Metadata\Cache\CacheAwareInterface;
 use Soluble\Db\Metadata\Exception;
 
@@ -47,7 +45,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
     /**
      * @param array
      */
-    protected $localCache = array();
+    protected $localCache;
 
     /**
      *
@@ -56,12 +54,11 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     public function __construct(Adapter $adapter, $schema=null)
     {
-
+        $this->localCache = array();    
         $this->adapter = $adapter;
         if ($schema === null) {
             $this->schema = $adapter->getCurrentSchema();
         }
-
     }
 
 
@@ -615,59 +612,5 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         return $this;
     }
 
-
-    /**
-    public function getFieldPosition($table, $field)
-    {
-        $query = "SHOW COLUMNS FROM $table";
-        $result = $this->mysqli->query($query);
-        if (!$result) {
-            if (!$result) throw new \Exception("Cannot show columns in table ($table): " . $this->mysqli->error);
-        }
-
-        $fields = array();
-        $rec = $result->fetch_assoc();
-        while($rec!==null) {
-                $nb_results++;
-                $fields[] = $rec['Field'];
-                $rec = $result->fetch_assoc();
-        };
-        $position = array_search($field, $fields);
-        if ($position === false) {
-            throw new \Exception("Cannot find field ($field) in table ($table)");
-        }
-        return $position;
-
-    }
-
-
-    public function getPrimaryKeys($table, $schema=null)
-    {
-        if (trim($table) == '') {
-            throw new \Exception("Table param must be a valid string, empty string detected");
-        }
-
-        if ($schema === null) $schema = $this->schema;
-
-        if (self::$_cache !== null && ($result = self::$_cache->load($cache_key))) {
-            return unserialize($result);
-        }
-
-        $primary_keys = array();
-        $columns = $this->getColumnsInformation($table, $schema);
-
-        foreach($columns as $key => $column) {
-            if ($column['COLUMN_KEY'] == 'PRI') {
-                $primary_keys[] = $key;
-            }
-        }
-        if (isset(self::$_cache)) {
-            self::$_cache->save(serialize($primary_keys), $cache_key);
-        }
-
-        return $primary_keys;
-
-    }
-*/
 
 }

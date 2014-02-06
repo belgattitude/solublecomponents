@@ -36,7 +36,7 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="./build/logs/clover.xml"/>
+        <log type="coverage-clover" target="../../build/logs/clover.xml"/>
 		<!--
         <log type="junit" target="./tests/build/logs/junit.xml" logIncompleteSkipped="false"/>
 		-->
