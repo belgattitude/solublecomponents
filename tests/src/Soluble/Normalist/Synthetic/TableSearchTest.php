@@ -50,6 +50,8 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         
+        unset($this->tableManager);
+        unset($this->table);        
     }
 
     public function testLimit()

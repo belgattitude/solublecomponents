@@ -49,7 +49,9 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        unset($this->adapter);
+        unset($this->tableManager);
+        unset($this->table);        
     }
 
     public function testGetDefaultMetadata()

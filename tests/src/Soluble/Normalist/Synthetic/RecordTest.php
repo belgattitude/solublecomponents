@@ -62,15 +62,19 @@ class RecordTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        unset($this->adapter);
+        unset($this->tableManager);
+        unset($this->table);
     }
 
-    public function testSetData()
+    public function testSetDataThrowsInvalidColumnException()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
+        $medias  = $this->tableManager->table('media');        
+        $this->setExpectedException('Soluble\Normalist\Exception\InvalidColumnException');
+        $invalid_data = array(
+            'coolnotexists' => 'hello'
         );
+        $new_record = $medias->newRecord($invalid_data);
     }
 
     public function testToArray()
@@ -132,7 +136,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
         
         $this->setExpectedException('Soluble\Normalist\Exception\FieldNotFoundException');
-        $new_record['fieldthatnotexists'];
+        $a = $new_record['fieldthatnotexists'];
     }
     
     
@@ -149,17 +153,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Record::delete
-     * @todo   Implement testDelete().
-     */
-    public function testDelete()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 
 
 
@@ -201,6 +194,232 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Normalist\Exception\FieldNotFoundException');
         $new_record->offsetGet('fieldthatnotexists');
     }
+    
+    public function testDeleteThrowsLogicException()
+    {
+        
+        $this->setExpectedException('Soluble\Normalist\Exception\LogicException');        
+        $medias = $this->table->getTableManager()->table('media');
+        $data = $this->createMediaRecordData('phpunit_testDeleteThrowsLogic');
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertFalse($media->isDirty());
+        $media['legacy_mapping'] = 'cool';
+        $this->assertTrue($media->isDirty());        
+        $media->delete();
+        
+    }
+    public function testLogicExceptionAfterDelete()
+    {
+        $medias   = $this->table->getTableManager()->table('media');
+        $data     = $this->createMediaRecordData('phpunit_testLogicExceptionAfterDelete');    
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $a = $media->offsetGet('legacy_mapping');
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $a = $media['legacy_mapping'];
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
+
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $a = $media->legacy_mapping;
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media['legacy_mapping'] = 'cool';
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->legacy_mapping = 'cool';
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->offsetSet('legacy_mapping', 'cool');
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $table = $media->getTable();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->getParent('cool');
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->delete();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->save();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->isDirty();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->isDirty();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
+        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->offsetExists('legacy_mapping');
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
+        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->toArray();
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
+        
+        
+        // TEST START
+        $catched = false;
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->delete();
+        try {
+            $media->setData(array());
+        } catch (\Soluble\Normalist\Exception\LogicException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
+        
+        
+    }
+    public function testDelete()
+    {
+        $medias   = $this->table->getTableManager()->table('media');
+        $data     = $this->createMediaRecordData('phpunit_testDelete');
+        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media_id = $media->media_id;
+        $this->assertFalse($media->isDirty());
+        $this->assertTrue($medias->exists($media_id));
+        $media->delete();
+        
+        $this->assertFalse($medias->exists($media_id));
+        
+        $this->setExpectedException('Soluble\Normalist\Exception\LogicException');        
+        $media->delete();
+    }
+    
+    
+    public function testIsDirty()
+    {
+        $medias = $this->table->getTableManager()->table('media');
+        $data = $this->createMediaRecordData('phpunit_testIsDirty');
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertFalse($media->isDirty());
+        $media['legacy_mapping'] = 'cool';
+        $this->assertTrue($media->isDirty());
+
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertFalse($media->isDirty());
+        $media->offsetSet('legacy_mapping', 'cool');
+        $this->assertTrue($media->isDirty());
+        
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertFalse($media->isDirty());
+        $media->legacy_mapping = 'cool';
+        $this->assertTrue($media->isDirty());
+    }
 
     public function testOffsetSet()
     {
@@ -240,17 +459,29 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
     }    
     
-    /**
-     * @covers Soluble\Normalist\Synthetic\Record::getParent
-     * @todo   Implement testGetParent().
-     */
     public function testGetParent()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        
+        $data = $this->createMediaRecordData('phpunit_testGetParent');
+        $medias = $this->table->getTableManager()->table('media');        
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+
+        $parent = $media->getParent('media_container');
+        $this->assertEquals($media->container_id, $parent['container_id']);
+        
     }
+
+    public function testGetParentThrowsRelationNotFoundException()
+    {
+        
+        $this->setExpectedException('Soluble\Normalist\Exception\RelationNotFoundException');
+        $data = $this->createMediaRecordData('phpunit_testGetParent');
+        $medias = $this->table->getTableManager()->table('media');        
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $parent = $media->getParent('product_category');
+        
+    }
+    
     
     /**
      * Return a media record suitable for database insertion
