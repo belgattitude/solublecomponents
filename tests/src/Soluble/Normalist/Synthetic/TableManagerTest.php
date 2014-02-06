@@ -88,16 +88,22 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\Db\Sql\Select', $select);
     }
 
-    /**
-     * @todo   Implement testUpdate().
-     */
-    public function testUpdate()
+    public function testUpdateThrowsColumnNotFoundException()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
+        $tm = $this->tableManager;
+        $tm->update('media', array('cool' => 'test'), 'media_id = 1');
+        
     }
+    
+    public function testInsertThrowsColumnNotFoundException()
+    {
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
+        $tm = $this->tableManager;
+        $tm->insert('media', array('cool' => 'test'));
+        
+    }
+    
 
     public function testTransaction()
     {

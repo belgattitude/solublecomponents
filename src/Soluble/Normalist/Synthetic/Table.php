@@ -419,6 +419,14 @@ class Table
      */
     public function insert($data)
     {
+        
+        try {
+            $record = $this->tableManager->insert($this->table, $data);
+        } catch (Exception\InvalidArgumentException $e) {
+            throw new Exception\InvalidArgumentException("Table::insert(data) requires data to be array or an ArrayObject");
+        }
+        return $record;
+        
         if ($data instanceof \ArrayObject) {
             $d = (array) $data;
         } elseif (is_array($data)) {
@@ -434,6 +442,7 @@ class Table
             throw new Exception\ColumnNotFoundException("Table::insert(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
         }
 
+        
 
         $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
@@ -502,6 +511,10 @@ class Table
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
      * @throws Exception\InvalidArgumentException when one of the argument is invalid
+     * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
+     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
+     * @throws Exception\NotNullException when insertion failed because a column cannot be null
+     * @throws Exception\RuntimeException when insertion failed for another reason
      *
      * @return int number of affected rows
      */

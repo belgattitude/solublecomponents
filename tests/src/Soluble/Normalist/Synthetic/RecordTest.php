@@ -141,16 +141,35 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     
     
 
-    /**
-     * @covers Soluble\Normalist\Synthetic\Record::save
-     * @todo   Implement testSave().
-     */
     public function testSave()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $medias = $this->table->getTableManager()->table('media');
+        $data = $this->createMediaRecordData('phpunit_testSave');
+        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        
+        
+        
+        $saved_id = $media->media_id;
+        $media->filename = 'mynewfilename_testSave';
+        $media->save();
+        $this->assertEquals('mynewfilename_testSave', $media->filename);
+        $this->assertEquals($saved_id, $media->media_id);
+        
+        $media2 = $medias->find($saved_id);
+        $this->assertEquals('mynewfilename_testSave', $media2->filename);
+        $this->assertEquals($saved_id, $media2->media_id);
+        
+        // Throw duplicate key exception
+        
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');        
+        $data2 = $this->createMediaRecordData('phpunit_testSaveDuplicate');
+        $medias->insertOnDuplicateKey($data2, array('legacy_mapping'));
+        
+        
+        $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $media->legacy_mapping = 'phpunit_testSaveDuplicate';
+        $media->save();
+        
     }
 
 
@@ -160,7 +179,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     {
         
         $medias = $this->table->getTableManager()->table('media');
-        $data = $this->createMediaRecordData('phpunit_test__Get');
+        $data = $this->createMediaRecordData('phpunit_testOffsetExists');
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         
         
