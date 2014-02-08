@@ -1,6 +1,11 @@
 filter:
     paths:
-        - '/src/*'
+        - ./src
+    excluded_paths:
+        - ./tests
+        - ./vendor
+        - ./bin
+        - ./docs
 tools:
     external_code_coverage: 
         timeout: 600
