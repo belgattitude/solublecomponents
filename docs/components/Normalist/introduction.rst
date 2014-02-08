@@ -47,7 +47,7 @@ To
    use Normalist\Synthetic\TableManager;
 
    $tm = new TableManager($adapter);
-   $posts = $tmp->getTable('post');
+   $posts = $tm->table('post');
 
    // Will return an existing post
    $post = $posts->find(1); 
@@ -67,6 +67,29 @@ To
                 ->toArray();
 
 
+Transactions
+
+.. code-block:: php
+
+	<?php
+	use Normalist\Synthetic\TableManager;
+
+	$tm = new TableManager($adapter);
+
+	$tm->transaction()->start();
+	try {
+		$tm->table('post')->update(array('title' => 'cool'));
+		$tm->table('comment')->delete(1);
+		// will throw an Exception\RecordNotFoundException;
+		$tm->table('comment')->findOrFail(1);
+    } catch (\Exception $e) {
+		// will rollback any changes made  to the database
+		$tm->transaction()->rollback();
+		throw $e;
+	} 
+	$tm->transaction()->commit();
+	
+	
 
 
 . TIP::

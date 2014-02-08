@@ -4,11 +4,13 @@ namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Synthetic\Exception;
 use Soluble\Db\Sql\Select;
-use Zend\Db\Adapter\Adapter;
+
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
+use Zend\Db\Sql\PreparableSqlInterface;
+
 use ArrayObject;
 
 class Table
@@ -26,6 +28,12 @@ class Table
      */
     protected $prefixed_table;
 
+    /**
+     *
+     * @var Table\Relation
+     */
+    protected $relation;
+    
     /**
      * Primary key of the table
      * @var string|integer
@@ -79,7 +87,7 @@ class Table
         $this->tableManager = $tableManager;
         $this->sql = new Sql($tableManager->getDbAdapter());
         if (!is_string($table)) {
-            throw new Exception\InvalidArgumentException("Table name must be a string");
+            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": Table name must be a string");
         }
 
         $this->table = $table;
@@ -122,47 +130,6 @@ class Table
         return $record;
     }
 
-    /**
-     *
-     * @param integer|string|array $id
-     *
-     * @throws Exception\InvalidArgumentException
-     * @throws Exception\PrimaryKeyNotFoundException
-     * @return array predicate
-     */
-    protected function getPrimaryKeyPredicate($id)
-    {
-        try {
-            $keys = $this->getPrimaryKeys();
-        } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
-            throw new Exception\PrimaryKeyNotFoundException("Cannot find any primary key (single or multiple) on table '{$this->table}'.");
-        }
-        if (count($keys) == 1) {
-            $pk = $keys[0];
-            if (!is_scalar($id)) {
-                $type = gettype($id);
-                throw new Exception\InvalidArgumentException("Invalid table identifier value. Table '{$this->table}' has a single primary key '$pk'. Argument must be scalar, '$type' given");
-            }
-            $predicate = array($pk => $id);
-        } else {
-            if (!is_array($id)) {
-                $pks = join(',', $keys);
-                $type = gettype($id);
-                throw new Exception\InvalidArgumentException("Invalid table identifier value. Table '{$this->table}' has multiple primary keys '$pks'. Argument must be an array, '$type' given");
-            }
-
-            $matched_keys = array_diff($id, $keys);
-            if (count($matched_keys) == count($keys)) {
-                $predicate = $matched_keys;
-            } else {
-                $pks = join(',', $keys);
-                $vals = join(',', $matched_keys);
-                $type = gettype($id);
-                throw new Exception\InvalidArgumentException("Incomplete table identifier value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
-            }
-        }
-        return $predicate;
-    }
 
     /**
      * Find a record by primary key, throw a NotFoundException if record does not exists
@@ -179,7 +146,7 @@ class Table
     {
         $record = $this->find($id);
         if ($record === false) {
-            throw new Exception\NotFoundException("Cannot find record '$id' in table '$this->table'");
+            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot find record '$id' in table '$this->table'");
         }
         return $record;
     }
@@ -221,7 +188,7 @@ class Table
             } else {
 
                 $sql_string = $select->getSqlString($this->sql->getAdapter()->getPlatform());
-                $iqex = new Exception\InvalidArgumentException("$message - $sql_string");
+                $iqex = new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": $message - $sql_string");
                 throw $iqex;
             }
         }
@@ -229,9 +196,11 @@ class Table
         if (count($results) == 0)
             return false;
         if (count($results) > 1)
-            throw new Exception\UnexpectedValueException("Table::findOneBy return more than one record");
+            throw new Exception\UnexpectedValueException(__CLASS__ . '::' . __METHOD__ . ": return more than one record");
 
-        return $this->newRecord($results[0], false);
+        $record = $this->record($results[0]);
+        $record->setState(Record::STATE_CLEAN);
+        return $record;
 
 
     }
@@ -253,7 +222,7 @@ class Table
     {
         $record = $this->findOneBy($predicate, $combination);
         if ($record === false) {
-            throw new Exception\NotFoundException("Cannot findOneBy record in table '$this->table'");
+            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot findOneBy record in table '$this->table'");
         }
         return $record;
     }
@@ -325,7 +294,7 @@ class Table
                     ->columns(array('count' => new Expression('count(*)')));
             $result = $select->execute()->toArray();
         } catch (\Exception $e) {
-            throw new Exception\InvalidArgumentException("Table::existsBy(), invaid usage ({$e->getMessage()})");
+            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invaid usage ({$e->getMessage()})");
         }
 
         return ($result[0]['count'] > 0);
@@ -354,15 +323,29 @@ class Table
     /**
      * Delete a record by primary key value
      *
-     * @param integer|string|array $id primary key value
+     * @param integer|string|array|Record $id primary key(s) or a Record object
      *
      * @throws Exception\InvalidArgumentException if $id is not valid
-     *
+     * @throws Exception\LogicException if Record has already been deleted
+     * 
      * @return int the number of affected rows (maybe be greater than 1 with trigger or cascade)
      */
     public function delete($id)
     {
-        return $this->deleteBy($this->getPrimaryKeyPredicate($id));
+        if ($id instanceof Record) {
+            $state = $id->getState();
+            if ($state == Record::STATE_DELETED) {
+                throw new Exception\LogicException("Record has already been deleted in database.");
+            }
+            if ($state == Record::STATE_NEW) {
+                throw new Exception\LogicException("Record has not already been saved in database.");
+            }            
+            $affected_rows = $this->deleteBy($this->getRecordPrimaryKeyPredicate($id));
+            $id->setState(Record::STATE_DELETED);
+        } else {
+            $affected_rows = $this->deleteBy($this->getPrimaryKeyPredicate($id));
+        }
+        return $affected_rows;
     }
 
     /**
@@ -398,15 +381,59 @@ class Table
     {
         $deleted = $this->delete($id);
         if ($deleted == 0) {
-            throw new Exception\NotFoundException("Cannot delete record '$id' in table '$this->table'");
+            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot delete record '$id' in table '$this->table'");
         }
         return $this;
     }
+    
+    /**
+     * Update data into table
+     *
+     * @param array|ArrayObject $data
+     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     *
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\ColumnNotFoundException when $data contains columns that does not exists in table
+     * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
+     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
+     * @throws Exception\NotNullException when insertion failed because a column cannot be null
+     * @throws Exception\RuntimeException when insertion failed for another reason
+     *
+     * @return int number of affected rows
+     */
 
+    public function update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND)
+    {
+        $prefixed_table = $this->prefixed_table;
+        
+        if ($data instanceOf ArrayObject) {
+            $d = (array) $data;
+        } elseif (is_array($data)) {
+            $d = $data;
+        } else {
+            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": requires data to be array or an ArrayObject");
+        }
+
+        $this->checkDataColumns($d);
+        
+        
+        $update = $this->sql->update($prefixed_table);
+        $update->set($d);
+        $update->where($predicate);
+
+        $result = $this->executeStatement($update);
+            
+        $affectedRows =  $result->getAffectedRows();
+        return $affectedRows;
+
+    }
+    
     /**
      * Insert data into table
      *
      * @param array|ArrayObject $data
+     * @param boolean $validate_datatype ensure data are compatible with database columns datatypes
      *
      * @throws Exception\InvalidArgumentException when data is not an array or an ArrayObject
      * @throws Exception\ColumnNotFoundException when $data contains columns that does not exists in table
@@ -417,15 +444,9 @@ class Table
      *
      * @return \Soluble\Normalist\Synthetic\Record
      */
-    public function insert($data)
+    public function insert($data, $validate_datatype=false)
     {
-        
-        try {
-            $record = $this->tableManager->insert($this->table, $data);
-        } catch (Exception\InvalidArgumentException $e) {
-            throw new Exception\InvalidArgumentException("Table::insert(data) requires data to be array or an ArrayObject");
-        }
-        return $record;
+        $prefixed_table = $this->prefixed_table;
         
         if ($data instanceof \ArrayObject) {
             $d = (array) $data;
@@ -433,58 +454,22 @@ class Table
             $d = $data;
         } else {
             $type = gettype($data);
-            throw new Exception\InvalidArgumentException("Table::insert(data) expects data to be array or ArrayObject. Type receive '$type'");
+            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": expects data to be array or ArrayObject. Type receive '$type'");
         }
+        
+        $this->checkDataColumns($d);
 
-        $diff = array_diff_key($d, $this->getColumnsInformation());
-        if (count($diff) > 0) {
-            $msg = join(',', array_keys($diff));
-            throw new Exception\ColumnNotFoundException("Table::insert(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
+        if ($validate_datatype) {
+            // here put the code to check datatypes
         }
-
         
 
-        $insert = $this->sql->insert($this->prefixed_table);
+        $insert = $this->sql->insert($prefixed_table);
         $insert->values($d);
 
-        try {
-            $statement = $this->sql->prepareStatementForSqlObject($insert);
-            $result = $statement->execute();
-        } catch (\Exception $e) {
-
-            // In ZF2, PDO_Mysql and MySQLi return different exception,
-            // attempt to normalize by catching one exception instead
-            // of RuntimeException and InvalidQueryException
-
-            $messages = array();
-            $ex = $e;
-            do {
-                $messages[] = $ex->getMessage();
-            } while ($ex = $ex->getPrevious());
-            $message = join(', ', array_unique($messages));
-
-            $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
-
-
-            if (strpos($lmsg, 'cannot be null') !== false) {
-                // Integrity constraint violation: 1048 Column 'non_null_column' cannot be null
-                $rex = new Exception\NotNullException($message, $e->getCode(), $e);
-                throw $rex;
-            } elseif (strpos($lmsg, 'duplicate entry') !== false) {
-                $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
-                throw $rex;
-            } elseif (strpos($lmsg, 'constraint violation') !== false ||
-                    strpos($lmsg, 'foreign key') !== false) {
-                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
-                throw $rex;
-            } else {
-                $sql_string = $insert->getSqlString($this->sql->getAdapter()->getPlatform());
-                $iqex = new Exception\RuntimeException($message . "[$sql_string]", $e->getCode(), $e);
-                throw $iqex;
-            }
-        }
-
-        $pks = $this->getPrimaryKeys();
+        $this->executeStatement($insert);
+        
+        $pks = $this->getPrimaryKeys($table_name);
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
             // In multiple keys there should not be autoincrement value
@@ -502,42 +487,24 @@ class Table
         $record = $this->findOrFail($id);
         return $record;
     }
+    
+
 
     /**
-     * Update data in a table
-     *
+     * Insert on duplicate key
+     * 
      * @param array|ArrayObject $data
-     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
-     * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
-     *
-     * @throws Exception\InvalidArgumentException when one of the argument is invalid
+     * @param array|null $duplicate_exclude
+     * @param boolean $validate_datatype ensure data are compatible with database columns datatypes
+     * 
+     * @throws Exception\ColumnNotFoundException
      * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
      * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
      * @throws Exception\NotNullException when insertion failed because a column cannot be null
-     * @throws Exception\RuntimeException when insertion failed for another reason
-     *
-     * @return int number of affected rows
-     */
-    public function update($data, $predicate = null, $combination = Predicate\PredicateSet::OP_AND)
-    {
-        try {
-            $affected_rows = $this->tableManager->update($this->table, $data, $predicate, $combination);
-        } catch (Exception\InvalidArgumentException $e) {
-            throw new Exception\InvalidArgumentException("Table::update(data) requires data to be array or an ArrayObject");
-        }
-        return $affected_rows;
-    }
-
-    /**
-     *
-     * @param array|ArrayObject $data
-     * @param array|null $duplicate_exclude
-     *
-     * @throws Exception\ColumnNotFoundException
      *
      * @return Record
      */
-    public function insertOnDuplicateKey($data, $duplicate_exclude = array())
+    public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes=false)
     {
         $platform = $this->tableManager->getDbAdapter()->platform;
 
@@ -549,13 +516,12 @@ class Table
             $d = $data;
         }
 
+        $this->checkDataColumns($d);
+        $this->checkDataColumns(array_fill_keys($duplicate_exclude, null));
 
-        $diff = array_diff_key($d, $this->getColumnsInformation());
-        if (count($diff) > 0) {
-            $msg = join(',', array_keys($diff));
-            throw new Exception\ColumnNotFoundException("Table::insertOnDuplicateKey(data), cannot insert columns '$msg' does not exists in table {$this->table}.");
+        if ($validate_datatypes) {
+            $this->validateDatatypes($data);
         }
-
 
         $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
@@ -567,20 +533,16 @@ class Table
         foreach ($d as $column => $value) {
 
             if (!in_array($column, $excluded_columns)) {
-                if ($value === null) {
-                    $v = 'NULL';
-                } else {
-                    $v = $platform->quoteValue($value);
-                }
+                $v = ($value === null) ? 'NULL' : $v = $platform->quoteValue($value);
                 $extras[] = $platform->quoteIdentifier($column) . ' = ' . $v;
             }
         }
         $sql_string .= ' on duplicate key update ' . join(',', $extras);
 
         try {
-            $stmt = $this->tableManager->getDbAdapter()->query($sql_string, Adapter::QUERY_MODE_PREPARE);
-            $result = $stmt->execute();
-            unset($stmt);
+            
+            $this->executeStatement($sql_string);
+            
         } catch (\Exception $e) {
 
             $messages = array();
@@ -589,7 +551,7 @@ class Table
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
             $msg = join(', ', array_unique($messages));
-            $message = "Table::insertOnDuplicateKey failed, $msg [ $sql_string ]";
+            $message = __CLASS__ . '::' . __METHOD__ . ": failed, $msg [ $sql_string ]";
             throw new Exception\RuntimeException($message);
         }
 
@@ -608,7 +570,7 @@ class Table
             } else {
                 // if the id was not generated, we have to guess on which key
                 // the duplicate has been fired
-                $unique_keys = $this->tableManager->getMetadata()->getUniqueKeys($this->prefixed_table);
+                $unique_keys = $this->tableManager->metadata()->getUniqueKeys($this->prefixed_table);
                 $data_columns = array_keys($d);
                 $found = false;
                 // Uniques keys could be
@@ -641,13 +603,11 @@ class Table
                 // It should never happen but in case :
                 //@codeCoverageIgnoreStart
                 if (!$found) {
-                    throw new \Exception("After probing all unique keys in table '{$this->table}', cannot dertermine which one was fired when using on duplicate key.");
+                    throw new \Exception(__CLASS__ . '::' . __METHOD__ . ": after probing all unique keys in table '{$this->table}', cannot dertermine which one was fired when using on duplicate key.");
                 }
                 //@codeCoverageIgnoreEnd
             }
         }
-
-
         return $record;
     }
 
@@ -659,26 +619,90 @@ class Table
      */
     public function getRelations()
     {
-        return $this->tableManager->getMetadata()->getRelations($this->prefixed_table);
+        return $this->tableManager->metadata()->getRelations($this->prefixed_table);
     }
-
+    
     /**
-     * Return a new record, eventually
+     * Save a record in database
+     * 
+     * @throws Exception\LogicException when record has already been deleted
+     * 
+     * @param Record $record
+     * @param boolean $validate_datatype if true will ensure record data correspond to column datatype
+     *
+     * @return Record freshly modified record (from database)
+     */
+    public function save(Record $record, $validate_datatype=true)
+    {
+        
+        $state = $record->getState();
+        if ($state == Record::STATE_DELETED) {
+            throw new Exception\LogicException("Record has already been deleted in database.");
+        }
+
+        $data = $record->toArray();
+        if ($validate_datatype) {
+            $this->validateDatatypes($data);
+        }
+        
+        if ($state == Record::STATE_NEW) {
+            // Means insert
+            $new_record = $this->insert($data);
+            
+        } elseif ($state == Record::STATE_CLEAN || $state == Record::STATE_DIRTY) {
+            // Means update
+            $predicate = $this->getRecordPrimaryKeyPredicate($record);
+            $this->update($data, $predicate);
+            $new_record = $this->findOneBy($predicate);
+        } else {
+             //@codeCoverageIgnoreStart
+            
+            throw new Exception\LogicException(__CLASS__ . '::' . __METHOD . ": Record is not on manageable state.");
+             //@codeCoverageIgnoreEnd
+        }
+        $record->setData($new_record->toArray());
+        unset($new_record);
+        $record->setState(Record::STATE_CLEAN);
+        return $record;
+    }
+    
+    /**
+     * Return a record object for this table
+     * If $data is specified, the record will be filled with the
+     * data present in the associative array
+     * 
+     * 
      * If $throwException is true, if any non existing column is found
      * an error will be thrown
      *
-     * @param string $table table name
-     * @param array|ArrayObject $data associative array containing data to insert
-     * @param boolean $throwException if true will throw an exception if a column does not exists
-     * @return \ArrayObject
-     * @throws Exception\InvalidColumnException
-     */
-    public function newRecord($data = array(), $check_columns = false)
+     * @throws Exception\ColumnNotFoundException if $ignore_invalid_columns is false and some columns does not exists in table 
+     *
+     * @param array|ArrayObject $data associative array containing initial data
+     * @param boolean $ignore_invalid_column if true will throw an exception if a column does not exists
+     * @return Record
+     */    
+    public function record($data = array(), $ignore_invalid_columns=true)
     {
-        //return new \ArrayObject($data);
-
-        $record = new Record($this, $data, $check_columns);
+        if (!$ignore_invalid_columns) {
+            $this->checkDataColumns($data);
+        }
+        $record = new Record($data);
+        $record->setState(Record::STATE_NEW);
         return $record;
+    }
+    
+    
+    /**
+     * Return table relation reader
+     * 
+     * @return Table\Relation
+     */
+    public function relation()
+    {
+        if ($this->relation === null) {
+            $this->relation = new Table\Relation($this);
+        }
+        return $this->relation;
     }
 
     /**
@@ -688,7 +712,7 @@ class Table
     public function getPrimaryKeys()
     {
         if (!$this->primary_keys) {
-            $this->primary_keys = $this->tableManager->getMetadata()->getPrimaryKeys($this->prefixed_table);
+            $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
         }
         return $this->primary_keys;
     }
@@ -702,7 +726,7 @@ class Table
     public function getPrimaryKey()
     {
         if (!$this->primary_key) {
-            $this->primary_key = $this->tableManager->getMetadata()->getPrimaryKey($this->prefixed_table);
+            $this->primary_key = $this->tableManager->metadata()->getPrimaryKey($this->prefixed_table);
         }
         return $this->primary_key;
     }
@@ -715,7 +739,7 @@ class Table
     {
         if ($this->column_information === null) {
             $this->column_information = $this->tableManager
-                    ->getMetadata()
+                    ->metadata()
                     ->getColumnsInformation($this->prefixed_table);
         }
         return $this->column_information;
@@ -752,4 +776,170 @@ class Table
        return $this->tableManager; 
     }
 
+    /**
+     * Execute a statement
+     * 
+     * @todo move to driver if not will only support MySQL
+     *
+     * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
+     * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
+     * @throws Exception\NotNullException when insertion failed because a column cannot be null
+     * @throws Exception\RuntimeException when insertion failed for another reason
+     *
+     * @param string|PreparableSqlInterface $sqlObject
+     * @return Zend\Db\Adapter\Driver\ResultInterface
+     */
+    protected function executeStatement($sqlObject)
+    {
+        if ($sqlObject instanceof PreparableSqlInterface) {
+            $statement = $this->sql->prepareStatementForSqlObject($sqlObject);
+        } elseif (is_string($sqlObject)) {
+            $statement = $this->tableManager->getDbAdapter()->createStatement($sqlObject);
+        } else {
+             //@codeCoverageIgnoreStart
+            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ': expects sqlObject to be string or PreparableInterface');
+             //@codeCoverageIgnoreEnd
+        }
+        try {
+            $result = $statement->execute();
+        } catch (\Exception $e) {
+
+            // In ZF2, PDO_Mysql and MySQLi return different exception,
+            // attempt to normalize by catching one exception instead
+            // of RuntimeException and InvalidQueryException
+
+            $messages = array();
+            $ex = $e;
+            do {
+                $messages[] = $ex->getMessage();
+            } while ($ex = $ex->getPrevious());
+            $message = join(', ', array_unique($messages));
+
+            $lmsg = __CLASS_ . '::' . __METHOD__ . ':' . strtolower($message) . '(code:' . $e->getCode() . ')';
+
+            if (strpos($lmsg, 'cannot be null') !== false) {
+                // Integrity constraint violation: 1048 Column 'non_null_column' cannot be null
+                $rex = new Exception\NotNullException($message, $e->getCode(), $e);
+                throw $rex;
+            } elseif (strpos($lmsg, 'duplicate entry') !== false) {
+                $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
+                throw $rex;
+            } elseif (strpos($lmsg, 'constraint violation') !== false ||
+                    strpos($lmsg, 'foreign key') !== false) {
+                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
+                throw $rex;
+            } else {
+                if ($sqlObject instanceof PreparableSqlInterface) {
+                    $sql_string = $sqlObject->getSqlString($this->sql->getAdapter()->getPlatform());
+                } else {
+                    $sql_string = $sqlObject;
+                }
+                $iqex = new Exception\RuntimeException($message . "[$sql_string]", $e->getCode(), $e);
+                throw $iqex;
+            }
+        }
+        return $result;
+    }
+    
+    /**
+     * Return primary key predicate
+     * 
+     * @param integer|string|array $id
+     *
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\PrimaryKeyNotFoundException
+     * @return array predicate
+     */
+    protected function getPrimaryKeyPredicate($id)
+    {
+        try {
+            $keys = $this->getPrimaryKeys();
+        } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
+            throw new Exception\PrimaryKeyNotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot find any primary key (single or multiple) on table '{$this->table}'.");
+        }
+        if (count($keys) == 1) {
+            $pk = $keys[0];
+            if (!is_scalar($id)) {
+                $type = gettype($id);
+                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invalid primary key value. Table '{$this->table}' has a single primary key '$pk'. Argument must be scalar, '$type' given");
+            }
+            $predicate = array($pk => $id);
+        } else {
+            if (!is_array($id)) {
+                $pks = join(',', $keys);
+                $type = gettype($id);
+                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invalid primary key value. Table '{$this->table}' has multiple primary keys '$pks'. Argument must be an array, '$type' given");
+            }
+
+            $matched_keys = array_diff($id, $keys);
+            if (count($matched_keys) == count($keys)) {
+                $predicate = $matched_keys;
+            } else {
+                $pks = join(',', $keys);
+                $vals = join(',', $matched_keys);
+                $type = gettype($id);
+                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": incomplete primary key value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
+            }
+        }
+        return $predicate;
+    }
+
+    /**
+     * Return primary key predicate on record
+     * 
+     * @param Record $record
+     *
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\PrimaryKeyNotFoundException
+     * @return array predicate
+     */
+    protected function getRecordPrimaryKeyPredicate($record)
+    {
+        // Get table primary keys
+        $primary_keys = $this->getPrimaryKeys();
+        if (count($primary_keys) > 1) {
+            $predicate = array();
+            foreach($primary_keys as $column) {
+                $pk_value = $record[$column];
+                if ($pk_value !== null) {
+                    $predicate[$column] = $pk_value; 
+                }
+            }
+        } else {
+            if ($record->offsetExists($primary_keys[0])) {
+                $predicate = $record->offsetGet($primary_keys[0]);
+            }
+        }
+        
+        return $this->getPrimaryKeyPredicate($predicate);
+    }
+    
+    /**
+     * Check if all columns exists in table
+     * 
+     * @param array $data
+     * @throws Exception\ColumnNotFoundException
+     */
+    protected function checkDataColumns(array $data) {
+        
+        $diff = array_diff_key($data, $this->getColumnsInformation());
+        if (count($diff) > 0) {
+            $msg = join(',', array_keys($diff));
+            throw new Exception\ColumnNotFoundException(__CLASS__ . '::' . __METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
+        }
+    }
+    
+    /**
+     * Validate data with database column datatype
+     * 
+     * @param array $data
+     */
+    protected function validateDatatypes(array $data) 
+    {
+        
+        
+    }
+    
+    
+    
 }

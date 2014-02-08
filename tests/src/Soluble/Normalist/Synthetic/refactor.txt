@@ -1,0 +1,41 @@
+
+
+In Table :
+
+/*        
+        $table->all();
+        $table->count();
+        $table->countBy($predicate);
+        $table->delete($id);
+        $table->deleteOrFail($id);
+        $table->deleteBy($predicate);
+// to develop $table->deleteByOrFail($predicate);
+        $table->exists($id);
+        $table->existsBy($id);
+        $table->find($id);
+        $table->findOrFail($id);
+        $table->findOneBy($predicate);
+        $table->findOneByOrFail($predicate);
+// to protect        
+        $table->getColumnsInformation();
+        $table->getPrefixedTableName();
+        $table->getPrimaryKey();
+        $table->getPrimaryKeys();
+        $table->getRelations();
+        
+        // ok
+        $table->getTableManager();
+        $table->getTableName()
+                
+        $table->insert($data);
+        $table->insertOnDuplicateKey($data);
+        
+        // to make more intuitive
+        $table->record($data);
+        $table->search($table_alias);
+        $table->select($table_alias);
+        $table->update($data, $predicate, $combination);
+
+
+		$table->relation()->getParent($record, $parent_table);
+*/
