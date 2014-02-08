@@ -67,7 +67,7 @@ class Record implements ArrayAccess
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
         if (!$data instanceof ArrayObject) {
-            $data = new ArrayObject($data);
+//            $data = new ArrayObject($data);
         }
         $this->data = $data;
         $this->state = self::STATE_DIRTY;
@@ -95,6 +95,7 @@ class Record implements ArrayAccess
      * @throws Exception\LogicException when the record has been deleted 
      * @return boolean
      */
+    /*
     public function isDirty()
     {
         if ($this->state == self::STATE_DELETED) {
@@ -102,6 +103,7 @@ class Record implements ArrayAccess
         }
         return ($this->state == self::STATE_DIRTY);
     }
+    */
 
     
     /**
@@ -114,7 +116,8 @@ class Record implements ArrayAccess
         if ($this->state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
-        return $this->data->offsetExists($field);
+//        return $this->data->offsetExists($field);
+        return array_key_exists($field, $this->data);
     }
 
     /**
@@ -129,10 +132,12 @@ class Record implements ArrayAccess
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
         
-        if (!$this->data->offsetExists($field)) {
+//        if (!$this->data->offsetExists($field)) {
+        if (!array_key_exists($field, $this->data)) {
             throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
         }
-        return $this->data->offsetGet($field);
+//        return $this->data->offsetGet($field);
+        return  $this->data[$field];
     }
 
     /**
@@ -148,7 +153,8 @@ class Record implements ArrayAccess
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
         
-        $this->data->offsetSet($field, $value);
+//        $this->data->offsetSet($field, $value);
+        $this->data[$field] = $value;
         if ($this->state != self::STATE_NEW) {
             $this->state = self::STATE_DIRTY;        
         }
@@ -167,8 +173,9 @@ class Record implements ArrayAccess
         if ($this->state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
-        
-        $this->data->offsetUnset($field);
+  
+        unset($this->data[$field]);
+//        $this->data->offsetUnset($field);
         if ($this->state != self::STATE_NEW) {
             $this->state = self::STATE_DIRTY;        
         }

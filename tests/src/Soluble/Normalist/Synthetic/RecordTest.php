@@ -192,7 +192,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     
 
     
-    
+    /*
     public function testIsDirty()
     {
         $medias = $this->table->getTableManager()->table('media');
@@ -211,7 +211,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($media->isDirty());
         $media['legacy_mapping'] = 'cool';
         $this->assertTrue($media->isDirty());
-    }
+    }*/
 
     public function testOffsetSet()
     {

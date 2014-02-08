@@ -912,7 +912,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $data     = $this->createMediaRecordData('phpunit_testDelete');
         $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $media_id = $media['media_id'];
-        $this->assertFalse($media->isDirty());
+        $this->assertEquals(Record::STATE_CLEAN, $media->getState());
         $this->assertTrue($medias->exists($media_id));
         $medias->delete($media);
         
@@ -1042,27 +1042,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
 
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->isDirty();
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->isDirty();
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
         
         
         // TEST START
