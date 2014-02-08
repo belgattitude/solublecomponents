@@ -24,6 +24,7 @@ before_script:
   - composer install --prefer-dist --dev
   - mkdir build
   - mkdir -p build/logs
+  - wget https://scrutinizer-ci.com/ocular.phar
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: 
@@ -34,4 +35,6 @@ script:
 
 after_script:
   - ls build/logs  
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
   - ./bin/coveralls -c=./coveralls.yml -v 
+  
