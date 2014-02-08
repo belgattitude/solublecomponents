@@ -85,7 +85,7 @@ class TableSearch
 
     /**
      *
-     * @param type $order
+     * @param string|array $order
      * @return \Soluble\Normalist\Synthetic\TableSearch
      */
     public function order($order)
@@ -121,11 +121,10 @@ class TableSearch
 
 
     /**
-     *
-     * @param type $table
-     * @param type $on
-     * @param type $columns
-     * @param type $type
+     * @param  string|array $table
+     * @param  string $on
+     * @param  string|array $columns
+     * @param  string $type one of the JOIN_* constants
      * @return \Soluble\Normalist\Synthetic\TableSearch
      */
     public function join($table, $on, $columns=null, $type=null)

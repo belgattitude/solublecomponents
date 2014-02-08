@@ -11,6 +11,13 @@ class Options
     protected $limit;
 
 
+    /**
+     *
+     * @var integer
+     */
+    protected $offset;
+
+
 
     public function __construct()
     {
@@ -22,7 +29,7 @@ class Options
      * Set the (maximum) number of results to return
      *
      * @param int $limit
-     * @return \Soluble\FlexStore\Options
+     * @return Options
      */
     public function setLimit($limit)
     {
@@ -31,6 +38,7 @@ class Options
     }
 
     /**
+     *
      * @return integer
      */
     public function getLimit()
@@ -42,7 +50,7 @@ class Options
      * Unset limit of results
      * Provides fluent interface
      *
-     * @return \Soluble\FlexStore\Options
+     * @return Options
      */
     public function unsetLimit()
     {
@@ -63,7 +71,7 @@ class Options
     /**
      * Set the offset (the record to start reading when using limit)
      * @param int $offset
-     * @return \Soluble\FlexStore\Options
+     * @return Options
      */
     public function setOffset($offset)
     {
@@ -81,7 +89,5 @@ class Options
     {
         return $this->offset;
     }
-
-
 
 }

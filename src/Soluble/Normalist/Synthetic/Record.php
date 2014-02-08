@@ -32,7 +32,7 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @var \ArrayObject
+     * @var array
      */
     protected $data;
 
@@ -46,7 +46,7 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @param \Soluble\Normalist\Synthetic\Table $table
+     * @param array $data
      * @param array $data
      */
     public function __construct(array $data=array())
@@ -57,11 +57,11 @@ class Record implements ArrayAccess
     /**
      * Set record data
      *
-     * @param array|ArrayObject $data
+     * @param array $data
      * @throws Exception\LogicException when the record has been deleted
      * @return Record
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         if ($this->state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");

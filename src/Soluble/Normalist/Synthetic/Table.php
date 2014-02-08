@@ -234,7 +234,7 @@ class Table
      */
     public function count()
     {
-        return $this->countBy(true);
+        return $this->countBy("1=1");
     }
 
     /**
@@ -304,7 +304,7 @@ class Table
      * Get a Soluble\Db\Select object
      *
      * @param string $table_alias useful when you want to join columns
-     * @return \Soluble\Db\Sql\Select
+     * @return Soluble\Db\Sql\Select
      */
     public function select($table_alias = null)
     {

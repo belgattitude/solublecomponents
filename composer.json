@@ -21,6 +21,7 @@
 		"zendframework/zend-servicemanager": "2.*",
 		"zendframework/zend-paginator": "2.*",
 		"rhumsaa/array_column": "~1.1",
+		"imagine/Imagine" : "dev-master",
 		"php": ">=5.3.1",
 		"ext-iconv": "*"
 	},

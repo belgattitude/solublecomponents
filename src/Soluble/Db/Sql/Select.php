@@ -30,7 +30,6 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     public function orWhere($predicate)
     {
         return $this->where($predicate, Predicate\PredicateSet::OP_OR);
-        return $this;
     }
 
 
@@ -43,7 +42,6 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     public function setDbAdapter(Adapter $adapter)
     {
 
-        $this->sql = null;
         $this->adapter = $adapter;
         return $this;
     }

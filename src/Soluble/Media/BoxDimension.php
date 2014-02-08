@@ -5,6 +5,17 @@ class BoxDimension
 {
     /**
      *
+     * @var integer
+     */
+    protected $width;
+    /**
+     *
+     * @var integer
+     */
+    protected $height;
+
+    /**
+     *
      * @param int $width
      * @param int $heigth
      */
