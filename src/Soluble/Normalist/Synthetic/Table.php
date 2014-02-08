@@ -33,7 +33,7 @@ class Table
      * @var Table\Relation
      */
     protected $relation;
-    
+
     /**
      * Primary key of the table
      * @var string|integer
@@ -327,7 +327,7 @@ class Table
      *
      * @throws Exception\InvalidArgumentException if $id is not valid
      * @throws Exception\LogicException if Record has already been deleted
-     * 
+     *
      * @return int the number of affected rows (maybe be greater than 1 with trigger or cascade)
      */
     public function delete($id)
@@ -339,7 +339,7 @@ class Table
             }
             if ($state == Record::STATE_NEW) {
                 throw new Exception\LogicException("Record has not already been saved in database.");
-            }            
+            }
             $affected_rows = $this->deleteBy($this->getRecordPrimaryKeyPredicate($id));
             $id->setState(Record::STATE_DELETED);
         } else {
@@ -385,7 +385,7 @@ class Table
         }
         return $this;
     }
-    
+
     /**
      * Update data into table
      *
@@ -406,7 +406,7 @@ class Table
     public function update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND)
     {
         $prefixed_table = $this->prefixed_table;
-        
+
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
         } elseif (is_array($data)) {
@@ -416,19 +416,19 @@ class Table
         }
 
         $this->checkDataColumns($d);
-        
-        
+
+
         $update = $this->sql->update($prefixed_table);
         $update->set($d);
         $update->where($predicate);
 
         $result = $this->executeStatement($update);
-            
+
         $affectedRows =  $result->getAffectedRows();
         return $affectedRows;
 
     }
-    
+
     /**
      * Insert data into table
      *
@@ -447,7 +447,7 @@ class Table
     public function insert($data, $validate_datatype=false)
     {
         $prefixed_table = $this->prefixed_table;
-        
+
         if ($data instanceof \ArrayObject) {
             $d = (array) $data;
         } elseif (is_array($data)) {
@@ -456,19 +456,19 @@ class Table
             $type = gettype($data);
             throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": expects data to be array or ArrayObject. Type receive '$type'");
         }
-        
+
         $this->checkDataColumns($d);
 
         if ($validate_datatype) {
             // here put the code to check datatypes
         }
-        
+
 
         $insert = $this->sql->insert($prefixed_table);
         $insert->values($d);
 
         $this->executeStatement($insert);
-        
+
         $pks = $this->getPrimaryKeys($table_name);
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
@@ -487,16 +487,16 @@ class Table
         $record = $this->findOrFail($id);
         return $record;
     }
-    
+
 
 
     /**
      * Insert on duplicate key
-     * 
+     *
      * @param array|ArrayObject $data
      * @param array|null $duplicate_exclude
      * @param boolean $validate_datatype ensure data are compatible with database columns datatypes
-     * 
+     *
      * @throws Exception\ColumnNotFoundException
      * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
      * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
@@ -540,9 +540,9 @@ class Table
         $sql_string .= ' on duplicate key update ' . join(',', $extras);
 
         try {
-            
+
             $this->executeStatement($sql_string);
-            
+
         } catch (\Exception $e) {
 
             $messages = array();
@@ -621,12 +621,12 @@ class Table
     {
         return $this->tableManager->metadata()->getRelations($this->prefixed_table);
     }
-    
+
     /**
      * Save a record in database
-     * 
+     *
      * @throws Exception\LogicException when record has already been deleted
-     * 
+     *
      * @param Record $record
      * @param boolean $validate_datatype if true will ensure record data correspond to column datatype
      *
@@ -634,7 +634,7 @@ class Table
      */
     public function save(Record $record, $validate_datatype=true)
     {
-        
+
         $state = $record->getState();
         if ($state == Record::STATE_DELETED) {
             throw new Exception\LogicException("Record has already been deleted in database.");
@@ -644,11 +644,11 @@ class Table
         if ($validate_datatype) {
             $this->validateDatatypes($data);
         }
-        
+
         if ($state == Record::STATE_NEW) {
             // Means insert
             $new_record = $this->insert($data);
-            
+
         } elseif ($state == Record::STATE_CLEAN || $state == Record::STATE_DIRTY) {
             // Means update
             $predicate = $this->getRecordPrimaryKeyPredicate($record);
@@ -656,7 +656,7 @@ class Table
             $new_record = $this->findOneBy($predicate);
         } else {
              //@codeCoverageIgnoreStart
-            
+
             throw new Exception\LogicException(__CLASS__ . '::' . __METHOD . ": Record is not on manageable state.");
              //@codeCoverageIgnoreEnd
         }
@@ -665,22 +665,22 @@ class Table
         $record->setState(Record::STATE_CLEAN);
         return $record;
     }
-    
+
     /**
      * Return a record object for this table
      * If $data is specified, the record will be filled with the
      * data present in the associative array
-     * 
-     * 
+     *
+     *
      * If $throwException is true, if any non existing column is found
      * an error will be thrown
      *
-     * @throws Exception\ColumnNotFoundException if $ignore_invalid_columns is false and some columns does not exists in table 
+     * @throws Exception\ColumnNotFoundException if $ignore_invalid_columns is false and some columns does not exists in table
      *
      * @param array|ArrayObject $data associative array containing initial data
      * @param boolean $ignore_invalid_column if true will throw an exception if a column does not exists
      * @return Record
-     */    
+     */
     public function record($data = array(), $ignore_invalid_columns=true)
     {
         if (!$ignore_invalid_columns) {
@@ -690,11 +690,11 @@ class Table
         $record->setState(Record::STATE_NEW);
         return $record;
     }
-    
-    
+
+
     /**
      * Return table relation reader
-     * 
+     *
      * @return Table\Relation
      */
     public function relation()
@@ -764,21 +764,21 @@ class Table
     {
         return $this->prefixed_table;
     }
-    
-    
+
+
     /**
      * Return underlying table manager
-     * 
+     *
      * @return TableManager
      */
     public function getTableManager()
     {
-       return $this->tableManager; 
+       return $this->tableManager;
     }
 
     /**
      * Execute a statement
-     * 
+     *
      * @todo move to driver if not will only support MySQL
      *
      * @throws Exception\ForeignKeyException when insertion failed because of an invalid foreign key
@@ -840,10 +840,10 @@ class Table
         }
         return $result;
     }
-    
+
     /**
      * Return primary key predicate
-     * 
+     *
      * @param integer|string|array $id
      *
      * @throws Exception\InvalidArgumentException
@@ -886,7 +886,7 @@ class Table
 
     /**
      * Return primary key predicate on record
-     * 
+     *
      * @param Record $record
      *
      * @throws Exception\InvalidArgumentException
@@ -902,7 +902,7 @@ class Table
             foreach($primary_keys as $column) {
                 $pk_value = $record[$column];
                 if ($pk_value !== null) {
-                    $predicate[$column] = $pk_value; 
+                    $predicate[$column] = $pk_value;
                 }
             }
         } else {
@@ -910,36 +910,36 @@ class Table
                 $predicate = $record->offsetGet($primary_keys[0]);
             }
         }
-        
+
         return $this->getPrimaryKeyPredicate($predicate);
     }
-    
+
     /**
      * Check if all columns exists in table
-     * 
+     *
      * @param array $data
      * @throws Exception\ColumnNotFoundException
      */
-    protected function checkDataColumns(array $data) {
-        
+    protected function checkDataColumns(array $data)
+    {
         $diff = array_diff_key($data, $this->getColumnsInformation());
         if (count($diff) > 0) {
             $msg = join(',', array_keys($diff));
             throw new Exception\ColumnNotFoundException(__CLASS__ . '::' . __METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
     }
-    
+
     /**
      * Validate data with database column datatype
-     * 
+     *
      * @param array $data
      */
-    protected function validateDatatypes(array $data) 
+    protected function validateDatatypes(array $data)
     {
-        
-        
+
+
     }
-    
-    
-    
+
+
+
 }

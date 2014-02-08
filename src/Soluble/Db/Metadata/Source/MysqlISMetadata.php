@@ -54,7 +54,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     public function __construct(Adapter $adapter, $schema=null)
     {
-        $this->localCache = array();    
+        $this->localCache = array();
         $this->adapter = $adapter;
         if ($schema === null) {
             $this->schema = $adapter->getCurrentSchema();

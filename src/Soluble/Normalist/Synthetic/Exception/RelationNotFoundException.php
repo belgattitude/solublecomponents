@@ -2,7 +2,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-class RelationNotFoundException extends InvalidArgumentException 
+class RelationNotFoundException extends InvalidArgumentException
                 implements SyntheticExceptionInterface
 {
 }

@@ -44,21 +44,21 @@ class TableManager
      */
     protected $sql;
 
-    
+
     /**
      *
-     * @var Transaction 
+     * @var Transaction
      */
     protected $transaction;
-    
-    
+
+
     /**
      *
      * @var \ArrayObject
      */
     protected $localTableCache;
-    
-    
+
+
     /**
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
@@ -71,7 +71,7 @@ class TableManager
         $this->sql = new Sql($adapter);
     }
 
-    
+
 
 
     /**
@@ -88,9 +88,9 @@ class TableManager
         if (!is_string($table_name)) {
             throw new Exception\InvalidArgumentException("Table name must be a string");
         }
-        
+
         if (!$this->localTableCache->offsetExists($table_name)) {
-            
+
             $tables = $this->metadata()->getTables();
             if (!in_array($table_name, $tables)) {
                 throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
@@ -98,7 +98,7 @@ class TableManager
             $table = new Table($table_name, $this);
             $this->localTableCache->offsetSet($table_name, $table);
         }
-        return $this->localTableCache->offsetGet($table_name);    
+        return $this->localTableCache->offsetGet($table_name);
 
     }
     /**
@@ -109,8 +109,8 @@ class TableManager
      * @throws Exception\InvalidArgumentException if table name is not valid
      *
      * @return Table
-    // REMOVED with static cache 
-    
+    // REMOVED with static cache
+
     public function table($table_name)
     {
         if (!is_string($table_name)) {
@@ -131,7 +131,7 @@ class TableManager
         return $this->localTableCache->offsetGet($table_name);
     }
     */
-    
+
     /**
      * Return a generic select
      *
@@ -152,10 +152,10 @@ $rowset = $artistTable->select(function (Select $select) {
     }
 
 
-    
+
     /**
      * Return a transaction object
-     * 
+     *
      * @return Transaction
      */
     public function transaction()

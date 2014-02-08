@@ -49,10 +49,10 @@ class ImageConverter implements ConverterInterface
 
     /**
      * Set the backend gd of imagick to use
-     * 
+     *
      * @param string $backend (gd/imagick)
-     * 
-     * @throws Exception\UnsupportedBackendException     
+     *
+     * @throws Exception\UnsupportedBackendException
      * @return \Soluble\Media\Converter\ImageConverter
      */
     public function setBackend($backend)
@@ -60,7 +60,7 @@ class ImageConverter implements ConverterInterface
         if (!is_string($backend)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " backend parameter must be a valid string.");
         }
-        
+
         if (!in_array($backend, $this->supported_backends)) {
             $valid_backends = join(',', $this->supported_backends);
             throw new Exception\UnsupportedBackendException(__METHOD__ . " Backend '$backend' is not supported, supported backends are '$valid_backends'''");

@@ -1,7 +1,7 @@
 <?php
 /**
  *  Soluble Components (http://belgattitude.github.io/solublecomponents)
- *  
+ *
  *  @link      http://github.com/belgattitude/solublecomponents for the canonical source repository
  *  @copyright Copyright (c) 2013-2014 Sébastien Vanvelthem
  *  @license   https://github.com/belgattitude/solublecomponents/blob/master/LICENSE.txt MIT License
@@ -18,17 +18,17 @@ class Transaction
      * @param \Zend\Db\Adapter\Adapter $adapter
      */
     protected $adapter;
-    
-    
+
+
     /**
-     * 
+     *
      * @param \Zend\Db\Adapter\Adapter $adapter
      */
-    function __construct(Adapter $adapter)
+    public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
     }
-    
+
     /**
      * Start a new transaction
      *
@@ -79,6 +79,6 @@ class Transaction
         return $this;
     }
 
-    
-    
+
+
 }
