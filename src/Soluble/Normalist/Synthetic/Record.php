@@ -31,6 +31,11 @@ class Record implements ArrayAccess
     const STATE_CLEAN       = 'clean';
 
     /**
+     * @var \ArrayObject
+     */
+    protected $_securedFieldForArrayAccess;
+    
+    /**
      *
      * @var ArrayObject
      */
@@ -44,11 +49,7 @@ class Record implements ArrayAccess
      */
     protected $state;
 
-    /**
-     *
-     * @var Table
-     */
-    protected $table;
+
 
     /**
      *
@@ -57,7 +58,9 @@ class Record implements ArrayAccess
      */
     public function __construct($data, Table $table)
     {
-        $this->table = $table;
+        $this->_securedFieldForArrayAccess = new \ArrayObject();
+        $this->_securedFieldForArrayAccess['table'] = $table;
+        //$this->table = $table;
         $this->setData($data);
     }
 
@@ -71,14 +74,14 @@ class Record implements ArrayAccess
     {
 
         $state = $this->getState();
-        if ($state == Record::STATE_DELETED) {
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Record has already been deleted in database.");
         }
-        if ($state == Record::STATE_NEW) {
+        if ($state == self::STATE_NEW) {
             throw new Exception\LogicException("Record has not already been saved in database.");
         }
-        $affected_rows = $this->table->deleteBy($this->getRecordPrimaryKeyPredicate());
-        $this->setState(Record::STATE_DELETED);
+        $affected_rows = $this->getTable()->deleteBy($this->getRecordPrimaryKeyPredicate());
+        $this->setState(self::STATE_DELETED);
         return $affected_rows;
     }
 
@@ -95,21 +98,21 @@ class Record implements ArrayAccess
     {
 
         $state = $this->getState();
-        if ($state == Record::STATE_DELETED) {
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Record has already been deleted in database.");
         }
 
         $data = $this->toArray();
 
-        if ($state == Record::STATE_NEW) {
+        if ($state == self::STATE_NEW) {
             // Means insert
-            $new_record = $this->table->insert($data, $validate_datatype);
+            $new_record = $this->getTable()->insert($data, $validate_datatype);
 
-        } elseif ($state == Record::STATE_CLEAN || $state == Record::STATE_DIRTY) {
+        } elseif ($state == self::STATE_CLEAN || $state == self::STATE_DIRTY) {
             // Means update
             $predicate = $this->getRecordPrimaryKeyPredicate();
-            $this->table->update($data, $predicate, $validate_datatype);
-            $new_record = $this->table->findOneBy($predicate);
+            $this->getTable()->update($data, $predicate, $validate_datatype);
+            $new_record = $this->getTable()->findOneBy($predicate);
         } else {
              //@codeCoverageIgnoreStart
 
@@ -133,7 +136,8 @@ class Record implements ArrayAccess
      */
     public function setData($data)
     {
-        if ($this->state == self::STATE_DELETED) {
+        $state = $this->getState();
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
         if (is_array($data)) {
@@ -141,8 +145,8 @@ class Record implements ArrayAccess
         } elseif (! $data instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException("Data must be an array of an ArrayObject");
         }
-        $this->data = $data;
-        $this->state = self::STATE_DIRTY;
+        $this->_securedFieldForArrayAccess['data']  = $data;
+        $this->setState(self::STATE_DIRTY);
         return $this;
     }
 
@@ -154,10 +158,11 @@ class Record implements ArrayAccess
      */
     public function toArray()
     {
-        if ($this->state == self::STATE_DELETED) {
+        
+        if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
-        return (array) $this->data;
+        return (array) $this->_securedFieldForArrayAccess['data'];
     }
     
     /**
@@ -173,22 +178,6 @@ class Record implements ArrayAccess
     
 
 
-    /**
-     * Tell whether this record is dirty
-     *
-     * @throws Exception\LogicException when the record has been deleted
-     * @return boolean
-     */
-    /*
-    public function isDirty()
-    {
-        if ($this->state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
-        }
-        return ($this->state == self::STATE_DIRTY);
-    }
-    */
-
 
     /**
      *
@@ -197,11 +186,11 @@ class Record implements ArrayAccess
      */
     public function offsetExists($field)
     {
-        if ($this->state == self::STATE_DELETED) {
+        if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
-//        return $this->data->offsetExists($field);
-        return array_key_exists($field, $this->data);
+
+        return array_key_exists($field, $this->_securedFieldForArrayAccess['data']);
     }
 
     /**
@@ -212,16 +201,15 @@ class Record implements ArrayAccess
      */
     public function offsetGet($field)
     {
-        if ($this->state == self::STATE_DELETED) {
+        if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
 
-//        if (!$this->data->offsetExists($field)) {
-        if (!array_key_exists($field, $this->data)) {
+        if (!array_key_exists($field, $this->_securedFieldForArrayAccess['data'])) {
             throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
         }
-//        return $this->data->offsetGet($field);
-        return  $this->data[$field];
+
+        return  $this->_securedFieldForArrayAccess['data'][$field];
     }
 
     /**
@@ -233,14 +221,15 @@ class Record implements ArrayAccess
      */
     public function offsetSet($field, $value)
     {
-        if ($this->state == self::STATE_DELETED) {
+        $state = $this->getState();
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
 
-//        $this->data->offsetSet($field, $value);
-        $this->data[$field] = $value;
-        if ($this->state != self::STATE_NEW) {
-            $this->state = self::STATE_DIRTY;
+
+        $this->_securedFieldForArrayAccess['data'][$field] = $value;
+        if ($state != self::STATE_NEW) {
+            $this->setState(self::STATE_DIRTY);
         }
         return $this;
     }
@@ -254,14 +243,15 @@ class Record implements ArrayAccess
      */
     public function offsetUnset($field)
     {
-        if ($this->state == self::STATE_DELETED) {
+        $state = $this->getState();
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
 
-        unset($this->data[$field]);
-//        $this->data->offsetUnset($field);
-        if ($this->state != self::STATE_NEW) {
-            $this->state = self::STATE_DIRTY;
+        unset($this->_securedFieldForArrayAccess['data'][$field]);
+
+        if ($state != self::STATE_NEW) {
+            $this->setState(self::STATE_DIRTY);
         }
 
         return $this;
@@ -272,27 +262,28 @@ class Record implements ArrayAccess
     /**
      * Magic setter
      *
-     * @throws Exception\FieldNotFoundException
      * @throws Exception\LogicException when the record has been deleted
      * @param string $field
      * @param mixed $value
      * @return void
      */
-    /*
+    
     public function __set($field, $value)
     {
-        if ($this->_securedFieldForArrayAccess['state'] == self::STATE_DELETED) {
+
+        $state = $this->getState();
+        if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
 
-        if (!$this->_securedFieldForArrayAccess['data']->offsetExists($field)) {
-            throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+
+        $this->_securedFieldForArrayAccess['data'][$field] = $value;
+        if ($state != self::STATE_NEW) {
+            $this->setState(self::STATE_DIRTY);
         }
 
-        $this->_securedFieldForArrayAccess['state'] = self::STATE_DIRTY;
-        $this->_securedFieldForArrayAccess['data']->offsetSet($field, $value);
     }
-*/
+
     /**
      * Magical getter
      *
@@ -301,19 +292,18 @@ class Record implements ArrayAccess
      * @throws Exception\LogicException when the record has been deleted
      * @return mixed
      */
-    /*
     public function __get($field)
     {
-        if ($this->_securedFieldForArrayAccess['state'] == self::STATE_DELETED) {
+        if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
 
-        if (!$this->_securedFieldForArrayAccess['data']->offsetExists($field)) {
+        if (!array_key_exists($field, $this->_securedFieldForArrayAccess['data'])) {
             throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
         }
-        return $this->_securedFieldForArrayAccess['data']->offsetGet($field);
+
+        return  $this->_securedFieldForArrayAccess['data'][$field];
     }
-    */
 
 
 
@@ -324,13 +314,13 @@ class Record implements ArrayAccess
      */
     public function setState($state)
     {
-        $this->state = $state;
+        $this->_securedFieldForArrayAccess['state'] = $state;
         return $this;
     }
 
     public function getState()
     {
-        return $this->state;
+        return $this->_securedFieldForArrayAccess['state'];
     }
 
 
@@ -345,7 +335,7 @@ class Record implements ArrayAccess
     protected function getRecordPrimaryKeyPredicate()
     {
         // Get table primary keys
-        $primary_keys = $this->table->getPrimaryKeys();
+        $primary_keys = $this->getTable()->getPrimaryKeys();
         $predicate = array();
         foreach($primary_keys as $column) {
             $pk_value = $this->offsetGet($column);
@@ -356,6 +346,15 @@ class Record implements ArrayAccess
             }
         }
         return $predicate;
+    }
+    
+    /**
+     * Return originating table
+     * @return Table
+     */
+    function getTable()
+    {
+        return $this->_securedFieldForArrayAccess['table'];
     }
 
 

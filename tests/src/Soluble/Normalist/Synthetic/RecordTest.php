@@ -99,7 +99,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
     }
     
-    /*
+    
     public function testGetTable()
     {
         $table  = $this->tableManager->table('media');        
@@ -113,17 +113,20 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($this->table, $returned_table);
         
     }
-     */
      
-/*    
+     
+   
     public function test__Get()
     {
         $medias = $this->table->getTableManager()->table('media');
         $data = $this->createMediaRecordData('phpunit_test__Get');
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $this->assertEquals($new_record['legacy_mapping'], 'phpunit_test__Get');
+        $this->assertEquals($new_record['legacy_mapping'], $new_record->legacy_mapping);
+        
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\FieldNotFoundException');
-        $a = $new_record->fieldthatnotexists;
+        $new_record->fieldthatnotexists;
+        
     }
 
     public function test__Set()
@@ -135,14 +138,11 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $new_record['legacy_mapping'] =  'bibi';
         $this->assertEquals('bibi', $new_record['legacy_mapping']);
         $this->assertEquals('bibi', $new_record->offsetGet('legacy_mapping'));
-        $this->assertEquals('bibi', $new_record['legacy_mapping']);
+        $this->assertEquals('bibi', $new_record->legacy_mapping);
 
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\FieldNotFoundException');
-        $new_record->fieldthatnotexists = 'biloute';
         
     }
     
-  */  
     
     public function testArrayAccess()
     {

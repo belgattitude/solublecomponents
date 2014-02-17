@@ -854,6 +854,7 @@ class Table
             $msg = join(',', array_keys($diff));
             throw new Exception\ColumnNotFoundException(__CLASS__ . '::' . __METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
+        
     }
 
     /**
