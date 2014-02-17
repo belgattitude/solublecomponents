@@ -94,7 +94,7 @@ class SimpleXmlWriter extends AbstractWriter
    /**
     *
     * @param array $result
-    * @param string $xml
+    * @param \SimpleXMLElement $xml
     */
    protected function createXmlNode($result, &$xml)
    {

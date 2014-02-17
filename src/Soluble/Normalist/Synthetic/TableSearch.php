@@ -1,9 +1,12 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
-use Soluble\Normalist\Exception;
+use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
+
+use Soluble\Normalist\Synthetic\Exception;
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
+
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
@@ -16,9 +19,9 @@ use ArrayObject;
 class TableSearch
 {
     /**
-     * @param TableManager
+     * @param Table
      */
-    protected $tableManager;
+    protected $table;
 
     /**
      *
@@ -29,12 +32,12 @@ class TableSearch
     /**
      *
      * @param string $table table name
-     * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
+     * @param \Soluble\Normalist\Synthetic\Table $table
      */
-    public function __construct(Select $select, TableManager $tableManager)
+    public function __construct(Select $select, Table $table)
     {
         $this->select = $select;
-        $this->tableManager = $tableManager;
+        $this->table = $table;
     }
 
     /**
@@ -125,7 +128,7 @@ class TableSearch
      * @param  string $on
      * @param  string|array $columns
      * @param  string $type one of the JOIN_* constants
-     * @return \Soluble\Normalist\Synthetic\TableSearch
+     * @return TableSearch
      */
     public function join($table, $on, $columns=null, $type=null)
     {
@@ -150,7 +153,7 @@ class TableSearch
      */
     public function getSql()
     {
-        $adapterPlatform = $this->tableManager->getDbAdapter()->getPlatform();
+        $adapterPlatform = $this->table->getTableManager()->getDbAdapter()->getPlatform();
         return $this->select->getSqlString($adapterPlatform);
     }
 
@@ -170,9 +173,27 @@ class TableSearch
      */
     public function toArray()
     {
+       
         return $this->select->execute()->toArray();
     }
+    
+    
+    
+    /**
+     * Return record as an array
+     *  
+     * @return ResultSet
+     */
+    public function execute() 
+    {
+       
+       $rs = new ResultSet($this->select, $this->table);
+       return $rs;
+        
+    }
 
+    
+    
     /**
      * Return an array indexed by $indexKey
      * useful for comboboxes...

@@ -32,7 +32,7 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @var array
+     * @var ArrayObject
      */
     protected $data;
 
@@ -46,28 +46,100 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @param array $data
-     * @param array $data
+     * @var Table
      */
-    public function __construct(array $data=array())
+    protected $table;
+    
+    /**
+     *
+     * @param array $data
+     * @param Table $table
+     */
+    public function __construct($data, Table $table)
     {
+        $this->table = $table;
         $this->setData($data);
     }
+    
+    /**
+     * Delte record
+     * 
+     * @throws Exception\LogicException if Record has already been deleted
+     * @return int affected rows can be > 1 if triggers ...
+     */
+    public function delete()
+    {
+       
+        $state = $this->getState();
+        if ($state == Record::STATE_DELETED) {
+            throw new Exception\LogicException("Record has already been deleted in database.");
+        }
+        if ($state == Record::STATE_NEW) {
+            throw new Exception\LogicException("Record has not already been saved in database.");
+        }
+        $affected_rows = $this->table->deleteBy($this->getRecordPrimaryKeyPredicate());
+        $this->setState(Record::STATE_DELETED);
+        return $affected_rows;
+    }
+    
+    /**
+     * Save a record in database
+     *
+     * @throws Exception\LogicException when record has already been deleted
+     *
+     * @param boolean $validate_datatype if true will ensure record data correspond to column datatype
+     *
+     * @return Record freshly modified record (from database)
+     */
+    public function save($validate_datatype=false)
+    {
+
+        $state = $this->getState();
+        if ($state == Record::STATE_DELETED) {
+            throw new Exception\LogicException("Record has already been deleted in database.");
+        }
+
+        $data = $this->toArray();
+
+        if ($state == Record::STATE_NEW) {
+            // Means insert
+            $new_record = $this->table->insert($data, $validate_datatype);
+
+        } elseif ($state == Record::STATE_CLEAN || $state == Record::STATE_DIRTY) {
+            // Means update
+            $predicate = $this->getRecordPrimaryKeyPredicate();
+            $this->table->update($data, $predicate, $validate_datatype);
+            $new_record = $this->table->findOneBy($predicate);
+        } else {
+             //@codeCoverageIgnoreStart
+
+            throw new Exception\LogicException(__CLASS__ . '::' . __METHOD . ": Record is not on manageable state.");
+             //@codeCoverageIgnoreEnd
+        }
+        $this->setData($new_record->toArray());
+        unset($new_record);
+        $this->setState(Record::STATE_CLEAN);
+        return $this;
+    }
+    
 
     /**
      * Set record data
      *
-     * @param array $data
+     * @param array|ArrayObject $data
+     * @throws Exception\InvalidArgumentException when the para
      * @throws Exception\LogicException when the record has been deleted
      * @return Record
      */
-    public function setData(array $data)
+    public function setData($data)
     {
         if ($this->state == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
-        if (!$data instanceof ArrayObject) {
-//            $data = new ArrayObject($data);
+        if (is_array($data)) {
+            $data = new ArrayObject($data);
+        } elseif (! $data instanceof ArrayObject) {
+            throw new Exception\InvalidArgumentException("Data must be an array of an ArrayObject");
         }
         $this->data = $data;
         $this->state = self::STATE_DIRTY;
@@ -249,5 +321,30 @@ class Record implements ArrayAccess
         return $this->state;
     }
 
+    
+    /**
+     * Return primary key predicate on record
+     *
+     *
+     * @throws Exception\PrimaryKeyNotFoundException
+     * @throws Exception\UnexcpectedValueException
+     * @return array predicate
+     */
+    protected function getRecordPrimaryKeyPredicate()
+    {
+        // Get table primary keys
+        $primary_keys = $this->table->getPrimaryKeys();
+        $predicate = array();
+        foreach($primary_keys as $column) {
+            $pk_value = $this->offsetGet($column);
+            if ($pk_value != '') {
+                 $predicate[$column] = $pk_value;
+            } else {
+                throw new Exception\UnexpectedValueException("Cannot find record primary key values. Record has no primary key value set");
+            }
+        }
+        return $predicate;
+    }
+    
 
 }

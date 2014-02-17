@@ -27,7 +27,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $cache   = \SolubleTestFactories::getCacheStorage();
 
         $this->metadata = new MysqlISMetadata($adapter);
-        //$this->metadata->setCache($cache);
+        $this->metadata->unsetCache();
         $tables = $this->metadata->getTables();
 
         //var_dump($tables);
@@ -42,12 +42,38 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+    public function testConstructThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $adapter = \SolubleTestFactories::getDbAdapter();
+        $this->metadata = new MysqlISMetadata($adapter, array('schema_not_valid'));
+    }        
+
+    public function testConstructThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $adapter = \SolubleTestFactories::getDbAdapter();
+        $this->metadata = new MysqlISMetadata($adapter, $schema="   ");
+    }            
+    
     public function testGetUniqueKeys()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $unique = $this->metadata->getUniqueKeys('test_table_with_unique_key');
+        $this->assertInternalType('array', $unique);
+        $this->assertEquals(1, count($unique));
+        $this->assertArrayHasKey('unique_id_1', $unique);
+        $this->assertInternalType('array', $unique['unique_id_1']);
+        $this->assertEquals(2, count($unique['unique_id_1']));
+        $this->assertEquals(array('unique_id_1', 'unique_id_2'), $unique['unique_id_1']);
+        
+        
+        $unique = $this->metadata->getUniqueKeys('product');
+        $this->assertInternalType('array', $unique);
+        $this->assertEquals(3, count($unique));
+        $this->assertArrayHasKey('unique_legacy_mapping_idx', $unique);
+        $this->assertArrayHasKey('unique_reference_idx', $unique);
+        $this->assertArrayHasKey('unique_slug_idx', $unique);
+        
     }
 
     public function testGetPrimaryKey()
@@ -62,8 +88,7 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
         $primary = $this->metadata->getPrimaryKey('table_not_found');
     }    
-    
-    
+
     public function testgetPrimaryKeyThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
@@ -100,6 +125,13 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    
+    public function testGetPrimaryKeysThrowsNoPrimaryKeyException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
+        $primary = $this->metadata->getPrimaryKeys('test_table_without_pk');
+    }    
+    
     public function testGetIndexesInformation()
     {
         $indexes = $this->metadata->getIndexesInformation('product');
@@ -152,6 +184,28 @@ class MysqlISMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
     }
 
+    public function testGetRelationsThrowsTableNotFoundExceptionWrongTableName()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
+        $relations = $this->metadata->getRelations('table_not_exists');
+
+    }
+    
+    
+    public function testGetRelationsThrowsTableNotFoundExceptionWithSchema()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
+        $relations = $this->metadata->getRelations('product', 'invalid_schema_not_exists');
+
+    }
+    
+    public function testGetRelationsThrowsInvalidArgumenExceptionWithSchema()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $relations = $this->metadata->getRelations('product', array('cool'));
+
+    }
+    
 
     public function testGetTablesInformation()
     {

@@ -315,6 +315,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('boolean', $exists);
     }
 
+    
+    
     public function testExistsByThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -426,15 +428,17 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $nb = $medias->delete($media['media_id']);
         $this->assertEquals(1, $nb);
         
-        // Test with new record
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
-        $data = $this->createMediaRecordData('phpunit_testSave');
-        $record = $medias->record($data);        
-        $this->assertEquals(Record::STATE_NEW, $record->getState());
-        $medias->delete($record);
-        
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $stdClass = new \stdClass();
+        $medias->delete($stdClass);
     }    
     
+    
+    public function testFindThrowsInvalidArgumentException5() {
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        $medias = $this->tableManager->table('media');
+        $medias->find(new \stdClass());
+    }
     
     public function testDeleteBy() 
     {
@@ -589,6 +593,61 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1', $record['pk_1']);
         $this->assertEquals('1', $record['pk_2']);
          
+    }
+
+    public function testInsertOnDuplicateKeyWithValidateDataType()
+    {
+        $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
+        $data = $this->createMediaRecordData($legacy_mapping);
+        $tm = $this->tableManager;
+        
+        $medias = $tm->table('media');
+        $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
+
+        if ($media) {
+            $medias->delete($media['media_id']);
+        }
+        
+        $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'), $validate=true);
+        $pk = $record['media_id'];
+        $this->assertTrue($medias->exists($pk));
+        
+    }
+    
+    
+    public function testInsertWithValidateDataType()
+    {
+        $legacy_mapping = 'phpunit_testInsert';
+        $medias = $this->tableManager->table('media');
+        $data   = $this->createMediaRecordData($legacy_mapping);
+        $media  = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
+        if ($media) {
+            $medias->delete($media['media_id']);
+        }
+
+        $data['filename'] = 'my_test_filename';
+        
+        $media = $medias->insert($data, $validate=true);
+        $this->assertEquals($data['filename'], $media['filename']);
+
+         
+    }
+    
+
+    public function testUpdateWithValidateDataType()
+    {
+        $legacy_mapping = 'phpunit_testUpdate_1';
+        $tm = $this->tableManager;
+        $medias = $tm->table('media');
+        $data = $this->createMediaRecordData($legacy_mapping);
+        $record = $medias->insertOnDuplicateKey($data);
+        
+        $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
+
+        $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']), null, $validate=true);
+        $this->assertEquals(1, $affectedRows);
+        
+        
     }
     
     
@@ -906,249 +965,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         return $data;
     }    
     
-    public function testDeleteByRecord()
-    {
-        $medias   = $this->tableManager->table('media');
-        $data     = $this->createMediaRecordData('phpunit_testDelete');
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $media_id = $media['media_id'];
-        $this->assertEquals(Record::STATE_CLEAN, $media->getState());
-        $this->assertTrue($medias->exists($media_id));
-        $medias->delete($media);
-        
-        $this->assertFalse($medias->exists($media_id));
-        
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');        
-        $medias->delete($media);
-    }
-    
-    public function testDeleteByNewRecordThrowsLogicException()
-    {
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
-        $medias   = $this->tableManager->table('media');
-        $data     = $this->createMediaRecordData('phpunit_testLogicExceptionNewRecord');
-        $record   = $medias->record($data);
-        $medias->delete($record);
-        
-    }
-    
-    public function testDeleteByRecordThrowsLogicException()
-    {
-        $medias   = $this->tableManager->table('media');
-        $data     = $this->createMediaRecordData('phpunit_testLogicExceptionAfterDelete');    
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);//  $media->delete();
-        
-        
-        try {
-            $a = $media->offsetGet('legacy_mapping');
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $a = $media['legacy_mapping'];
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
-
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $a = $media['legacy_mapping'];
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media['legacy_mapping'] = 'cool';
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media['legacy_mapping'] = 'cool';
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->offsetSet('legacy_mapping', 'cool');
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-        
-        
-        // TEST START
-        /*
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->getParent('cool');
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-        */
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $medias->delete($media);
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $medias->save($media);
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
-
-        
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->offsetExists('legacy_mapping');
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
-        
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->toArray();
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
-        
-        
-        // TEST START
-        $catched = false;
-        $media    = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
-        try {
-            $media->setData(array());
-        } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");                
-        
-        
-    }
-    
-    public function testSave()
-    {
-        $medias = $this->tableManager->table('media');
-        $data = $this->createMediaRecordData('phpunit_testSave');
-        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        
-        $saved_id = $media['media_id'];
-        $media['filename'] = 'mynewfilename_testSave';
-        $medias->save($media);
-        $this->assertEquals('mynewfilename_testSave', $media['filename']);
-        $this->assertEquals($saved_id, $media['media_id']);
-        
-        $media2 = $medias->find($saved_id);
-        $this->assertEquals('mynewfilename_testSave', $media2['filename']);
-        $this->assertEquals($saved_id, $media2['media_id']);
-        
-        // test save with a new record
-        
-        
-        $data = $this->createMediaRecordData('phpunit_testSave');
-        $record = $medias->record($data);
-        $this->assertEquals(Record::STATE_NEW, $record->getState());
-        $record['legacy_mapping'] = date('Y-m-d H:i:s');
-        $this->assertEquals(Record::STATE_NEW, $record->getState());
-        $record = $medias->save($record);
-        $this->assertEquals(Record::STATE_CLEAN, $record->getState());
-        $record['filename'] = 'cool';
-        $this->assertEquals(Record::STATE_DIRTY, $record->getState());
-        $new_record = $medias->save($record);
-        $this->assertEquals($new_record, $record);
-        
-        
-        
-    }
-
-    public function testSaveWithNewRecordThrowsDuplicateEntryException()
-    {
-
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');        
-        $medias = $this->tableManager->table('media');
-        $data = $this->createMediaRecordData('phpunit_testSave');
-        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-
-        $record = $medias->record($data);
-        $this->assertEquals(Record::STATE_NEW, $record->getState());
-        $medias->save($record);
-        
-    }
-    
-    
-    public function testSaveThrowsDuplicateEntryException()
-    {
-
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');        
-        $medias = $this->tableManager->table('media');
-        $data = $this->createMediaRecordData('phpunit_testSave');
-        $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-
-        $data2 = $this->createMediaRecordData('phpunit_testSaveDuplicate');
-        $medias->insertOnDuplicateKey($data2, array('legacy_mapping'));
-        
-        
-        $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $media['legacy_mapping'] = 'phpunit_testSaveDuplicate';
-        $medias->save($media);
-        
-    }
     
 
 }

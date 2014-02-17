@@ -102,7 +102,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $data = $this->createMediaRecordData('phpunit_testGetParent');
         $medias = $this->tableManager->table('media');        
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-        $medias->delete($media);
+        $media->delete();
 
         $parent = $medias->relation()->getParent($media, "media_container");
         

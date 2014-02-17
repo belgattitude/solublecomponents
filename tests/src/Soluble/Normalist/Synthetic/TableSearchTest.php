@@ -53,12 +53,16 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         unset($this->tableManager);
         unset($this->table);        
     }
+    
 
     public function testLimit()
     {
         $results = $this->table->search()->limit(10)->toArray();
         $this->assertEquals(10, count($results));
-        
+    }
+    public function testExecute() {
+        $rs = $this->table->search()->limit(10)->execute();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
     }
 
     public function testOffset()

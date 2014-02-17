@@ -51,14 +51,16 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @param string $schema default schema, taken from adapter if not given
+     * @throws Exception\InvalidArgumentException if schema parameter not valid
      */
     public function __construct(Adapter $adapter, $schema=null)
     {
         $this->localCache = array();
         $this->adapter = $adapter;
         if ($schema === null) {
-            $this->schema = $adapter->getCurrentSchema();
+            $schema = $adapter->getCurrentSchema();
         }
+        $this->setDefaultSchema($schema);
     }
 
 
@@ -218,8 +220,8 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
     {
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
 
@@ -244,8 +246,8 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         }
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
 
@@ -303,10 +305,13 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     protected function loadPrimaryKey($table, $schema=null)
     {
-        $pks = $this->getPrimaryKeys($table, $schema);
+        try {
+            $pks = $this->getPrimaryKeys($table, $schema);
+        } catch (Exception\NoPrimaryKeyException $e) {
+            return false;
+        }
         if (count($pks) !== 1) {
             return false;
-
         }
         return $pks[0];
     }
@@ -384,20 +389,20 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
     protected function loadRelations($table, $schema=null)
     {
 
+        /*
         if (!is_string($table) || trim($table) == '') {
             throw new Exception\InvalidArgumentException("Table name must be a valid string or an empty string detected");
         }
+         * 
+         */
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
 
-        $tables = $this->getTables($schema);
-        if (!in_array($table, $tables)) {
-            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
-        }
+        $this->validateTable($table, $schema);
         $query = "
                 SELECT *
                     FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
@@ -457,15 +462,14 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         }
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
-        $tables = $this->getTables($schema);
+        
 
-        if (!in_array($table, $tables)) {
-            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
-        }
+        $this->validateTable($table, $schema);
+        
         $query = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$schema' and TABLE_NAME = '$table'";
 
         try {
@@ -502,11 +506,10 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      */
     protected function loadTablesInformation($schema=null)
     {
-
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
 
@@ -550,15 +553,12 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         }
         if ($schema === null) {
             $schema = $this->schema;
-        } elseif (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+        } else {
+            $this->validateSchema($schema);
         }
 
-        $tables = $this->getTables($schema);
-        if (!in_array($table, $tables)) {
-            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
-        }
-
+        $this->validateTable($table, $schema);
+        
         $query = "
                     SELECT TABLE_NAME, INDEX_NAME, NON_UNIQUE,
                             GROUP_CONCAT( column_name ORDER BY seq_in_index ) AS `COLUMNS`
