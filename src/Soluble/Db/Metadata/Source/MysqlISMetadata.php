@@ -393,7 +393,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         if (!is_string($table) || trim($table) == '') {
             throw new Exception\InvalidArgumentException("Table name must be a valid string or an empty string detected");
         }
-         * 
+         *
          */
         if ($schema === null) {
             $schema = $this->schema;
@@ -466,10 +466,10 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
             $this->validateSchema($schema);
         }
 
-        
+
 
         $this->validateTable($table, $schema);
-        
+
         $query = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '$schema' and TABLE_NAME = '$table'";
 
         try {
@@ -558,7 +558,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
         }
 
         $this->validateTable($table, $schema);
-        
+
         $query = "
                     SELECT TABLE_NAME, INDEX_NAME, NON_UNIQUE,
                             GROUP_CONCAT( column_name ORDER BY seq_in_index ) AS `COLUMNS`

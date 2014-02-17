@@ -10,8 +10,8 @@ abstract class AbstractSource
      * @var string
      */
     protected $schema;
-    
-    
+
+
     /**
      * Return unique indexes
      * @param string $table
@@ -99,10 +99,10 @@ abstract class AbstractSource
         return array_keys($this->getTablesInformation($schema));
     }
 
-    
+
     /**
      * Check whether a table exists in the specified or current scheme
-     * 
+     *
      * @param string $table
      * @param string $schema
      * @return bool
@@ -112,16 +112,17 @@ abstract class AbstractSource
         $tables = $this->getTables($schema);
         return in_array($table, $tables);
     }
-    
+
     /**
      * Check whether a table parameter is valid and exists
-     * 
+     *
      * @throws Exception\TableNotFoundException
      * @param string $table
      * @param string $schema
      * @return AbstractSource
      */
-    protected function validateTable($table, $schema=null) {
+    protected function validateTable($table, $schema=null)
+    {
         if (!$this->hasTable($table, $schema)) {
             throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
         }
@@ -129,25 +130,26 @@ abstract class AbstractSource
     }
 
     /**
-     * Check whether a schema parameter is valid 
-     * 
+     * Check whether a schema parameter is valid
+     *
      * @throws Exception\InvalidArgumentException
 
      * @param string $schema
      * @return AbstractSource
      */
-    protected function validateSchema($schema) {
+    protected function validateSchema($schema)
+    {
         if (!is_string($schema) || trim($schema) == '') {
             throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
         }
         return $this;
     }
-    
-    
-    
+
+
+
     /**
      * Set default schema
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string $schema
      * @return AbstractSource
@@ -158,6 +160,6 @@ abstract class AbstractSource
         $this->schema = $schema;
         return $this;
     }
-    
-    
+
+
 }

@@ -114,8 +114,8 @@ class Table
         return $this->search()->toArray();
     }
 
-    
-    
+
+
     /**
      * Find a record
      *
@@ -333,7 +333,7 @@ class Table
     public function delete($id)
     {
         $affected_rows = $this->deleteBy($this->getPrimaryKeyPredicate($id));
-        
+
         return $affected_rows;
     }
 
@@ -477,7 +477,7 @@ class Table
         } else {
             $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
         }
-        
+
         $record = $this->findOrFail($id);
         return $record;
     }
@@ -638,7 +638,7 @@ class Table
             $this->checkDataColumns($data);
         }
         $record = new Record($data, $this);
-        
+
         $record->setState(Record::STATE_NEW);
         return $record;
     }
@@ -807,7 +807,7 @@ class Table
         if (!is_scalar($id) && !is_array($id)) {
             throw new Exception\InvalidArgumentException("Id must be scalar or array, type " . gettype($id) . " received");
         }
-        
+
         try {
             $keys = $this->getPrimaryKeys();
         } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
@@ -866,7 +866,7 @@ class Table
         // @todo code for validating datatypes
         // integer -> numeric
         // etc, etc...
-        
+
     }
 
 

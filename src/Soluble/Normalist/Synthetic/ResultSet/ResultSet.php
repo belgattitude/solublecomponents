@@ -22,7 +22,7 @@ class ResultSet implements Iterator
      * @param Select $select
      */
     protected $select;
-    
+
     /**
      * @var null|int
      */
@@ -32,7 +32,7 @@ class ResultSet implements Iterator
      * @var int
      */
     protected $position = 0;
-    
+
     /**
      *
      */
@@ -42,14 +42,14 @@ class ResultSet implements Iterator
         $this->table = $table;
         $this->dataSource = $select->execute();
     }
-    
-    
+
+
 
     public function toArray()
     {
         return $this->dataSource->toArray();
     }
-    
+
     /**
      * Iterator: move pointer to next item
      *
@@ -91,7 +91,7 @@ class ResultSet implements Iterator
      */
     public function valid()
     {
-        
+
         return $this->dataSource->valid();
 
     }
@@ -116,8 +116,8 @@ class ResultSet implements Iterator
         $this->count = count($this->dataSource);
         return $this->count;
     }
-    
-    
+
+
 
 
 }

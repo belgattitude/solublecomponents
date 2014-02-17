@@ -49,7 +49,7 @@ class Record implements ArrayAccess
      * @var Table
      */
     protected $table;
-    
+
     /**
      *
      * @param array $data
@@ -60,16 +60,16 @@ class Record implements ArrayAccess
         $this->table = $table;
         $this->setData($data);
     }
-    
+
     /**
      * Delte record
-     * 
+     *
      * @throws Exception\LogicException if Record has already been deleted
      * @return int affected rows can be > 1 if triggers ...
      */
     public function delete()
     {
-       
+
         $state = $this->getState();
         if ($state == Record::STATE_DELETED) {
             throw new Exception\LogicException("Record has already been deleted in database.");
@@ -81,7 +81,7 @@ class Record implements ArrayAccess
         $this->setState(Record::STATE_DELETED);
         return $affected_rows;
     }
-    
+
     /**
      * Save a record in database
      *
@@ -121,7 +121,7 @@ class Record implements ArrayAccess
         $this->setState(Record::STATE_CLEAN);
         return $this;
     }
-    
+
 
     /**
      * Set record data
@@ -321,7 +321,7 @@ class Record implements ArrayAccess
         return $this->state;
     }
 
-    
+
     /**
      * Return primary key predicate on record
      *
@@ -345,6 +345,6 @@ class Record implements ArrayAccess
         }
         return $predicate;
     }
-    
+
 
 }

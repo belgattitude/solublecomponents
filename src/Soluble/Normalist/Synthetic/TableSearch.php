@@ -173,27 +173,27 @@ class TableSearch
      */
     public function toArray()
     {
-       
+
         return $this->select->execute()->toArray();
     }
-    
-    
-    
+
+
+
     /**
      * Return record as an array
-     *  
+     *
      * @return ResultSet
      */
-    public function execute() 
+    public function execute()
     {
-       
+
        $rs = new ResultSet($this->select, $this->table);
        return $rs;
-        
+
     }
 
-    
-    
+
+
     /**
      * Return an array indexed by $indexKey
      * useful for comboboxes...
