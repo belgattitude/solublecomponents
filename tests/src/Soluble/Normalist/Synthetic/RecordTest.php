@@ -125,17 +125,40 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($new_record['legacy_mapping'], $new_record->legacy_mapping);
         
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\FieldNotFoundException');
-        $new_record->fieldthatnotexists;
-        
+        $a = $new_record->fieldthatnotexists;
     }
+    
 
+    public function test__GetThrowsLogicException()
+    {
+        $medias = $this->table->getTableManager()->table('media');
+        $data = $this->createMediaRecordData('phpunit_test__Get');
+        $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertEquals($new_record['legacy_mapping'], 'phpunit_test__Get');
+        $new_record->delete();
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
+        $a = $new_record->legacy_mapping;
+    }
+    
+
+    public function test__SetThrowsLogicException()
+    {
+        $medias = $this->table->getTableManager()->table('media');
+        $data = $this->createMediaRecordData('phpunit_test__Get');
+        $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
+        $this->assertEquals($new_record['legacy_mapping'], 'phpunit_test__Get');
+        $new_record->delete();
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
+        $new_record->legacy_mapping = 'cool';
+    }    
+    
     public function test__Set()
     {
         $medias = $this->table->getTableManager()->table('media');
         $data = $this->createMediaRecordData('phpunit_test__Get');
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         
-        $new_record['legacy_mapping'] =  'bibi';
+        $new_record->legacy_mapping =  'bibi';
         $this->assertEquals('bibi', $new_record['legacy_mapping']);
         $this->assertEquals('bibi', $new_record->offsetGet('legacy_mapping'));
         $this->assertEquals('bibi', $new_record->legacy_mapping);
@@ -542,12 +565,12 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $new_record['legacy_mapping'] = 'cool';
         $this->assertEquals('cool', $new_record['legacy_mapping']);
         $this->assertEquals('cool', $new_record->offsetGet('legacy_mapping'));
-        $this->assertEquals('cool', $new_record['legacy_mapping']);
+        $this->assertEquals('cool', $new_record->legacy_mapping);
         
         $new_record->offsetSet('legacy_mapping',  'bibi');
         $this->assertEquals('bibi', $new_record['legacy_mapping']);
         $this->assertEquals('bibi', $new_record->offsetGet('legacy_mapping'));
-        $this->assertEquals('bibi', $new_record['legacy_mapping']);
+        $this->assertEquals('bibi', $new_record->legacy_mapping);
         
     }
 
