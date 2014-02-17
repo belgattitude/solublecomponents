@@ -159,6 +159,18 @@ class Record implements ArrayAccess
         }
         return (array) $this->data;
     }
+    
+    /**
+     * Return an json version of the record
+     * 
+     * @throws Exception\LogicException when the record has been deleted
+     * @return string 
+     */
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+    
 
 
     /**

@@ -3,6 +3,7 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Synthetic\Exception;
+use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
 use Soluble\Db\Sql\Select;
 
 use Zend\Db\Sql\Sql;
@@ -107,11 +108,11 @@ class Table
     /**
      * Return all records in the table
      *
-     * @return array
+     * @return ResultSet
      */
     public function all()
     {
-        return $this->search()->toArray();
+        return $this->search()->execute();
     }
 
 

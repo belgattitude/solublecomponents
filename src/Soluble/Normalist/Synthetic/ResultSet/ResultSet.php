@@ -3,12 +3,13 @@ namespace Soluble\Normalist\Synthetic\ResultSet;
 
 use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\Record;
-use Soluble\Normalist\Synthetic\Exception;
+
 use Zend\Db\Sql\Select;
 
 use Iterator;
+use Countable;
 
-class ResultSet implements Iterator
+class ResultSet implements Iterator, Countable
 {
 
     /**
@@ -44,11 +45,24 @@ class ResultSet implements Iterator
     }
 
 
-
+    /**
+     * Return an array version of the resultset
+     * @return array
+     */
     public function toArray()
     {
         return $this->dataSource->toArray();
     }
+    
+    /**
+     * Return an json version of the resultset
+     * @return string Json encoded version
+     */
+    public function toJson()
+    {
+        return json_encode($this->dataSource->toArray());
+    }
+    
 
     /**
      * Iterator: move pointer to next item

@@ -76,6 +76,16 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $data);
     }
 
+    
+    public function testToJson()
+    {
+        $results = $this->resultSet->toJson();
+        $this->assertInternalType('string', $results);
+        $decoded = json_decode($results, $assoc=true);
+        $this->assertInternalType('array', $decoded);
+        
+        
+    }
 
     public function testCount()
     {

@@ -889,10 +889,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testAll()
     {
         $tm = $this->tableManager->table('media');
-        $all = $tm->all();
+        $rs = $tm->all();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
         $count = $tm->count();
-        $this->assertInternalType('array', $all);
-        $this->assertEquals($count, count($all));
+        
+        $this->assertEquals($count, count($rs));
     }
 
 

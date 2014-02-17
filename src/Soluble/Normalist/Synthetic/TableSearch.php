@@ -159,8 +159,8 @@ class TableSearch
 
 
     /**
-     *
-     * @return string Json encoded
+     * Return a json version of the results
+     * @return string Json encoded 
      */
     public function toJson()
     {
@@ -168,12 +168,11 @@ class TableSearch
     }
 
     /**
-     *
+     * Return an array version of the results
      * @return array
      */
     public function toArray()
     {
-
         return $this->select->execute()->toArray();
     }
 

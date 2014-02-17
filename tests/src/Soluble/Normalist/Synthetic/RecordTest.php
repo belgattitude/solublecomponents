@@ -90,6 +90,15 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('category_id', $data);
     }
     
+    public function testToJson()
+    {
+        $data = $this->table->find(1)->toArray();
+        
+        $json = $this->table->find(1)->toJson();
+        $this->assertEquals($data, json_decode($json, $assoc=true));
+        
+    }
+    
     /*
     public function testGetTable()
     {
