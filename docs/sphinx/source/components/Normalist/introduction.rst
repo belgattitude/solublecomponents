@@ -1,13 +1,33 @@
-:tocdepth: 2
-Quick introduction
-==================
+:tocdepth: 3
+Normalist ORM
+=============
 
-Normalist is a minimalistic ORM without the need to define model. Inspired by Laravel Eloquent and Zend Framework 2 database components.
+Normalist is a zero configuration ORM. Inspired by Laravel Eloquent, 
+Doctrine and build on top of Zend Framework 2 database component.  
+
+Typical usage scenarios
++++++++++++++++++++++++
+
+Normalist has been primarily designed to modernize, secure and empower existing PHP applications. 
+. 
+By getting models information directly from the database, it does not require any model configuration.
+In a way it can be considered as a zero configuration ORM. 
+
+modernize
+comprehensive
+
+
+Normalist has been specifically designed to work with an existing database 
+without any additional setup. 
+
 
 Requirements
-------------
+++++++++++++
 
 PHP 5.3 and a MySQL database 5.1+
+
+
+
 
 Installation
 ------------
@@ -34,8 +54,8 @@ Install the dependencies using composer.phar and use Imagine :
     
 
 
-Basic usage
------------
+Synthetic Table
+===============
 
 Using Synthetic tables
 ++++++++++++++++++++++
