@@ -24,8 +24,7 @@
     </div>
         <div class="content">
                 <p>    class
-    <strong>Table</strong>        implements
-        <abbr title="Zend\Db\Adapter\AdapterAwareInterface">AdapterAwareInterface</abbr></p>
+    <strong>Table</strong></p>
 
     
     
@@ -38,19 +37,9 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(string $table, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)
+                    <a href="#method___construct">__construct</a>(array|string $table, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)
                     <p>
 </p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_select">select</a>(string $table_alias = null)
-                    <p>Get a Zend\Db\Select object</p>
                 </td>
                 <td></td>
             </tr>
@@ -67,32 +56,71 @@
             </tr>
                     <tr>
                 <td class="type">
-                    array
+                    <a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
                 </td>
                 <td class="last">
                     <a href="#method_all">all</a>()
-                    <p>
-</p>
+                    <p>Return all records in the table</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
                 </td>
                 <td class="last">
-                    <a href="#method_find">find</a>(int $id)
+                    <a href="#method_find">find</a>(integer|string|array $id)
                     <p>Find a record</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_findOrFail">findOrFail</a>(integer|string|array $id)
+                    <p>Find a record by primary key, throw a NotFoundException if record does not exists</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
                 </td>
                 <td class="last">
                     <a href="#method_findOneBy">findOneBy</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)
-                    <p>Find a record</p>
+                    <p>Find a record by unique key</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_findOneByOrFail">findOneByOrFail</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)
+                    <p>Find a record by unique key and trhow an exception id record cannot be found</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_count">count</a>()
+                    <p>Count the number of record in table</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_countBy">countBy</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)
+                    <p>Find a record by unique key</p>
                 </td>
                 <td></td>
             </tr>
@@ -101,7 +129,7 @@
                     boolean
                 </td>
                 <td class="last">
-                    <a href="#method_exists">exists</a>(int $id)
+                    <a href="#method_exists">exists</a>(integer|string|array $id)
                     <p>Test if a record exists</p>
                 </td>
                 <td></td>
@@ -111,29 +139,18 @@
                     boolean
                 </td>
                 <td class="last">
-                    <a href="#method_delete">delete</a>($id)
-                    <p>Delete a record</p>
+                    <a href="#method_existsBy">existsBy</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)
+                    <p>Test if a record exists by a predicate</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>
+                    <abbr title="Soluble\Normalist\Synthetic\Soluble\Db\Sql\Select">Select</abbr>
                 </td>
                 <td class="last">
-                    <a href="#method_insert">insert</a>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data)
-                    <p>Insert data into table</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_insertOnDuplicateKey">insertOnDuplicateKey</a>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, array|null $duplicate_exclude = array())
-                    <p>
-</p>
+                    <a href="#method_select">select</a>(string $table_alias = null)
+                    <p>Get a Soluble\Db\Select object</p>
                 </td>
                 <td></td>
             </tr>
@@ -142,38 +159,88 @@
                     int
                 </td>
                 <td class="last">
-                    <a href="#method_update">update</a>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)
+                    <a href="#method_delete">delete</a>(integer|string|array $id)
+                    <p>Delete by primary/unique key value</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_deleteBy">deleteBy</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)
+                    <p>Delete a record by predicate</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_deleteOrFail">deleteOrFail</a>(integer|string|array $id)
+                    <p>Delete a record or throw an Exception</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_update">update</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND, boolean $validate_datatypes = false)
                     <p>Update data into table</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_insert">insert</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, boolean $validate_datatypes = false)
+                    <p>Insert data into table</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_insertOnDuplicateKey">insertOnDuplicateKey</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, array $duplicate_exclude = array(), boolean $validate_datatypes = false)
+                    <p>Insert on duplicate key</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
                     array
                 </td>
                 <td class="last">
-                    <a href="#method_getRelations">getRelations</a>(string $table)
+                    <a href="#method_getRelations">getRelations</a>()
                     <p>Return table relations</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    array
+                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_getColumnsInformation">getColumnsInformation</a>(string $table)
-                    <p>Return table columns</p>
+                    <a href="#method_record">record</a>($data = array(), $ignore_invalid_columns = true)
+                    <p>Return a record object for this table If $data is specified, the record will be filled with the data present in the associative array</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+                    <a href="../../../Soluble/Normalist/Synthetic/Table/Relation.html"><abbr title="Soluble\Normalist\Synthetic\Table\Relation">Relation</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_getRecordCleanedData">getRecordCleanedData</a>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, boolean $throwException = false)
-                    <p>Return cleaned data suitable for inserting/updating a table If $throwException is true, if any non existing column is found an error will be thrown</p>
+                    <a href="#method_relation">relation</a>()
+                    <p>Return table relation reader</p>
                 </td>
                 <td></td>
             </tr>
@@ -182,7 +249,7 @@
                     array
                 </td>
                 <td class="last">
-                    <a href="#method_getPrimaryKeys">getPrimaryKeys</a>(string $table)
+                    <a href="#method_getPrimaryKeys">getPrimaryKeys</a>()
                     <p>Return table primary keys</p>
                 </td>
                 <td></td>
@@ -192,52 +259,48 @@
                     int|string
                 </td>
                 <td class="last">
-                    <a href="#method_getPrimaryKey">getPrimaryKey</a>($table)
+                    <a href="#method_getPrimaryKey">getPrimaryKey</a>()
                     <p>Return primary key, if multiple primary keys found will throw an exception</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Db/Metadata/Source/AbstractSource.html"><abbr title="Soluble\Db\Metadata\Source\AbstractSource">AbstractSource</abbr></a>
+                    array
                 </td>
                 <td class="last">
-                    <a href="#method_getMetadata">getMetadata</a>()
-                    <p>
-</p>
+                    <a href="#method_getColumnsInformation">getColumnsInformation</a>()
+                    <p>Return list of table columns</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a>
+                    string
                 </td>
                 <td class="last">
-                    <a href="#method_setDbAdapter">setDbAdapter</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter)
-                    <p>
-</p>
+                    <a href="#method_getTableName">getTableName</a>()
+                    <p>Return the original table name</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a>
+                    string
                 </td>
                 <td class="last">
-                    <a href="#method_setMetadata">setMetadata</a>(<abbr title="Soluble\Normalist\Synthetic\Source\AbstractSource">AbstractSource</abbr> $metadata)
-                    <p>
-</p>
+                    <a href="#method_getPrefixedTableName">getPrefixedTableName</a>()
+                    <p>Return the prefixed table</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <abbr title="Soluble\Normalist\Synthetic">Synthetic</abbr>
+                    <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_setTablePrefix">setTablePrefix</a>(string $tablePrefix)
-                    <p>
-</p>
+                    <a href="#method_getTableManager">getTableManager</a>()
+                    <p>Return underlying table manager</p>
                 </td>
                 <td></td>
             </tr>
@@ -247,9 +310,9 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 68</div>
+        <div class="location">at line 86</div>
         <code>            public            
-    <strong>__construct</strong>(string $table, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)</code>
+    <strong>__construct</strong>(array|string $table, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)</code>
     </h3>
     <div class="details">
         <p>
@@ -261,7 +324,7 @@
 
                     <table>
                     <tr>
-                <td>string</td>
+                <td>array|string</td>
                 <td>$table</td>
                 <td>table name</td>
             </tr>
@@ -275,49 +338,22 @@
 
             
             
-            
-                    </div>
-    </div>
-
-                <h3 id="method_select">
-        <div class="location">at line 80</div>
-        <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
-    <strong>select</strong>(string $table_alias = null)</code>
-    </h3>
-    <div class="details">
-        <p>Get a Zend\Db\Select object</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
+                            <h4>Exceptions</h4>
 
                     <table>
                     <tr>
-                <td>string</td>
-                <td>$table_alias</td>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
                 <td>
 </td>
             </tr>
             </table>
 
             
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
                     </div>
     </div>
 
                 <h3 id="method_search">
-        <div class="location">at line 100</div>
+        <div class="location">at line 103</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>search</strong>($table_alias = null)</code>
     </h3>
@@ -365,13 +401,12 @@
     </div>
 
                 <h3 id="method_all">
-        <div class="location">at line 110</div>
-        <code>            public            array
+        <div class="location">at line 113</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
     <strong>all</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return all records in the table</p>
         <p>
 </p>
         <div class="tags">
@@ -380,7 +415,7 @@
 
                     <table>
         <tr>
-            <td>array</td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a></td>
             <td>
 </td>
         </tr>
@@ -392,9 +427,9 @@
     </div>
 
                 <h3 id="method_find">
-        <div class="location">at line 122</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
-    <strong>find</strong>(int $id)</code>
+        <div class="location">at line 130</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
+    <strong>find</strong>(integer|string|array $id)</code>
     </h3>
     <div class="details">
         <p>Find a record</p>
@@ -405,7 +440,7 @@
 
                     <table>
                     <tr>
-                <td>int</td>
+                <td>integer|string|array</td>
                 <td>$id</td>
                 <td>
 </td>
@@ -417,7 +452,7 @@
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr></td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr></td>
             <td>
 </td>
         </tr>
@@ -429,6 +464,66 @@
                     <table>
                     <tr>
                 <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when id is invalid</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\PrimaryKeyNotFoundException">PrimaryKeyNotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_findOrFail">
+        <div class="location">at line 148</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+    <strong>findOrFail</strong>(integer|string|array $id)</code>
+    </h3>
+    <div class="details">
+        <p>Find a record by primary key, throw a NotFoundException if record does not exists</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>integer|string|array</td>
+                <td>$id</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\NotFoundException">NotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when the id is not valid</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\PrimaryKeyNotFoundException">PrimaryKeyNotFoundException</abbr></td>
                 <td>
 </td>
             </tr>
@@ -439,12 +534,12 @@
     </div>
 
                 <h3 id="method_findOneBy">
-        <div class="location">at line 142</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
+        <div class="location">at line 169</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr>
     <strong>findOneBy</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
     </h3>
     <div class="details">
-        <p>Find a record</p>
+        <p>Find a record by unique key</p>
         <p>
 </p>
         <div class="tags">
@@ -469,7 +564,190 @@
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr></td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>|<abbr title="Soluble\Normalist\Synthetic\false">false</abbr></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when a column in the predicate does not exists</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\UnexpectedValueException">UnexpectedValueException</abbr></td>
+                <td>when more than one record match the predicate</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when the predicate is not correct / invalid column</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_findOneByOrFail">
+        <div class="location">at line 224</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+    <strong>findOneByOrFail</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
+    </h3>
+    <div class="details">
+        <p>Find a record by unique key and trhow an exception id record cannot be found</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td>$predicate</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\NotFoundException">NotFoundException</abbr></td>
+                <td>when the record is not found</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when a column in the predicate does not exists</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\UnexpectedValueException">UnexpectedValueException</abbr></td>
+                <td>when more than one record match the predicate</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when the predicate is not correct / invalid column</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_count">
+        <div class="location">at line 238</div>
+        <code>            public            int
+    <strong>count</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Count the number of record in table</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td>number of record in table</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_countBy">
+        <div class="location">at line 252</div>
+        <code>            public            int
+    <strong>countBy</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
+    </h3>
+    <div class="details">
+        <p>Find a record by unique key</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td>$predicate</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td>number of record matching predicates</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_exists">
+        <div class="location">at line 273</div>
+        <code>            public            boolean
+    <strong>exists</strong>(integer|string|array $id)</code>
+    </h3>
+    <div class="details">
+        <p>Test if a record exists</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>integer|string|array</td>
+                <td>$id</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
             <td>
 </td>
         </tr>
@@ -481,11 +759,10 @@
                     <table>
                     <tr>
                 <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
-                <td>
-</td>
+                <td>when the id is invalid</td>
             </tr>
                     <tr>
-                <td><abbr title="Exception\UnexpectedValueException">UnexpectedValueException</abbr></td>
+                <td><abbr title="Exception\PrimaryKeyNotFoundException">PrimaryKeyNotFoundException</abbr></td>
                 <td>
 </td>
             </tr>
@@ -495,13 +772,13 @@
                     </div>
     </div>
 
-                <h3 id="method_exists">
-        <div class="location">at line 159</div>
+                <h3 id="method_existsBy">
+        <div class="location">at line 292</div>
         <code>            public            boolean
-    <strong>exists</strong>(int $id)</code>
+    <strong>existsBy</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
     </h3>
     <div class="details">
-        <p>Test if a record exists</p>
+        <p>Test if a record exists by a predicate</p>
         <p>
 </p>
         <div class="tags">
@@ -509,10 +786,15 @@
 
                     <table>
                     <tr>
-                <td>int</td>
-                <td>$id</td>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td>$predicate</td>
                 <td>
 </td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
             </tr>
             </table>
 
@@ -522,6 +804,51 @@
                     <table>
         <tr>
             <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when the predicate is not correct</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_select">
+        <div class="location">at line 312</div>
+        <code>            public            <abbr title="Soluble\Normalist\Synthetic\Soluble\Db\Sql\Select">Select</abbr>
+    <strong>select</strong>(string $table_alias = null)</code>
+    </h3>
+    <div class="details">
+        <p>Get a Soluble\Db\Select object</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$table_alias</td>
+                <td>useful when you want to join columns</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Soluble\Normalist\Synthetic\Soluble\Db\Sql\Select">Select</abbr></td>
             <td>
 </td>
         </tr>
@@ -533,12 +860,12 @@
     </div>
 
                 <h3 id="method_delete">
-        <div class="location">at line 172</div>
-        <code>            public            boolean
-    <strong>delete</strong>($id)</code>
+        <div class="location">at line 334</div>
+        <code>            public            int
+    <strong>delete</strong>(integer|string|array $id)</code>
     </h3>
     <div class="details">
-        <p>Delete a record</p>
+        <p>Delete by primary/unique key value</p>
         <p>
 </p>
         <div class="tags">
@@ -546,10 +873,59 @@
 
                     <table>
                     <tr>
-                <td></td>
+                <td>integer|string|array</td>
                 <td>$id</td>
+                <td>primary key(s) or a Record object</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td>the number of affected rows (maybe be greater than 1 with trigger or cascade)</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>if $id is not valid</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_deleteBy">
+        <div class="location">at line 349</div>
+        <code>            public            boolean
+    <strong>deleteBy</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
+    </h3>
+    <div class="details">
+        <p>Delete a record by predicate</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td>$predicate</td>
                 <td>
 </td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
             </tr>
             </table>
 
@@ -559,7 +935,8 @@
                     <table>
         <tr>
             <td>boolean</td>
-            <td>if deletion worked</td>
+            <td>
+</td>
         </tr>
     </table>
 
@@ -568,13 +945,13 @@
                     </div>
     </div>
 
-                <h3 id="method_insert">
-        <div class="location">at line 196</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>
-    <strong>insert</strong>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data)</code>
+                <h3 id="method_deleteOrFail">
+        <div class="location">at line 370</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a>
+    <strong>deleteOrFail</strong>(integer|string|array $id)</code>
     </h3>
     <div class="details">
-        <p>Insert data into table</p>
+        <p>Delete a record or throw an Exception</p>
         <p>
 </p>
         <div class="tags">
@@ -582,16 +959,9 @@
 
                     <table>
                     <tr>
-                <td>string</td>
-                <td>$table</td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
-                <td>$data</td>
-                <td>
-</td>
+                <td>integer|string|array</td>
+                <td>$id</td>
+                <td>primary key value</td>
             </tr>
             </table>
 
@@ -600,7 +970,7 @@
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a></td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a></td>
             <td>
 </td>
         </tr>
@@ -611,76 +981,12 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Exception\InvalidQueryException">InvalidQueryException</abbr></td>
-                <td>when a column does not exist in database</td>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>if $id is not valid</td>
             </tr>
                     <tr>
-                <td><abbr title="Exception\RuntimeException">RuntimeException</abbr></td>
-                <td>when a constraint violation or a not null value is thrown</td>
-            </tr>
-                    <tr>
-                <td><abbr title="Exception\ErrorException">ErrorException</abbr></td>
-                <td>other exception</td>
-            </tr>
-            </table>
-
-            
-                    </div>
-    </div>
-
-                <h3 id="method_insertOnDuplicateKey">
-        <div class="location">at line 269</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a>
-    <strong>insertOnDuplicateKey</strong>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, array|null $duplicate_exclude = array())</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>string</td>
-                <td>$table</td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
-                <td>$data</td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td>array|null</td>
-                <td>$duplicate_exclude</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticRecord.html"><abbr title="Soluble\Normalist\SyntheticRecord">SyntheticRecord</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table>
-                    <tr>
-                <td><a href="http://php.net/Exception"><abbr title="Exception">Exception</abbr></a></td>
-                <td>
-</td>
+                <td><abbr title="Exception\NotFoundException">NotFoundException</abbr></td>
+                <td>if record does not exists</td>
             </tr>
             </table>
 
@@ -689,9 +995,9 @@
     </div>
 
                 <h3 id="method_update">
-        <div class="location">at line 372</div>
+        <div class="location">at line 397</div>
         <code>            public            int
-    <strong>update</strong>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)</code>
+    <strong>update</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = Predicate\PredicateSet::OP_AND, boolean $validate_datatypes = false)</code>
     </h3>
     <div class="details">
         <p>Update data into table</p>
@@ -701,12 +1007,6 @@
                             <h4>Parameters</h4>
 
                     <table>
-                    <tr>
-                <td>string</td>
-                <td>$table</td>
-                <td>
-</td>
-            </tr>
                     <tr>
                 <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
                 <td>$data</td>
@@ -718,6 +1018,16 @@
                 <td>$predicate</td>
                 <td>
 </td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
+            </tr>
+                    <tr>
+                <td>boolean</td>
+                <td>$validate_datatypes</td>
+                <td>ensure all datatype are compatible with column definition</td>
             </tr>
             </table>
 
@@ -732,111 +1042,63 @@
     </table>
 
             
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getRelations">
-        <div class="location">at line 419</div>
-        <code>            public            array
-    <strong>getRelations</strong>(string $table)</code>
-    </h3>
-    <div class="details">
-        <p>Return table relations</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
+                            <h4>Exceptions</h4>
 
                     <table>
                     <tr>
-                <td>string</td>
-                <td>$table</td>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
                 <td>
 </td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when $data contains columns that does not exists in table</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ForeignKeyException">ForeignKeyException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\DuplicateEntryException">DuplicateEntryException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\NotNullException">NotNullException</abbr></td>
+                <td>when insertion failed because a column cannot be null</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\RuntimeException">RuntimeException</abbr></td>
+                <td>when insertion failed for another reason</td>
             </tr>
             </table>
 
             
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td>array</td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
                     </div>
     </div>
 
-                <h3 id="method_getColumnsInformation">
-        <div class="location">at line 431</div>
-        <code>            public            array
-    <strong>getColumnsInformation</strong>(string $table)</code>
+                <h3 id="method_insert">
+        <div class="location">at line 441</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+    <strong>insert</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, boolean $validate_datatypes = false)</code>
     </h3>
     <div class="details">
-        <p>Return table columns</p>
+        <p>Insert data into table</p>
         <p>
 </p>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table>
-                    <tr>
-                <td>string</td>
-                <td>$table</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td>array</td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getRecordCleanedData">
-        <div class="location">at line 448</div>
-        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
-    <strong>getRecordCleanedData</strong>(string $table, array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, boolean $throwException = false)</code>
-    </h3>
-    <div class="details">
-        <p>Return cleaned data suitable for inserting/updating a table If $throwException is true, if any non existing column is found an error will be thrown</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>string</td>
-                <td>$table</td>
-                <td>table name</td>
-            </tr>
                     <tr>
                 <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
                 <td>$data</td>
-                <td>associative array containing data to insert</td>
+                <td>
+</td>
             </tr>
                     <tr>
                 <td>boolean</td>
-                <td>$throwException</td>
-                <td>if true will throw an exception if a column does not exists</td>
+                <td>$validate_datatypes</td>
+                <td>ensure data are compatible with database columns datatypes</td>
             </tr>
             </table>
 
@@ -845,7 +1107,7 @@
 
                     <table>
         <tr>
-            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
 </td>
         </tr>
@@ -856,9 +1118,28 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Exception\InvalidColumnException">InvalidColumnException</abbr></td>
-                <td>
-</td>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when data is not an array or an ArrayObject</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when $data contains columns that does not exists in table</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ForeignKeyException">ForeignKeyException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\DuplicateEntryException">DuplicateEntryException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\NotNullException">NotNullException</abbr></td>
+                <td>when insertion failed because a column cannot be null</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\RuntimeException">RuntimeException</abbr></td>
+                <td>when insertion failed for another reason</td>
             </tr>
             </table>
 
@@ -866,13 +1147,13 @@
                     </div>
     </div>
 
-                <h3 id="method_getPrimaryKeys">
-        <div class="location">at line 468</div>
-        <code>            public            array
-    <strong>getPrimaryKeys</strong>(string $table)</code>
+                <h3 id="method_insertOnDuplicateKey">
+        <div class="location">at line 502</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+    <strong>insertOnDuplicateKey</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, array $duplicate_exclude = array(), boolean $validate_datatypes = false)</code>
     </h3>
     <div class="details">
-        <p>Return table primary keys</p>
+        <p>Insert on duplicate key</p>
         <p>
 </p>
         <div class="tags">
@@ -880,13 +1161,176 @@
 
                     <table>
                     <tr>
-                <td>string</td>
-                <td>$table</td>
+                <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$data</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$duplicate_exclude</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>boolean</td>
+                <td>$validate_datatypes</td>
+                <td>ensure data are compatible with database columns datatypes</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ForeignKeyException">ForeignKeyException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\DuplicateEntryException">DuplicateEntryException</abbr></td>
+                <td>when insertion failed because of an invalid foreign key</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\NotNullException">NotNullException</abbr></td>
+                <td>when insertion failed because a column cannot be null</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getRelations">
+        <div class="location">at line 615</div>
+        <code>            public            array
+    <strong>getRelations</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return table relations</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_record">
+        <div class="location">at line 636</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+    <strong>record</strong>($data = array(), $ignore_invalid_columns = true)</code>
+    </h3>
+    <div class="details">
+        <p>Return a record object for this table If $data is specified, the record will be filled with the data present in the associative array</p>
+        <p>If $throwException is true, if any non existing column is found
+an error will be thrown</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$data</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$ignore_invalid_columns</td>
                 <td>
 </td>
             </tr>
             </table>
 
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>if $ignore<em>invalid</em>columns is false and some columns does not exists in table</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_relation">
+        <div class="location">at line 653</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Table/Relation.html"><abbr title="Soluble\Normalist\Synthetic\Table\Relation">Relation</abbr></a>
+    <strong>relation</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return table relation reader</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/Table/Relation.html"><abbr title="Soluble\Normalist\Synthetic\Table\Relation">Relation</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getPrimaryKeys">
+        <div class="location">at line 665</div>
+        <code>            public            array
+    <strong>getPrimaryKeys</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return table primary keys</p>
+        <p>
+</p>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -904,26 +1348,15 @@
     </div>
 
                 <h3 id="method_getPrimaryKey">
-        <div class="location">at line 479</div>
+        <div class="location">at line 679</div>
         <code>            public            int|string
-    <strong>getPrimaryKey</strong>($table)</code>
+    <strong>getPrimaryKey</strong>()</code>
     </h3>
     <div class="details">
         <p>Return primary key, if multiple primary keys found will throw an exception</p>
         <p>
 </p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td></td>
-                <td>$table</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
@@ -950,14 +1383,13 @@
                     </div>
     </div>
 
-                <h3 id="method_getMetadata">
-        <div class="location">at line 488</div>
-        <code>            public            <a href="../../../Soluble/Db/Metadata/Source/AbstractSource.html"><abbr title="Soluble\Db\Metadata\Source\AbstractSource">AbstractSource</abbr></a>
-    <strong>getMetadata</strong>()</code>
+                <h3 id="method_getColumnsInformation">
+        <div class="location">at line 691</div>
+        <code>            public            array
+    <strong>getColumnsInformation</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return list of table columns</p>
         <p>
 </p>
         <div class="tags">
@@ -966,7 +1398,7 @@
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Db/Metadata/Source/AbstractSource.html"><abbr title="Soluble\Db\Metadata\Source\AbstractSource">AbstractSource</abbr></a></td>
+            <td>array</td>
             <td>
 </td>
         </tr>
@@ -977,34 +1409,22 @@
                     </div>
     </div>
 
-                <h3 id="method_setDbAdapter">
-        <div class="location">at line 500</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a>
-    <strong>setDbAdapter</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter)</code>
+                <h3 id="method_getTableName">
+        <div class="location">at line 706</div>
+        <code>            public            string
+    <strong>getTableName</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return the original table name</p>
         <p>
 </p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td><abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr></td>
-                <td>$adapter</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a></td>
+            <td>string</td>
             <td>
 </td>
         </tr>
@@ -1015,34 +1435,22 @@
                     </div>
     </div>
 
-                <h3 id="method_setMetadata">
-        <div class="location">at line 529</div>
-        <code>            public            <a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a>
-    <strong>setMetadata</strong>(<abbr title="Soluble\Normalist\Synthetic\Source\AbstractSource">AbstractSource</abbr> $metadata)</code>
+                <h3 id="method_getPrefixedTableName">
+        <div class="location">at line 716</div>
+        <code>            public            string
+    <strong>getPrefixedTableName</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return the prefixed table</p>
         <p>
 </p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\Source\AbstractSource">AbstractSource</abbr></td>
-                <td>$metadata</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Normalist/SyntheticTable.html"><abbr title="Soluble\Normalist\SyntheticTable">SyntheticTable</abbr></a></td>
+            <td>string</td>
             <td>
 </td>
         </tr>
@@ -1053,34 +1461,22 @@
                     </div>
     </div>
 
-                <h3 id="method_setTablePrefix">
-        <div class="location">at line 541</div>
-        <code>            public            <abbr title="Soluble\Normalist\Synthetic">Synthetic</abbr>
-    <strong>setTablePrefix</strong>(string $tablePrefix)</code>
+                <h3 id="method_getTableManager">
+        <div class="location">at line 727</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a>
+    <strong>getTableManager</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return underlying table manager</p>
         <p>
 </p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>string</td>
-                <td>$tablePrefix</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table>
         <tr>
-            <td><abbr title="Soluble\Normalist\Synthetic">Synthetic</abbr></td>
+            <td><a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a></td>
             <td>
 </td>
         </tr>

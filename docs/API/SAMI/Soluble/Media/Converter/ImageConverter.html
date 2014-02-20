@@ -46,12 +46,11 @@
             </tr>
                     <tr>
                 <td class="type">
-                    
+                    <a href="../../../Soluble/Media/Converter/ImageConverter.html"><abbr title="Soluble\Media\Converter\ImageConverter">ImageConverter</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_setBackend">setBackend</a>($backend)
-                    <p>
-</p>
+                    <a href="#method_setBackend">setBackend</a>(string $backend)
+                    <p>Set the backend gd of imagick to use</p>
                 </td>
                 <td></td>
             </tr>
@@ -121,13 +120,12 @@
     </div>
 
                 <h3 id="method_setBackend">
-        <div class="location">at line 49</div>
-        <code>            public            
-    <strong>setBackend</strong>($backend)</code>
+        <div class="location">at line 58</div>
+        <code>            public            <a href="../../../Soluble/Media/Converter/ImageConverter.html"><abbr title="Soluble\Media\Converter\ImageConverter">ImageConverter</abbr></a>
+    <strong>setBackend</strong>(string $backend)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Set the backend gd of imagick to use</p>
         <p>
 </p>
         <div class="tags">
@@ -135,21 +133,40 @@
 
                     <table>
                     <tr>
-                <td></td>
+                <td>string</td>
                 <td>$backend</td>
+                <td>(gd/imagick)</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Media/Converter/ImageConverter.html"><abbr title="Soluble\Media\Converter\ImageConverter">ImageConverter</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\UnsupportedBackendException">UnsupportedBackendException</abbr></td>
                 <td>
 </td>
             </tr>
             </table>
 
             
-            
-            
                     </div>
     </div>
 
                 <h3 id="method_getThumbnail">
-        <div class="location">at line 67</div>
+        <div class="location">at line 82</div>
         <code>            public            
     <strong>getThumbnail</strong>(string $filename, <a href="../../../Soluble/Media/BoxDimension.html"><abbr title="Soluble\Media\BoxDimension">BoxDimension</abbr></a> $box, string $format = null, int $quality = null)</code>
     </h3>
@@ -210,7 +227,7 @@
     </div>
 
                 <h3 id="method_setCache">
-        <div class="location">at line 209</div>
+        <div class="location">at line 225</div>
         <code>            public            <a href="../../../Soluble/Media/Converter/ImageConverter.html"><abbr title="Soluble\Media\Converter\ImageConverter">ImageConverter</abbr></a>
     <strong>setCache</strong>(<abbr title="Zend\Cache\Storage\StorageInterface">StorageInterface</abbr> $storage)</code>
     </h3>
@@ -248,7 +265,7 @@
     </div>
 
                 <h3 id="method_unsetCache">
-        <div class="location">at line 219</div>
+        <div class="location">at line 236</div>
         <code>            public            <a href="../../../Soluble/Media/Converter/ImageConverter.html"><abbr title="Soluble\Media\Converter\ImageConverter">ImageConverter</abbr></a>
     <strong>unsetCache</strong>()</code>
     </h3>

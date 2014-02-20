@@ -37,7 +37,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)
                     <p>
 </p>
                 </td>
@@ -92,7 +92,7 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_order">order</a>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $order)
+                    <a href="#method_order">order</a>(string|array $order)
                     <p>
 </p>
                 </td>
@@ -103,7 +103,7 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_where">where</a>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $predicate, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $combination = null)
+                    <a href="#method_where">where</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = null)
                     <p>
 </p>
                 </td>
@@ -114,7 +114,18 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_join">join</a>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $table, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $on, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $columns = null, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $type = null)
+                    <a href="#method_orWhere">orWhere</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_join">join</a>(string|array $table, string $on, string|array $columns = null, string $type = null)
                     <p>
 </p>
                 </td>
@@ -133,12 +144,11 @@
             </tr>
                     <tr>
                 <td class="type">
-                    
+                    string
                 </td>
                 <td class="last">
                     <a href="#method_getSql">getSql</a>()
-                    <p>
-</p>
+                    <p>Return SQL string</p>
                 </td>
                 <td></td>
             </tr>
@@ -148,8 +158,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_toJson">toJson</a>()
-                    <p>
-</p>
+                    <p>Return a json version of the results</p>
                 </td>
                 <td></td>
             </tr>
@@ -159,8 +168,17 @@
                 </td>
                 <td class="last">
                     <a href="#method_toArray">toArray</a>()
-                    <p>
-</p>
+                    <p>Return an array version of the results</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_execute">execute</a>()
+                    <p>Return record as an array</p>
                 </td>
                 <td></td>
             </tr>
@@ -180,9 +198,9 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 35</div>
+        <div class="location">at line 37</div>
         <code>            public            
-    <strong>__construct</strong>(<a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a> $tableManager)</code>
+    <strong>__construct</strong>(<a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)</code>
     </h3>
     <div class="details">
         <p>
@@ -200,8 +218,8 @@
 </td>
             </tr>
                     <tr>
-                <td><a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a></td>
-                <td>$tableManager</td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a></td>
+                <td>$table</td>
                 <td>
 </td>
             </tr>
@@ -214,7 +232,7 @@
     </div>
 
                 <h3 id="method_limit">
-        <div class="location">at line 45</div>
+        <div class="location">at line 48</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>limit</strong>(int $limit)</code>
     </h3>
@@ -252,7 +270,7 @@
     </div>
 
                 <h3 id="method_offset">
-        <div class="location">at line 56</div>
+        <div class="location">at line 59</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>offset</strong>(int $offset)</code>
     </h3>
@@ -290,7 +308,7 @@
     </div>
 
                 <h3 id="method_columns">
-        <div class="location">at line 69</div>
+        <div class="location">at line 72</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>columns</strong>(array $columns, boolean $prefixColumnsWithTable = false)</code>
     </h3>
@@ -334,7 +352,7 @@
     </div>
 
                 <h3 id="method_group">
-        <div class="location">at line 80</div>
+        <div class="location">at line 83</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>group</strong>(array $group)</code>
     </h3>
@@ -372,9 +390,9 @@
     </div>
 
                 <h3 id="method_order">
-        <div class="location">at line 91</div>
+        <div class="location">at line 94</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>order</strong>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $order)</code>
+    <strong>order</strong>(string|array $order)</code>
     </h3>
     <div class="details">
         <p>
@@ -386,7 +404,7 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string|array</td>
                 <td>$order</td>
                 <td>
 </td>
@@ -410,9 +428,9 @@
     </div>
 
                 <h3 id="method_where">
-        <div class="location">at line 103</div>
+        <div class="location">at line 107</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>where</strong>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $predicate, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $combination = null)</code>
+    <strong>where</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = null)</code>
     </h3>
     <div class="details">
         <p>
@@ -424,14 +442,61 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
                 <td>$predicate</td>
                 <td>
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string</td>
                 <td>$combination</td>
+                <td>One of the OP_* constants from Zend\Db\Sql\Predicate\PredicateSet</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_orWhere">
+        <div class="location">at line 119</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+    <strong>orWhere</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td>$predicate</td>
                 <td>
 </td>
             </tr>
@@ -449,14 +514,24 @@
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
                 <h3 id="method_join">
-        <div class="location">at line 117</div>
+        <div class="location">at line 133</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>join</strong>(<abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $table, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $on, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $columns = null, <abbr title="Soluble\Normalist\Synthetic\type">type</abbr> $type = null)</code>
+    <strong>join</strong>(string|array $table, string $on, string|array $columns = null, string $type = null)</code>
     </h3>
     <div class="details">
         <p>
@@ -468,28 +543,27 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string|array</td>
                 <td>$table</td>
                 <td>
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string</td>
                 <td>$on</td>
                 <td>
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string|array</td>
                 <td>$columns</td>
                 <td>
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Soluble\Normalist\Synthetic\type">type</abbr></td>
+                <td>string</td>
                 <td>$type</td>
-                <td>
-</td>
+                <td>one of the JOIN_* constants</td>
             </tr>
             </table>
 
@@ -510,7 +584,7 @@
     </div>
 
                 <h3 id="method_getSelect">
-        <div class="location">at line 128</div>
+        <div class="location">at line 144</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
     <strong>getSelect</strong>()</code>
     </h3>
@@ -537,30 +611,38 @@
     </div>
 
                 <h3 id="method_getSql">
-        <div class="location">at line 133</div>
-        <code>            public            
+        <div class="location">at line 154</div>
+        <code>            public            string
     <strong>getSql</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return SQL string</p>
         <p>
 </p>
         <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
             
             
                     </div>
     </div>
 
                 <h3 id="method_toJson">
-        <div class="location">at line 143</div>
+        <div class="location">at line 165</div>
         <code>            public            string
     <strong>toJson</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return a json version of the results</p>
         <p>
 </p>
         <div class="tags">
@@ -580,13 +662,12 @@
     </div>
 
                 <h3 id="method_toArray">
-        <div class="location">at line 152</div>
+        <div class="location">at line 174</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return an array version of the results</p>
         <p>
 </p>
         <div class="tags">
@@ -606,8 +687,34 @@
                     </div>
     </div>
 
+                <h3 id="method_execute">
+        <div class="location">at line 186</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
+    <strong>execute</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return record as an array</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_toArrayColumn">
-        <div class="location">at line 165</div>
+        <div class="location">at line 204</div>
         <code>            public            array
     <strong>toArrayColumn</strong>(string $columnKey, string $indexKey)</code>
     </h3>
