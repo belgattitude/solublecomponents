@@ -2,41 +2,41 @@
 Normalist ORM
 =============
 
-Normalist is a zero configuration ORM. Inspired by Laravel Eloquent, 
-Doctrine and build on top of Zend Framework 2 database component.  
+.. note:: 
+   Normalist is an opensource zero configuration ORM for PHP 5.3+.
 
-Typical usage scenarios
-+++++++++++++++++++++++
+Introduction
+------------
 
-Normalist has been primarily designed to modernize, secure and empower existing PHP applications. 
-. 
-By getting models information directly from the database, it does not require any model configuration.
-In a way it can be considered as a zero configuration ORM. 
+Normalist has been designed to provide an alternative to standard ORM's by 
+allowing models to be dynamically guessed from your database structure, which 
+make them usable without previous definition. Its API is inspired by Doctrine, Laravel Eloquent and 
+Zend Framework 2, offering simple and intuitive methods to work with your database.
 
-modernize
-comprehensive
+Features
+++++++++
 
-
-Normalist has been specifically designed to work with an existing database 
-without any additional setup. 
-
++ Automatic models and synthetic tables
++ Intuitive and simple API
++ Secure, automatic protection against SQL injections
++ Comprehensive error reporting
++ Modernize your existing code
++ Easily integrable into every new or existing PHP project 
++ Well documented 
++ Stable 100% unit tested, PSR-2 compliant
++ PHP 5.3+ namespaced
++ MIT licensed
 
 Requirements
 ++++++++++++
 
-PHP 5.3 and a MySQL database 5.1+
-
-
-
+Normalist is written in PHP 5.3 and currently supports MySQL/MariaDb 5.1+ (PDO_Mysql or MySQLi extensions).
 
 Installation
-------------
+++++++++++++
 
-The recommended way to install Normalist is through `Composer`_.
-Composer is a dependency management library for PHP.
-
-Here is an example of composer project configuration that requires normalist
-version 0.1.
+The recommended way to install Normalist is through `Composer <https://getcomposer.org/>`_.
+Just add soluble/normalist in your composer.json file as described below
 
 .. code-block:: json
 
@@ -46,46 +46,123 @@ version 0.1.
         }
     }
 
-Install the dependencies using composer.phar and use Imagine :
+Run composer update or install.
 
-.. code-block:: none
+.. code-block:: bash
 
-    php composer.phar install
-    
+    $ php composer.phar update
+
+
+Usage
+=====
+
+Table Manager
+-------------
+When 
 
 
 Synthetic Table
-===============
+---------------
 
-Using Synthetic tables
-++++++++++++++++++++++
+Finding a record
+++++++++++++++++
 
-To 
+
+.. code-block:: php
+   :linenos:
+    <?php
+    use Soluble\Normalist\Synthetic\TableManager;
+    use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+
+    // Inject a Zend\Db\Adapter\Adapter object
+    $tm = new TableManager($adapter);
+
+    // Get a SyntheticTable from table 'user'
+    $userTable = $tm->table('user');
+
+    // Test if a primary key exists
+    if ($userTable->exists(1)) { echo "User exists"; } ;
+
+    // Getting an user record
+    $userRecord = $userTable->findOneBy(array('username' => 'loginname'));
+    $userRecord = $userTable->find(1);
+    if (!$userRecord) {
+        echo "User does not exists";
+    }
+
+    // Getting an user record or throw an Exception
+    try {
+        $userRecord = $userTable->findOneByOrFail(array('username' => 'loginname'));
+        $userRecord = $userTable->findOrFail(1);
+    } catch (SyntheticException\RecordNotFoundException $e) {
+        echo "Error getting user, it does not exists in database";
+    } catch (SyntheticException\ExceptionInterface $e) {
+        echo "Error getting user";
+    }
+
+
+Getting records
++++++++++++++++
+
 
 .. code-block:: php
 
-   <?php
-   use Normalist\Synthetic\TableManager;
+    <?php
 
-   $tm = new TableManager($adapter);
-   $posts = $tm->table('post');
+    // Getting all users
+    $users = $userTable->all();
+    foreach ($users as $userRecord) {
+        echo $userRecord->name;
+    }
+    
+    // All users to Json and Array
+    $json  = $userTable->all()->toJson();
+    $array = $userTable->all()->toArray();
 
-   // Will return an existing post
-   $post = $posts->find(1); 
-   if ($post) {
-     echo "Found post: " . $post->title;
-   }
+    // Searching users
+
+
+Finding a record by primary key
++++++++++++++++++++++++++++++++
+
+
+.. code-block:: php
+
+    <?php
+    use Normalist\Synthetic\TableManager;
+
+    $tm = new TableManager($adapter);
+    $posts = $tm->table('post');
+
+    // Finding a record by post_id = 1
+    $post = $posts->find(1); 
+    if ($post) {
+        echo "Found post: " . $post->title;
+    } else {
+        echo "Post not found";
+    }
+
+    
    
-   // Will return false
-   $post = $posts->find(5454654156151);
+Retrieving a records by conditions 
++++++++++++++++++++++++++++++++++++
 
-   // Test if a record exists
-   $test = $posts->exists(1);
+.. code-block:: php
 
-   $results = $posts->search()
-                ->where(array('category_id' => 1))
-                ->order(array('updated_at DESC', 'title ASC'))
-                ->toArray();
+    <?php
+    use Normalist\Synthetic\TableManager;
+
+    $tm = new TableManager($adapter);
+    $posts = $tm->table('post');
+
+    // Will return an existing post
+    $post = $posts->find(1); 
+    if ($post) {
+        echo "Found post: " . $post->title;
+    } else {
+        echo "Post not found";
+    }
+
 
 
 Transactions
@@ -110,16 +187,37 @@ Transactions
 	} 
 	$tm->transaction()->commit();
 	
+Synthetic Record
+----------------
+
 	
 
+Notes
+=====
 
-. TIP::
-   Read more about SyntheticTable_
+In a existing project
+---------------------
 
-The ``SyntheticTable::`` method may throw one of the following exceptions:
 
-* ``Normalist\Synthetic\Exception\InvalidArgumentException``
+Typical usage scenarios
+-----------------------
+Normalist has been primarily designed to modernize, secure and empower existing PHP applications.  
+If your project use already a decent ORM such as Doctrine, we recommend you to continue using it.
 
-.. TIP::
-   Read more about Normalist/exceptions_
 
+Portability
+-----------
+
+Currently Normalist supports only MySQL or MariaDB databases. Postgres and Oracle could be supported
+by implementing a specific reader in the project. 
+
+
+Contributing
+------------
+
+Project contributions are welcome, check our github repository.
+
+Roadmap
+-------
+
+Roadmap for the project will be documented soon

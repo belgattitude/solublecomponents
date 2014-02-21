@@ -210,7 +210,7 @@ html_static_path = ["_static"]
 #html_sidebars = {}
 #html_sidebars = {'sidebar': ['localtoc.html', 'sourcelink.html', 'searchbox.html']}
 html_sidebars = {
-     '**': ['localtoc.html', 'searchbox.html'],
+     '**': ['localtoc.html'],
 	'sidebar': ['localtoc.html', 'searchbox.html']
 }
 

@@ -2,7 +2,7 @@
 
 /* Unused samples for overrides example. */
 .navbar-default .navbar-brand {
-  color: yellow;
+  color: #DDBC00;
 }
 
 footer {
@@ -16,4 +16,8 @@ div.highlight pre {
 	font-family: "Ubuntu Mono", Menlo,Monaco,Consolas,"Courier New",monospace
 	
 	
+}
+
+div.highlight-bash pre {
+    color: #FFFFFF;
 }
