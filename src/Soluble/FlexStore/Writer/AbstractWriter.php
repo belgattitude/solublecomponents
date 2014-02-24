@@ -25,8 +25,8 @@ abstract class AbstractWriter
 
      /**
       *
-      * @param \Soluble\FlexStore\Source\SourceInterface $source
-      * @param array|Traversable $options
+      * @param SourceInterface|null $source
+      * @param array|Traversable|null $options
       */
     public function __construct(SourceInterface $source=null, $options=null)
     {

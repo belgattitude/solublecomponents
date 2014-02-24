@@ -35,7 +35,7 @@ class Record implements ArrayAccess
      * @var \ArrayObject
      */
     protected $_securedFieldForArrayAccess;
-    
+
     /**
      *
      * @var ArrayObject
@@ -159,24 +159,24 @@ class Record implements ArrayAccess
      */
     public function toArray()
     {
-        
+
         if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
         }
         return (array) $this->_securedFieldForArrayAccess['data'];
     }
-    
+
     /**
      * Return an json version of the record
-     * 
+     *
      * @throws Exception\LogicException when the record has been deleted
-     * @return string 
+     * @return string
      */
     public function toJson()
     {
         return json_encode($this->toArray());
     }
-    
+
 
 
 
@@ -268,7 +268,7 @@ class Record implements ArrayAccess
      * @param mixed $value
      * @return void
      */
-    
+
     public function __set($field, $value)
     {
 
@@ -348,12 +348,12 @@ class Record implements ArrayAccess
         }
         return $predicate;
     }
-    
+
     /**
      * Return originating table
      * @return Table
      */
-    function getTable()
+    public function getTable()
     {
         return $this->_securedFieldForArrayAccess['table'];
     }

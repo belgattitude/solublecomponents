@@ -2,6 +2,8 @@
 namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Writer\AbstractWriter;
 
+use Traversable;
+
 
 class SimpleXmlWriter extends AbstractWriter
 {
@@ -27,8 +29,8 @@ class SimpleXmlWriter extends AbstractWriter
 
      /**
       *
-      * @param \Soluble\FlexStore\Source\SourceInterface $source
-      * @param array|Traversable $options
+      * @param SourceInterface|null $source
+      * @param array|Traversable|null $options
       */
     public function __construct(SourceInterface $source=null, $options=null)
     {
@@ -83,7 +85,7 @@ class SimpleXmlWriter extends AbstractWriter
 
         );
 
-        if ($this->debug) {
+        if ($this->options['debug']) {
             $d['query'] = $data->getSource()->getQueryString();
         }
         $this->createXmlNode($d, $xml);

@@ -19,13 +19,13 @@ class ResultSet implements Iterator, Countable
     protected $dataSource;
 
     /**
-     * @var Table 
+     * @var Table
      */
     protected $table;
-    
+
     /**
      *
-     * @var Select 
+     * @var Select
      */
     protected $select;
 
@@ -41,6 +41,8 @@ class ResultSet implements Iterator, Countable
 
     /**
      *
+     * @param Select $select Originating select object
+     * @param Table $table Originating table
      */
     public function __construct(Select $select, Table $table)
     {
@@ -58,7 +60,7 @@ class ResultSet implements Iterator, Countable
     {
         return $this->dataSource->toArray();
     }
-    
+
     /**
      * Return an json version of the resultset
      * @return string Json encoded version
@@ -67,7 +69,7 @@ class ResultSet implements Iterator, Countable
     {
         return json_encode($this->dataSource->toArray());
     }
-    
+
 
     /**
      * Iterator: move pointer to next item
@@ -110,9 +112,7 @@ class ResultSet implements Iterator, Countable
      */
     public function valid()
     {
-
         return $this->dataSource->valid();
-
     }
 
     /**
@@ -135,8 +135,5 @@ class ResultSet implements Iterator, Countable
         $this->count = count($this->dataSource);
         return $this->count;
     }
-
-
-
 
 }

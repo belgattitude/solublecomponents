@@ -73,7 +73,7 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
-     * @return \Soluble\FlexStore\Helper\Paginator
+     * @return Paginator
      */
     public function getPaginator()
     {
@@ -89,8 +89,8 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
-     * @param \Soluble\FlexStore\Source\AbstractSource $source
-     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     * @param AbstractSource $source
+     * @return ResultSet
      */
     public function setSource(AbstractSource $source)
     {
@@ -175,7 +175,7 @@ class ResultSet extends AbstractResultSet
     /**
      *
      * @param array $columns
-     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     * @return ResultSet
      */
     public function setColumns(array $columns)
     {
@@ -187,7 +187,7 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
-     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     * @return ResultSet
      */
     public function unsetColumns()
     {
@@ -210,7 +210,8 @@ class ResultSet extends AbstractResultSet
             $d = new \ArrayObject();
             if (!$this->columnsChecked) {
                 foreach($this->columns as $column) {
-                    if (!$data->offsetExists($column)) {
+                    //if (!$data->offsetExists($column)) {
+                    if (!array_key_exists($column, $data)) {
                         $msg = "Column '$column' does not exists";
                         throw new Exception\UnknownColumnException($msg);
                     }

@@ -160,7 +160,7 @@ class TableSearch
 
     /**
      * Return a json version of the results
-     * @return string Json encoded 
+     * @return string Json encoded
      */
     public function toJson()
     {

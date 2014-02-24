@@ -256,7 +256,7 @@ class Table
                         ->columns(array('count' => new Expression('count(*)')))
                         ->where($predicate, $combination)
                         ->execute()->toArray();
-        
+
         return (int) $result[0]['count'];
     }
 
@@ -311,7 +311,7 @@ class Table
      */
     public function select($table_alias = null)
     {
-        $prefixed_table = $this->getPrefixedTableName();
+        $prefixed_table = $this->prefixed_table;
         $select = new Select();
         $select->setDbAdapter($this->tableManager->getDbAdapter());
         if ($table_alias === null) {
@@ -396,7 +396,7 @@ class Table
 
     public function update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatypes=false)
     {
-        $prefixed_table = $this->getPrefixedTableName();
+        $prefixed_table = $this->prefixed_table;
 
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
@@ -440,7 +440,7 @@ class Table
      */
     public function insert($data, $validate_datatypes=false)
     {
-        $prefixed_table = $this->getPrefixedTableName();
+        $prefixed_table = $this->prefixed_table;
 
         if ($data instanceof \ArrayObject) {
             $d = (array) $data;
@@ -567,7 +567,7 @@ class Table
                 // the duplicate has been fired
                 $unique_keys = $this->tableManager->metadata()->getUniqueKeys($this->prefixed_table);
                 $data_columns = array_keys($d);
-                
+
                 // Uniques keys could be
                 // array(
                 //      'unique_idx' => array('categ', 'legacy_mapping'),
@@ -637,9 +637,9 @@ class Table
     public function record($data = array(), $ignore_invalid_columns=true)
     {
         if (!$ignore_invalid_columns) {
-            $this->checkDataColumns($data);
+            $this->checkDataColumns((array) $data);
         }
-        $record = new Record($data, $this);
+        $record = new Record((array) $data, $this);
 
         $record->setState(Record::STATE_NEW);
         return $record;
@@ -854,7 +854,7 @@ class Table
             $msg = join(',', array_keys($diff));
             throw new Exception\ColumnNotFoundException(__CLASS__ . '::' . __METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
-        
+
     }
 
     /**

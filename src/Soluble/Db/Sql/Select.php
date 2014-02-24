@@ -8,6 +8,7 @@ use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\Select as ZendDbSqlSelect;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
+use Zend\Db\ResultSet\ResultSet;
 
 class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 {
@@ -48,8 +49,9 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 
 
     /**
-     * Execute the query
-     * @return
+     * Execute the query and return a Zend\Db\Resultset\ResultSet object
+     *
+     * @return ResultSet
      */
     public function execute()
     {

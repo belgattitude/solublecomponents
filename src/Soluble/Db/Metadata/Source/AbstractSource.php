@@ -32,6 +32,17 @@ abstract class AbstractSource
     abstract public function getPrimaryKey($table, $schema=null);
 
 
+    /**
+     * Return composite primary keys
+     *
+     * @throws Exception in case of a multiple primary key
+     * @param string $table
+     * @param string $schema
+     * @return null|array primary key
+     */
+    abstract public function getPrimaryKeys($table, $schema=null);
+
+
 
     /**
      * Return column information

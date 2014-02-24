@@ -24,7 +24,7 @@ class CSV extends AbstractWriter
 
 
     /**
-     * @throws \Soluble\FlexStore\Writer\Exception\CharsetConversionException
+     * @throws Exception\CharsetConversionException
      * @return string csv encoded data
      */
     public function getData()
