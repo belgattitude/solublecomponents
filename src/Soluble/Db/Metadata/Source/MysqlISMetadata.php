@@ -512,6 +512,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
             $this->validateSchema($schema);
         }
 
+        $tables = array();
 
         if (!array_key_exists($schema, $this->tables_information)) {
 
@@ -523,7 +524,6 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
                 throw new Exception\ErrorException($e->getMessage());
             }
 
-            $tables = array();
             foreach($result->toArray() as $record) {
                 $name = $record['TABLE_NAME'];
                 $tables[$name] = $record;
