@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
+use Zend\Db\Sql\Predicate;
 
 use ArrayAccess;
 use ArrayObject;
@@ -111,7 +112,7 @@ class Record implements ArrayAccess
         } elseif ($state == self::STATE_CLEAN || $state == self::STATE_DIRTY) {
             // Means update
             $predicate = $this->getRecordPrimaryKeyPredicate();
-            $this->getTable()->update($data, $predicate, $validate_datatype);
+            $this->getTable()->update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatype);
             $new_record = $this->getTable()->findOneBy($predicate);
         } else {
              //@codeCoverageIgnoreStart

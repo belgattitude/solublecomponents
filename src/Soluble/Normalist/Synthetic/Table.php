@@ -256,7 +256,7 @@ class Table
                         ->columns(array('count' => new Expression('count(*)')))
                         ->where($predicate, $combination)
                         ->execute()->toArray();
-        $count = $result[0]['count'];
+        
         return (int) $result[0]['count'];
     }
 
@@ -311,7 +311,7 @@ class Table
      */
     public function select($table_alias = null)
     {
-        $prefixed_table = $this->getTableName($this->table);
+        $prefixed_table = $this->getPrefixedTableName();
         $select = new Select();
         $select->setDbAdapter($this->tableManager->getDbAdapter());
         if ($table_alias === null) {
@@ -349,7 +349,7 @@ class Table
     public function deleteBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
         $delete = $this->sql->delete($this->prefixed_table)
-                ->where($predicate);
+                ->where($predicate, $combination);
 
         $statement = $this->sql->prepareStatementForSqlObject($delete);
         $result = $statement->execute();
@@ -396,7 +396,7 @@ class Table
 
     public function update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatypes=false)
     {
-        $prefixed_table = $this->prefixed_table;
+        $prefixed_table = $this->getPrefixedTableName();
 
         if ($data instanceOf ArrayObject) {
             $d = (array) $data;
@@ -414,7 +414,7 @@ class Table
 
         $update = $this->sql->update($prefixed_table);
         $update->set($d);
-        $update->where($predicate);
+        $update->where($predicate, $combination);
 
         $result = $this->executeStatement($update);
 
@@ -440,7 +440,7 @@ class Table
      */
     public function insert($data, $validate_datatypes=false)
     {
-        $prefixed_table = $this->prefixed_table;
+        $prefixed_table = $this->getPrefixedTableName();
 
         if ($data instanceof \ArrayObject) {
             $d = (array) $data;
@@ -463,7 +463,7 @@ class Table
 
         $this->executeStatement($insert);
 
-        $pks = $this->getPrimaryKeys($this->table);
+        $pks = $this->getPrimaryKeys();
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
             // In multiple keys there should not be autoincrement value
@@ -515,7 +515,7 @@ class Table
         $this->checkDataColumns(array_fill_keys($duplicate_exclude, null));
 
         if ($validate_datatypes) {
-            $this->validateDatatypes($data);
+            $this->validateDatatypes($d);
         }
 
         $insert = $this->sql->insert($this->prefixed_table);
@@ -567,7 +567,7 @@ class Table
                 // the duplicate has been fired
                 $unique_keys = $this->tableManager->metadata()->getUniqueKeys($this->prefixed_table);
                 $data_columns = array_keys($d);
-                $found = false;
+                
                 // Uniques keys could be
                 // array(
                 //      'unique_idx' => array('categ', 'legacy_mapping'),
@@ -575,6 +575,7 @@ class Table
                 //      )
                 //
 
+                $record = false;
 
                 foreach ($unique_keys as $index_name => $unique_columns) {
                     //echo "On duplicate key\n\n $index_name \n";
@@ -587,8 +588,8 @@ class Table
                         }
                         $record = $this->findOneBy($conditions);
                         if ($record) {
-                            $found = true;
-                            $pk_value = $record[$primary];
+                            //$found = true;
+                            //$pk_value = $record[$primary];
                             break;
                         }
                     }
@@ -597,7 +598,7 @@ class Table
                 // I cannot write a test case for that
                 // It should never happen but in case :
                 //@codeCoverageIgnoreStart
-                if (!$found) {
+                if (!$record) {
                     throw new \Exception(__CLASS__ . '::' . __METHOD__ . ": after probing all unique keys in table '{$this->table}', cannot dertermine which one was fired when using on duplicate key.");
                 }
                 //@codeCoverageIgnoreEnd
@@ -834,7 +835,6 @@ class Table
             } else {
                 $pks = join(',', $keys);
                 $vals = join(',', $matched_keys);
-                $type = gettype($id);
                 throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": incomplete primary key value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
             }
         }

@@ -31,8 +31,8 @@ class TableSearch
 
     /**
      *
-     * @param string $table table name
-     * @param \Soluble\Normalist\Synthetic\Table $table
+     * @param Select $select table name
+     * @param Table $table
      */
     public function __construct(Select $select, Table $table)
     {
@@ -130,7 +130,7 @@ class TableSearch
      * @param  string $type one of the JOIN_* constants
      * @return TableSearch
      */
-    public function join($table, $on, $columns=null, $type=null)
+    public function join($table, $on, $columns = Select::SQL_STAR, $type = Select::JOIN_INNER)
     {
         $this->select->join($table, $on, $columns, $type);
         return $this;

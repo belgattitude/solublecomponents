@@ -4,7 +4,7 @@ namespace Soluble\Normalist\Synthetic\ResultSet;
 use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\Record;
 
-use Zend\Db\Sql\Select;
+use Soluble\Db\Sql\Select;
 
 use Iterator;
 use Countable;
@@ -19,8 +19,13 @@ class ResultSet implements Iterator, Countable
     protected $dataSource;
 
     /**
+     * @var Table 
+     */
+    protected $table;
+    
+    /**
      *
-     * @param Select $select
+     * @var Select 
      */
     protected $select;
 
