@@ -289,33 +289,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @todo   Implement testGetColumnsInformation().
-     */
-    public function testGetColumnsInformation()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 
-
-
-    public function testGetPrimaryKeys()
-    {
-        $pks = $this->tableManager->getPrimaryKeys('media');
-        $this->assertInternalType('array', $pks);
-        $this->assertEquals(1, count($pks));
-        $this->assertEquals('media_id', $pks[0]);
-    }
-
-    public function testGetPrimaryKey()
-    {
-        $pk = $this->tableManager->getPrimaryKey('media');
-        $this->assertInternalType('string', $pk);
-        $this->assertEquals('media_id', $pk);
-    }
 
     public function testGetMetadata()
     {

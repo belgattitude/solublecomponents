@@ -101,36 +101,6 @@ class TableManager
         return $this->localTableCache->offsetGet($table_name);
 
     }
-    /**
-     * Return a synthetic table
-     *
-     * @param string $table_name table name
-     *
-     * @throws Exception\InvalidArgumentException if table name is not valid
-     *
-     * @return Table
-    // REMOVED with static cache
-
-    public function table($table_name)
-    {
-        if (!is_string($table_name)) {
-            throw new Exception\InvalidArgumentException("Table name must be a string");
-        }
-        if (!$this->localTableCache instanceof \ArrayObject) {
-            $this->localTableCache = new \ArrayObject();
-        };
-
-        if (!$this->localTableCache->offsetExists($table_name)) {
-            $tables = $this->metadata()->getTables();
-            if (!in_array($table_name, $tables)) {
-                throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
-            }
-            $table = new Table($table_name, $this);
-            $this->localTableCache->offsetSet($table_name, $table);
-        }
-        return $this->localTableCache->offsetGet($table_name);
-    }
-    */
 
     /**
      * Return a generic select
@@ -220,26 +190,6 @@ $rowset = $artistTable->select(function (Select $select) {
 
 
 
-    /**
-     * Return table primary keys
-     * @param string $table
-     * @return array
-     */
-    public function getPrimaryKeys($table)
-    {
-        return $this->metadata()->getPrimaryKeys($this->prefixed_table . $table);
-    }
-
-    /**
-     * Return primary key, if multiple primary keys found will
-     * throw an exception
-     * @throws Exception
-     * @return string
-     */
-    public function getPrimaryKey($table)
-    {
-        return $this->metadata()->getPrimaryKey($this->prefixed_table . $table);
-    }
 
     /**
      *

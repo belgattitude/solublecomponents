@@ -1,4 +1,4 @@
-:tocdepth: 3
+:tocdepth: 4
 Normalist ORM
 =============
 
@@ -10,18 +10,19 @@ Introduction
 
 Normalist has been designed to provide an alternative to standard ORM's by 
 allowing models to be dynamically guessed from your database structure, which 
-make them usable without previous definition. Its API is inspired by Doctrine, Laravel Eloquent and 
-Zend Framework 2, offering simple and intuitive methods to work with your database.
+make them usable without previous definition. Its beautiful API is inspired by Doctrine, Laravel Eloquent and 
+Zend Framework 2, offering simple and intuitive methods to play with your database.
 
 Features
 ++++++++
 
 + Automatic models and synthetic tables
-+ Intuitive and simple API
++ Elegant and intuitive API
 + Secure, automatic protection against SQL injections
 + Comprehensive error reporting
 + Modernize your existing code
 + Easily integrable into every new or existing PHP project 
++ Support custom table prefix
 + Well documented 
 + Stable 100% unit tested, PSR-2 compliant
 + PHP 5.3+ namespaced
@@ -52,33 +53,134 @@ Run composer update or install.
 
     $ php composer.phar update
 
-
-Usage
-=====
-
-Table Manager
--------------
-When 
+.. note::     
+   All dependencies will be automatically downloaded and installed in your vendor project directory.
 
 
-Synthetic Table
+Usage reference
 ---------------
 
-Finding a record
-++++++++++++++++
+SyntheticTableManager
++++++++++++++++++++++
 
+The TableManager provides a simple and central way to work with your table and models.
+
+
+Database connection
+~~~~~~~~~~~~~~~~~~~
+
+TableManager requires a Zend\\Db\\Adapter\\Adapter database connection. 
 
 .. code-block:: php
-   :linenos:
+
     <?php
     use Soluble\Normalist\Synthetic\TableManager;
-    use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+    use Zend\Db\Adapter\Adapter;
+    
+    $config = array(
+        'driver'    => 'MySQLi',  // or PDO_Mysql
+        'hostname'  => 'localhost',
+        'username'  => 'db_user',
+        'password'  => 'db_password',
+        'database'  => 'my_db'
+    );
 
-    // Inject a Zend\Db\Adapter\Adapter object
+    $adapter = new Adapter($config);
+       
     $tm = new TableManager($adapter);
 
-    // Get a SyntheticTable from table 'user'
+.. note::     
+   The list of options supported by the adapter are explaind in the `Zend\\Db\\Adapter\\Adapter <http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html>`_ reference guide.
+
+.. note::
+   Depending of your needs, you may adopt different strategies to ensure a unique instance across you project (singleton, service locator...). 
+   See also our chapter about third party integration.
+
+SyntheticTable
+++++++++++++++
+
+SyntheticTable makes interacting with database tables extremely simple. 
+
+Getting a SyntheticTable
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Synthetic tables are available through the TableManager object. Just call the SyntheticTableManager::table($table_name) method. 
+
+.. code-block:: php
+   :emphasize-lines: 2
+
+    <?php
+    $tm = new TableManager($adapter);
     $userTable = $tm->table('user');
+
+
+Finding a record
+~~~~~~~~~~~~~~~~
+
+To get a specific record just pass the primary key value to the SyntheticTable::find($pk) method. 
+SyntheticTable will automatically figure out which is the primary key of the table
+and fetch your record accordingly to the requested id.
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $userTable = $tm->table('user');
+   $userRecord = $userTable->find(1);
+   if (!$userRecord) {
+       echo "Record does not exists";
+   }
+   echo get_class($userRecord); // -> SyntheticRecord
+
+
+Alternatively you can use the SyntheticTable::findOneBy($predicate) method to specify
+the column(s) used to retrieve your record.
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $userTable = $tm->table('user');
+   $userRecord = $userTable->findOneBy(array('email' => 'test@example.com'));
+   if (!$userRecord) {
+       echo "Record does not exists";
+   }
+   echo get_class($userRecord); // -> SyntheticRecord
+
+.. note::
+   An exception will be thrown if SyntheticTable::findOneBy($predicate) condition matches more than one record.
+   
+Although it may be considered as a bad database design, SyntheticTable is also able to work with composite primary key 
+(when a primary key spans over multiple columns). Just specify the columns and their values as an associative array.
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $orderlines = $tm->table('order_line');
+   $orderline = $userTable->find(array('order_id' => 1, 'order_line' => 10));
+
+Depending on your preferences you can also use the SyntheticTable::findOrFail() or SyntheticTable::findOneByOrFail()
+versions. Instead of returning a false value when a record have not been found, 
+a Normalist\\Synthetic\\Exception\\RecordNotFoundException will be thrown.
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   use Normalist\Synthetic\Exception as SyntheticException;
+
+   $userTable = $tm->table('user');
+   try {
+       $userRecord = $userTable->findOrFail(1);
+       $userRecord = $userTable->findOneByOrFail(array('email' => 'test@example.com'));
+   } catch (SyntheticException\RecordNotFoundException $e) {
+       echo "Record not found: " . $e->getMessage(); 
+   }
+
+sdf
+
+.. code-block:: php
 
     // Test if a primary key exists
     if ($userTable->exists(1)) { echo "User exists"; } ;
