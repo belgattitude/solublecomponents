@@ -171,13 +171,13 @@ a Normalist\\Synthetic\\Exception\\RecordNotFoundException will be thrown.
    :emphasize-lines: 3
 
    <?php
-   use Normalist\Synthetic\Exception as SyntheticException;
+   use Normalist\Synthetic\Exception as SE;
 
    $userTable = $tm->table('user');
    try {
        $userRecord = $userTable->findOrFail(1);
        $userRecord = $userTable->findOneByOrFail(array('email' => 'test@example.com'));
-   } catch (SyntheticException\RecordNotFoundException $e) {
+   } catch (SE\RecordNotFoundException $e) {
        echo "Record not found: " . $e->getMessage(); 
    }
 
@@ -273,7 +273,7 @@ an exception otherwise.
    :emphasize-lines: 12
 
    <?php
-   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+   use Soluble\Normalist\Synthetic\Exception as SE;
 
    $userTable = $tm->table('user');
    $data = array(
@@ -284,22 +284,22 @@ an exception otherwise.
 
    try {
      $userRecord = $userTable->insert($data); 
-   } catch (SyntheticException\NotNullException $e) {
+   } catch (SE\NotNullException $e) {
         echo "Inserting record failed, one or more columns cannot be null";
-   } catch (SyntheticException\DuplicateEntryException $e) {
+   } catch (SE\DuplicateEntryException $e) {
         echo "Inserting record failed due to a duplicate entry";
-   } catch (SyntheticException\ForeignKeyException $e) {
+   } catch (SE\ForeignKeyException $e) {
         echo "Inserting record failed due to a invalid foreign key";
-   } catch (SyntheticException\ColumnNotFoundException $e) {
+   } catch (SE\ColumnNotFoundException $e) {
         echo "Inserting record failed, one or more columns does not exists in table";
-   } catch (SyntheticException\RuntimeException $e) {
+   } catch (SE\RuntimeException $e) {
         echo "Inserting record failed, one or more column can be written";
    }
 
    // Alternatively you can catch the synthetic ExceptionInterface
    try {
      $userRecord = $userTable->insert($data); 
-   } catch (SyntheticException\ExceptionInterface $e) {
+   } catch (SE\ExceptionInterface $e) {
         echo "Error inserting record: " . get_class($e) . ':' . $e->getMessage();
    }
 
@@ -319,7 +319,7 @@ Synthetic\\Table::update() update one or more record(s) in a table
    :emphasize-lines: 11
 
    <?php
-   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+   use Soluble\Normalist\Synthetic\Exception as SE;
 
    $userTable = $tm->table('user');
    $data = array(
@@ -329,17 +329,17 @@ Synthetic\\Table::update() update one or more record(s) in a table
    // will update email address of user 1 (primary key) 
    try {
     $affected = $userTable->update($data, 1);
-   } catch (SyntheticException\ExceptionInterface $e) {
+   } catch (SE\ExceptionInterface $e) {
         echo "Update failed with error : " . $e->getMessage();
    }
 
 Alternatively you can update multiple records by specifying a predicate.
 
 .. code-block:: php
-   :emphasize-lines: 9
+   :emphasize-lines: 9-11
 
    <?php
-   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+   use Soluble\Normalist\Synthetic\Exception as SE;
    use Zend\Db\Sql\Where;
 
    $userTable = $tm->table('user');
@@ -349,7 +349,7 @@ Alternatively you can update multiple records by specifying a predicate.
      $affected = $userTable->update($data, function(Where $where) {
         $where->like('email', '%@hotmail.com');
      });
-   } catch (SyntheticException\ExceptionInterface $e) {
+   } catch (SE\ExceptionInterface $e) {
         echo "Update failed with error : " . $e->getMessage();
    }
 
@@ -370,7 +370,7 @@ entry is found.
    :emphasize-lines: 12
 
    <?php
-   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+   use Soluble\Normalist\Synthetic\Exception as SE;
 
    $userTable = $tm->table('user');
    $data = array(
@@ -381,7 +381,7 @@ entry is found.
 
    try {
      $userRecord = $userTable->insertOnDuplicateKeyUpdate($data, $exclude=array('email')); 
-   } catch (SyntheticException\ExceptionInterface $e) {
+   } catch (SE\ExceptionInterface $e) {
         echo "Error : " . get_class($e) . ':' . $e->getMessage();
    }
 
@@ -407,10 +407,138 @@ The corresponding sql will be :
    If you have other unique keys in the table, it may make sense to specify them as well.
 
 
+
+Deleting records
+~~~~~~~~~~~~~~~~
+
+Synthetic\\Table::delete() delete a record based on primary key value.
+The Synthetic\\Table::deleteOrFail() version throws a Soluble\\Normalist\\Synthetic\\Exception\\RecordNotFoundException
+in case the record does not exists.
+
+.. code-block:: php
+   :emphasize-lines: 4,12
+
+   <?php
+   use Soluble\Normalist\Synthetic\Exception as SE;
+
+   $affected = $tm->table('user')->delete(10);
+   
+   echo $affected;
+   // will print the number of affected rows (int)
+   // due to possible cascading behaviour, this result may
+   // be greater than 1
+
+   try {
+      $affected = $tm->table('user')->deleteOrFail(10);
+   } catch (SE\RecordNotFoundException $e) {
+      echo "Error, cannot delete record 10 it does not exists";
+   }
+    
+
+Alternatively you can delete multiple records by specifying a predicate.
+
+.. code-block:: php
+   :emphasize-lines: 5-7
+
+   <?php
+   use Zend\Db\Sql\Where;
+
+   $userTable = $tm->table('user');
+   $userTable->deleteBy(function (Where $where) {
+        $where->like('email', '%@hotmail.com');
+   });
+
+.. note::
+   Synthetic\\Table::deleteBy() method accepts any predicates or conditions
+   offered by Synthetic\\TableSearch::where() method, see :ref:`predicate-where-method-label`.
+
+
 Synthetic\\Record
 +++++++++++++++++
 
-Synthetic record 
+Synthetic\\Record focus on record operations and 
+
+Getting a new record
+~~~~~~~~~~~~~~~~~~~~
+To have a fresh new record simply call the Synthetic\\Table::record() method.
+
+.. code-block:: php
+   :emphasize-lines: 5-7
+
+   <?php
+
+   $userTable = $tm->table('user');
+   $newRecord = $userTable->record();
+   $newRecord->first_name = 'Bill';
+   
+   // or alternatively, you can fill the record with array values
+
+   $initial_data = array('email' => 'test@example.com', 'first_name' => 'Bill');
+   $newRecord = $userTable->record($initial_data);
+   echo $newRecord->first_name;
+   // Will print 'Bill'
+
+Accessing values
+~~~~~~~~~~~~~~~~
+
+Based on your preferences you can access the record properties (values) as an array 
+(it implements ArrayAccess interface) or simply with through magic getter/setter.
+
+To have a json or array version of the record, simply call the Synthetic\\Record::toJson()
+and Synthetic\\Record::toArray() methods.
+
+.. code-block:: php
+   :emphasize-lines: 5-7
+
+   <?php
+
+   $userTable = $tm->table('user');
+   $user = $userTable->find(1);
+
+   // ArrayAccess
+   $email = $user["email"];
+   $user["email"] = 'test@example.com';
+
+   // Magic getter/setter
+   $email = $user->email;
+   $user->email = 'test@example.com';
+
+   // in JSON
+   $json = $user->toJson();
+
+   // as Array
+   $array = $user->toArray();
+
+
+Saving a record
+~~~~~~~~~~~~~~~
+
+Synthetic\\Record::save() will detect insert or update operation and ensure
+record is saved in database
+
+.. code-block:: php
+   :emphasize-lines: 5-7
+
+   <?php
+
+   $userTable = $tm->table('user');
+   $user = $userTable->find(1);
+   $user->email = 'test@example.com';
+   $user->save();
+
+Deleting a record
+~~~~~~~~~~~~~~~~~
+   
+.. code-block:: php
+   :emphasize-lines: 5-7
+
+   <?php
+
+   $userTable = $tm->table('user');
+   $user = $userTable->find(1);
+   $user->delete();
+
+
 
 Synthetic\\TableSearch
 ++++++++++++++++++++++
@@ -527,9 +655,6 @@ The corresponding sql will be :
    For further information, have a look at the `official documentation <http://framework.zend.com/manual/2.2/en/modules/zend.db.sql.html#zend-db-sql-select>`_
 
 
-// or alternatively
-$json = $search->toJson();
-
 Another possibility is to use raw conditions, but be cautious of possible 
 sql injections. Always quote your values and identifiers !!!
 
@@ -547,38 +672,61 @@ sql injections. Always quote your values and identifiers !!!
     $id        = $platform->quoteValue($_GET['id']);
     $search->where("(last_name =  or id = $id) and flag_active = 1");
 
+.. warning::
+   Normalist ensures that values are automatically quoted and prevents sql injections.
+   Using raw conditions should be used with caution as no automatic quoting is done.
 
-Using limit and direction
-~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Using limit and offsets
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Specify columns
+~~~~~~~~~~~~~~~
     
+Join multiple tables
+~~~~~~~~~~~~~~~~~~~~
    
+Getting data
+~~~~~~~~~~~~
 
 
-Transactions
-------------
+Synthetic\\ResultSet
+++++++++++++++++++++
+
+Getting data
+~~~~~~~~~~~~
+
+
+
+Synthetic\\Transactions
++++++++++++++++++++++++
+
+Transactions are provided by the Synthetic\\TableManager object.
+
+Transaction example
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: php
+   :emphasize-lines: 6,14,17
 
-	<?php
-	use Normalist\Synthetic\TableManager;
-
-	$tm = new TableManager($adapter);
-
-	$tm->transaction()->start();
-	try {
-		$tm->table('post')->update(array('title' => 'cool'));
-		$tm->table('comment')->delete(1);
-		// will throw an Exception\RecordNotFoundException;
-		$tm->table('comment')->findOrFail(1);
+    <?php
+    use Normalist\Synthetic\TableManager;
+    
+    $tm = new TableManager($adapter);
+    
+    $tm->transaction()->start();
+    try {
+        $tm->table('post')->update(array('title' => 'cool'));
+        $tm->table('comment')->delete(1);
+        // will throw an Exception\RecordNotFoundException;
+        $tm->table('comment')->findOrFail(1);
     } catch (\Exception $e) {
-		// will rollback any changes made  to the database
-		$tm->transaction()->rollback();
-		throw $e;
-	} 
-	$tm->transaction()->commit();
-	
-
+        // will rollback any changes made  to the database
+        $tm->transaction()->rollback();
+        throw $e;
+    } 
+    $tm->transaction()->commit();
 	
 
 Notes
