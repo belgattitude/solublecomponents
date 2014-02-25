@@ -1,4 +1,5 @@
 :tocdepth: 4
+
 Normalist ORM
 =============
 
@@ -11,7 +12,7 @@ Introduction
 Normalist has been designed to provide an alternative to standard ORM's by 
 allowing models to be dynamically guessed from your database structure, which 
 make them usable without previous definition. Its beautiful API is inspired by Doctrine, Laravel Eloquent and 
-Zend Framework 2, offering simple and intuitive methods to play with your database.
+Zend Framework 2, offers simple and intuitive methods to play with your database.
 
 Features
 ++++++++
@@ -43,7 +44,7 @@ Just add soluble/normalist in your composer.json file as described below
 
     {
         "require": {
-            "soluble/normalist": "~0.1.0"
+            "soluble/normalist": "dev-master"
         }
     }
 
@@ -54,14 +55,15 @@ Run composer update or install.
     $ php composer.phar update
 
 .. note::     
-   All dependencies will be automatically downloaded and installed in your vendor project directory.
+   + Replace dev-master by the latest stable release, see soluble `GitHub account <https://github.com/belgattitude/solublecomponents>`_.
+   + All dependencies will be automatically downloaded and installed in your vendor project directory. 
 
 
 Usage reference
 ---------------
 
-SyntheticTableManager
-+++++++++++++++++++++
+Synthetic\\TableManager
++++++++++++++++++++++++
 
 The TableManager provides a simple and central way to work with your table and models.
 
@@ -90,21 +92,19 @@ TableManager requires a Zend\\Db\\Adapter\\Adapter database connection.
     $tm = new TableManager($adapter);
 
 .. note::     
-   The list of options supported by the adapter are explaind in the `Zend\\Db\\Adapter\\Adapter <http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html>`_ reference guide.
+   + The list of options supported by the adapter are explaind in the `Zend\\Db\\Adapter\\Adapter <http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html>`_ reference guide.
+   + Depending of your needs, you may adopt different strategies to ensure a unique instance across you project (singleton, service locator...). 
+     See also our chapter about third party integration.
 
-.. note::
-   Depending of your needs, you may adopt different strategies to ensure a unique instance across you project (singleton, service locator...). 
-   See also our chapter about third party integration.
+Synthetic\\Table
+++++++++++++++++
 
-SyntheticTable
-++++++++++++++
+Synthetic\\Table makes interacting with database tables extremely simple. 
 
-SyntheticTable makes interacting with database tables extremely simple. 
+Getting a Synthetic\\Table
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Getting a SyntheticTable
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Synthetic tables are available through the TableManager object. Just call the SyntheticTableManager::table($table_name) method. 
+Synthetic tables are available through the TableManager object. Just call the Synthetic\\TableManager::table($table_name) method. 
 
 .. code-block:: php
    :emphasize-lines: 2
@@ -117,8 +117,8 @@ Synthetic tables are available through the TableManager object. Just call the Sy
 Finding a record
 ~~~~~~~~~~~~~~~~
 
-To get a specific record just pass the primary key value to the SyntheticTable::find($pk) method. 
-SyntheticTable will automatically figure out which is the primary key of the table
+To get a specific record just pass the primary key value to the Synthetic\\Table::find($pk) method. 
+Synthetic\\Table will automatically figure out which is the primary key of the table
 and fetch your record accordingly to the requested id.
 
 .. code-block:: php
@@ -130,10 +130,10 @@ and fetch your record accordingly to the requested id.
    if (!$userRecord) {
        echo "Record does not exists";
    }
-   echo get_class($userRecord); // -> SyntheticRecord
+   echo get_class($userRecord); // -> Normalist\Synthetic\Synthetic\Record
 
 
-Alternatively you can use the SyntheticTable::findOneBy($predicate) method to specify
+Alternatively you can use the Synthetic\\Table::findOneBy($predicate) method to specify
 the column(s) used to retrieve your record.
 
 .. code-block:: php
@@ -145,12 +145,15 @@ the column(s) used to retrieve your record.
    if (!$userRecord) {
        echo "Record does not exists";
    }
-   echo get_class($userRecord); // -> SyntheticRecord
+   echo get_class($userRecord); // -> Normalist\Synthetic\Synthetic\Record
 
 .. note::
-   An exception will be thrown if SyntheticTable::findOneBy($predicate) condition matches more than one record.
+   + An exception will be thrown if Synthetic\\Table::findOneBy($predicate) condition matches more than one record.
+   + Synthetic\\Table::findOneBy() method accepts any predicates or conditions
+     offered by Synthetic\\TableSearch::where() method, see :ref:`predicate-where-method-label`.
+
    
-Although it may be considered as a bad database design, SyntheticTable is also able to work with composite primary key 
+Although it may be considered as a bad database design, Synthetic\\Table is also able to work with composite primary key 
 (when a primary key spans over multiple columns). Just specify the columns and their values as an associative array.
 
 .. code-block:: php
@@ -160,7 +163,7 @@ Although it may be considered as a bad database design, SyntheticTable is also a
    $orderlines = $tm->table('order_line');
    $orderline = $userTable->find(array('order_id' => 1, 'order_line' => 10));
 
-Depending on your preferences you can also use the SyntheticTable::findOrFail() or SyntheticTable::findOneByOrFail()
+Depending on your preferences you can also use the Synthetic\\Table::findOrFail() or Synthetic\\Table::findOneByOrFail()
 versions. Instead of returning a false value when a record have not been found, 
 a Normalist\\Synthetic\\Exception\\RecordNotFoundException will be thrown.
 
@@ -178,96 +181,382 @@ a Normalist\\Synthetic\\Exception\\RecordNotFoundException will be thrown.
        echo "Record not found: " . $e->getMessage(); 
    }
 
-sdf
+Test a record exists
+~~~~~~~~~~~~~~~~~~~~
+
+The Synthetic\\Table::exists() method checks whether a record exists. 
 
 .. code-block:: php
+   :emphasize-lines: 3
 
-    // Test if a primary key exists
-    if ($userTable->exists(1)) { echo "User exists"; } ;
+   <?php
+   $userTable = $tm->table('user');
+   if ($userTable->exists(1)) {
+       echo "Record exists";
+   }
 
-    // Getting an user record
-    $userRecord = $userTable->findOneBy(array('username' => 'loginname'));
-    $userRecord = $userTable->find(1);
-    if (!$userRecord) {
-        echo "User does not exists";
-    }
+.. note::
+   If you care about performance, keep in mind that using the
+   Synthetic\\Table::find() method could be used to check a record exists 
+   but will bring some overhead due to record creation. Synthetic\\Table::exists()
+   attempt to minimize impact on your database server.
 
-    // Getting an user record or throw an Exception
-    try {
-        $userRecord = $userTable->findOneByOrFail(array('username' => 'loginname'));
-        $userRecord = $userTable->findOrFail(1);
-    } catch (SyntheticException\RecordNotFoundException $e) {
-        echo "Error getting user, it does not exists in database";
-    } catch (SyntheticException\ExceptionInterface $e) {
-        echo "Error getting user";
-    }
-
-
-Getting records
-+++++++++++++++
-
+Alternatively you can check on multiple conditions.
 
 .. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $userTable = $tm->table('user');
+   if ($userTable->existsBy(array('email' => 'test@example.com')) {
+       echo "Record exists";
+   }
+
+.. note::
+   Synthetic\\Table::existsBy() method accepts any predicates or conditions
+   offered by Synthetic\\TableSearch::where() method, see :ref:`predicate-where-method-label`.
+
+Counting records
+~~~~~~~~~~~~~~~~
+Synthetic\\Table offers a way to count records based on conditions 
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $userTable = $tm->table('user');
+   $count = $userTable->count());
+       
+   // Alternatively you can count with conditions
+   $count = $userTable->countBy(array('country' => 'US'));
+
+.. note::
+   Synthetic\\Table::countBy() method accepts any predicates or conditions
+   offered by Synthetic\\TableSearch::where() method, see 
+   :ref:`predicate-where-method-label`.
+
+Getting all records
+~~~~~~~~~~~~~~~~~~~
+
+To get all the records in a table just use the Synthetic\\Table::all() method.
+
+.. code-block:: php
+   :emphasize-lines: 3
+
+   <?php
+   $userTable = $tm->table('user');
+   $userResultSet = $tm->all();
+   
+   echo get_class($userResultSet);
+   // -> Normalist\Synthetic\ResultSet\ResultSet
+
+   // Alternative 1 : iterating the resultset
+   foreach($userResultSet as $record) {
+        echo $record->email;
+   }
+
+   // Alternative 2 : getting an array version
+   $users = $userResultSet->toArray();
+
+.. note::
+   Having a ResultSet object brings you a lot of options, you can browse and operate 
+   on records, get an array version of the result or automatically get a Json version of it.
+   To have a complete overview of the Normalist\\Synthetic\\ResultSet\\ResultSet, have a look to 
+
+Inserting in a table
+~~~~~~~~~~~~~~~~~~~~
+
+Synthetic\\Table::insert() method return the newly inserted record on success, or throw
+an exception otherwise.
+
+.. code-block:: php
+   :emphasize-lines: 12
+
+   <?php
+   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+
+   $userTable = $tm->table('user');
+   $data = array(
+        'username'  => 'Bill',
+        'email'     => 'test@example.com',
+        'type_id'   => 10
+   );
+
+   try {
+     $userRecord = $userTable->insert($data); 
+   } catch (SyntheticException\NotNullException $e) {
+        echo "Inserting record failed, one or more columns cannot be null";
+   } catch (SyntheticException\DuplicateEntryException $e) {
+        echo "Inserting record failed due to a duplicate entry";
+   } catch (SyntheticException\ForeignKeyException $e) {
+        echo "Inserting record failed due to a invalid foreign key";
+   } catch (SyntheticException\ColumnNotFoundException $e) {
+        echo "Inserting record failed, one or more columns does not exists in table";
+   } catch (SyntheticException\RuntimeException $e) {
+        echo "Inserting record failed, one or more column can be written";
+   }
+
+   // Alternatively you can catch the synthetic ExceptionInterface
+   try {
+     $userRecord = $userTable->insert($data); 
+   } catch (SyntheticException\ExceptionInterface $e) {
+        echo "Error inserting record: " . get_class($e) . ':' . $e->getMessage();
+   }
+
+   echo get_class($userRecord);
+   // -> Normalist\Synthetic\Record
+
+   echo $userRecord->user_id;
+   // -> will return the auto-incremented id of the newly inserted record
+
+
+Updating a table
+~~~~~~~~~~~~~~~~
+
+Synthetic\\Table::update() update one or more record(s) in a table
+
+.. code-block:: php
+   :emphasize-lines: 11
+
+   <?php
+   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+
+   $userTable = $tm->table('user');
+   $data = array(
+        'email'     => 'test@example.com',
+   );
+
+   // will update email address of user 1 (primary key) 
+   try {
+    $affected = $userTable->update($data, 1);
+   } catch (SyntheticException\ExceptionInterface $e) {
+        echo "Update failed with error : " . $e->getMessage();
+   }
+
+Alternatively you can update multiple records by specifying a predicate.
+
+.. code-block:: php
+   :emphasize-lines: 9
+
+   <?php
+   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+   use Zend\Db\Sql\Where;
+
+   $userTable = $tm->table('user');
+   $data = array( 'has_access' => 0 );
+
+   try {
+     $affected = $userTable->update($data, function(Where $where) {
+        $where->like('email', '%@hotmail.com');
+     });
+   } catch (SyntheticException\ExceptionInterface $e) {
+        echo "Update failed with error : " . $e->getMessage();
+   }
+
+   echo $affected; 
+   // will print the affected number of records (int)
+
+.. note::
+   Synthetic\\Table::update() method accepts any predicates or conditions
+   offered by Synthetic\\TableSearch::where() method, see :ref:`predicate-where-method-label`.
+
+Insert OnDuplicateKey update
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Synthetic\\Table::insertOnDuplicateKey() method can be used to replace data when a duplicate
+entry is found. 
+
+.. code-block:: php
+   :emphasize-lines: 12
+
+   <?php
+   use Soluble\Normalist\Synthetic\Exception as SyntheticException;
+
+   $userTable = $tm->table('user');
+   $data = array(
+        'first_name'  => 'Bill',
+        'last_name'   => 'Joy',
+        'email'       => 'test@example.com' // unique !!!
+   );
+
+   try {
+     $userRecord = $userTable->insertOnDuplicateKeyUpdate($data, $exclude=array('email')); 
+   } catch (SyntheticException\ExceptionInterface $e) {
+        echo "Error : " . get_class($e) . ':' . $e->getMessage();
+   }
+
+   echo get_class($userRecord);
+   // -> Normalist\Synthetic\Record
+
+   echo $userRecord->username;
+   // -> will print 'Bill'
+
+The corresponding sql will be :
+
+.. code-block:: mysql
+
+   INSERT INTO `user` (`first_name`, `last_name`, `email`) 
+   VALUES ('Bill', 'Joy', 'test@example.com') 
+   ON DUPLICATE KEY UPDATE 
+      `first_name` = 'Bill',
+      `last_name` = 'Joy'
+
+.. note::
+   Synthetic\\Table::insertOnDuplicateKey($data, $exclude) $exclude parameter is optional. By default
+   the primary key will be removed in the update part of the query. 
+   If you have other unique keys in the table, it may make sense to specify them as well.
+
+
+Synthetic\\Record
++++++++++++++++++
+
+Synthetic record 
+
+Synthetic\\TableSearch
+++++++++++++++++++++++
+
+Synthetic\\TableSearch is one of the most powerful feature of Normalist and makes your searches a dream.
+
+
+Getting a Synthetic\\TableSearch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TableSearch is available through a Synthetic\\Table object. Just call the Synthetic\\Table::search() method. 
+
+.. code-block:: php
+   :emphasize-lines: 4
 
     <?php
+    $tm = new TableManager($adapter);
+    $userTable = $tm->table('user');
+    $search = $userTable->search();
+    echo get_class($search);
+    // -> Normalist\Synthetic\Table\TableSearch
 
-    // Getting all users
-    $users = $userTable->all();
-    foreach ($users as $userRecord) {
-        echo $userRecord->name;
-    }
-    
-    // All users to Json and Array
-    $json  = $userTable->all()->toJson();
-    $array = $userTable->all()->toArray();
+.. _predicate-where-method-label:
 
-    // Searching users
+Searching records
+~~~~~~~~~~~~~~~~~
 
-
-Finding a record by primary key
-+++++++++++++++++++++++++++++++
-
+As a basic example, conditions or predicates can be given as an array.
 
 .. code-block:: php
+   :emphasize-lines: 4-11
 
     <?php
-    use Normalist\Synthetic\TableManager;
+    $tm = new TableManager($adapter);
+    $userTable = $tm->table('user');
+    $results = $userTable->search()
+                         ->where(array(
+                                    'email' => 'test@example.com', 
+                                    'login' => 'Bill'
+                                  )
+                                )
+                         ->orWhere(array('login' => 'Steve'))
+                         ->limit(10)
+                         ->toArray();            
+ 
+    echo get_type($results);
+    // -> array
+
+The query executed will be similar to :
+
+.. code-block:: mysql
+
+   SELECT `user`.* 
+   FROM `user` 
+   WHERE `email` = 'test@example.com' 
+     AND `login` = 'Bill'
+      OR `login` = 'Steve'
+   LIMIT 10
+
+Alternatively you can use PHP 5.3 closures to get the job done.
+
+.. code-block:: php
+   :emphasize-lines: 6-25
+
+    <?php
+    use Zend\Db\Sql\Where;
 
     $tm = new TableManager($adapter);
-    $posts = $tm->table('post');
+    $search = $tm->table('user')->search();
+    $search->where(function (Where $where) {
+        
+        $where->like('email', '%@example.com');
+        
+        $where->in('country', array('FR', 'US'))
+              ->between('birth_date', 1970, 2001);
 
-    // Finding a record by post_id = 1
-    $post = $posts->find(1); 
-    if ($post) {
-        echo "Found post: " . $post->title;
-    } else {
-        echo "Post not found";
-    }
+        $where->lessThan('birth_date', 1980)
+              ->and
+              ->greaterThan('birth_date', 2010);
+
+        $where->isNotNull('zipcode');
+
+        $where->or
+                 ->nest
+                   ->equalsTo('name', 'Bill')
+                   ->or->like('last_name', '%Gates%')
+        
+        $where->like('first_name', "%;'DROP DATABASE' `DROP TABLE`");
+    })->limit(10);
+
+    $results = $search->execute();
+    echo get_class($results);
+    // -> Normalist\Synthetic\ResultSet\ResultSet
+
+
+The corresponding sql will be :
+
+.. code-block:: MySQL
+
+   SELECT `user`.*
+   FROM `user` 
+   WHERE `email` LIKE '%@example.com' 
+     AND `country` IN ('FR', 'US') 
+     AND `birth_date` BETWEEN '1970' AND '2001' 
+     AND `birth_date` < '1980' AND `birth_date` > '2010' 
+     AND `zipcode` IS NOT NULL 
+      OR (`name` = 'Bill' OR `last_name` LIKE '%Gates%')
+     AND `first_name` LIKE '%;\'DROP DATABASE\' `DROP TABLE`'
+   LIMIT 10
+
+.. note::
+   TableSearch internally relies on the wonderful Zend\\Db\\Sql\\Select component. 
+   This manual does not cover all possible options offered by the Select object. 
+   For further information, have a look at the `official documentation <http://framework.zend.com/manual/2.2/en/modules/zend.db.sql.html#zend-db-sql-select>`_
+
+
+// or alternatively
+$json = $search->toJson();
+
+Another possibility is to use raw conditions, but be cautious of possible 
+sql injections. Always quote your values and identifiers !!!
+
+.. code-block:: php
+   :emphasize-lines: 6-25
+
+    <?php
+    $tm = new TableManager($adapter);
+    $platform = $tm->getDbAdapter()->getPlatform();
+    echo get_class($platform);
+    // -> Zend\Db\Adapter\Platform\PlatformInterface
+
+    $search = $tm->table('user')->search();
+    $last_name = $platform->quoteValue($_GET['last_name']);
+    $id        = $platform->quoteValue($_GET['id']);
+    $search->where("(last_name =  or id = $id) and flag_active = 1");
+
+
+Using limit and direction
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
     
    
-Retrieving a records by conditions 
-+++++++++++++++++++++++++++++++++++
-
-.. code-block:: php
-
-    <?php
-    use Normalist\Synthetic\TableManager;
-
-    $tm = new TableManager($adapter);
-    $posts = $tm->table('post');
-
-    // Will return an existing post
-    $post = $posts->find(1); 
-    if ($post) {
-        echo "Found post: " . $post->title;
-    } else {
-        echo "Post not found";
-    }
-
 
 
 Transactions
+------------
 
 .. code-block:: php
 
@@ -289,8 +578,6 @@ Transactions
 	} 
 	$tm->transaction()->commit();
 	
-Synthetic Record
-----------------
 
 	
 
