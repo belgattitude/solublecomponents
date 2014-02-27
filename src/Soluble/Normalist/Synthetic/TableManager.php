@@ -21,7 +21,7 @@ class TableManager
 {
     /**
      *
-     * @param \Zend\Db\Adapter\Adapter $adapter
+     * @param Adapter $adapter
      */
     protected $adapter;
 
@@ -61,7 +61,7 @@ class TableManager
 
     /**
      *
-     * @param \Zend\Db\Adapter\Adapter $adapter
+     * @param Adapter $adapter
      * @param string $table table name
      */
     public function __construct(Adapter $adapter)
@@ -85,15 +85,16 @@ class TableManager
      */
     public function table($table_name)
     {
+        
         if (!is_string($table_name)) {
-            throw new Exception\InvalidArgumentException("Table name must be a string");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a string");
         }
 
         if (!$this->localTableCache->offsetExists($table_name)) {
 
             $tables = $this->metadata()->getTables();
             if (!in_array($table_name, $tables)) {
-                throw new Exception\TableNotFoundException("Table $table_name is not found in database, if table exists please make sure cache is updated.");
+                throw new Exception\TableNotFoundException(__METHOD__ . ": Table $table_name is not found in database, if table exists please make sure cache is updated.");
             }
             $table = new Table($table_name, $this);
             $this->localTableCache->offsetSet($table_name, $table);
@@ -105,17 +106,10 @@ class TableManager
     /**
      * Return a generic select
      *
-     * @return \Soluble\Db\Sql\Select
+     * @return Select
      */
     public function select()
     {
-        /**
-// search for at most 2 artists who's name starts with Brit, ascending
-$rowset = $artistTable->select(function (Select $select) {
-     $select->where->like('name', 'Brit%');
-     $select->order('name ASC')->limit(2);
-});
-         */
         $select = new Select();
         $select->setDbAdapter($this->adapter);
         return $select;
@@ -140,9 +134,9 @@ $rowset = $artistTable->select(function (Select $select) {
 
 
     /**
-     * Return underlyng Zend\Db\Adapter
+     * Return underlyng Zend\Db\Adapter\Adapter
      *
-     * @return \Zend\Db\Adapter\Adapter $adapter
+     * @return Adapter $adapter
      */
     public function getDbAdapter()
     {
@@ -192,8 +186,9 @@ $rowset = $artistTable->select(function (Select $select) {
 
 
     /**
-     *
-     * @return \Soluble\Db\Metadata\Source\AbstractSource
+     * Return a metadata reader
+     * 
+     * @return Source\AbstractSource
      */
     public function metadata()
     {
@@ -204,9 +199,10 @@ $rowset = $artistTable->select(function (Select $select) {
     }
 
     /**
-     *
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     * @return \Soluble\Normalist\Synthetic\TableManager
+     * Set the database adapter
+     * 
+     * @param Adapter $adapter
+     * @return TableManager
      */
     protected function setDbAdapter(Adapter $adapter)
     {
@@ -215,9 +211,10 @@ $rowset = $artistTable->select(function (Select $select) {
     }
 
     /**
-     *
+     * Return default metadata reader associated to an adapter
+     * 
      * @param Adapter $adapter
-     * @throws \Exception
+     * @throws Exception\UnsupportedFeatureException
      */
     protected function getDefaultMetadata(Adapter $adapter)
     {
@@ -227,7 +224,7 @@ $rowset = $artistTable->select(function (Select $select) {
                 $metadata = new Source\MysqlISMetadata($adapter);
                 break;
             default :
-                throw new Exception\UnsupportedFeatureException("TableManager::getDefaultMetadata() Adapter '$adapterName' is not yet supported.");
+                throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");
         }
         return $metadata;
 
@@ -235,14 +232,13 @@ $rowset = $artistTable->select(function (Select $select) {
 
     /**
      *
-     * @param \Soluble\Db\Metadata\Source\AbstractSource $metadata
-     * @return \Soluble\Normalist\Synthetic\TableManager
+     * @param Source\AbstractSource $metadata
+     * @return TableManager
      */
     public function setMetadata(Source\AbstractSource $metadata)
     {
         $this->metadata = $metadata;
         return $this;
     }
-
 
 }

@@ -42,6 +42,20 @@ Start by `forking Soluble Components repository <https://github.com/belgattitude
 
 
 
+.. revealjs::
+
+ .. revealjs:: Vertical Slide1
+
+  vertical slide1
+
+ .. revealjs:: Vertical Slide2
+
+  vertical slide2
+
+ .. revealjs:: Vertical Slide3
+
+  vertical slide3
+
 
 Indices and tables
 ==================

@@ -24,7 +24,7 @@ class Relation
 
     /**
      *
-     * @param \Soluble\Normalist\Synthetic\Table\Table $table
+     * @param Table $table
      */
     public function __construct(Table $table)
     {
@@ -38,7 +38,7 @@ class Relation
      * @throws Exception\LogicException
      * @throws Exception\RelationNotFoundException
      *
-     * @param \Soluble\Normalist\Synthetic\Record $record
+     * @param Record $record
      * @param string $parent_table
      * @return Record
      */
@@ -46,7 +46,7 @@ class Relation
     {
 
         if ($record->getState() == Record::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
         $tableName = $this->table->getTableName();
@@ -63,10 +63,9 @@ class Relation
                 return $record;
             }
         }
-        throw new Exception\RelationNotFoundException("Cannot find parent relation between table '$tableName' and '$parent_table'");
+        throw new Exception\RelationNotFoundException(__METHOD__ . ": Cannot find parent relation between table '$tableName' and '$parent_table'");
 
 
     }
-
 
 }

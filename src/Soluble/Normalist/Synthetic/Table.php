@@ -88,7 +88,7 @@ class Table
         $this->tableManager = $tableManager;
         $this->sql = new Sql($tableManager->getDbAdapter());
         if (!is_string($table)) {
-            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": Table name must be a string");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a string");
         }
 
         $this->table = $table;
@@ -96,9 +96,10 @@ class Table
     }
 
     /**
-     *
-     * @return \Soluble\Normalist\Synthetic\TableSearch
-     * @throws \Exception
+     * Get a TableSearch object
+     * 
+     * @param string $table_alias whenever you want to alias the table (useful in joins)
+     * @return TableSearch
      */
     public function search($table_alias = null)
     {
@@ -149,7 +150,7 @@ class Table
     {
         $record = $this->find($id);
         if ($record === false) {
-            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot find record '$id' in table '$this->table'");
+            throw new Exception\NotFoundException(__METHOD__ . ": cannot find record '$id' in table '$this->table'");
         }
         return $record;
     }
@@ -186,12 +187,12 @@ class Table
             if (strpos($lmsg, 'column not found') !== false ||
                     strpos($lmsg, 'unknown column') !== false) {
                 //"SQLSTATE[42S22]: Column not found: 1054 Unknown column 'media_id' in 'where clause
-                $rex = new Exception\ColumnNotFoundException($message);
+                $rex = new Exception\ColumnNotFoundException(__METHOD__ . ": $message");
                 throw $rex;
             } else {
 
                 $sql_string = $select->getSqlString($this->sql->getAdapter()->getPlatform());
-                $iqex = new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": $message - $sql_string");
+                $iqex = new Exception\InvalidArgumentException(__METHOD__ . ": $message - $sql_string");
                 throw $iqex;
             }
         }
@@ -199,7 +200,7 @@ class Table
         if (count($results) == 0)
             return false;
         if (count($results) > 1)
-            throw new Exception\UnexpectedValueException(__CLASS__ . '::' . __METHOD__ . ": return more than one record");
+            throw new Exception\UnexpectedValueException(__METHOD__ . ": return more than one record");
 
         $record = $this->record($results[0]);
         $record->setState(Record::STATE_CLEAN);
@@ -225,7 +226,7 @@ class Table
     {
         $record = $this->findOneBy($predicate, $combination);
         if ($record === false) {
-            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot findOneBy record in table '$this->table'");
+            throw new Exception\NotFoundException(__METHOD__ . ": cannot findOneBy record in table '$this->table'");
         }
         return $record;
     }
@@ -297,7 +298,7 @@ class Table
                     ->columns(array('count' => new Expression('count(*)')));
             $result = $select->execute()->toArray();
         } catch (\Exception $e) {
-            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invaid usage ({$e->getMessage()})");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": invaid usage ({$e->getMessage()})");
         }
 
         return ($result[0]['count'] > 0);
@@ -371,7 +372,7 @@ class Table
     {
         $deleted = $this->delete($id);
         if ($deleted == 0) {
-            throw new Exception\NotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot delete record '$id' in table '$this->table'");
+            throw new Exception\NotFoundException(__METHOD__ . ": cannot delete record '$id' in table '$this->table'");
         }
         return $this;
     }
@@ -403,7 +404,7 @@ class Table
         } elseif (is_array($data)) {
             $d = $data;
         } else {
-            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": requires data to be array or an ArrayObject");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": requires data to be array or an ArrayObject");
         }
 
         $this->checkDataColumns($d);
@@ -448,7 +449,7 @@ class Table
             $d = $data;
         } else {
             $type = gettype($data);
-            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": expects data to be array or ArrayObject. Type receive '$type'");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": expects data to be array or ArrayObject. Type receive '$type'");
         }
 
         $this->checkDataColumns($d);
@@ -546,7 +547,7 @@ class Table
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
             $msg = join(', ', array_unique($messages));
-            $message = __CLASS__ . '::' . __METHOD__ . ": failed, $msg [ $sql_string ]";
+            $message = __METHOD__ . ": failed, $msg [ $sql_string ]";
             throw new Exception\RuntimeException($message);
         }
 
@@ -599,7 +600,7 @@ class Table
                 // It should never happen but in case :
                 //@codeCoverageIgnoreStart
                 if (!$record) {
-                    throw new \Exception(__CLASS__ . '::' . __METHOD__ . ": after probing all unique keys in table '{$this->table}', cannot dertermine which one was fired when using on duplicate key.");
+                    throw new \Exception(__METHOD__ . ": after probing all unique keys in table '{$this->table}', cannot dertermine which one was fired when using on duplicate key.");
                 }
                 //@codeCoverageIgnoreEnd
             }
@@ -751,7 +752,7 @@ class Table
             $statement = $this->tableManager->getDbAdapter()->createStatement($sqlObject);
         } else {
              //@codeCoverageIgnoreStart
-            throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ': expects sqlObject to be string or PreparableInterface');
+            throw new Exception\InvalidArgumentException(__METHOD__ . ': expects sqlObject to be string or PreparableInterface');
              //@codeCoverageIgnoreEnd
         }
         try {
@@ -769,18 +770,18 @@ class Table
             } while ($ex = $ex->getPrevious());
             $message = join(', ', array_unique($messages));
 
-            $lmsg = __CLASS_ . '::' . __METHOD__ . ':' . strtolower($message) . '(code:' . $e->getCode() . ')';
+            $lmsg = __METHOD__ . ':' . strtolower($message) . '(code:' . $e->getCode() . ')';
 
             if (strpos($lmsg, 'cannot be null') !== false) {
                 // Integrity constraint violation: 1048 Column 'non_null_column' cannot be null
-                $rex = new Exception\NotNullException($message, $e->getCode(), $e);
+                $rex = new Exception\NotNullException(__METHOD__ . ': ' . $message, $e->getCode(), $e);
                 throw $rex;
             } elseif (strpos($lmsg, 'duplicate entry') !== false) {
-                $rex = new Exception\DuplicateEntryException($message, $e->getCode(), $e);
+                $rex = new Exception\DuplicateEntryException(__METHOD__ . ': ' . $message, $e->getCode(), $e);
                 throw $rex;
             } elseif (strpos($lmsg, 'constraint violation') !== false ||
                     strpos($lmsg, 'foreign key') !== false) {
-                $rex = new Exception\ForeignKeyException($message, $e->getCode(), $e);
+                $rex = new Exception\ForeignKeyException(__METHOD__ . ': ' . $message, $e->getCode(), $e);
                 throw $rex;
             } else {
                 if ($sqlObject instanceof PreparableSqlInterface) {
@@ -788,7 +789,7 @@ class Table
                 } else {
                     $sql_string = $sqlObject;
                 }
-                $iqex = new Exception\RuntimeException($message . "[$sql_string]", $e->getCode(), $e);
+                $iqex = new Exception\RuntimeException(__METHOD__ . ': ' . $message . "[$sql_string]", $e->getCode(), $e);
                 throw $iqex;
             }
         }
@@ -807,26 +808,26 @@ class Table
     protected function getPrimaryKeyPredicate($id)
     {
         if (!is_scalar($id) && !is_array($id)) {
-            throw new Exception\InvalidArgumentException("Id must be scalar or array, type " . gettype($id) . " received");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Id must be scalar or array, type " . gettype($id) . " received");
         }
 
         try {
             $keys = $this->getPrimaryKeys();
         } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
-            throw new Exception\PrimaryKeyNotFoundException(__CLASS__ . '::' . __METHOD__ . ": cannot find any primary key (single or multiple) on table '{$this->table}'.");
+            throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ": cannot find any primary key (single or multiple) on table '{$this->table}'.");
         }
         if (count($keys) == 1) {
             $pk = $keys[0];
             if (!is_scalar($id)) {
                 $type = gettype($id);
-                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invalid primary key value. Table '{$this->table}' has a single primary key '$pk'. Argument must be scalar, '$type' given");
+                throw new Exception\InvalidArgumentException(__METHOD__ . ": invalid primary key value. Table '{$this->table}' has a single primary key '$pk'. Argument must be scalar, '$type' given");
             }
             $predicate = array($pk => $id);
         } else {
             if (!is_array($id)) {
                 $pks = join(',', $keys);
                 $type = gettype($id);
-                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": invalid primary key value. Table '{$this->table}' has multiple primary keys '$pks'. Argument must be an array, '$type' given");
+                throw new Exception\InvalidArgumentException(__METHOD__ . ": invalid primary key value. Table '{$this->table}' has multiple primary keys '$pks'. Argument must be an array, '$type' given");
             }
 
             $matched_keys = array_diff($id, $keys);
@@ -835,7 +836,7 @@ class Table
             } else {
                 $pks = join(',', $keys);
                 $vals = join(',', $matched_keys);
-                throw new Exception\InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ": incomplete primary key value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
+                throw new Exception\InvalidArgumentException(__METHOD__ . ": incomplete primary key value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
             }
         }
         return $predicate;
@@ -852,7 +853,7 @@ class Table
         $diff = array_diff_key($data, $this->getColumnsInformation());
         if (count($diff) > 0) {
             $msg = join(',', array_keys($diff));
-            throw new Exception\ColumnNotFoundException(__CLASS__ . '::' . __METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
+            throw new Exception\ColumnNotFoundException(__METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
 
     }

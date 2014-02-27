@@ -86,15 +86,119 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         
         
     }
+    
+    public function testCurrentWithCompleteRecordDefinition()
+    {
 
+        $unitTable = $this->tableManager->table('product_unit');
+        $select = $unitTable->select();
+        $select->columns(array(
+                    'unit_id',
+
+                    'reference' => new \Zend\Db\Sql\Predicate\Expression('reference'),
+                    'title',    
+                    'my_alias' => 'description',
+                    'description',
+                    'flag_active',
+                    'icon_class',
+                    'created_at',
+
+                    'created_by',
+                    'updated_by',
+                
+                
+                    'updated_at',
+                    'legacy_mapping',
+                    'legacy_synchro_at'
+                ));
+        
+        $resultSet = new ResultSet($select, $unitTable);
+        $record = $resultSet->current();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
+        
+    }
+    
+    
+    public function testCurrentWithStarRecordDefinition()
+    {
+
+        $unitTable = $this->tableManager->table('product_unit');
+        $select = $unitTable->select();
+        $resultSet = new ResultSet($select, $unitTable);
+        $record = $resultSet->current();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
+        
+    }
+    
+
+    public function testCurrentIncompleteRecordDefinitionThrowsLogicException()
+    {
+
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
+        $unitTable = $this->tableManager->table('product_unit');
+        $select = $unitTable->select();
+        $select->columns(array(
+                    'unit_id',
+                    'reference',
+                ));
+        
+        $resultSet = new ResultSet($select, $unitTable);
+        $record = $resultSet->current();
+    }
+    
+    
     public function testCount()
     {
         
-        $rs = $this->table->search()->limit(1)->execute();
+        $rs = $this->table->search()->limit(10)->execute();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
         $count = $rs->count();
-        $this->assertEquals(1, $count);
         
+        $this->assertEquals(10, $count);
+
+        // Ensure count let the pointer ok
+        $i = 0;
+        foreach($rs as $record) {
+            $i++;
+        }
+        $this->assertEquals(10, $i);
+        
+        $count = $rs->count();
+        
+        $this->assertEquals(10, $count);
+        
+        // Test countable interface
+        $this->assertEquals(10, count($rs));
+
     }
 
+    public function testBuffer()
+    {
+        
+        $rs = $this->table->search()->limit(10)->execute();
+        $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
+        $rs->buffer();
+        
+        $count = $rs->count();
+        
+        $this->assertEquals(10, $count);
+
+        // Ensure count let the pointer ok
+        $i = 0;
+        foreach($rs as $record) {
+            $i++;
+        }
+        $this->assertEquals(10, $i);
+        
+        $count = $rs->count();
+        
+        $this->assertEquals(10, $count);
+
+        // Ensure results can be used
+        $array = $rs->toArray();
+        $this->assertEquals(10, count($array));
+        
+    }
+    
+    
 }

@@ -54,7 +54,7 @@ class Record implements ArrayAccess
 
     /**
      *
-     * @param array $data
+     * @param array|ArrayObject $data
      * @param Table $table
      */
     public function __construct($data, Table $table)
@@ -76,10 +76,10 @@ class Record implements ArrayAccess
 
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Record has already been deleted in database.");
+            throw new Exception\LogicException(__METHOD__ . ": Record has already been deleted in database.");
         }
         if ($state == self::STATE_NEW) {
-            throw new Exception\LogicException("Record has not already been saved in database.");
+            throw new Exception\LogicException(__METHOD__ . ": Record has not already been saved in database.");
         }
         $affected_rows = $this->getTable()->deleteBy($this->getRecordPrimaryKeyPredicate());
         $this->setState(self::STATE_DELETED);
@@ -100,7 +100,7 @@ class Record implements ArrayAccess
 
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Record has already been deleted in database.");
+            throw new Exception\LogicException(__METHOD__ . "Record has already been deleted in database.");
         }
 
         $data = $this->toArray();
@@ -117,7 +117,7 @@ class Record implements ArrayAccess
         } else {
              //@codeCoverageIgnoreStart
 
-            throw new Exception\LogicException(__CLASS__ . '::' . __METHOD . ": Record is not on manageable state.");
+            throw new Exception\LogicException(__METHOD__ . ": Record is not on manageable state.");
              //@codeCoverageIgnoreEnd
         }
         $this->setData($new_record->toArray());
@@ -139,12 +139,12 @@ class Record implements ArrayAccess
     {
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
         if (is_array($data)) {
             $data = new ArrayObject($data);
         } elseif (! $data instanceof ArrayObject) {
-            throw new Exception\InvalidArgumentException("Data must be an array of an ArrayObject");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Data must be an array of an ArrayObject");
         }
         $this->_securedFieldForArrayAccess['data']  = $data;
         $this->setState(self::STATE_DIRTY);
@@ -161,7 +161,7 @@ class Record implements ArrayAccess
     {
 
         if ($this->getState() == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
         return (array) $this->_securedFieldForArrayAccess['data'];
     }
@@ -188,7 +188,7 @@ class Record implements ArrayAccess
     public function offsetExists($field)
     {
         if ($this->getState() == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
         return array_key_exists($field, $this->_securedFieldForArrayAccess['data']);
@@ -203,11 +203,11 @@ class Record implements ArrayAccess
     public function offsetGet($field)
     {
         if ($this->getState() == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
         if (!array_key_exists($field, $this->_securedFieldForArrayAccess['data'])) {
-            throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+            throw new Exception\FieldNotFoundException(__METHOD__ . ": Cannot get field value, field '$field' does not exists in record.");
         }
 
         return  $this->_securedFieldForArrayAccess['data'][$field];
@@ -224,7 +224,7 @@ class Record implements ArrayAccess
     {
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
 
@@ -246,7 +246,7 @@ class Record implements ArrayAccess
     {
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
         unset($this->_securedFieldForArrayAccess['data'][$field]);
@@ -274,7 +274,7 @@ class Record implements ArrayAccess
 
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
 
@@ -296,11 +296,11 @@ class Record implements ArrayAccess
     public function __get($field)
     {
         if ($this->getState() == self::STATE_DELETED) {
-            throw new Exception\LogicException("Logic exception, cannot operate on record that was deleted");
+            throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
 
         if (!array_key_exists($field, $this->_securedFieldForArrayAccess['data'])) {
-            throw new Exception\FieldNotFoundException("Cannot get field value, field '$field' does not exists in record.");
+            throw new Exception\FieldNotFoundException(__METHOD__ . ": Cannot get field value, field '$field' does not exists in record.");
         }
 
         return  $this->_securedFieldForArrayAccess['data'][$field];
@@ -309,9 +309,10 @@ class Record implements ArrayAccess
 
 
     /**
-     *
+     * For internal use only
+     * 
      * @param string $state
-     * @return \Soluble\Normalist\Synthetic\Record
+     * @return Record
      */
     public function setState($state)
     {
@@ -319,6 +320,10 @@ class Record implements ArrayAccess
         return $this;
     }
 
+    /**
+     * 
+     * @return string
+     */
     public function getState()
     {
         return $this->_securedFieldForArrayAccess['state'];
@@ -343,7 +348,7 @@ class Record implements ArrayAccess
             if ($pk_value != '') {
                  $predicate[$column] = $pk_value;
             } else {
-                throw new Exception\UnexpectedValueException("Cannot find record primary key values. Record has no primary key value set");
+                throw new Exception\UnexpectedValueException(__METHOD__ . ": Cannot find record primary key values. Record has no primary key value set");
             }
         }
         return $predicate;
