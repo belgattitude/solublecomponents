@@ -1,0 +1,35 @@
+{
+	"name": "soluble/normalist",
+	"description": "Normalist ORM",
+    "license": "MIT",
+	"keywords": [
+        "Normalist", 
+        "Synthetic", 
+        "ORM", 
+        "Database",
+        "Table",
+        "ActiveRecord"
+    ],
+	"homepage": "https://github.com/belgattitude/solublecomponents",
+	"type": "library",
+	"authors": [
+		{
+			"name": "Sébastien Vanvelthem",
+			"homepage": "http://www.nuvolia.com/"
+		}
+	],
+    "autoload": {
+        "psr-0": {
+            "Soluble\\Normalist\\": ""
+        }
+    },
+    "target-dir": "Soluble/Normalist",
+    "require": {
+        "php": ">=5.3.3",
+        "soluble/db": "self::version",
+        "rhumsaa/array_column": "~1.1"
+    },    
+	"suggest": {
+		"soluble/flexstore": "Super easy query data"
+	}
+}

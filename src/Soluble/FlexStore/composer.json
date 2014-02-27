@@ -1,0 +1,38 @@
+{
+	"name": "soluble/flexstore",
+	"description": "Normalist ORM",
+    "license": "MIT",
+	"keywords": [
+        "FlexStore",
+        "Query"
+    ],
+	"homepage": "https://github.com/belgattitude/solublecomponents",
+	"type": "library",
+	"authors": [
+		{
+			"name": "Sébastien Vanvelthem",
+			"homepage": "http://www.nuvolia.com/"
+		}
+	],
+    "autoload": {
+        "psr-0": {
+            "Soluble\\FlexStore\\": ""
+        }
+    },
+    "target-dir": "Soluble/FlexStore",
+    "require": {
+        "php": ">=5.3.3",
+        "soluble/db": "self::version",
+        "rhumsaa/array_column": "~1.1",
+		"zendframework/zend-stdlib": "2.*",
+		"zendframework/zend-cache": "2.*",
+		"zendframework/zend-json": "2.*",
+		"zendframework/zend-paginator": "2.*"
+    },    
+	"suggest": {
+		"soluble/normalist": "Dynamic ORM",
+		"zendframework/zend-view": "ZF2 integration for FlexStore",
+		"zendframework/zend-eventmanager": "ZF2 integration for eventmanager",
+		"zendframework/zend-servicemanager": "ZF2 integration for services"
+	}
+}

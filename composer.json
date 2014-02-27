@@ -1,10 +1,15 @@
 {
 	"name": "soluble/solublecomponents",
 	"description": "Soluble Components for PHP",
-	"keywords": ["components", "zf2", "Synthetic", "Normalist"],
-	"homepage": "https://github.com/belgattitude/solubleframework",
+    "license": "MIT",
+	"keywords": [
+        "components", 
+        "normalist", 
+        "flexstore", 
+        "db"
+    ],
+	"homepage": "https://github.com/belgattitude/solublecomponents",
 	"type": "library",
-	"license": "MIT",
 	"authors": [
 		{
 			"name": "Sébastien Vanvelthem",
@@ -22,7 +27,7 @@
 		"zendframework/zend-paginator": "2.*",
 		"rhumsaa/array_column": "~1.1",
 		"imagine/Imagine" : "dev-master",
-		"php": ">=5.3.1",
+		"php": ">=5.3.3",
 		"ext-iconv": "*"
 	},
 	"require-dev": {
@@ -41,5 +46,10 @@
 	},
 	"config": {
 		"bin-dir": "bin"
-	}
+	},
+    "replace": {
+        "soluble/db": "self.version",
+        "soluble/normalist": "self.version",
+        "soluble/flexstore": "self.version"
+    }
 }
