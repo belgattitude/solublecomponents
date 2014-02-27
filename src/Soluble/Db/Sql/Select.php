@@ -63,11 +63,12 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         $pf = $this->adapter->getPlatform();
         $identifierSeparator = $pf->getIdentifierSeparator();
         $names = array();
+        $cols = array();
         foreach($columns as $alias => $column) {
             if (is_string($column)) {
                 if (strpos($column, self::SQL_STAR) !== false) {
                     $msg = __METHOD__ . " Invalid argument, prefixedColumn() does not accept sql * column specification";
-                    throw new Exception\InvalidArgumentException();
+                    throw new Exception\InvalidArgumentException($msg);
                 }
                 $parts = explode($identifierSeparator, $column);
                 if (count($parts) > 1) {
@@ -75,7 +76,12 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                     foreach ($parts as $part) {
                         $quotedParts[] = $pf->quoteIdentifier($part);
                     }
-                    if (!is_string($alias)) $alias = $part;
+                    // to remove PHPAnalyzer warnings
+                    //var_dump($quotedParts[count($quotedParts)-1]);
+                    //die();
+                    $last_part = $parts[count($parts)-1];
+                    
+                    if (!is_string($alias)) $alias = $last_part;
                     
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
