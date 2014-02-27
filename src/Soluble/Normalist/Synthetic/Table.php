@@ -97,7 +97,7 @@ class Table
 
     /**
      * Get a TableSearch object
-     * 
+     *
      * @param string $table_alias whenever you want to alias the table (useful in joins)
      * @return TableSearch
      */

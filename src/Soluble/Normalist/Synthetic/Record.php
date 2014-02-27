@@ -310,7 +310,7 @@ class Record implements ArrayAccess
 
     /**
      * For internal use only
-     * 
+     *
      * @param string $state
      * @return Record
      */
@@ -321,7 +321,7 @@ class Record implements ArrayAccess
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getState()

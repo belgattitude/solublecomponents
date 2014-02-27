@@ -34,10 +34,10 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         return $this->where($predicate, Predicate\PredicateSet::OP_OR);
     }
 
-    
+
 
     /**
-     * Add table prefixed columns, will automatically 
+     * Add table prefixed columns, will automatically
      * quote table parts identifiers found in the column name.
      * It provides an alternative for defining columns from multiple/joined
      * table in one go.
@@ -53,13 +53,13 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      *   array(string => value, ...)
      *     key string will be use as alias,
      *     value can be string or Expression objects
-     * 
+     *
      * @throws Exception\InvalidArgumentException when usage not correct
      * @param  array $columns
      * @return Select
      */
-    public function prefixedColumns(array $columns) {
-        
+    public function prefixedColumns(array $columns)
+    {
         $pf = $this->adapter->getPlatform();
         $identifierSeparator = $pf->getIdentifierSeparator();
         $names = array();
@@ -80,36 +80,36 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                     //var_dump($quotedParts[count($quotedParts)-1]);
                     //die();
                     $last_part = $parts[count($parts)-1];
-                    
+
                     if (!is_string($alias)) $alias = $last_part;
-                    
+
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
                         throw new Exception\InvalidArgumentException($msg);
                     }
                     $names[] = $alias;
-                    
+
                     $cols[$alias] = new Expression(join($identifierSeparator, $quotedParts));
-                    
+
                 } else {
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
                         throw new Exception\InvalidArgumentException($msg);
                     }
-                    
+
                     $cols[$alias] = $column;
                     $names[] = $alias;
-                    
+
                 }
             } else {
                 if (in_array($alias, $names)) {
                      $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
                      throw new Exception\InvalidArgumentException($msg);
                 }
-                
+
                 $cols[$alias] = $column;
                 $names[] = $alias;
-                
+
             }
         }
         $this->columns($cols);
@@ -120,7 +120,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 
     /**
      * Set database adapter
-     * 
+     *
      * @param Adapter $adapter
      * @return Select
      */
@@ -131,13 +131,13 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         return $this;
     }
 
-    /** 
+    /**
      * Return an sql string accordingly to the internat database adapter
      *
      * @throws Exception\InvalidArgumentException
      * @return string
      */
-    public function getSql() 
+    public function getSql()
     {
         if ($this->adapter === null) {
             $msg = __METHOD__ . ": Error, prior to use execute method you must provide a valid database adapter. See Select::setDbAdapter() method.";
@@ -146,7 +146,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         $sql = new Sql($this->adapter);
         return $sql->getSqlStringForSqlObject($this);
     }
-    
+
     /**
      * Execute the query and return a Zend\Db\Resultset\ResultSet object
      *

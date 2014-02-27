@@ -85,7 +85,7 @@ class TableManager
      */
     public function table($table_name)
     {
-        
+
         if (!is_string($table_name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a string");
         }
@@ -187,7 +187,7 @@ class TableManager
 
     /**
      * Return a metadata reader
-     * 
+     *
      * @return Source\AbstractSource
      */
     public function metadata()
@@ -200,7 +200,7 @@ class TableManager
 
     /**
      * Set the database adapter
-     * 
+     *
      * @param Adapter $adapter
      * @return TableManager
      */
@@ -212,7 +212,7 @@ class TableManager
 
     /**
      * Return default metadata reader associated to an adapter
-     * 
+     *
      * @param Adapter $adapter
      * @throws Exception\UnsupportedFeatureException
      */

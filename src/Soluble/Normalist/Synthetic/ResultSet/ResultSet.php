@@ -39,11 +39,11 @@ class ResultSet implements Iterator, Countable
      * @var int
      */
     protected $position = 0;
-    
-    
+
+
     /**
      *
-     * @var boolean 
+     * @var boolean
      */
     protected $has_complete_record_definition;
 
@@ -60,16 +60,16 @@ class ResultSet implements Iterator, Countable
         $this->has_complete_record_definition = $has_complete_record_definition;
         $this->dataSource = $select->execute();
     }
-    
+
     /**
      * This method allows the results to be iterable multiple times
      * for database drivers that does not support rewind() method.
      * PDO_Mysql for example does not provide backward scrolling resultset,
-     * They are forward only. MySQLi provides backward scrolling so this method 
+     * They are forward only. MySQLi provides backward scrolling so this method
      * should not be used.
-     * 
+     *
      * @throws Zend\Db\ResultSet\Exception\RuntimeException Buffering must be enabled before iteration is started
-     * 
+     *
      * @return ResultSet
      */
     public function buffer()
@@ -128,10 +128,10 @@ class ResultSet implements Iterator, Countable
     public function current()
     {
         $data = $this->dataSource->current();
-        
+
         if (!$this->has_complete_record_definition) {
             $data_columns   = array_keys($this->table->getColumnsInformation());
-            $record_columns = array_keys((array) $data); 
+            $record_columns = array_keys((array) $data);
             $matches = array_intersect($data_columns, $record_columns);
             if (count($matches) != count($data_columns)) {
                 $missings = join(',', array_diff($data_columns, $record_columns));
@@ -141,7 +141,7 @@ class ResultSet implements Iterator, Countable
             }
             $this->has_complete_record_definition = true;
         }
-        
+
         $record = $this->table->record($data, $ignore=true);
         $record->setState(Record::STATE_CLEAN);
         return $record;
