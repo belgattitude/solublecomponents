@@ -16,6 +16,7 @@ Soluble\Db offers various utilities accross the soluble components.
 
 Soluble components requires PHP 5.3+
 
+
 ## Installation
 
 Soluble/Db can be installed via composer. For composer documentation, please refer to
