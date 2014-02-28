@@ -1,6 +1,6 @@
 {
 	"name": "soluble/flexstore",
-	"description": "Normalist ORM",
+	"description": "FlexStore",
     "license": "MIT",
 	"keywords": [
         "FlexStore",
