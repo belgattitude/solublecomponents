@@ -354,6 +354,21 @@ class TableTest extends \PHPUnit_Framework_TestCase
                );
         $table->insert($data);
     }
+
+    public function testInsertThrowsNoPrimaryKeyException()
+    {
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
+        $table = $this->tableManager->table('test_table_without_pk');                
+        
+        $data = array(
+                'test_field' => 20,
+                'test_field2' => 10
+               );
+        $table->insert($data);
+    }
+    
+    
+
     
     public function testInsertThrowsForeignKeyException()
     {

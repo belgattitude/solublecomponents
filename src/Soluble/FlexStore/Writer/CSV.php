@@ -57,14 +57,13 @@ class CSV extends AbstractWriter
 
 
         $charset = strtoupper($this->options['charset']);
-        $escape = $this->options['escape'];
+        
 
         $header_line = join($this->options['field_separator'], array_keys($data[0]));
         $csv .= $header_line . $this->options['line_separator'];
 
 
         foreach ($data as $row) {
-
 
             switch ($this->options['field_separator']) {
                 case self::SEPARATOR_TAB:
@@ -110,7 +109,8 @@ class CSV extends AbstractWriter
 
     /**
      *
-     * @param \Soluble\FlexStore\Writer\SendHeaders $headers
+     * @param SendHeaders $headers
+     * @return void
      */
     public function send(SendHeaders $headers=null)
     {
@@ -128,9 +128,9 @@ class CSV extends AbstractWriter
     /**
      *
      * @param string $item
-     * @param string $key
+     * @return void
      */
-    protected function escapeLineDelimiter(&$item, $key)
+    protected function escapeLineDelimiter(&$item)
     {
         $item = str_replace(self::SEPARATOR_NEWLINE_WIN, " ", $item);
         $item = str_replace(self::SEPARATOR_NEWLINE_UNIX, " ", $item);
@@ -139,10 +139,9 @@ class CSV extends AbstractWriter
     /**
      *
      * @param string $item
-     * @param string $key
-     * @return string
+     * @return void
      */
-    protected function escapeTabDelimiter(&$item, $key)
+    protected function escapeTabDelimiter(&$item)
     {
         $item = str_replace("\t", " ", $item);
     }
@@ -151,9 +150,9 @@ class CSV extends AbstractWriter
      *
      * @param string $item
      * @param string $key
-     * @return string
+     * @return void
      */
-    protected function escapeFieldDelimiter(&$item, $key)
+    protected function escapeFieldDelimiter(&$item)
     {
         $item = str_replace($this->options['field_separator'], $this->options['escape'] . $this->options['field_separator'], $item);
     }

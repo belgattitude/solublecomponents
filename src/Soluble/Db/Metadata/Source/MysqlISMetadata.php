@@ -4,6 +4,7 @@ namespace Soluble\Db\Metadata\Source;
 use Soluble\Db\Metadata\Cache\CacheAwareInterface;
 use Soluble\Db\Metadata\Exception;
 
+
 use Zend\Db\Adapter\Adapter;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -71,7 +72,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @param string $schema schema name
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
-     * @throws Exception\NoPrimaryKeyException
+     * @throws Exception\NoPrimaryKeyException when no pk or multiple pk found
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
      * @return string
@@ -173,7 +174,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * s
+     * 
      * @return array
      */
     public function getRelations($table, $schema=null)

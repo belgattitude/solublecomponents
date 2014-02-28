@@ -10,7 +10,7 @@ abstract class AbstractWriter
 {
     /**
      *
-     * @var \Soluble\FlexStore\Source\AbstractSource
+     * @var SourceInterface
      */
     protected $source;
 
@@ -41,8 +41,8 @@ abstract class AbstractWriter
 
     /**
      *
-     * @param \Soluble\FlexStore\Source\SourceInterface $source
-     * @return \Soluble\FlexStore\Writer\Json
+     * @param SourceInterface $source
+     * @return AbstractWriter
      */
     public function setSource(SourceInterface $source)
     {
@@ -65,9 +65,11 @@ abstract class AbstractWriter
 
 
     /**
-     *
+     * Save content to a file
+     * 
      * @param string $filename
      * @param string $charset
+     * @return void
      *
      */
     public function save($filename, $charset=null)
@@ -77,18 +79,33 @@ abstract class AbstractWriter
             $charset = $this->options['charset'];
         }
         // UTF-8 : file_put_contents("file.txt", "\xEF\xBB\xBF" . $data);
+        
+        /*
+         
+$data = file_get_contents($npath);
+$data = mb_convert_encoding($data, 'UTF-8', 'OLD-ENCODING');
+file_put_contents('tempfolder/'.$a, $data);
+
+Or alternatively, with PHP's stream filters:
+
+$fd = fopen($file, 'r');
+stream_filter_append($fd, 'convert.iconv.UTF-8/OLD-ENCODING');
+stream_copy_to_stream($fd, fopen($output, 'w'));
+         * 
+         * mb_convert_encoding($data, 'UTF-8', 'auto');
+         * mb_convert_encoding($data, 'UTF-8', mb_detect_encoding($data));          
+         */
+        
         $ret = file_put_contents($filename, $data);
         if (!$ret) {
             throw new \Exception("Filename $filename cannot be written");
         }
-
-
     }
 
     /**
      *
      * @param boolean $debug
-     * @return \Soluble\Flexstore\Writer\AbstractWriter
+     * @return AbstractWriter
      */
     public function setDebug($debug=true)
     {
@@ -98,9 +115,12 @@ abstract class AbstractWriter
 
 
     /**
-     * @param  array|Traversable $options
-     * @return self
+     * Se options
+     * 
      * @throws Exception\InvalidArgumentException
+     * 
+     * @param  array|Traversable $options
+     * @return AbstractWriter
      */
     public function setOptions($options)
     {
@@ -130,7 +150,7 @@ abstract class AbstractWriter
     }
 
     /**
-     * Retrieve options representing object state
+     * Retrieve options 
      *
      * @return array
      */

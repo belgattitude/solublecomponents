@@ -79,7 +79,7 @@ class Table
     /**
      *
      * @param array|string $table table name
-     * @param \Soluble\Normalist\Synthetic\TableManager $tableManager
+     * @param TableManager $tableManager
      *
      * @throws Exception\InvalidArgumentException
      */
@@ -247,7 +247,6 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     *
      * @return int number of record matching predicates
      */
     public function countBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
@@ -308,7 +307,7 @@ class Table
      * Get a Soluble\Db\Select object
      *
      * @param string $table_alias useful when you want to join columns
-     * @return Soluble\Db\Sql\Select
+     * @return Select
      */
     public function select($table_alias = null)
     {
@@ -437,7 +436,7 @@ class Table
      * @throws Exception\NotNullException when insertion failed because a column cannot be null
      * @throws Exception\RuntimeException when insertion failed for another reason
      *
-     * @return \Soluble\Normalist\Synthetic\Record
+     * @return Record
      */
     public function insert($data, $validate_datatypes=false)
     {
@@ -458,13 +457,21 @@ class Table
             $this->validateDatatypes($d);
         }
 
-
         $insert = $this->sql->insert($prefixed_table);
         $insert->values($d);
 
         $this->executeStatement($insert);
 
         $pks = $this->getPrimaryKeys();
+        
+        // Should never happen, as getPrimaryKeys throws Exception when no pk exists
+        //@codeCoverageIgnoreStart
+        if (!is_array($pks)) {
+            $msg = __METHOD__ . " Error getting primary keys of table " . $this->table . ", require array, returned type is: " . gettype($pks) ;
+            throw new Exception\UnexpectedValueException($msg);
+        }
+        //@codeCoverageIgnoreEnd
+        
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
             // In multiple keys there should not be autoincrement value
@@ -662,12 +669,23 @@ class Table
 
     /**
      * Return table primary keys
+     * 
+     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found     
+     * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
+     * @throws Soluble\Db\Metadata\Exception\ErrorException
+     * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
+     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException
+     *      
      * @return array
      */
     public function getPrimaryKeys()
     {
         if (!$this->primary_keys) {
-            $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
+            try {
+                $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
+            } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
+                throw new Exception\PrimaryKeyNotFoundException($e->getMessage());
+            }
         }
         return $this->primary_keys;
     }
@@ -675,7 +693,13 @@ class Table
     /**
      * Return primary key, if multiple primary keys found will
      * throw an exception
-     * @throws Exception
+     * 
+     * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
+     * @throws Soluble\Db\Metadata\Exception\ErrorException
+     * @throws Soluble\Db\Metadata\Exception\NoPrimaryKeyException when no pk or multiple pk found
+     * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
+     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException
+     * 
      * @return int|string
      */
     public function getPrimaryKey()
@@ -688,6 +712,12 @@ class Table
 
     /**
      * Return list of table columns
+     * 
+     * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
+     * @throws Soluble\Db\Metadata\Exception\ErrorException
+     * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
+     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException     
+     * 
      * @return array
      */
     public function getColumnsInformation()
