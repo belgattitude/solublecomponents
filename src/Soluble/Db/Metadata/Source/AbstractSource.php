@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\Db\Metadata\Source;
 
+
 use Soluble\Db\Metadata\Exception;
 
 abstract class AbstractSource

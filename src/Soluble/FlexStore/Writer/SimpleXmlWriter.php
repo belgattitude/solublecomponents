@@ -1,6 +1,9 @@
 <?php
 namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Writer\AbstractWriter;
+use Soluble\FlexStore\Source\SourceInterface;
+use Soluble\FlexStore\Writer\SendHeaders;
+
 
 use Traversable;
 
@@ -45,7 +48,7 @@ class SimpleXmlWriter extends AbstractWriter
     /**
      *
      * @param string $row_tag
-     * @return \Soluble\FlexStore\Writer\SimpleXmlWriter
+     * @return SimpleXmlWriter
      */
     public function setRowTag($row_tag)
     {
@@ -56,7 +59,7 @@ class SimpleXmlWriter extends AbstractWriter
     /**
      *
      * @param string $body_tag
-     * @return \Soluble\FlexStore\Writer\SimpleXmlWriter
+     * @return SimpleXmlWriter
      */
     public function setBodyTag($body_tag)
     {
@@ -136,7 +139,8 @@ class SimpleXmlWriter extends AbstractWriter
 
     /**
      *
-     * @param \Soluble\FlexStore\Writer\SendHeaders $headers
+     * @param SendHeaders $headers
+     * @return void
      */
     public function send(SendHeaders $headers=null)
     {
