@@ -11,6 +11,7 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\PreparableSqlInterface;
+use Zend\Db\Sql\SqlInterface;
 
 use ArrayObject;
 
@@ -304,7 +305,7 @@ class Table
     }
 
     /**
-     * Get a Soluble\Db\Select object
+     * Get a select object (Soluble\Db\Select)
      *
      * @param string $table_alias useful when you want to join columns
      * @return Select
@@ -670,11 +671,9 @@ class Table
     /**
      * Return table primary keys
      * 
-     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found     
-     * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
-     * @throws Soluble\Db\Metadata\Exception\ErrorException
-     * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
-     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException
+     * @throws Exception\PrimaryKeyNotFoundException when no pk
+     * @throws Exception\RuntimeException when it cannot determine primary key on table
+     * 
      *      
      * @return array
      */
@@ -684,8 +683,12 @@ class Table
             try {
                 $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
             } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
-                throw new Exception\PrimaryKeyNotFoundException($e->getMessage());
+                throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ': ' . $e->getMessage());
+            //@codeCoverageIgnoreStart    
+            } catch (\Soluble\Db\Metadata\Exception\ExceptionInterface $e) {
+                throw new Exception\RuntimeException(__METHOD__ . ": Cannot determine primary key on table " . $this->prefixed_table);
             }
+            //@codeCoverageIgnoreEnd
         }
         return $this->primary_keys;
     }
@@ -694,18 +697,19 @@ class Table
      * Return primary key, if multiple primary keys found will
      * throw an exception
      * 
-     * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
-     * @throws Soluble\Db\Metadata\Exception\ErrorException
-     * @throws Soluble\Db\Metadata\Exception\NoPrimaryKeyException when no pk or multiple pk found
-     * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
-     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException
+     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found     
+     * @throws Exception\RuntimeException when it cannot determine primary key on table
      * 
      * @return int|string
      */
     public function getPrimaryKey()
     {
         if (!$this->primary_key) {
-            $this->primary_key = $this->tableManager->metadata()->getPrimaryKey($this->prefixed_table);
+            $pks = $this->getPrimaryKeys();
+            if (count($pks) > 1) {
+                throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ": Error getting unique primary key on table, multiple found on table " . $this->prefixed_table);
+            }
+            $this->primary_key = $pks[0];
         }
         return $this->primary_key;
     }
@@ -814,7 +818,7 @@ class Table
                 $rex = new Exception\ForeignKeyException(__METHOD__ . ': ' . $message, $e->getCode(), $e);
                 throw $rex;
             } else {
-                if ($sqlObject instanceof PreparableSqlInterface) {
+                if ($sqlObject instanceof SqlInterface) {
                     $sql_string = $sqlObject->getSqlString($this->sql->getAdapter()->getPlatform());
                 } else {
                     $sql_string = $sqlObject;
