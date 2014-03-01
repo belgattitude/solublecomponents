@@ -67,7 +67,7 @@ class Table
 
     /**
      *
-     * @var Zend\Db\Sql\Sql
+     * @var Sql
      */
     protected $sql;
 
@@ -173,7 +173,8 @@ class Table
         $select = $this->select($this->table);
         $select->where($predicate, $combination);
         try {
-            $results = $select->execute()->toArray();
+            $results = $select->execute()
+                              ->toArray();
         } catch (\Exception $e) {
 
             $messages = array();
@@ -256,7 +257,8 @@ class Table
         $result = $this->select()
                         ->columns(array('count' => new Expression('count(*)')))
                         ->where($predicate, $combination)
-                        ->execute()->toArray();
+                        ->execute()
+                        ->toArray();
 
         return (int) $result[0]['count'];
     }
@@ -275,7 +277,8 @@ class Table
     {
         $result = $this->select()->where($this->getPrimaryKeyPredicate($id))
                         ->columns(array('count' => new Expression('count(*)')))
-                        ->execute()->toArray();
+                        ->execute()
+                        ->toArray();
 
         return ($result[0]['count'] > 0);
     }
@@ -296,7 +299,8 @@ class Table
         try {
             $select = $this->select()->where($predicate, $combination)
                     ->columns(array('count' => new Expression('count(*)')));
-            $result = $select->execute()->toArray();
+            $result = $select->execute()
+                             ->toArray();
         } catch (\Exception $e) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": invaid usage ({$e->getMessage()})");
         }
@@ -313,7 +317,7 @@ class Table
     public function select($table_alias = null)
     {
         $prefixed_table = $this->prefixed_table;
-        $select = new Select();
+        $select = new \Soluble\Db\Sql\Select();
         $select->setDbAdapter($this->tableManager->getDbAdapter());
         if ($table_alias === null) {
             $table_spec = $this->table;
