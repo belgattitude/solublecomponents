@@ -162,21 +162,19 @@ class MysqliMetadataSource extends AbstractMetadataSource
     protected function readFields($sql)
     {
         if (trim($sql) == '') {
-            throw new Exception\EmptyQueryException();
+            throw new Exception\EmptyQueryException(__METHOD__ . ": Error cannot handle empty queries");
         }
 
         $sql = $this->makeQueryEmpty($sql);
-
-
 
 
         $stmt = $this->mysqli->prepare($sql);
 
         if (!$stmt) {
             $message = $this->mysqli->error;
-            throw new Exception\InvalidQueryException("Sql is not correct : $message");
+            throw new Exception\InvalidQueryException(__METHOD__ . ": Error sql is not correct : $message");
         }
-        $result = $stmt->execute();
+        $stmt->execute();
 
         // to check if query is empty
         /*

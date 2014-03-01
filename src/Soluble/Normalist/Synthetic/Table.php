@@ -338,9 +338,7 @@ class Table
      */
     public function delete($id)
     {
-        $affected_rows = $this->deleteBy($this->getPrimaryKeyPredicate($id));
-
-        return $affected_rows;
+        return $this->deleteBy($this->getPrimaryKeyPredicate($id));
     }
 
     /**
@@ -358,8 +356,7 @@ class Table
 
         $statement = $this->sql->prepareStatementForSqlObject($delete);
         $result = $statement->execute();
-        $affected = $result->getAffectedRows();
-        return $affected;
+        return $result->getAffectedRows();
     }
 
     /**
@@ -423,9 +420,7 @@ class Table
 
         $result = $this->executeStatement($update);
 
-        $affectedRows =  $result->getAffectedRows();
-        return $affectedRows;
-
+        return  $result->getAffectedRows();
     }
 
     /**
@@ -492,8 +487,7 @@ class Table
             $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
         }
 
-        $record = $this->findOrFail($id);
-        return $record;
+        return $this->findOrFail($id);
     }
 
 
@@ -907,9 +901,13 @@ class Table
         // @todo code for validating datatypes
         // integer -> numeric
         // etc, etc...
+        $columnInfo = $this->getColumnsInformation();
+        foreach($data as $column => $value) {
+            // checks on types
+            
+            
+        }
 
     }
-
-
 
 }
