@@ -320,7 +320,7 @@ class Table
         $select = new \Soluble\Db\Sql\Select();
         $select->setDbAdapter($this->tableManager->getDbAdapter());
         if ($table_alias === null) {
-            $table_spec = $this->table;
+            $table_spec = $prefixed_table;
         } else {
             $table_spec = array($table_alias => $prefixed_table);
         }
