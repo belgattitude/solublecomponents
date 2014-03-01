@@ -20,11 +20,10 @@ use ArrayObject;
 
 class SelectSource extends AbstractSource
 {
-//class ZendDbSqlSelect {
 
     /**
      *
-     * @var \Zend\Db\Sql\Select
+     * @var Select
      */
     protected $select;
 
@@ -70,45 +69,44 @@ class SelectSource extends AbstractSource
         if (is_array($params)) {
             $params = new ArrayObject($params);
         } elseif (!$params instanceof ArrayObject) {
-            throw new Exception\InvalidArgumentException("Params must be either an ArrayObject or an array");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Params must be either an ArrayObject or an array");
         }
 
         if ($params->offsetExists('select')) {
-            if ($params['select'] instanceof \Zend\Db\Sql\Select) {
+            if ($params['select'] instanceof Select) {
                 $this->select = $params['select'];
             } else {
-                throw new Exception\InvalidArgumentException("Param 'source' must be an instance of Zend\Db\Sql\Select");
+                throw new Exception\InvalidArgumentException(__METHOD__ . ": Param 'source' must be an instance of Zend\Db\Sql\Select");
             }
         } else {
-            throw new Exception\MissingArgumentException("Missing param 'select'");
+            throw new Exception\MissingArgumentException(__METHOD__ . ": Missing param 'select'");
         }
 
         if ($params->offsetExists('adapter')) {
             if ($params['adapter'] instanceof \Zend\Db\Adapter\Adapter) {
                 $this->adapter = $params['adapter'];
             } else {
-                throw new Exception\InvalidArgumentException("Param 'adapter' must be an instance of Zend\Db\Adapter\Adapter");
+                throw new Exception\InvalidArgumentException(__METHOD__ . ": Param 'adapter' must be an instance of Zend\Db\Adapter\Adapter");
             }
         } else {
-            throw new Exception\MissingArgumentException("Missing param 'adapter'");
+            throw new Exception\MissingArgumentException(__METHOD__ . ": Missing param 'adapter'");
         }
         $this->params = $params;
     }
 
     /**
      *
-     * @param \Zend\Db\Sql\Select $select
-     * @param \Soluble\FlexStore\Options $options
-     * @return \Zend\Db\Sql\Select
+     * @param Select $select
+     * @param Options $options
+     * @return Select
      */
-    protected function assignOptions(\Zend\Db\Sql\Select $select, \Soluble\FlexStore\Options $options)
+    protected function assignOptions(Select $select, Options $options)
     {
         if ($options->hasLimit()) {
             $select->limit($options->getLimit());
             if (is_numeric($options->getOffset())) {
                 $select->offset($options->getOffset());
             }
-
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
         }
         return $select;
@@ -117,7 +115,7 @@ class SelectSource extends AbstractSource
 
     /**
      *
-     * @param \Soluble\FlexStore\Options $options
+     * @param Options $options
      * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null)
@@ -136,16 +134,16 @@ class SelectSource extends AbstractSource
         $this->query_string = $sql_string;
 
         // In case of unbuffered results (default on mysqli) !!!
-        $is_mysqli = ($this->adapter->getDriver() instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli);
-        if ($is_mysqli) {
-            $stmt_prototype_backup = $this->adapter->getDriver()->getStatementPrototype();
+        $driver = $this->adapter->getDriver();
+        if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
+            $stmt_prototype_backup = $driver->getStatementPrototype();
             if (self::$cache_stmt_prototype === null) {
                 // With buffer results
                 self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
             }
 
 
-            $this->adapter->getDriver()->registerStatementPrototype(self::$cache_stmt_prototype);
+            $driver->registerStatementPrototype(self::$cache_stmt_prototype);
 
         }
 /*
@@ -222,11 +220,9 @@ class SelectSource extends AbstractSource
     public function getQueryString()
     {
         if ($this->query_string == '') {
-            throw new Exception\InvalidUsageException("Invalid usage, getQueryString must be called after data has been loaded (performance reason).");
+            throw new Exception\InvalidUsageException(__METHOD__ . ": Invalid usage, getQueryString must be called after data has been loaded (performance reason).");
         }
         return $this->query_string;
     }
-
-
 
 }

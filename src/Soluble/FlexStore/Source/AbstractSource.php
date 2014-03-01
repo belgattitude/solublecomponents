@@ -11,7 +11,7 @@ use Soluble\FlexStore\Options;
 abstract class AbstractSource implements SourceInterface
 {
     /**
-     * @var Soluble\FlexStore\Options
+     * @var Options
      */
     protected $options;
 
@@ -22,11 +22,16 @@ abstract class AbstractSource implements SourceInterface
      */
     protected $columns;
 
+    /**
+     * @var string|int
+     */
+    protected $identifier;
+    
 
     /**
      *
      * @param array $columns
-     * @return \Soluble\FlexStore\Source\AbstractSource
+     * @return AbstractSource
      */
     public function setColumns(array $columns)
     {
@@ -37,7 +42,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      *
-     * @return \Soluble\FlexStore\Source\AbstractSource
+     * @return AbstractSource
      */
     public function unsetColumns()
     {
@@ -47,7 +52,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      *
-     * @return Soluble\FlexStore\Options
+     * @return Options
      */
     public function getOptions()
     {
@@ -60,7 +65,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      *
-     * @param Soluble\FlexStore\Options $options
+     * @param Options $options
      * @return Soluble\FlexStore\ResultSet\ResultSet
      */
     abstract public function getData(Options $options = null);
@@ -72,8 +77,8 @@ abstract class AbstractSource implements SourceInterface
     /**
      * Set the primary key / unique identifier in the store
      *
-     * @param string $identifier column name of the primary key
-     * @return Vision_Store_Adapter_Abstract
+     * @param string|integer $identifier column name of the primary key
+     * @return AbstractSource
      */
     public function setIdentifier($identifier)
     {
@@ -84,7 +89,7 @@ abstract class AbstractSource implements SourceInterface
      * Return the primary key / unique identifier in the store
      * Null if not applicable
      *
-     * @return string|null column name
+     * @return string|integer|null
      */
     public function getIdentifier()
     {

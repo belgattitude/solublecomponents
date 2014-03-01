@@ -139,7 +139,7 @@ class ImageConverter implements ConverterInterface
         try {
             $imagine = $this->getImagine();
 
-            if ($imagine instanceof Imagine\Imagick\Imagine) {
+            if ($imagine instanceof ImagickImagine) {
                 $filter = ImageInterface::FILTER_LANCZOS;
                 /**
                  * BESSEL : 53k
