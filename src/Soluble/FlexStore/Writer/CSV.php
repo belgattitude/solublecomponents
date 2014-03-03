@@ -57,7 +57,7 @@ class CSV extends AbstractWriter
 
 
         $charset = strtoupper($this->options['charset']);
-        
+
 
         $header_line = join($this->options['field_separator'], array_keys($data[0]));
         $csv .= $header_line . $this->options['line_separator'];

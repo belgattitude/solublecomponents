@@ -38,21 +38,28 @@ Installation
 ++++++++++++
 
 The recommended way to install Normalist is through `Composer <https://getcomposer.org/>`_.
-Just add soluble/normalist in your composer.json file as described below
+
+.. code-block:: bash
+
+    $ php require soluble/normalist
+
+
+Or alternatively, add soluble/normalist in your composer.json file as described below
 
 .. code-block:: json
 
     {
         "require": {
-            "soluble/normalist": "dev-master"
+            "soluble/normalist": "0.*"
         }
     }
 
-Run composer update or install.
 
 .. code-block:: bash
 
     $ php composer.phar update
+
+
 
 .. note::     
    + Replace dev-master by the latest stable release, see soluble `GitHub account <https://github.com/belgattitude/solublecomponents>`_.

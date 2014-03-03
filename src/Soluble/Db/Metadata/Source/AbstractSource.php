@@ -26,10 +26,10 @@ abstract class AbstractSource
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
      * @return array
-     */    
+     */
     abstract public function getUniqueKeys($table, $schema=null, $include_primary=false);
 
-    
+
     /**
      * Return indexes information on a table
      *
@@ -43,7 +43,7 @@ abstract class AbstractSource
      * @return array
      */
     abstract public function getIndexesInformation($table, $schema=null);
-  
+
     /**
      * Return unique table primary key
      *
@@ -52,7 +52,7 @@ abstract class AbstractSource
      * @throws Exception\NoPrimaryKeyException when no pk or multiple pk found
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @param string $table
      * @param string $schema
      * @return null|string|int primary key
@@ -68,7 +68,7 @@ abstract class AbstractSource
      * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     *      
+     *
      * @param string $table
      * @param string $schema
      * @return null|array primary key
@@ -84,7 +84,7 @@ abstract class AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @param string $table
      * @param string $schema
      * @return array associative array [column_name => infos]
@@ -94,26 +94,26 @@ abstract class AbstractSource
 
     /**
      * Return relations information
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @param string $table
      * @param string $schema
-     * 
+     *
      * @return array
      */
     abstract public function getRelations($table, $schema=null);
 
     /**
      * Return table informations
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     *      
+     *
      * @param string $schema
      * @return array associative array indexed by table_name
      */
@@ -141,11 +141,11 @@ abstract class AbstractSource
 
     /**
      * Return information about a specific table
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * 
+     *
      * @param string $table
      * @param string $schema
      * @return array
@@ -159,11 +159,11 @@ abstract class AbstractSource
 
     /**
      * Return a list of table names
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
-     * 
+     *
      * @param string $schema
      * @return array
      */
@@ -193,12 +193,12 @@ abstract class AbstractSource
 
     /**
      * Check whether a table parameter is valid and exists
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @param string $table
      * @param string $schema
      * @return AbstractSource

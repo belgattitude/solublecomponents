@@ -29,14 +29,7 @@ class SolubleTestFactories
                 /**
                  * Those values must be defined in phpunit.xml configuration file
                  */
-                
-                $mysql_config = array();
-                $mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
-                $mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
-                $mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];
-                $mysql_config['database'] = $_SERVER['MYSQL_DATABASE'];
-                $mysql_config['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-                $mysql_config['charset'] = 'UTF8';
+                $mysql_config = self::getDatabaseConfig();
             }
             if ($driver !== null) {
                 $mysql_config['driver']   = $driver;
@@ -53,6 +46,18 @@ class SolubleTestFactories
 
     }
 
+    public static function getDatabaseConfig()
+    {
+        $mysql_config = array();
+        $mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
+        $mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
+        $mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];
+        $mysql_config['database'] = $_SERVER['MYSQL_DATABASE'];
+        $mysql_config['driver_options'] = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
+        $mysql_config['charset'] = 'UTF8';
+        return $mysql_config;
+    }
+    
     /**
      * @return \Zend\Cache\StorageInterface
      */

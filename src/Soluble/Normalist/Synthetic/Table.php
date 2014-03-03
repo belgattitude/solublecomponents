@@ -463,7 +463,7 @@ class Table
         $this->executeStatement($insert);
 
         $pks = $this->getPrimaryKeys();
-        
+
         // Should never happen, as getPrimaryKeys throws Exception when no pk exists
         //@codeCoverageIgnoreStart
         if (!is_array($pks)) {
@@ -471,7 +471,7 @@ class Table
             throw new Exception\UnexpectedValueException($msg);
         }
         //@codeCoverageIgnoreEnd
-        
+
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
             // In multiple keys there should not be autoincrement value
@@ -668,11 +668,11 @@ class Table
 
     /**
      * Return table primary keys
-     * 
+     *
      * @throws Exception\PrimaryKeyNotFoundException when no pk
      * @throws Exception\RuntimeException when it cannot determine primary key on table
-     * 
-     *      
+     *
+     *
      * @return array
      */
     public function getPrimaryKeys()
@@ -682,7 +682,7 @@ class Table
                 $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
             } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
                 throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ': ' . $e->getMessage());
-            //@codeCoverageIgnoreStart    
+            //@codeCoverageIgnoreStart
             } catch (\Soluble\Db\Metadata\Exception\ExceptionInterface $e) {
                 throw new Exception\RuntimeException(__METHOD__ . ": Cannot determine primary key on table " . $this->prefixed_table);
             }
@@ -694,10 +694,10 @@ class Table
     /**
      * Return primary key, if multiple primary keys found will
      * throw an exception
-     * 
-     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found     
+     *
+     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found
      * @throws Exception\RuntimeException when it cannot determine primary key on table
-     * 
+     *
      * @return int|string
      */
     public function getPrimaryKey()
@@ -714,12 +714,12 @@ class Table
 
     /**
      * Return list of table columns
-     * 
+     *
      * @throws Soluble\Db\Metadata\Exception\InvalidArgumentException
      * @throws Soluble\Db\Metadata\Exception\ErrorException
      * @throws Soluble\Db\Metadata\Exception\ExceptionInterface
-     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException     
-     * 
+     * @throws Soluble\Db\Metadata\Exception\TableNotFoundException
+     *
      * @return array
      */
     public function getColumnsInformation()
@@ -904,8 +904,8 @@ class Table
         $columnInfo = $this->getColumnsInformation();
         foreach($data as $column => $value) {
             // checks on types
-            
-            
+
+
         }
 
     }

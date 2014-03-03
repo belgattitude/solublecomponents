@@ -26,7 +26,7 @@ abstract class AbstractSource implements SourceInterface
      * @var string|int
      */
     protected $identifier;
-    
+
 
     /**
      *

@@ -174,7 +174,7 @@ class MysqlISMetadata extends AbstractSource implements CacheAwareInterface
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @return array
      */
     public function getRelations($table, $schema=null)
