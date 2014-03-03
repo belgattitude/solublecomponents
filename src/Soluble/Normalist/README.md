@@ -55,5 +55,3 @@ Documentation is hosted on [Read the docs](http://soluble.readthedocs.org)
 
 
 
-
-
