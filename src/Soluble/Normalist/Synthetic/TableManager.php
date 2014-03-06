@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
+use Soluble\Normalist\Metadata;
 
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
@@ -221,7 +222,8 @@ class TableManager
         $adapterName = $adapter->getPlatform()->getName();
         switch (strtolower($adapterName)) {
             case 'mysql':
-                $metadata = new Source\MysqlISMetadata($adapter);
+                //$metadata = new Source\Mysql\InformationSchema($adapter);
+                $metadata = new Metadata\DynamicSchema($adapter);
                 break;
             default :
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");

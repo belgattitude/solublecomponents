@@ -33,11 +33,12 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         
         $cache   = \SolubleTestFactories::getCacheStorage();
-        $metadata = new Source\MysqlISMetadata($this->adapter);
+        //$metadata = new Source\MysqlISMetadata($this->adapter);
         //$metadata->setCache($cache);
+        //$metadata = new Source\Mysql\InformationSchema($this->adapter);
         
         $this->tableManager = new TableManager($this->adapter);
-        $this->tableManager->setMetadata($metadata);
+        //$this->tableManager->setMetadata($metadata);
         
         $this->table = $this->tableManager->table('product_category');        
 
@@ -318,7 +319,8 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetMetadata()
     {
-        $metadata = new Source\MysqlISMetadata($this->adapter);
+        $metadata = new Source\Mysql\InformationSchema($this->adapter);        
+        //$metadata = new Source\MysqlISMetadata($this->adapter);
         $tableManager = new TableManager($this->adapter);
         $ret = $tableManager->setMetadata($metadata);
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableManager', $ret);

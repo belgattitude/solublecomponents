@@ -45,14 +45,15 @@ class Metadata
      *
      * @throws Exception\UnsupportedDriverException
      * @param \Zend\Db\Adapter\Adapter $adapter
+     * @param string $schema database schema to use or null to current schema defined by the adapter
      * @return \Soluble\Db\Metadata\Source\MysqlISMetadata
      */
-    protected function createSourceFromAdapter(Adapter $adapter)
+    protected function createSourceFromAdapter(Adapter $adapter, $schema=null)
     {
         $adapter_name = strtolower($adapter->getPlatform()->getName());
         switch ($adapter_name) {
             case 'mysql':
-                $source =  new Source\MysqlISMetadata($adapter);
+                $source =  new Source\Mysql\InformationSchema($adapter, $schema);
                 break;
             default:
                 throw new Exception\UnsupportedDriverException("Currently only MySQL is supported, driver set '$adapter_name'");
@@ -62,4 +63,13 @@ class Metadata
 
     }
 
+    /**
+     * Return underlying database adapter
+     * @return Adapter
+     */
+    function getDbAdapter()
+    {
+        return $this->adapter;
+    }
+    
 }

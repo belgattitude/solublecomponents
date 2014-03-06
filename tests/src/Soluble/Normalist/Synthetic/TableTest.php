@@ -26,11 +26,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
         $cache   = \SolubleTestFactories::getCacheStorage();
-        $metadata = new Source\MysqlISMetadata($adapter);
-        $metadata->setCache($cache);
+        //$metadata = new Source\MysqlISMetadata($adapter);
+        //$metadata->setCache($cache);
+        //$metadata = new Source\Mysql\InformationSchema($adapter);
 
         $this->tableManager = new TableManager($adapter);
-        $this->tableManager->setMetadata($metadata);
+        //$this->tableManager->setMetadata($metadata);
 
     }
 
@@ -922,12 +923,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $relations = $this->tableManager->table('product')->getRelations();
         
-
         $this->assertInternalType('array', $relations);
         $this->assertArrayHasKey('brand_id', $relations);
-        $this->assertArrayHasKey('column_name', $relations['unit_id']);
-        $this->assertArrayHasKey('table_schema', $relations['unit_id']);
-        $this->assertArrayHasKey('table_name', $relations['unit_id']);
+        $this->assertArrayHasKey('referenced_column', $relations['unit_id']);
+        $this->assertArrayHasKey('referenced_table', $relations['unit_id']);
+        
         $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
         
     }

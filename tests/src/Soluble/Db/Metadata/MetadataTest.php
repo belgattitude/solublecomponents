@@ -37,7 +37,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     {
         
     }
-
+ 
     public function testGetSource()
     {
         $source = $this->metadata->getSource();

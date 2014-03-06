@@ -53,12 +53,12 @@ class Relation
         $relations = $this->table->getTableManager()->metadata()->getRelations($tableName);
         //$rels = array();
         foreach($relations as $column => $parent) {
-            if ($parent['table_name'] == $parent_table) {
+            if ($parent['referenced_table'] == $parent_table) {
                 // @todo, check the case when
                 // table has many relations to the same parent
                 // we'll have to throw an exception
                 $record = $this->table->getTableManager()->table($parent_table)->findOneBy(array(
-                    $parent['column_name'] => $record->offsetGet($column)
+                    $parent['referenced_column'] => $record->offsetGet($column)
                 ));
                 return $record;
             }

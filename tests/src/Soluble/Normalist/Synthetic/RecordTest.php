@@ -45,11 +45,11 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         
         $cache   = \SolubleTestFactories::getCacheStorage();
-        $metadata = new Source\MysqlISMetadata($this->adapter);
+        //$metadata = new Source\Mysql\InformationSchema($this->adapter);
         //$metadata->setCache($cache);
         
         $this->tableManager = new TableManager($this->adapter);
-        $this->tableManager->setMetadata($metadata);
+        //$this->tableManager->setMetadata($metadata);
         
         $this->table = $this->tableManager->table('product_category');
     }

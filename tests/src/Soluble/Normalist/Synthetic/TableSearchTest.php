@@ -36,11 +36,12 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
         $cache   = \SolubleTestFactories::getCacheStorage();
-        $metadata = new Source\MysqlISMetadata($adapter);
-        $metadata->setCache($cache);
+        //$metadata = new Source\MysqlISMetadata($adapter);
+       // $metadata = new Source\Mysql\InformationSchema($adapter);
+        //$metadata->setCache($cache);
 
         $this->tableManager = new TableManager($adapter);
-        $this->tableManager->setMetadata($metadata);
+        //$this->tableManager->setMetadata($metadata);
 
         $this->table = $this->tableManager->table('product_category');
     }

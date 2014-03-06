@@ -30,12 +30,14 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
-        $cache   = \SolubleTestFactories::getCacheStorage();
+        //$cache   = \SolubleTestFactories::getCacheStorage();
+       // $metadata = new Source\Mysql\InformationSchema($adapter);
+        /*
         $metadata = new Source\MysqlISMetadata($adapter);
         $metadata->setCache($cache);
-
+*/
         $this->tableManager = new TableManager($adapter);
-        $this->tableManager->setMetadata($metadata);
+        //$this->tableManager->setMetadata($metadata);
 
         $this->table = $this->tableManager->table('product_category');
         $select = $this->table->select(); 
