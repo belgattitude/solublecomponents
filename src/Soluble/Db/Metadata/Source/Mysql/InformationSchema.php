@@ -531,7 +531,8 @@ class InformationSchema extends Source\AbstractSource
             if ($value != 'OFF') {
                 $this->mysql_innodbstats_value = $value;
                 // disabling innodb_stats 
-                $this->adapter->query("set global innodb_stats_on_metadata='off'");
+                $this->adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);
+                $sql = "show global variables like 'innodb_stats_on_metadata'";
             }
         } catch (\Exception $e) {
             // do nothing, silently fallback
@@ -549,7 +550,7 @@ class InformationSchema extends Source\AbstractSource
         $value = $this->mysql_innodbstats_value;
         if ($value !== null) {
             // restoring old variable
-            $this->adapter->query("set global innodb_stats_on_metadata='$value'");
+            $this->adapter->query("set global innodb_stats_on_metadata='$value'", Adapter::QUERY_MODE_EXECUTE);
         }
     }
     
