@@ -195,9 +195,7 @@ class ZeroConfDriver implements DriverInterface
     {
         try {
             $model_definition = $this->getModelsDefinition();
-            echo "LOADING FROM FILE\n";
         } catch (Exception\ExceptionInterface $e) {
-            echo "RELOADING METADATA\n";
             
             // means model definition does not exists
             // lets load it from the current connection
