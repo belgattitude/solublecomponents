@@ -394,8 +394,8 @@ class InformationSchema extends Source\AbstractSource
         $this->restoreInnoDbStats();
         
         $references = array();
-        $config = new Config(array(), true);
-        $config->tables = array();
+        $config = new Config(array('tables' => array()), true);
+        
         foreach($results as $r) {
             // Setting table information
             $table_name = $r['table_name'];
@@ -427,7 +427,7 @@ class InformationSchema extends Source\AbstractSource
             $col_def = array(
                 'data_type'         => $r['data_type'],
                 'is_primary'        => $r['constraint_type'] == 'PRIMARY KEY',
-                'is_autoincrement'  => $t['extra'] == 'auto_increment',
+                'is_autoincrement'  => $r['extra'] == 'auto_increment',
                 'is_nullable'       => $r['is_nullable'] == 'YES',
                 'default'           => $r['column_default']
             );

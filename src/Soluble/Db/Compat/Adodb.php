@@ -23,7 +23,7 @@ class Adodb
      */
     public static function getAdapter(\ADOConnection $adoConnection)
     {
-        $connectionId = $adoConnection->_connectionID;
+        $connectionId = self::getADOConnectionId($adoConnection);
         if (!$connectionId) {
             throw new Exception\AdoNotConnectedException(__METHOD__ . ". Error: Invalid usage, adodb connection must be connected before use (see connect(), pconnect()");
         }
@@ -31,7 +31,6 @@ class Adodb
 
         switch($driver_class) {
             case 'mysqli' :
-
                 $adapter = Mysqli::getAdapter($connectionId);
                 break;
 
@@ -45,6 +44,17 @@ class Adodb
             //@codeCoverageIgnoreEnd
         }
         return $adapter;
+    }
+    
+    /**
+     * Return internal adodb internal connection id
+     * @param \ADOConnection $adoConnection
+     * @return \MySQLI|\PDO
+     */
+    protected static function getADOConnectionId(\ADOConnection $adoConnection)
+    {
+        $connectionId = $adoConnection->_connectionID;
+        return $connectionId;
     }
 
 }

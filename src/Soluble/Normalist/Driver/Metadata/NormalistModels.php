@@ -1,5 +1,6 @@
 <?php
-namespace Soluble\Normalist\Metadata;
+namespace Soluble\Normalist\Driver\Metadata;
+
 use Soluble\Db\Metadata\Source;
 use Zend\Db\Adapter\Adapter;
 use Zend\Config\Config;
@@ -7,49 +8,20 @@ use Zend\Config\Writer;
 use Soluble\Db\Metadata\Exception;
 
 
-class DynamicSchema extends Source\AbstractSource
+class NormalistModels extends Source\AbstractSource
 {
     
     /**
-     *
-     * @var Adapter
-     */
-    protected $adapter;
-    
-    
-    /**
-     *
-     * @var boolean 
-     */
-    protected $initialized;
-
-    /**
-     *
      * @var array
      */
-    static protected $localCache = array();
-    
-
-    /**
-     *
-     * @var array
-     */
-    static protected $fullyCachedSchemas = array();
+    protected $model_definition;
     
     /**
-     *
-     * @param Adapter $adapter
-     * @param string $schema default schema, taken from adapter if not given
-     * @throws Exception\InvalidArgumentException if schema parameter not valid
+     * @param array $model_definition
      */
-    public function __construct(Adapter $adapter, $schema=null)
+    public function __construct(array $model_definition)
     {
-        $this->adapter = $adapter;
-        if ($schema === null) {
-            $schema = $adapter->getCurrentSchema();
-        }
-        $this->setDefaultSchema($schema);
-        $this->initialize();
+        $this->model_definition = $model_definition;
     }    
     
     
@@ -69,7 +41,7 @@ class DynamicSchema extends Source\AbstractSource
     public function getUniqueKeys($table, $schema=null, $include_primary=false) 
     {
         
-        return self::$localCache['tables'][$table]['unique_keys'];
+        return $this->model_definition['tables'][$table]['unique_keys'];
     }
 
 
@@ -88,7 +60,7 @@ class DynamicSchema extends Source\AbstractSource
     public function getIndexesInformation($table, $schema=null)
     {
         
-        return self::$localCache['tables'][$table]['indexes'];
+        return $this->model_definition['tables'][$table]['indexes'];
     }
 
     /**
@@ -133,7 +105,7 @@ class DynamicSchema extends Source\AbstractSource
     public function getPrimaryKeys($table, $schema=null)
     {
         if ($schema === null) $schema = $this->schema;
-        $pks = self::$localCache['tables'][$table]['primary_keys'];
+        $pks = $this->model_definition['tables'][$table]['primary_keys'];
         if (count($pks) == 0) {
             throw new Exception\NoPrimaryKeyException(__METHOD__ . ". No primary keys found on table '$schema'.'$table'.");
         }
@@ -156,7 +128,7 @@ class DynamicSchema extends Source\AbstractSource
     public function getColumnsInformation($table, $schema=null)
     {
         
-        return self::$localCache['tables'][$table]['columns'];
+        return $this->model_definition['tables'][$table]['columns'];
         
     }
 
@@ -177,7 +149,7 @@ class DynamicSchema extends Source\AbstractSource
     public function getRelations($table, $schema=null)
     {
         
-        return self::$localCache['tables'][$table]['foreign_keys'];
+        return $this->model_definition['tables'][$table]['foreign_keys'];
         
     }
 
@@ -193,27 +165,8 @@ class DynamicSchema extends Source\AbstractSource
      */
     public function getTablesInformation($schema=null)
     {
-    
-        return self::$localCache['tables'];
+        return $this->model_definition['tables'];
     }
     
     
-    protected function initialize()
-    {
-        $schema_file = '/tmp/a_file.php';
-        if (!$this->inialized) {
-            $this->initialized = true;
-            if (!file_exists($schema_file)) {
-                $reader = new Source\Mysql\InformationSchema($this->adapter, $this->schema);
-                $schemaCfg = $reader->getSchemaConfig($this->schema, $include_options=false);
-                $config = new Config($schemaCfg, true);
-                $writer = new Writer\PhpArray();
-                $string = $writer->toString($config);
-                file_put_contents($schema_file, $string);
-                self::$localCache = $schemaCfg;
-            } elseif (count(self::$localCache) == 0) {
-                self::$localCache = include $schema_file;
-            }
-        }
-    }
 }

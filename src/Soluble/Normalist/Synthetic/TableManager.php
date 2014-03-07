@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
+use Soluble\Normalist\Driver;
 use Soluble\Normalist\Metadata;
 
 use Soluble\Db\Sql\Select;
@@ -8,12 +9,6 @@ use Soluble\Db\Metadata\Source;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-
-use Zend\Db\Sql\Predicate;
-
-
-
-//use Soluble\Db\Metadata\Cache\CacheAwareInterface;
 
 
 use ArrayObject;
@@ -62,13 +57,21 @@ class TableManager
 
     /**
      *
+     * @var Driver\DriverInterface
+     */
+    protected $driver;
+    
+    /**
+     *
+     * @param Adapter $adapter
      * @param Adapter $adapter
      * @param string $table table name
      */
-    public function __construct(Adapter $adapter)
+    public function __construct(Adapter $adapter, Driver\DriverInterface $driver=null)
     {
         $this->localTableCache = new \ArrayObject();
         $this->setDbAdapter($adapter);
+        $this->driver = $driver;
         $this->sql = new Sql($adapter);
     }
 
@@ -92,7 +95,6 @@ class TableManager
         }
 
         if (!$this->localTableCache->offsetExists($table_name)) {
-
             $tables = $this->metadata()->getTables();
             if (!in_array($table_name, $tables)) {
                 throw new Exception\TableNotFoundException(__METHOD__ . ": Table $table_name is not found in database, if table exists please make sure cache is updated.");
@@ -194,7 +196,7 @@ class TableManager
     public function metadata()
     {
         if ($this->metadata === null) {
-            $this->metadata = $this->getDefaultMetadata($this->adapter);
+            $this->loadDefaultMetadata();
         }
         return $this->metadata;
     }
@@ -214,22 +216,27 @@ class TableManager
     /**
      * Return default metadata reader associated to an adapter
      *
-     * @param Adapter $adapter
      * @throws Exception\UnsupportedFeatureException
      */
-    protected function getDefaultMetadata(Adapter $adapter)
+    protected function loadDefaultMetadata()
     {
-        $adapterName = $adapter->getPlatform()->getName();
+        
+        $adapterName = $this->adapter->getPlatform()->getName();
         switch (strtolower($adapterName)) {
             case 'mysql':
-                //$metadata = new Source\Mysql\InformationSchema($adapter);
-                $metadata = new Metadata\DynamicSchema($adapter);
+                // supported
                 break;
             default :
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");
+        }        
+        if ($this->driver === null) {
+            $options = array();
+            $driver = new Driver\ZeroConfDriver($options);
+            $driver->setDbAdapter($this->adapter);
+            $this->driver = $driver;
         }
-        return $metadata;
-
+            
+        $this->metadata = $this->driver->getMetadata();
     }
 
     /**
