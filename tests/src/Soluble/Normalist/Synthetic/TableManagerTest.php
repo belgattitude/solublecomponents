@@ -31,7 +31,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         $this->tableManager = new TableManager($this->adapter);
         $this->table = $this->tableManager->table('product_category');        
-
     }
 
     /**

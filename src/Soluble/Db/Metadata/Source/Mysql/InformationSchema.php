@@ -20,11 +20,7 @@ class InformationSchema extends Source\AbstractSource
      */
     protected $adapter;
     
-    /**
-     * @var Zend\Db\Metadata\Source\AbstractSource
-     */
-    protected $metadata_reader;
-    
+
     
     /**
      * Used to restore innodb stats mysql global variable
@@ -532,7 +528,6 @@ class InformationSchema extends Source\AbstractSource
                 $this->mysql_innodbstats_value = $value;
                 // disabling innodb_stats 
                 $this->adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);
-                $sql = "show global variables like 'innodb_stats_on_metadata'";
             }
         } catch (\Exception $e) {
             // do nothing, silently fallback

@@ -67,14 +67,29 @@ class AdoDbTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($zrows[0]['title'], $arows[0]['title']);
     }
     
-    public function testGetAdapterWithThrowsUnsupportedDriverException()
+    public function testGetAdapterWithThrowsAdoNotConnectedException()
     {
         $this->setExpectedException("Soluble\Db\Compat\Exception\AdoNotConnectedException");
-        $ado = NewADOConnection("postgres");
-        $o = $this->db_options;
-        
+        $ado = NewADOConnection("pdo");
+        //$ado->connect("mysql:host=" . $o['hostname'], $o['username'], $o['password'], $o['database']);
         $adapter = Adodb::getAdapter($ado);
-        
+    }
+    
+    public function testGetAdapterWithThrowsAdoNotConnectedException2()
+    {
+        $this->setExpectedException("Soluble\Db\Compat\Exception\AdoNotConnectedException");
+        $ado = NewADOConnection("pdo");
+        $ado->connect("mysql:host=" . $o['hostname'], 'notexist_user', 'invalidpassword', $o['database']);
+        $adapter = Adodb::getAdapter($ado);
+    }
+
+    
+    public function testGetAdapterWithPostgresThrowsUnsupportedDriverException()
+    {
+        $this->setExpectedException("Soluble\Db\Compat\Exception\UnsupportedDriverException");
+        $ado = NewADOConnection("csv");
+        //$ado->connect("")
+        $adapter = Adodb::getAdapter($ado);
     }
     
     
