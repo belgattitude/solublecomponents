@@ -3,7 +3,6 @@
 namespace Soluble\Db\Sql;
 
 use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Exception as ZendException;;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\Select as ZendDbSqlSelect;
@@ -16,7 +15,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 
     /**
      *
-     * @var \Zend\Db\Adapter\Adapter
+     * @var Adapter
      */
     protected $adapter;
 
