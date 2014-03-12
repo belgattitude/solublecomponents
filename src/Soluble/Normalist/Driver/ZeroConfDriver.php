@@ -10,8 +10,6 @@ use Zend\Config\Writer;
 class ZeroConfDriver implements DriverInterface
 {
 
-    
-    
     /**
      * @var Source\AbstractSource
      */
@@ -30,9 +28,10 @@ class ZeroConfDriver implements DriverInterface
      * @var array
      */
     protected $default_options = array(
-       'alias'     => 'default',
-       'path'      => null,
-       'version'   => 'latest'
+       'alias'          => 'default',
+       'path'           => null,
+       'version'        => 'latest',
+       'permissions'    => 0666 
         
     );
     
@@ -66,7 +65,7 @@ class ZeroConfDriver implements DriverInterface
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $options parameter expects an array or Traversable object');
         }        
         
-        $this->options = array_merge((array) $options, $this->default_options);
+        $this->options = array_merge($this->default_options, (array) $options);        
         
         if (!is_string($this->options['alias']) || trim($this->options['alias']) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["alias"] parameter expects valid string');            
@@ -83,10 +82,20 @@ class ZeroConfDriver implements DriverInterface
         }
         
         if (!is_dir($this->options['path'])) {
+            $path = (string) $this->options['path'];
             throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
         }
         if (!is_writable($this->options['path'])) {
+            $path = (string) $this->options['path'];
             throw new Exception\ModelPathNotWritableException(__METHOD__ . " Model directory not writable '" . $path . "'");
+        }
+        
+        if ($this->options['permissions'] != '') {
+            
+            if (!is_scalar($this->options['permissions'])) {
+                throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["permission"] parameter expects string|interger|octal value');            
+            }
+            
         }
         
         
@@ -143,8 +152,14 @@ class ZeroConfDriver implements DriverInterface
         //$config = new Config($models_defintion, true);
         $writer = new Writer\PhpArray();
         $writer->toFile($file, $models_definition, $exclusiveLock=true);
+        $perms = $this->options['permissions'];
+        if ($perms != '') {
+            if (decoct(octdec($perms)) == $perms) {
+                $perms = octdec($perms);
+            }
+            chmod($file, $perms);
+        }
         return $this;
-        
     }        
            
     
