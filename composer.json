@@ -24,7 +24,7 @@
 		"zendframework/zend-view": "2.*",
 		"zendframework/zend-json": "2.*",
 		"zendframework/zend-eventmanager": "2.*",
-		"zendframework/zend-servicemanager": "2",
+		"zendframework/zend-servicemanager": "2.*",
 		"zendframework/zend-paginator": "2.*",
 		"rhumsaa/array_column": "~1.1",
 		"imagine/Imagine" : "0.5.*",
