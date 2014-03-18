@@ -19,7 +19,7 @@ class FlexStore implements FlexStoreInterface
 
     /**
      *
-     * @param Source/SourceInterface|array $source
+     * @param Source\SourceInterface|array $source
      * @param array $parameters
      */
     public function __construct($source, array $parameters=null)

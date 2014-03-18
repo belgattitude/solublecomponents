@@ -461,8 +461,8 @@ class InformationSchema extends Source\AbstractSource
                         'constraint_type'   => $r['constraint_type'], // 'PRIMARY KEY', 'FOREIGN_KEY', 'UNIQUE' 
                     );
                 if ($has_charset) {
-                    $options['charset']     = $r['character_set_name'];
-                    $options['collation']   = $r['collation_name'];
+                    $col_def['options']['charset']     = $r['character_set_name'];
+                    $col_def['options']['collation']   = $r['collation_name'];
                 }    
             }
             

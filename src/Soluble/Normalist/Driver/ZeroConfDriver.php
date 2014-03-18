@@ -43,6 +43,11 @@ class ZeroConfDriver implements DriverInterface
     
     
     
+    /**
+     * Underlying database adapter
+     * @var Adapter
+     */
+    protected $adapter;
     
     /**
      * Construct a new Zero configuration driver
@@ -64,7 +69,7 @@ class ZeroConfDriver implements DriverInterface
     {
         $this->setDbAdapter($adapter);
         
-        if (!is_array($options) && !$options instanceof Traversable) {
+        if (!is_array($options) && !$options instanceof \Traversable) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $options parameter expects an array or Traversable object');
         }        
         
