@@ -20,14 +20,6 @@ interface DriverInterface
      */
     public function getModelsDefinition();
 
-    /**
-     * Save or overwritte model definition file
-     * 
-     * @throws Exception\ModelFileNotWritableException
-     * @param array $models_definition
-     * @return DriverInterface
-     */
-    public function saveModelsDefinition(array $models_definition);
     
     /**
      * Return metadata reader
@@ -44,6 +36,12 @@ interface DriverInterface
      */
     public function setMetadata(Source\AbstractSource $metadata);
     
+    /**
+     * Get underlying database adapter
+     * 
+     * @return Adapter
+     */
+    public function getDbAdapter();
     
             
     

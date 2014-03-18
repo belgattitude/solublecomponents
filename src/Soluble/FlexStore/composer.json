@@ -24,10 +24,10 @@
         "php": ">=5.3.3",
         "soluble/db": "self.version",
         "rhumsaa/array_column": "~1.1",
-		"zendframework/zend-stdlib": "2.2.*",
-		"zendframework/zend-cache": "2.2.*",
-		"zendframework/zend-json": "2.2.*",
-		"zendframework/zend-paginator": "2.2.*"
+		"zendframework/zend-stdlib": "2.*",
+		"zendframework/zend-cache": "2.*",
+		"zendframework/zend-json": "2.*",
+		"zendframework/zend-paginator": "2.*"
     },    
 	"suggest": {
 		"soluble/normalist": "Dynamic ORM",

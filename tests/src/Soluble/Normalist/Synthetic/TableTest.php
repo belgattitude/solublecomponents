@@ -24,13 +24,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $adapter = \SolubleTestFactories::getDbAdapter();
-        $cache   = \SolubleTestFactories::getCacheStorage();
+        //$adapter = \SolubleTestFactories::getDbAdapter();
+        //$cache   = \SolubleTestFactories::getCacheStorage();
         //$metadata = new Source\MysqlISMetadata($adapter);
         //$metadata->setCache($cache);
         //$metadata = new Source\Mysql\InformationSchema($adapter);
 
-        $this->tableManager = new TableManager($adapter);
+        //$this->tableManager = new TableManager($adapter);
+        $this->tableManager = \SolubleTestFactories::getTableManager();
+        //$this->adapter = $this->tableManager->getDbAdapter();
+        
         //$this->tableManager->setMetadata($metadata);
 
     }

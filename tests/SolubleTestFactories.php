@@ -1,6 +1,8 @@
 <?php
 use Zend\Db\Adapter\Adapter;
 use Zend\Cache\StorageFactory;
+use Soluble\Normalist\Synthetic\TableManager;
+use Soluble\Normalist\Driver;
 
 class SolubleTestFactories
 {
@@ -14,6 +16,28 @@ class SolubleTestFactories
      */
     protected static $_cache_instances = array();
 
+    
+    /**
+     * 
+     * @param Adapter $adapter
+     * @param Driver\DriverInterface
+     * @return TableManager
+     */
+    public static function getTableManager(Adapter $adapter=null, Driver\DriverInterface $driver=null)
+    {
+        if ($adapter === null) {
+            $adapter = self::getDbAdapter();
+        }
+        
+        if ($driver === null) {
+            $options = array(
+                
+            );
+            $driver = new Driver\ZeroConfDriver($adapter, $options);
+        }
+        $tm = new TableManager($driver);
+        return $tm;
+    }
 
     /**
      *

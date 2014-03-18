@@ -46,15 +46,18 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
 
-        $this->adapter = \SolubleTestFactories::getDbAdapter();
+        //$this->adapter = \SolubleTestFactories::getDbAdapter();
         
-        $cache   = \SolubleTestFactories::getCacheStorage();
+        //$cache   = \SolubleTestFactories::getCacheStorage();
         //$metadata = new Source\MysqlISMetadata($this->adapter);
         //$metadata = new Source\Mysql\InformationSchema($this->adapter);        
         //$metadata->setCache($cache);
         
-        $this->tableManager = new TableManager($this->adapter);
+        //$this->tableManager = new TableManager($this->adapter);
         //$this->tableManager->setMetadata($metadata);
+        $this->tableManager = \SolubleTestFactories::getTableManager();
+        $this->adapter = $this->tableManager->getDbAdapter();
+        
         
         $this->table = $this->tableManager->table('product_category');        
         

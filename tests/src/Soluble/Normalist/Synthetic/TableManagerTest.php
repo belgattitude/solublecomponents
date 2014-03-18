@@ -28,8 +28,11 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->adapter = \SolubleTestFactories::getDbAdapter();
-        $this->tableManager = new TableManager($this->adapter);
+        
+        $this->tableManager = \SolubleTestFactories::getTableManager();
+        $this->adapter = $this->tableManager->getDbAdapter();
+        
+        //$this->tableManager = new TableManager($this->adapter);
         $this->table = $this->tableManager->table('product_category');        
     }
 
@@ -46,7 +49,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDefaultMetadata()
     {
-        $tm = new TableManager($this->adapter);
+        $tm = \SolubleTestFactories::getTableManager();
         $metadata = $tm->metadata();
         $this->assertInstanceOf('\Soluble\Db\Metadata\Source\AbstractSource', $metadata);
         
@@ -168,7 +171,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             // on invalid commit, rollback, start...
             $driver = 'PDO_Mysql';
             $adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
-            $tm = new TableManager($adapter);            
+            $tm = \SolubleTestFactories::getTableManager($adapter);         
             
             // test than Mysqli does not throw exception
             $catched = false;
@@ -243,7 +246,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetTablePrefix()
     {
-        $tm = new TableManager($this->adapter);
+        $tm = \SolubleTestFactories::getTableManager();
         $ret = $tm->setTablePrefix('prefix_');
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableManager', $ret);
         
@@ -251,7 +254,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTablePrefix()
     {
-        $tm = new TableManager($this->adapter);
+        $tm = \SolubleTestFactories::getTableManager();
         $prefix = $tm->setTablePrefix('prefix_')->getTablePrefix();
         $this->assertEquals('prefix_', $prefix);
         
@@ -261,7 +264,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPrefixedTable()
     {
-        $tm = new TableManager($this->adapter);
+        $tm = \SolubleTestFactories::getTableManager();
         $prefixed = $tm->setTablePrefix('prefix_')->getPrefixedTable('cool');
         
         $this->assertEquals('prefix_cool', $prefixed);
@@ -299,7 +302,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         ));
         
         
-        $tm = new TableManager($adapter); 
+        $tm = \SolubleTestFactories::getTableManager($adapter);       
         $metadata = $tm->metadata();
         
         
@@ -310,7 +313,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = new Source\Mysql\InformationSchema($this->adapter);        
         //$metadata = new Source\MysqlISMetadata($this->adapter);
-        $tableManager = new TableManager($this->adapter);
+        $tableManager = \SolubleTestFactories::getTableManager();
         $ret = $tableManager->setMetadata($metadata);
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableManager', $ret);
     }

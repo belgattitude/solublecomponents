@@ -63,16 +63,16 @@ class TableManager
     
     /**
      *
-     * @param Adapter $adapter
-     * @param Adapter $adapter
+     * @param Driver\DriverInterface $adapter
      * @param string $table table name
      */
-    public function __construct(Adapter $adapter, Driver\DriverInterface $driver=null)
+    public function __construct(Driver\DriverInterface $driver)
     {
         $this->localTableCache = new \ArrayObject();
-        $this->setDbAdapter($adapter);
         $this->driver = $driver;
-        $this->sql = new Sql($adapter);
+        $this->setDbAdapter($driver->getDbAdapter());
+        
+        $this->sql = new Sql($this->adapter);
     }
 
 
@@ -231,7 +231,7 @@ class TableManager
         }        
         if ($this->driver === null) {
             $options = array();
-            $driver = new Driver\ZeroConfDriver($options);
+            $driver = new Driver\ZeroConfDriver($this->getDbAdapter(), $options);
             $driver->setDbAdapter($this->adapter);
             $this->driver = $driver;
         }

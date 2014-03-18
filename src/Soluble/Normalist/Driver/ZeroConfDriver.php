@@ -54,13 +54,16 @@ class ZeroConfDriver implements DriverInterface
      *   schema  : the database schema name, default to current adapter connection
      *   
      * 
+     * @param Adapter $adapter
      * @param array|Traversable $options [alias,path,version]
      * @throws Exception\ModelPathNotFoundException
      * @throws Exception\ModelPathNotWritableException
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct($options=array())
+    public function __construct(Adapter $adapter, $options=array())
     {
+        $this->setDbAdapter($adapter);
+        
         if (!is_array($options) && !$options instanceof Traversable) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $options parameter expects an array or Traversable object');
         }        
@@ -142,7 +145,7 @@ class ZeroConfDriver implements DriverInterface
      * @param array $models_definition
      * @return DriverInterface
      */
-    public function saveModelsDefinition(array $models_definition)
+    protected function saveModelsDefinition(array $models_definition)
     {
         $file = $this->getModelsConfigFile();
         if (file_exists($file) && !is_writable($file)) {
@@ -171,7 +174,7 @@ class ZeroConfDriver implements DriverInterface
      * @param Adapter $adapter
      * @return DriverInterface
      */
-    public function setDbAdapter(Adapter $adapter) 
+    protected function setDbAdapter(Adapter $adapter) 
     {
         $this->adapter = $adapter;
         return $this;
@@ -196,15 +199,28 @@ class ZeroConfDriver implements DriverInterface
     {
         $cache_key = md5(serialize($this->options));
         if (!array_key_exists($cache_key, self::$metadataCache)) {
-            self::$metadataCache[$cache_key] = $this->getDefaultMetadata();
+            if ($this->metadata === null) {
+                $this->metadata = $this->getDefaultMetadata();
+            }
+            self::$metadataCache[$cache_key] = $this->metadata;
         }
         return self::$metadataCache[$cache_key];
     }
     
+    
     /**
      * 
-     * @return \Soluble\Normalist\Driver\Metadata\NormalistModels
-     * @throws Exception\RuntimeException
+     * @return ZeroConfDriver
+     */
+    public function clearMetadataCache()
+    {
+        self::$metadataCache = array();
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return Metadata\NormalistModels
      */
     protected function getDefaultMetadata()
     {
@@ -214,10 +230,6 @@ class ZeroConfDriver implements DriverInterface
             
             // means model definition does not exists
             // lets load it from the current connection
-            if ($this->adapter === null) {
-                $msg = "Zero conf driver requires a Zend\Db\Adapter\Adapter connection in order to provide automatic model generation.";
-                throw new Exception\RuntimeException(__METHOD__ . " " . $msg);
-            }
             if ($this->options['schema'] == '') {
                 $schema = null;
             } else {

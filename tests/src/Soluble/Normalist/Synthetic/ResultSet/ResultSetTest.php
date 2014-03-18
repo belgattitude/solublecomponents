@@ -36,8 +36,11 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $metadata = new Source\MysqlISMetadata($adapter);
         $metadata->setCache($cache);
 */
-        $this->tableManager = new TableManager($adapter);
+        //$this->tableManager = new TableManager($adapter);
+        //
         //$this->tableManager->setMetadata($metadata);
+        $this->tableManager = \SolubleTestFactories::getTableManager();
+        
 
         $this->table = $this->tableManager->table('product_category');
         $select = $this->table->select(); 
