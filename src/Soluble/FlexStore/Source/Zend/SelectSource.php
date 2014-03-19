@@ -128,7 +128,7 @@ class SelectSource extends AbstractSource
 
         $sql = new Sql($this->adapter);
         $sql_string = $sql->getSqlStringForSqlObject($select);
-        
+
         // In  ZF 2.3.0 an empty query will return SELECT .*
         if (in_array($sql_string, array('', 'SELECT .*'))) {
             throw new Exception\EmptyQueryException('Query was empty');

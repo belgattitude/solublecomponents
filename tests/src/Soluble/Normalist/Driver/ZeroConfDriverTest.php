@@ -31,6 +31,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     {
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         $this->driver = new ZeroConfDriver($this->adapter);
+        $this->driver->clearMetadataCache();
     }
 
     /**
@@ -41,6 +42,38 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     {
         
     }
+
+    public function testWithOptionalSchema()
+    {
+        
+        $schema = $this->adapter->getCurrentSchema();
+        $options = array('schema' => $schema); 
+        $driver = new ZeroConfDriver($this->adapter, $options);
+        unlink($driver->getModelsConfigFile());
+        $md = $driver->getMetadata();
+        
+    }
+    
+    public function testSaveModelDefinition()
+    {
+        $schema = $this->adapter->getCurrentSchema();
+        $options = array('schema' => $schema); 
+        $driver = new ZeroConfDriver($this->adapter, $options);
+        $md = $driver->getMetadata();        
+        $file = $driver->getModelsConfigFile();
+        $driver->clearMetadataCache();
+        chmod($file, 0000);
+        $catched = false;
+        try {
+            $driver->getMetadata();
+        } catch (\Soluble\Normalist\Driver\Exception\ModelFileNotWritableException $e) {
+            chmod($file, 0666);
+            $catched = true;
+            
+        }
+        $this->assertTrue($catched);
+    }
+    
     
     public function testConstructWithException()
     {
@@ -107,8 +140,18 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);        
         
+        $catched=false;
+        try {
+            $options = array('schema' => array()); 
+            $driver = new ZeroConfDriver($this->adapter, $options);
+        } catch (Exception\InvalidArgumentException $e) {
+            $catched=true;
+        }
+        $this->assertTrue($catched);        
         
     }
+    
+    
 
     public function testGetModelsConfigFile()
     {
@@ -180,8 +223,9 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     {
         
         $md = new Source\Mysql\InformationSchema($this->adapter);
-        
+        $this->driver->clearMetadataCache();
         $this->driver->setMetadata($md);
+        $md = $this->driver->getMetadata();
         
         
     }

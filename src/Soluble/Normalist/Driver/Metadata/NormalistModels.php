@@ -10,21 +10,21 @@ use Soluble\Db\Metadata\Exception;
 
 class NormalistModels extends Source\AbstractSource
 {
-    
+
     /**
      * @var array
      */
     protected $model_definition;
-    
+
     /**
      * @param array $model_definition
      */
     public function __construct(array $model_definition)
     {
         $this->model_definition = $model_definition;
-    }    
-    
-    
+    }
+
+
     /**
      * Get unique keys on table
      *
@@ -38,9 +38,9 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $schema=null, $include_primary=false) 
+    public function getUniqueKeys($table, $schema=null, $include_primary=false)
     {
-        
+
         return $this->model_definition['tables'][$table]['unique_keys'];
     }
 
@@ -59,7 +59,7 @@ class NormalistModels extends Source\AbstractSource
      */
     public function getIndexesInformation($table, $schema=null)
     {
-        
+
         return $this->model_definition['tables'][$table]['indexes'];
     }
 
@@ -68,7 +68,7 @@ class NormalistModels extends Source\AbstractSource
      *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
-     * @throws Exception\NoPrimaryKeyException when no pk 
+     * @throws Exception\NoPrimaryKeyException when no pk
      * @throws Exception\MultiplePrimaryKeyException when multiple pk found
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
@@ -127,9 +127,9 @@ class NormalistModels extends Source\AbstractSource
      */
     public function getColumnsInformation($table, $schema=null)
     {
-        
+
         return $this->model_definition['tables'][$table]['columns'];
-        
+
     }
 
 
@@ -148,9 +148,9 @@ class NormalistModels extends Source\AbstractSource
      */
     public function getRelations($table, $schema=null)
     {
-        
+
         return $this->model_definition['tables'][$table]['foreign_keys'];
-        
+
     }
 
     /**
@@ -167,6 +167,6 @@ class NormalistModels extends Source\AbstractSource
     {
         return $this->model_definition['tables'];
     }
-    
-    
+
+
 }

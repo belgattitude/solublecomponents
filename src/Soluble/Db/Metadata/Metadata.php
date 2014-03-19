@@ -67,9 +67,9 @@ class Metadata
      * Return underlying database adapter
      * @return Adapter
      */
-    function getDbAdapter()
+    public function getDbAdapter()
     {
         return $this->adapter;
     }
-    
+
 }

@@ -18,7 +18,7 @@ class Adodb
      *
      * @throws Exception\UnsupportedDriverException
      * @throws Exception\AdoNotConnectedException when connection is not initialized
-     * 
+     *
      * @param \ADOConnection $adoConnection
      * @return Adapter
      */
@@ -40,9 +40,9 @@ class Adodb
                  throw new Exception\UnsupportedDriverException(__METHOD__ . ". Driver '$adoConnectionDriver' not supported");
         }
         return $adapter;
-        
+
     }
-    
+
     /**
      * Return internal adodb internal connection id
      * @throws Exception\AdoNotConnectedException when connection is not initialized

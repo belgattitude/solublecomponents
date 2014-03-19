@@ -4,7 +4,6 @@ namespace Soluble\Normalist\Driver;
 use Soluble\Normalist\Driver\Exception;
 use Soluble\Db\Metadata\Source;
 use Zend\Db\Adapter\Adapter;
-use Zend\Config\Config;
 use Zend\Config\Writer;
 
 class ZeroConfDriver implements DriverInterface
@@ -14,15 +13,15 @@ class ZeroConfDriver implements DriverInterface
      * @var Source\AbstractSource
      */
     protected $metadata;
-    
-    
+
+
     /**
      *
      * @var array
      */
     protected $options;
 
-    
+
     /**
      *
      * @var array
@@ -31,34 +30,36 @@ class ZeroConfDriver implements DriverInterface
        'alias'          => 'default',
        'path'           => null,
        'version'        => 'latest',
-       'permissions'    => 0666 
-        
+       'schema'         => null,
+       'permissions'    => 0666
+
     );
-    
+
     /**
      *
      * @var array
      */
-    static protected $metadataCache = array();
-    
-    
-    
+    protected static $metadataCache = array();
+
+
+
     /**
      * Underlying database adapter
      * @var Adapter
      */
     protected $adapter;
-    
+
     /**
      * Construct a new Zero configuration driver
-     * 
-     * $options allows you to specify the 
+     *
+     * $options allows you to specify the
      *   path    : where to store the model definition (default to sys_get_temp_dir())
      *   alias   : the alias to use when using multiple schemas, default: 'default'
      *   version : the version to use, default to 'latest'
      *   schema  : the database schema name, default to current adapter connection
-     *   
-     * 
+     *   permissions: by default the model file is created with permission 0666
+     *
+     *
      * @param Adapter $adapter
      * @param array|Traversable $options [alias,path,version]
      * @throws Exception\ModelPathNotFoundException
@@ -68,27 +69,33 @@ class ZeroConfDriver implements DriverInterface
     public function __construct(Adapter $adapter, $options=array())
     {
         $this->setDbAdapter($adapter);
-        
+
         if (!is_array($options) && !$options instanceof \Traversable) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $options parameter expects an array or Traversable object');
-        }        
-        
-        $this->options = array_merge($this->default_options, (array) $options);        
-        
+        }
+
+        $this->options = array_merge($this->default_options, (array) $options);
+
         if (!is_string($this->options['alias']) || trim($this->options['alias']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["alias"] parameter expects valid string');            
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["alias"] parameter expects valid string');
         }
-        
+
+        if ($this->options['schema'] !== null &&
+                (!is_string($this->options['schema']) || trim($this->options['schema']) == '')) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["schema"] parameter expects valid string');
+        }
+
+
         if (!is_scalar($this->options['version']) || trim($this->options['version']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["version"] parameter expects valid scalar value');            
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["version"] parameter expects valid scalar value');
         }
-        
+
         if ($this->options['path'] == '') {
             $this->options['path'] = sys_get_temp_dir();
         } elseif (!is_string($this->options['path']) || trim($this->options['path']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["path"] parameter expects valid string value');            
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["path"] parameter expects valid string value');
         }
-        
+
         if (!is_dir($this->options['path'])) {
             $path = (string) $this->options['path'];
             throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
@@ -97,18 +104,18 @@ class ZeroConfDriver implements DriverInterface
             $path = (string) $this->options['path'];
             throw new Exception\ModelPathNotWritableException(__METHOD__ . " Model directory not writable '" . $path . "'");
         }
-        
+
         if ($this->options['permissions'] != '') {
-            
+
             if (!is_scalar($this->options['permissions'])) {
-                throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["permission"] parameter expects string|interger|octal value');            
+                throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["permission"] parameter expects string|interger|octal value');
             }
-            
+
         }
-        
-        
+
+
     }
-    
+
 
     /**
      * Return models configuration file
@@ -120,10 +127,10 @@ class ZeroConfDriver implements DriverInterface
         $file =  $o['path'] . DIRECTORY_SEPARATOR . 'normalist_' . $o['alias'] . '-' . $o['version'] . '.php';
         return $file;
     }
-    
+
     /**
      * Get models definition according to options
-     * 
+     *
      * @throws Exception\ModelFileNotFoundException
      * @throws Exception\ModelFileCorruptedException
      * @return array
@@ -134,18 +141,18 @@ class ZeroConfDriver implements DriverInterface
         if (!file_exists($file)) {
             throw new Exception\ModelFileNotFoundException(__METHOD__ . " Model configuration file '$file' does not exists");
         }
-        
+
         $definition = include $file;
         if (!$definition || !is_array($definition)) {
             throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' cannot be read");
         }
         return $definition;
     }
-    
+
 
     /**
      * Save model definition
-     * 
+     *
      * @throws Exception\ModelFileNotWritableException
      * @param array $models_definition
      * @return DriverInterface
@@ -156,7 +163,7 @@ class ZeroConfDriver implements DriverInterface
         if (file_exists($file) && !is_writable($file)) {
             throw new Exception\ModelFileNotWritableException(__METHOD__ . "Model configuration file '$file' cannot be overwritten, not writable.");
         }
-        
+
         //$config = new Config($models_defintion, true);
         $writer = new Writer\PhpArray();
         $writer->toFile($file, $models_definition, $exclusiveLock=true);
@@ -168,36 +175,36 @@ class ZeroConfDriver implements DriverInterface
             chmod($file, $perms);
         }
         return $this;
-    }        
-           
-    
-    
-    
+    }
+
+
+
+
     /**
      * Set underlying database adapter
-     * 
+     *
      * @param Adapter $adapter
      * @return DriverInterface
      */
-    protected function setDbAdapter(Adapter $adapter) 
+    protected function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
         return $this;
     }
-    
+
     /**
      * Get underlying database adapter
-     * 
+     *
      * @return Adapter
      */
     public function getDbAdapter()
     {
         return $this->adapter;
     }
-    
+
     /**
      * Get internal metadata reader
-     * 
+     *
      * @return Source\AbstractSource
      */
     public function getMetadata()
@@ -205,16 +212,17 @@ class ZeroConfDriver implements DriverInterface
         $cache_key = md5(serialize($this->options));
         if (!array_key_exists($cache_key, self::$metadataCache)) {
             if ($this->metadata === null) {
-                $this->metadata = $this->getDefaultMetadata();
+                self::$metadataCache[$cache_key] = $this->getDefaultMetadata();
+            } else {
+                self::$metadataCache[$cache_key] = $this->metadata;
             }
-            self::$metadataCache[$cache_key] = $this->metadata;
         }
         return self::$metadataCache[$cache_key];
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @return ZeroConfDriver
      */
     public function clearMetadataCache()
@@ -222,9 +230,9 @@ class ZeroConfDriver implements DriverInterface
         self::$metadataCache = array();
         return $this;
     }
-    
+
     /**
-     * 
+     *
      * @return Metadata\NormalistModels
      */
     protected function getDefaultMetadata()
@@ -232,7 +240,7 @@ class ZeroConfDriver implements DriverInterface
         try {
             $model_definition = $this->getModelsDefinition();
         } catch (Exception\ExceptionInterface $e) {
-            
+
             // means model definition does not exists
             // lets load it from the current connection
             if ($this->options['schema'] == '') {
@@ -242,18 +250,18 @@ class ZeroConfDriver implements DriverInterface
             }
             $md = new Source\Mysql\InformationSchema($this->adapter, $schema);
             $model_definition = $md->getSchemaConfig();
-            
+
             // For later use we save the models definition
             $this->saveModelsDefinition($model_definition);
         }
         return new Metadata\NormalistModels($model_definition);
-        
-    }        
-          
-    
+
+    }
+
+
     /**
      * Set internal metadata reader
-     *  
+     *
      * @param Source\AbstractSource $metadata
      * @return ZeroConfDriver
      */
@@ -261,7 +269,7 @@ class ZeroConfDriver implements DriverInterface
     {
         $this->metadata = $metadata;
         return $this;
-                
+
     }
-    
+
 }

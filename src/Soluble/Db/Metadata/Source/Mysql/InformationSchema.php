@@ -8,7 +8,7 @@ use Soluble\Db\Metadata\Source;
 
 class InformationSchema extends Source\AbstractSource
 {
-    
+
     /**
      * Schema name
      * @var string
@@ -19,22 +19,22 @@ class InformationSchema extends Source\AbstractSource
      * @var Adapter
      */
     protected $adapter;
-    
 
-    
+
+
     /**
      * Used to restore innodb stats mysql global variable
      * @var string
      */
     protected $mysql_innodbstats_value;
-    
+
     /**
      *
      * @var array
      */
-    static protected $localCache = array();
-    
-    
+    protected static $localCache = array();
+
+
     /**
      *
      * @var boolean
@@ -45,9 +45,9 @@ class InformationSchema extends Source\AbstractSource
      *
      * @var array
      */
-    static protected $fullyCachedSchemas = array();
-    
-    
+    protected static $fullyCachedSchemas = array();
+
+
     /**
      *
      * @param Adapter $adapter
@@ -61,10 +61,10 @@ class InformationSchema extends Source\AbstractSource
             $schema = $adapter->getCurrentSchema();
         }
         $this->setDefaultSchema($schema);
-        
+
     }
-    
-    
+
+
     /**
      * Get unique keys on table
      *
@@ -78,13 +78,13 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $schema=null, $include_primary=false) 
+    public function getUniqueKeys($table, $schema=null, $include_primary=false)
     {
         if ($schema === null) $schema = $this->schema;
-        
+
         $this->loadCacheInformation($schema, $table);
         return self::$localCache[$schema]['tables'][$table]['unique_keys'];
-        
+
     }
 
 
@@ -112,7 +112,7 @@ class InformationSchema extends Source\AbstractSource
      *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
-     * @throws Exception\NoPrimaryKeyException when no pk 
+     * @throws Exception\NoPrimaryKeyException when no pk
      * @throws Exception\MultiplePrimaryKeyException when multiple pk found
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
@@ -149,7 +149,7 @@ class InformationSchema extends Source\AbstractSource
     public function getPrimaryKeys($table, $schema=null)
     {
         if ($schema === null) $schema = $this->schema;
-        
+
         $this->loadCacheInformation($schema, $table);
         $pks = self::$localCache[$schema]['tables'][$table]['primary_keys'];
         if (count($pks) == 0) {
@@ -176,7 +176,7 @@ class InformationSchema extends Source\AbstractSource
         if ($schema === null) $schema = $this->schema;
         $this->loadCacheInformation($schema, $table);
         return self::$localCache[$schema]['tables'][$table]['columns'];
-        
+
     }
 
 
@@ -198,7 +198,7 @@ class InformationSchema extends Source\AbstractSource
         if ($schema === null) $schema = $this->schema;
         $this->loadCacheInformation($schema, $table);
         return self::$localCache[$schema]['tables'][$table]['foreign_keys'];
-        
+
     }
 
     /**
@@ -219,19 +219,19 @@ class InformationSchema extends Source\AbstractSource
     }
 
 
-    
+
     /**
      * Get a table configuration
-     * 
+     *
      * @throws Exception\ErrorException
      * @throws Exception\TableNotFoundException
-     * 
+     *
      * @param string $table table name
      * @param string $schema schema name
      * @param boolean $include_options include extended information
      * @return array
      */
-    function getTableConfig($table, $schema=null, $include_options=false)
+    public function getTableConfig($table, $schema=null, $include_options=false)
     {
         if ($schema === null) $schema = $this->schema;
 
@@ -239,50 +239,50 @@ class InformationSchema extends Source\AbstractSource
             if ( in_array($schema, self::$fullyCachedSchemas)
                  || (array_key_exists($schema, self::$localCache) &&
                      array_key_exists('tables', self::$localCache[$schema]) &&
-                     array_key_exists($table, self::$localCache[$schema]['tables']))) 
-                { 
-                
+                     array_key_exists($table, self::$localCache[$schema]['tables'])))
+                {
+
                 return self::$localCache[$schema]['tables'][$table];
-            } 
+            }
         }
-        
-        
-        
+
+
+
         $config = $this->getObjectConfig($table, $schema, $include_options);
         if (!array_key_exists($table, $config['tables'])    ) {
             throw new Exception\TableNotFoundException(__METHOD__ . ". Table '$table' in database schema '$schema' not found.");
-        }        
-        
+        }
+
         if ($this->useLocalCaching) {
             if (!array_key_exists($schema, self::$localCache)) {
                 self::$localCache[$schema] = array();
             }
             self::$localCache[$schema] = array_merge_recursive(self::$localCache[$schema], $config);
         }
-        
+
         return $config['tables'][$table];
     }
-    
+
 
     /**
      * Get schema configuration
-     * 
+     *
      * @throws Exception\ErrorException
      * @throws Exception\SchemaNotFoundException
-     * 
+     *
      * @param string $schema if not given will take active schema from database adapter
      * @param boolean $include_options include extended information
      * @return array
      */
-    function getSchemaConfig($schema=null, $include_options=false)
+    public function getSchemaConfig($schema=null, $include_options=false)
     {
-        
+
         if ($schema === null) $schema = $this->schema;
         if ($this->useLocalCaching && in_array($schema, self::$fullyCachedSchemas)) {
             return self::$localCache[$schema];
         }
-        
-        
+
+
         $table = null;
         $config = $this->getObjectConfig($table, $schema, $include_options);
         if (count($config['tables']) == 0) {
@@ -297,9 +297,9 @@ class InformationSchema extends Source\AbstractSource
 
     /**
      * Return object (table/schema) configuration
-     * 
+     *
      * @throws Exception\ErrorException
-     *  
+     *
      * @param string $table
      * @param string $schema
      * @param boolean $include_options
@@ -321,62 +321,62 @@ class InformationSchema extends Source\AbstractSource
 
         $query = "
 
-            SELECT 
-                    t.table_name, 
-                    c.column_name, 
+            SELECT
+                    t.table_name,
+                    c.column_name,
                     c.data_type,
-                    c.column_type,  
+                    c.column_type,
 
-                    c.extra, 
+                    c.extra,
 
                     tc.constraint_type,
                     kcu.constraint_name,
                     kcu.referenced_table_name,
                     kcu.referenced_column_name,
 
-                    c.column_default, 
-                    c.is_nullable, 
-                    c.numeric_precision, 
-                    c.numeric_scale, 
-                    c.character_octet_length, 
+                    c.column_default,
+                    c.is_nullable,
+                    c.numeric_precision,
+                    c.numeric_scale,
+                    c.character_octet_length,
                     c.character_maximum_length,
-                    c.ordinal_position, 
-                    
-					c.column_key, -- UNI/MUL/PRI
-					c.character_set_name,
+                    c.ordinal_position,
+
+                    c.column_key, -- UNI/MUL/PRI
+                    c.character_set_name,
 
 
-                    c.collation_name, 
+                    c.collation_name,
 
-                    c.column_comment, 
+                    c.column_comment,
 
-                    t.table_type, 
-                    t.engine, 
-                    t.table_comment, 
+                    t.table_type,
+                    t.engine,
+                    t.table_comment,
                     t.table_collation
 
-            FROM `INFORMATION_SCHEMA`.`COLUMNS` c 
-            INNER JOIN `INFORMATION_SCHEMA`.`TABLES` t on c.TABLE_NAME = t.TABLE_NAME 
-            LEFT JOIN `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` kcu 
+            FROM `INFORMATION_SCHEMA`.`COLUMNS` c
+            INNER JOIN `INFORMATION_SCHEMA`.`TABLES` t on c.TABLE_NAME = t.TABLE_NAME
+            LEFT JOIN `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` kcu
                on (
                     $table_join_condition
-                     and kcu.table_schema = t.table_schema 
+                     and kcu.table_schema = t.table_schema
                      and kcu.column_name = c.column_name
                  )
               LEFT JOIN
                 `INFORMATION_SCHEMA`.`TABLE_CONSTRAINTS` tc
                on (
                      t.table_name = tc.table_name
-                      and tc.table_schema = t.table_schema 
+                      and tc.table_schema = t.table_schema
                       and tc.constraint_name = kcu.constraint_name
                   )
 
 
-            where c.TABLE_SCHEMA = $qSchema 
+            where c.TABLE_SCHEMA = $qSchema
             and t.TABLE_SCHEMA = $qSchema
             $table_clause
             and (kcu.table_schema = $qSchema  or kcu.table_schema is null)
-            
+
             and (kcu.column_name = c.column_name or kcu.column_name is null)
             order by t.table_name, c.ordinal_position
         ";
@@ -388,15 +388,15 @@ class InformationSchema extends Source\AbstractSource
             throw new Exception\ErrorException($e->getMessage());
         }
         $this->restoreInnoDbStats();
-        
+
         $references = array();
         $config = new Config(array('tables' => array()), true);
-        
+
         foreach($results as $r) {
             // Setting table information
             $table_name = $r['table_name'];
             if (!$config->tables->offsetExists($table_name)) {
-                
+
                 $table_def = array(
                     'name'          => $table_name,
                     'columns'       => array(),
@@ -405,43 +405,43 @@ class InformationSchema extends Source\AbstractSource
                     'foreign_keys'  => array(),
                     'references'    => array(),
                     'indexes'       => array(),
-                ); 
+                );
                 if ($include_options) {
                     $table_def['options'] = array(
                        'engine'    => $r['engine'],
                        'comment'   => $r['table_comment'],
                        'collation' => $r['table_collation'],
                        'type'      => $r['table_type'],
-                        
+
                     );
                 }
                 $config->tables[$table_name] = $table_def;
-            }    
+            }
             $table   = $config->tables[$table_name];
             $columns = $table->columns;
             $column_name = $r['column_name'];
-            
+
             $data_type = strtolower($r['data_type']);
-            
+
             $col_def = array(
                 'data_type'         => $data_type,
                 'is_primary'        => ($r['constraint_type'] == 'PRIMARY KEY'),
                 'is_nullable'       => ($r['is_nullable'] == 'YES'),
                 'default'           => $r['column_default']
             );
-            
+
             if (($r['constraint_type'] == 'PRIMARY KEY')) {
                 $col_def['is_primary'] = true;
                 $col_def['is_autoincrement'] = ($r['extra'] == 'auto_increment');
             }
-            
+
             $has_charset = false;
             if (in_array($data_type, array('int', 'tinyint', 'mediumint', 'bigint', 'int', 'smallint', 'year'))) {
                 $col_def['precision'] = $r['numeric_precision'];
             } elseif (in_array($data_type, array('real', 'double precision', 'decimal', 'numeric', 'float', 'dec', 'fixed'))) {
                 $col_def['precision'] = $r['numeric_precision'];
                 $col_def['scale']     = $r['numeric_scale'];
-                
+
             } elseif (in_array($data_type, array('timestamp', 'date', 'time', 'datetime'))) {
                 // nothing yet
             } elseif (in_array($data_type, array('char', 'varchar', 'enum', 'set', 'binary', 'varbinary', 'text', 'tinytext', 'mediumtext', 'longtext'))) {
@@ -452,57 +452,57 @@ class InformationSchema extends Source\AbstractSource
                 $col_def['octet_length'] = $r['character_octet_length'];
                 $col_def['length'] = $r['character_maximum_length'];
             }
-            
+
             if ($include_options) {
                 $col_def['options'] = array(
                         'column_type'       => $r['column_type'],
                         'column_key'        => $r['column_key'],
                         'ordinal_position'  => $r['ordinal_position'],
-                        'constraint_type'   => $r['constraint_type'], // 'PRIMARY KEY', 'FOREIGN_KEY', 'UNIQUE' 
+                        'constraint_type'   => $r['constraint_type'], // 'PRIMARY KEY', 'FOREIGN_KEY', 'UNIQUE'
                     );
                 if ($has_charset) {
                     $col_def['options']['charset']     = $r['character_set_name'];
                     $col_def['options']['collation']   = $r['collation_name'];
-                }    
+                }
             }
-            
+
             $columns[$column_name] = $col_def;
 
             $foreign_keys = $table->foreign_keys;
             $unique_keys  = $table->unique_keys;
-            
+
             $constraint_name = $r['constraint_name'];
             $referenced_table_name = $r['referenced_table_name'];
             $referenced_column_name = $r['referenced_column_name'];
             switch ($r['constraint_type']) {
                 case 'PRIMARY KEY':
-                    $table->primary_keys = array_merge($table->primary_keys->toArray(), (array) $column_name); 
+                    $table->primary_keys = array_merge($table->primary_keys->toArray(), (array) $column_name);
                     break;
                 case 'UNIQUE':
                     if (!$unique_keys->offsetExists($constraint_name)) {
                         $unique_keys[$constraint_name] = array();
                     }
-                    $unique_keys[$constraint_name] = array_merge($unique_keys[$constraint_name]->toArray(), (array) $column_name); 
+                    $unique_keys[$constraint_name] = array_merge($unique_keys[$constraint_name]->toArray(), (array) $column_name);
                     break;
                 case 'FOREIGN KEY':
                     /*
                     if (!$foreign_keys->offsetExists($constraint_name)) {
                         $foreign_keys[$constraint_name] = array();
                     }
-                     * 
+                     *
                      */
                     $fk = array(
                        'referenced_table'  => $referenced_table_name,
                        'referenced_column' => $referenced_column_name,
                        'constraint_name' => $constraint_name
                     );
-                    $foreign_keys[$column_name] = $fk;              
+                    $foreign_keys[$column_name] = $fk;
                     //$table->references[$referenced_table_name] = array($column_name => $r['referenced_column_name']);
-                    
+
                     if (!array_key_exists($referenced_table_name, $references)) {
                         $references[$referenced_table_name] = array();
                     }
-                    
+
                     $references[$referenced_table_name][] = array(
                         'column' => $column_name,
                         //'referenced_table' => $table_name,
@@ -511,9 +511,9 @@ class InformationSchema extends Source\AbstractSource
                     );
                     break;
             }
-             
+
         }
-        
+
 
         foreach ($references as $referenced_table_name => $refs) {
             if ($config->tables->offsetExists($referenced_table_name)) {
@@ -525,12 +525,12 @@ class InformationSchema extends Source\AbstractSource
         $array = $config->toArray();
         unset($config);
         return $array;
-        
+
     }
-    
+
     /**
      * Disbale innodbstats will increase speed of metadata lookups
-     * 
+     *
      * @return void
      */
     protected function disableInnoDbStats()
@@ -543,7 +543,7 @@ class InformationSchema extends Source\AbstractSource
             // if 'on' no need to do anything
             if ($value != 'OFF') {
                 $this->mysql_innodbstats_value = $value;
-                // disabling innodb_stats 
+                // disabling innodb_stats
                 $this->adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);
             }
         } catch (\Exception $e) {
@@ -551,8 +551,8 @@ class InformationSchema extends Source\AbstractSource
         }
 
     }
-    
-    
+
+
     /**
      * Restore old innodbstats variable
      * @return void
@@ -565,19 +565,19 @@ class InformationSchema extends Source\AbstractSource
             $this->adapter->query("set global innodb_stats_on_metadata='$value'", Adapter::QUERY_MODE_EXECUTE);
         }
     }
-    
-    
+
+
     /**
-     * @param string $schema     
+     * @param string $schema
      * @param string $table
      */
     protected function loadCacheInformation($schema=null, $table=null)
     {
         if ($schema === null) $schema = $this->schema;
-        
+
         $this->validateSchemaTable($schema, $table);
-        
-        
+
+
         if (!in_array($schema, self::$fullyCachedSchemas)) {
             if ($table !== null) {
                   $this->getTableConfig($table, $schema);
@@ -585,9 +585,9 @@ class InformationSchema extends Source\AbstractSource
                   $this->getSchemaConfig($schema);
             }
         }
-           
+
     }
-    
+
     protected function validateSchemaTable($schema, $table=null)
     {
         if (!is_string($schema) || trim($schema) == '') {
@@ -598,7 +598,7 @@ class InformationSchema extends Source\AbstractSource
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Table name must be a valid string or an empty string detected");
             }
         }
-        
+
     }
-    
+
 }

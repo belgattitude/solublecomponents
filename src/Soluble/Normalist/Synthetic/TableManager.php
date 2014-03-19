@@ -60,7 +60,7 @@ class TableManager
      * @var Driver\DriverInterface
      */
     protected $driver;
-    
+
     /**
      *
      * @param Driver\DriverInterface $adapter
@@ -71,7 +71,7 @@ class TableManager
         $this->localTableCache = new \ArrayObject();
         $this->driver = $driver;
         $this->setDbAdapter($driver->getDbAdapter());
-        
+
         $this->sql = new Sql($this->adapter);
     }
 
@@ -220,7 +220,7 @@ class TableManager
      */
     protected function loadDefaultMetadata()
     {
-        
+
         $adapterName = $this->adapter->getPlatform()->getName();
         switch (strtolower($adapterName)) {
             case 'mysql':
@@ -228,14 +228,14 @@ class TableManager
                 break;
             default :
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");
-        }        
+        }
         if ($this->driver === null) {
             $options = array();
             $driver = new Driver\ZeroConfDriver($this->getDbAdapter(), $options);
             $driver->setDbAdapter($this->adapter);
             $this->driver = $driver;
         }
-            
+
         $this->metadata = $this->driver->getMetadata();
     }
 
