@@ -233,7 +233,7 @@ class InformationSchema extends Source\AbstractSource
 
 
 
-        $config = $this->getObjectConfig($table, $schema, $include_options);
+        $config = $this->getObjectConfig($table, $include_options);
         if (!array_key_exists($table, $config['tables'])    ) {
             throw new Exception\TableNotFoundException(__METHOD__ . ". Table '$table' in database schema '{$this->schema}' not found.");
         }
@@ -268,7 +268,7 @@ class InformationSchema extends Source\AbstractSource
 
 
         $table = null;
-        $config = $this->getObjectConfig($table, $schema, $include_options);
+        $config = $this->getObjectConfig($table, $include_options);
         if (count($config['tables']) == 0) {
             throw new Exception\SchemaNotFoundException(__METHOD__ . " Error: schema '{$this->schema}' not found or without any table or view");
         }
