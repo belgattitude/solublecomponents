@@ -138,8 +138,8 @@ class ZeroConfDriver implements DriverInterface
     public function getModelsDefinition()
     {
         $file = $this->getModelsConfigFile();
-        if (!file_exists($file)) {
-            throw new Exception\ModelFileNotFoundException(__METHOD__ . " Model configuration file '$file' does not exists");
+        if (!file_exists($file) || !is_readable($file)) {
+            throw new Exception\ModelFileNotFoundException(__METHOD__ . " Model configuration file '$file' does not exists or not readable");
         }
 
         $definition = include $file;
@@ -166,6 +166,7 @@ class ZeroConfDriver implements DriverInterface
 
         //$config = new Config($models_defintion, true);
         $writer = new Writer\PhpArray();
+        $models_definition['normalist'] = array('model_version' => Metadata\NormalistModels::VERSION);
         $writer->toFile($file, $models_definition, $exclusiveLock=true);
         $perms = $this->options['permissions'];
         if ($perms != '') {

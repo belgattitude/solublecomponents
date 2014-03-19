@@ -49,6 +49,8 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $schema = $this->adapter->getCurrentSchema();
         $options = array('schema' => $schema); 
         $driver = new ZeroConfDriver($this->adapter, $options);
+        $md = $driver->getMetadata();
+        $driver->clearMetadataCache();
         unlink($driver->getModelsConfigFile());
         $md = $driver->getMetadata();
         
@@ -160,9 +162,10 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists($file));
         unlink($file);
         $this->assertFalse(file_exists($file));
+        $this->driver->clearMetadataCache();
         $md = $this->driver->getMetadata();
         $file = $this->driver->getModelsConfigFile();
-        $this->assertFalse(file_exists($file));
+        $this->assertTrue(file_exists($file));
         
     }
 
@@ -175,7 +178,8 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $def);
         $this->assertTrue(file_exists($file));
         
-        file_put_contents($file, 'cool');
+        
+        file_put_contents($file, 'invalid php code');
         $catched = false;
         try {
             $def = $this->driver->getModelsDefinition();
@@ -196,6 +200,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);
         $this->driver->clearMetadataCache();
+        $this->driver->getMetadata();
         
         
         

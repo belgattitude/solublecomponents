@@ -18,7 +18,6 @@ abstract class AbstractSource
      * Get unique keys on table
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @param boolean $include_primary include primary keys in the list
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
@@ -27,14 +26,13 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    abstract public function getUniqueKeys($table, $schema=null, $include_primary=false);
+    abstract public function getUniqueKeys($table, $include_primary=false);
 
 
     /**
      * Return indexes information on a table
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
@@ -42,7 +40,7 @@ abstract class AbstractSource
      *
      * @return array
      */
-    abstract public function getIndexesInformation($table, $schema=null);
+    abstract public function getIndexesInformation($table);
 
     /**
      * Return unique table primary key
@@ -54,10 +52,9 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return string|int primary key
      */
-    abstract public function getPrimaryKey($table, $schema=null);
+    abstract public function getPrimaryKey($table);
 
 
     /**
@@ -73,7 +70,7 @@ abstract class AbstractSource
      * @param string $schema
      * @return null|array primary key
      */
-    abstract public function getPrimaryKeys($table, $schema=null);
+    abstract public function getPrimaryKeys($table);
 
 
     /**
@@ -85,10 +82,9 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return array associative array [column_name => infos]
      */
-    abstract public function getColumnsInformation($table, $schema=null);
+    abstract public function getColumnsInformation($table);
 
 
     /**
@@ -104,7 +100,7 @@ abstract class AbstractSource
      *
      * @return array
      */
-    abstract public function getRelations($table, $schema=null);
+    abstract public function getRelations($table);
 
     /**
      * Return table informations
@@ -113,10 +109,9 @@ abstract class AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      *
-     * @param string $schema
      * @return array associative array indexed by table_name
      */
-    abstract public function getTablesInformation($schema=null);
+    abstract public function getTablesInformation();
 
 
     /**
@@ -128,13 +123,12 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return array
      */
 
-    public function getColumns($table, $schema=null)
+    public function getColumns($table)
     {
-        return array_keys($this->getColumnsInformation($table, $schema));
+        return array_keys($this->getColumnsInformation($table));
     }
 
 
@@ -146,13 +140,12 @@ abstract class AbstractSource
      * @throws Exception\ExceptionInterface
      *
      * @param string $table
-     * @param string $schema
      * @return array
      */
-    public function getTableInformation($table, $schema=null)
+    public function getTableInformation($table)
     {
 
-        $infos = $this->getTablesInformation($schema);
+        $infos = $this->getTablesInformation();
         return $infos[$table];
     }
 
@@ -163,13 +156,12 @@ abstract class AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      *
-     * @param string $schema
      * @return array
      */
-    public function getTables($schema=null)
+    public function getTables()
     {
 
-        return array_keys($this->getTablesInformation($schema));
+        return array_keys($this->getTablesInformation());
     }
 
 
@@ -181,12 +173,11 @@ abstract class AbstractSource
      * @throws Exception\ExceptionInterface
      *
      * @param string $table
-     * @param string $schema
      * @return bool
      */
-    public function hasTable($table, $schema=null)
+    public function hasTable($table)
     {
-        $tables = $this->getTables($schema);
+        $tables = $this->getTables();
         return in_array($table, $tables);
     }
 
@@ -199,13 +190,13 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return AbstractSource
      */
-    protected function validateTable($table, $schema=null)
+    protected function validateTable($table)
     {
-        if (!$this->hasTable($table, $schema)) {
-            throw new Exception\TableNotFoundException("Table '$table' does not exists in database '$schema'");
+        $this->checkTableArgument($table);
+        if (!$this->hasTable($table)) {
+            throw new Exception\TableNotFoundException(__METHOD__ . ": Table '$table' does not exists in database '{$this->schema}'");
         }
         return $this;
     }
@@ -221,12 +212,10 @@ abstract class AbstractSource
     protected function validateSchema($schema)
     {
         if (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException("Schema name must be a valid string or an empty string detected");
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Schema name must be a valid string or an empty string detected");
         }
         return $this;
     }
-
-
 
     /**
      * Set default schema
@@ -235,11 +224,26 @@ abstract class AbstractSource
      * @param string $schema
      * @return AbstractSource
      */
-    public function setDefaultSchema($schema)
+    protected function setDefaultSchema($schema)
     {
         $this->validateSchema($schema);
         $this->schema = $schema;
         return $this;
+    }    
+
+    /**
+     * 
+     * @param string $table
+     * @throws Exception\InvalidArgumentException
+     */
+    protected function checkTableArgument($table=null)
+    {
+        if ($table !== null) {
+            if (!is_string($table) || trim($table) == '') {
+                throw new Exception\InvalidArgumentException(__METHOD__ . " Table name must be a valid string or an empty string detected");
+            }
+        }
+
     }
 
 }

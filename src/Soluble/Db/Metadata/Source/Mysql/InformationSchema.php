@@ -69,7 +69,6 @@ class InformationSchema extends Source\AbstractSource
      * Get unique keys on table
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @param boolean $include_primary include primary keys in the list
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
@@ -78,13 +77,10 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $schema=null, $include_primary=false)
+    public function getUniqueKeys($table, $include_primary=false)
     {
-        if ($schema === null) $schema = $this->schema;
-
-        $this->loadCacheInformation($schema, $table);
-        return self::$localCache[$schema]['tables'][$table]['unique_keys'];
-
+        $this->loadCacheInformation($table);
+        return self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
     }
 
 
@@ -92,7 +88,7 @@ class InformationSchema extends Source\AbstractSource
      * Return indexes information on a table
      *
      * @param string $table table name
-     * @param string $schema schema name
+     * 
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
@@ -100,11 +96,10 @@ class InformationSchema extends Source\AbstractSource
      *
      * @return array
      */
-    public function getIndexesInformation($table, $schema=null)
+    public function getIndexesInformation($table)
     {
-        if ($schema === null) $schema = $this->schema;
-        $this->loadCacheInformation($schema, $table);
-        return self::$localCache[$schema]['tables'][$table]['indexes'];
+        $this->loadCacheInformation($table);
+        return self::$localCache[$this->schema]['tables'][$table]['indexes'];
     }
 
     /**
@@ -118,16 +113,15 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
+     * 
      * @return string|int primary key
      */
-    public function getPrimaryKey($table, $schema=null)
+    public function getPrimaryKey($table)
     {
-        if ($schema === null) $schema = $this->schema;
-        $pks = $this->getPrimaryKeys($table, $schema);
+        $pks = $this->getPrimaryKeys($table);
         if (count($pks) > 1) {
             $keys = join(',', $pks);
-            throw new Exception\MultiplePrimaryKeyException(__METHOD__ . ". Multiple primary keys found on table '$schema'.'$table':  $keys");
+            throw new Exception\MultiplePrimaryKeyException(__METHOD__ . ". Multiple primary keys found on table '{$this->schema}'.'$table':  $keys");
         }
         return $pks[0];
     }
@@ -143,17 +137,16 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
+     * 
      * @return null|array primary key
      */
-    public function getPrimaryKeys($table, $schema=null)
+    public function getPrimaryKeys($table)
     {
-        if ($schema === null) $schema = $this->schema;
 
-        $this->loadCacheInformation($schema, $table);
-        $pks = self::$localCache[$schema]['tables'][$table]['primary_keys'];
+        $this->loadCacheInformation($table);
+        $pks = self::$localCache[$this->schema]['tables'][$table]['primary_keys'];
         if (count($pks) == 0) {
-            throw new Exception\NoPrimaryKeyException(__METHOD__ . ". No primary keys found on table '$schema'.'$table'.");
+            throw new Exception\NoPrimaryKeyException(__METHOD__ . ". No primary keys found on table  '{$this->schema}'.'$table'.");
         }
         return $pks;
     }
@@ -168,15 +161,12 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return array associative array [column_name => infos]
      */
-    public function getColumnsInformation($table, $schema=null)
+    public function getColumnsInformation($table)
     {
-        if ($schema === null) $schema = $this->schema;
-        $this->loadCacheInformation($schema, $table);
-        return self::$localCache[$schema]['tables'][$table]['columns'];
-
+        $this->loadCacheInformation($table);
+        return self::$localCache[$this->schema]['tables'][$table]['columns'];
     }
 
 
@@ -189,15 +179,14 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      *
      * @return array
      */
-    public function getRelations($table, $schema=null)
+    public function getRelations($table)
     {
-        if ($schema === null) $schema = $this->schema;
-        $this->loadCacheInformation($schema, $table);
-        return self::$localCache[$schema]['tables'][$table]['foreign_keys'];
+        
+        $this->loadCacheInformation($table);
+        return self::$localCache[$this->schema]['tables'][$table]['foreign_keys'];
 
     }
 
@@ -208,14 +197,12 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      *
-     * @param string $schema
      * @return array associative array indexed by table_name
      */
-    public function getTablesInformation($schema=null)
+    public function getTablesInformation()
     {
-        if ($schema === null) $schema = $this->schema;
-        $this->loadCacheInformation($schema, null);
-        return self::$localCache[$schema]['tables'];
+        $this->loadCacheInformation(null);
+        return self::$localCache[$this->schema]['tables'];
     }
 
 
@@ -227,19 +214,17 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @param boolean $include_options include extended information
      * @return array
      */
-    public function getTableConfig($table, $schema=null, $include_options=false)
+    public function getTableConfig($table, $include_options=false)
     {
-        if ($schema === null) $schema = $this->schema;
-
+        $schema = $this->schema;
         if ($this->useLocalCaching) {
             if ( in_array($schema, self::$fullyCachedSchemas)
                  || (array_key_exists($schema, self::$localCache) &&
-                     array_key_exists('tables', self::$localCache[$schema]) &&
-                     array_key_exists($table, self::$localCache[$schema]['tables'])))
+                     array_key_exists('tables', self::$localCache[$this->schema]) &&
+                     array_key_exists($table, self::$localCache[$this->schema]['tables'])))
                 {
 
                 return self::$localCache[$schema]['tables'][$table];
@@ -250,14 +235,14 @@ class InformationSchema extends Source\AbstractSource
 
         $config = $this->getObjectConfig($table, $schema, $include_options);
         if (!array_key_exists($table, $config['tables'])    ) {
-            throw new Exception\TableNotFoundException(__METHOD__ . ". Table '$table' in database schema '$schema' not found.");
+            throw new Exception\TableNotFoundException(__METHOD__ . ". Table '$table' in database schema '{$this->schema}' not found.");
         }
 
         if ($this->useLocalCaching) {
             if (!array_key_exists($schema, self::$localCache)) {
-                self::$localCache[$schema] = array();
+                self::$localCache[$this->schema] = array();
             }
-            self::$localCache[$schema] = array_merge_recursive(self::$localCache[$schema], $config);
+            self::$localCache[$this->schema] = array_merge_recursive(self::$localCache[$this->schema], $config);
         }
 
         return $config['tables'][$table];
@@ -270,26 +255,25 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\SchemaNotFoundException
      *
-     * @param string $schema if not given will take active schema from database adapter
      * @param boolean $include_options include extended information
      * @return array
      */
-    public function getSchemaConfig($schema=null, $include_options=false)
+    public function getSchemaConfig($include_options=false)
     {
 
-        if ($schema === null) $schema = $this->schema;
+        $schema = $this->schema;
         if ($this->useLocalCaching && in_array($schema, self::$fullyCachedSchemas)) {
-            return self::$localCache[$schema];
+            return self::$localCache[$this->schema];
         }
 
 
         $table = null;
         $config = $this->getObjectConfig($table, $schema, $include_options);
         if (count($config['tables']) == 0) {
-            throw new Exception\SchemaNotFoundException(__METHOD__ . " Error: schema '$schema' not found or without any table or view");
+            throw new Exception\SchemaNotFoundException(__METHOD__ . " Error: schema '{$this->schema}' not found or without any table or view");
         }
         if ($this->useLocalCaching) {
-            self::$localCache[$schema] = $config;
+            self::$localCache[$this->schema] = $config;
             self::$fullyCachedSchemas[] = $schema;
         }
         return $config;
@@ -301,13 +285,12 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\ErrorException
      *
      * @param string $table
-     * @param string $schema
      * @param boolean $include_options
      * @return array
      */
-    protected function getObjectConfig($table=null, $schema=null, $include_options=false)
+    protected function getObjectConfig($table=null, $include_options=false)
     {
-        if ($schema === null) $schema = $this->schema;
+        $schema = $this->schema;
         $qSchema = $this->adapter->getPlatform()->quoteValue($schema);
 
         if ($table !== null) {
@@ -568,37 +551,28 @@ class InformationSchema extends Source\AbstractSource
 
 
     /**
-     * @param string $schema
+     * 
      * @param string $table
+     * @throws Exception\InvalidArgumentException
+     * 
      */
-    protected function loadCacheInformation($schema=null, $table=null)
+    protected function loadCacheInformation($table=null)
     {
-        if ($schema === null) $schema = $this->schema;
+        $schema = $this->schema;
 
-        $this->validateSchemaTable($schema, $table);
+        $this->checkTableArgument($table);
 
 
         if (!in_array($schema, self::$fullyCachedSchemas)) {
             if ($table !== null) {
-                  $this->getTableConfig($table, $schema);
+                  $this->getTableConfig($table);
             } else {
-                  $this->getSchemaConfig($schema);
+                  $this->getSchemaConfig();
             }
         }
 
     }
 
-    protected function validateSchemaTable($schema, $table=null)
-    {
-        if (!is_string($schema) || trim($schema) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . " Schema name must be a valid string or an empty string detected");
-        }
-        if ($table !== null) {
-            if (!is_string($table) || trim($table) == '') {
-                throw new Exception\InvalidArgumentException(__METHOD__ . " Table name must be a valid string or an empty string detected");
-            }
-        }
 
-    }
 
 }

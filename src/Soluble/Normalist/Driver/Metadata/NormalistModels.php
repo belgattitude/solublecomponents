@@ -2,15 +2,17 @@
 namespace Soluble\Normalist\Driver\Metadata;
 
 use Soluble\Db\Metadata\Source;
-use Zend\Db\Adapter\Adapter;
-use Zend\Config\Config;
-use Zend\Config\Writer;
 use Soluble\Db\Metadata\Exception;
 
 
 class NormalistModels extends Source\AbstractSource
 {
 
+    /**
+     * Current class version
+     */
+    const VERSION = '1.0';
+    
     /**
      * @var array
      */
@@ -29,7 +31,6 @@ class NormalistModels extends Source\AbstractSource
      * Get unique keys on table
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @param boolean $include_primary include primary keys in the list
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
@@ -38,9 +39,9 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $schema=null, $include_primary=false)
+    public function getUniqueKeys($table, $include_primary=false)
     {
-
+        $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['unique_keys'];
     }
 
@@ -49,7 +50,6 @@ class NormalistModels extends Source\AbstractSource
      * Return indexes information on a table
      *
      * @param string $table table name
-     * @param string $schema schema name
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
@@ -57,9 +57,9 @@ class NormalistModels extends Source\AbstractSource
      *
      * @return array
      */
-    public function getIndexesInformation($table, $schema=null)
+    public function getIndexesInformation($table)
     {
-
+        $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['indexes'];
     }
 
@@ -74,16 +74,15 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return string|int primary key
      */
-    public function getPrimaryKey($table, $schema=null)
+    public function getPrimaryKey($table)
     {
-        if ($schema === null) $schema = $this->schema;
-        $pks = $this->getPrimaryKeys($table, $schema);
+        $this->checkTableArgument($table);
+        $pks = $this->getPrimaryKeys($table);
         if (count($pks) > 1) {
             $keys = join(',', $pks);
-            throw new Exception\MultiplePrimaryKeyException(__METHOD__ . ". Multiple primary keys found on table '$schema'.'$table':  $keys");
+            throw new Exception\MultiplePrimaryKeyException(__METHOD__ . ". Multiple primary keys found on table '$table':  $keys");
         }
         return $pks[0];
     }
@@ -99,15 +98,14 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return array primary key
      */
-    public function getPrimaryKeys($table, $schema=null)
+    public function getPrimaryKeys($table)
     {
-        if ($schema === null) $schema = $this->schema;
+        $this->checkTableArgument($table);
         $pks = $this->model_definition['tables'][$table]['primary_keys'];
         if (count($pks) == 0) {
-            throw new Exception\NoPrimaryKeyException(__METHOD__ . ". No primary keys found on table '$schema'.'$table'.");
+            throw new Exception\NoPrimaryKeyException(__METHOD__ . ". No primary keys found on table '$table'.");
         }
         return $pks;
     }
@@ -122,12 +120,11 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      * @return array associative array [column_name => infos]
      */
-    public function getColumnsInformation($table, $schema=null)
+    public function getColumnsInformation($table)
     {
-
+        $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['columns'];
 
     }
@@ -142,13 +139,12 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      *
      * @return array
      */
-    public function getRelations($table, $schema=null)
+    public function getRelations($table)
     {
-
+        $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['foreign_keys'];
 
     }
@@ -160,10 +156,9 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
      *
-     * @param string $schema
      * @return array associative array indexed by table_name
      */
-    public function getTablesInformation($schema=null)
+    public function getTablesInformation()
     {
         return $this->model_definition['tables'];
     }
