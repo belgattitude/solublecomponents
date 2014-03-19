@@ -388,48 +388,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table->insert($data);
     }    
 
-    /**
-      * @covers Soluble\Normalist\Synthetic\Table::insert
-     
-    public function testInsertThrowsRuntimeException()
-    {
-        $tm = $this->tableManager;
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RuntimeException');
-        $table = $tm->table('media');                
-        $container_id = $tm->table('media_container')
-                           ->findOneBy(array('reference' => 'PRODUCT_MEDIAS'))->get('container_id');
-        
-        $data = array(
-                'filename'  => 'test_invalid_filemtime_and_size.pdf',
-                'filemtime' => 'BBBBBB',
-                'filesize'  => 'CCCCCCCCC',
-                'container_id' => $container_id
-        );            
-        $table->insert($data);
-    }    
-    */
-        
-    
-
-    
-
-    /**
-     * @covers Soluble\Normalist\SyntheticTable::insert
-     */
-    /*
-    public function testInsertNotNullRuntimeExceptionMessage()
-    {
-        $table = $this->tableManager->table('media');                        
-        $data = array('title' => "A title that shouln't be saved in phpunit database", 'reference' => null);
-        try {
-            $table->insert('product_type', $data);
-        } catch (\Soluble\Normalist\Exception\RuntimeException $e) {
-            $msg = strtolower($e->getMessage());
-            $this->assertContains("reference", $msg);
-            $this->assertContains("cannot be null", $msg);
-        }
-    }
-    */
 
     public function testDelete()
     {

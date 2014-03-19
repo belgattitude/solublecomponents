@@ -36,5 +36,7 @@ script:
 after_script:
   - ls build/logs  
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  - sh -c "which java"
+  - sh -c "java -version"
   #- ./bin/coveralls -c=./coveralls.yml -v 
   
