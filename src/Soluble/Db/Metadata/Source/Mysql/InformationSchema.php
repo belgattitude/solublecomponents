@@ -363,6 +363,8 @@ class InformationSchema extends Source\AbstractSource
             and (kcu.column_name = c.column_name or kcu.column_name is null)
             order by t.table_name, c.ordinal_position
         ";
+        
+
         $this->disableInnoDbStats();
         try {
             $results = $this->adapter->query($query, Adapter::QUERY_MODE_EXECUTE);
@@ -391,10 +393,10 @@ class InformationSchema extends Source\AbstractSource
                 );
                 if ($include_options) {
                     $table_def['options'] = array(
-                       'engine'    => $r['engine'],
                        'comment'   => $r['table_comment'],
                        'collation' => $r['table_collation'],
                        'type'      => $r['table_type'],
+                        'engine'    => $r['engine']
 
                     );
                 }
@@ -407,38 +409,48 @@ class InformationSchema extends Source\AbstractSource
             $data_type = strtolower($r['data_type']);
 
             $col_def = array(
-                'data_type'         => $data_type,
-                'is_primary'        => ($r['constraint_type'] == 'PRIMARY KEY'),
-                'is_nullable'       => ($r['is_nullable'] == 'YES'),
-                'default'           => $r['column_default']
+                'type'          => $data_type,
+                'primary'       => ($r['constraint_type'] == 'PRIMARY KEY'),
+                'nullable'      => ($r['is_nullable'] == 'YES'),
+                'default'       => $r['column_default']
             );
-
             if (($r['constraint_type'] == 'PRIMARY KEY')) {
-                $col_def['is_primary'] = true;
-                $col_def['is_autoincrement'] = ($r['extra'] == 'auto_increment');
+                $col_def['primary'] = true;
+                $col_def['autoincrement'] = ($r['extra'] == 'auto_increment');
             }
 
             $has_charset = false;
             if (in_array($data_type, array('int', 'tinyint', 'mediumint', 'bigint', 'int', 'smallint', 'year'))) {
+                $col_def['unsigned']  = (bool) preg_match('/unsigned/', strtolower($r['column_type']));
                 $col_def['precision'] = $r['numeric_precision'];
+                
             } elseif (in_array($data_type, array('real', 'double precision', 'decimal', 'numeric', 'float', 'dec', 'fixed'))) {
                 $col_def['precision'] = $r['numeric_precision'];
                 $col_def['scale']     = $r['numeric_scale'];
-
             } elseif (in_array($data_type, array('timestamp', 'date', 'time', 'datetime'))) {
                 // nothing yet
-            } elseif (in_array($data_type, array('char', 'varchar', 'enum', 'set', 'binary', 'varbinary', 'text', 'tinytext', 'mediumtext', 'longtext'))) {
+            } elseif (in_array($data_type, array('char', 'varchar', 'binary', 'varbinary', 'text', 'tinytext', 'mediumtext', 'longtext'))) {
                 $col_def['octet_length'] = $r['character_octet_length'];
                 $col_def['length'] = $r['character_maximum_length'];
                 $has_charset = true;
             } elseif (in_array($data_type, array('blob', 'tinyblob', 'mediumblob', 'longblob'))) {
                 $col_def['octet_length'] = $r['character_octet_length'];
                 $col_def['length'] = $r['character_maximum_length'];
+            } elseif (in_array($data_type, array('enum', 'set'))) {
+                $col_def['octet_length'] = $r['character_octet_length'];
+                $col_def['length'] = $r['character_maximum_length'];
+                $def = $r['column_type'];
+                
+                preg_match_all("/'([^']+)'/", $def, $matches);
+                if (is_array($matches[1]) && count($matches) > 0) {
+                    $col_def['values'] = $matches[1];
+                }
             }
 
             if ($include_options) {
                 $col_def['options'] = array(
-                        'column_type'       => $r['column_type'],
+                        'comment'           => $r['column_comment'],
+                        'definition'        => $r['column_type'],
                         'column_key'        => $r['column_key'],
                         'ordinal_position'  => $r['ordinal_position'],
                         'constraint_type'   => $r['constraint_type'], // 'PRIMARY KEY', 'FOREIGN_KEY', 'UNIQUE'

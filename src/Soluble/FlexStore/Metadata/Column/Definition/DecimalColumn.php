@@ -101,6 +101,7 @@ class DecimalColumn extends AbstractColumn implements NumericColumnInterface
         $this->numericScale = $numericScale;
         return $this;
     }
+    
 
 
 }

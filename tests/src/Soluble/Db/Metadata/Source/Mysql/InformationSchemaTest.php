@@ -76,8 +76,8 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
        
         $this->assertEquals('reference', $config['unique_keys']['unique_reference_idx'][0]);
         $this->assertEquals('brand_id', $config['primary_keys'][0]);
-        $this->assertEquals(false, $config['columns']['created_by']['is_primary']);
-        $this->assertEquals(true, $config['columns']['brand_id']['is_primary']);
+        $this->assertEquals(false, $config['columns']['created_by']['primary']);
+        $this->assertEquals(true, $config['columns']['brand_id']['primary']);
 
 
     }
