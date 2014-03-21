@@ -1,13 +1,13 @@
 <?php
 
 namespace Soluble\FlexStore\ResultSet;
+use Zend\Db\ResultSet\ResultSetInterface;
 
 use ArrayIterator;
 use ArrayObject;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use Soluble\FlexStore\ResultSet\ResultInterface;
 
 
 
@@ -20,7 +20,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     protected $count = null;
 
     /**
-     * @var Iterator|IteratorAggregate|ResultInterface
+     * @var Iterator|IteratorAggregate|ResultSetInterface
      */
     protected $dataSource = null;
 
@@ -37,7 +37,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     /**
      * Set the data source for the result set
      *
-     * @param  Iterator|IteratorAggregate|ResultInterface $dataSource
+     * @param  Iterator|IteratorAggregate|ResultSetInterface $dataSource
      * @return ResultSet
      * @throws Exception\InvalidArgumentException
      */
@@ -49,7 +49,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
         }
 
 
-        if ($dataSource instanceof ResultInterface) {
+        if ($dataSource instanceof ResultSetInterface) {
 
             $this->count = $dataSource->count();
             $this->fieldCount = $dataSource->getFieldCount();
@@ -63,9 +63,8 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
                 $this->dataSource->rewind();
             }
             return $this;
-        }
-
-        if (is_array($dataSource)) {
+            
+        } elseif (is_array($dataSource)) {
             // its safe to get numbers from an array
             $first = current($dataSource);
             reset($dataSource);
@@ -94,7 +93,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
             throw new Exception\RuntimeException('Buffering must be enabled before iteration is started');
         } elseif ($this->buffer === null) {
             $this->buffer = array();
-            if ($this->dataSource instanceof ResultInterface) {
+            if ($this->dataSource instanceof ResultSetInterface) {
                 $this->dataSource->rewind();
             }
         }
