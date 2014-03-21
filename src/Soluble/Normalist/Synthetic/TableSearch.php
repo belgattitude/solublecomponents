@@ -26,7 +26,7 @@ class TableSearch
 
     /**
      *
-     * @var Select;
+     * @var Select
      */
     protected $select;
 
