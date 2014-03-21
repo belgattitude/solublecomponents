@@ -98,7 +98,7 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @return array primary key
+     * @return array primary keys
      */
     public function getPrimaryKeys($table)
     {

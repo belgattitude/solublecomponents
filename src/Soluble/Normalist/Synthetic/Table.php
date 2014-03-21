@@ -44,7 +44,7 @@ class Table
 
     /**
      * Primary keys of the table in case there's a multiple column pk
-     * @var string|integer
+     * @var array
      */
     protected $primary_keys;
 

@@ -27,14 +27,15 @@
 		"zendframework/zend-servicemanager": "2.*",
 		"zendframework/zend-paginator": "2.*",
 		"rhumsaa/array_column": "~1.1",
-		"imagine/Imagine" : "0.5.*",
+		"imagine/imagine" : "0.5.*",
 		"php": ">=5.3.3",
 		"ext-iconv": "*"
 	},
 	"require-dev": {
         "adodb/adodb-php": "dev-master",
         "satooshi/php-coveralls": "0.6.*",	
-		"sami/sami": "1.*"
+		"sami/sami": "1.*",
+        "phpunit/phpunit": "~4.0"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",

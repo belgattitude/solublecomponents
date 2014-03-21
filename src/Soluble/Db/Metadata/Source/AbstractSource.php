@@ -68,7 +68,7 @@ abstract class AbstractSource
      *
      * @param string $table
      * @param string $schema
-     * @return null|array primary key
+     * @return array primary key
      */
     abstract public function getPrimaryKeys($table);
 

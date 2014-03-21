@@ -229,13 +229,6 @@ class TableManager
             default :
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");
         }
-        if ($this->driver === null) {
-            $options = array();
-            $driver = new Driver\ZeroConfDriver($this->getDbAdapter(), $options);
-            $driver->setDbAdapter($this->adapter);
-            $this->driver = $driver;
-        }
-
         $this->metadata = $this->driver->getMetadata();
     }
 

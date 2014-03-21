@@ -80,7 +80,11 @@ class InformationSchema extends Source\AbstractSource
     public function getUniqueKeys($table, $include_primary=false)
     {
         $this->loadCacheInformation($table);
-        return self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
+        $uniques = (array) self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
+        if ($include_primary) {
+            //$uniques[] = 
+        }
+        return $uniques;
     }
 
 
@@ -138,7 +142,7 @@ class InformationSchema extends Source\AbstractSource
      *
      * @param string $table
      * 
-     * @return null|array primary key
+     * @return array primary keys
      */
     public function getPrimaryKeys($table)
     {
@@ -400,9 +404,9 @@ class InformationSchema extends Source\AbstractSource
 
                     );
                 }
-                $config->tables[$table_name] = $table_def;
+                $config->tables->offsetSet($table_name, $table_def);
             }
-            $table   = $config->tables[$table_name];
+            $table   = $config->tables->offsetGet($table_name);
             $columns = $table->columns;
             $column_name = $r['column_name'];
 

@@ -7,7 +7,7 @@ use ArrayObject;
 use Countable;
 use Iterator;
 use IteratorAggregate;
-use Soluble\FlexStore\Resultset\ResultInterface;
+use Soluble\FlexStore\ResultSet\ResultInterface;
 
 
 
