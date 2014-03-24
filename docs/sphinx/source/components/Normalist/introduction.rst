@@ -50,7 +50,7 @@ Or alternatively, add soluble/normalist in your composer.json file as described 
 
     {
         "require": {
-            "soluble/normalist": "0.*"
+            "soluble/normalist": "0.8.*"
         }
     }
 
@@ -62,7 +62,6 @@ Or alternatively, add soluble/normalist in your composer.json file as described 
 
 
 .. note::     
-   + Replace dev-master by the latest stable release, see soluble `GitHub account <https://github.com/belgattitude/solublecomponents>`_.
    + All dependencies will be automatically downloaded and installed in your vendor project directory. 
 
 
@@ -75,15 +74,17 @@ Synthetic\\TableManager
 The TableManager provides a simple and central way to work with your table and models.
 
 
-Database connection
-~~~~~~~~~~~~~~~~~~~
+Getting a TableManager object
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TableManager requires a Zend\\Db\\Adapter\\Adapter database connection. 
+TableManager requires a Soluble\\Normalist\\Driver\\DriverInterface database connection. Currently
+Normalist offer the ZeroConfDriver that will automatically handle models from your database schema.  
 
 .. code-block:: php
 
     <?php
     use Soluble\Normalist\Synthetic\TableManager;
+    use Soluble\Normalist\Driver;
     use Zend\Db\Adapter\Adapter;
     
     $config = array(
@@ -95,8 +96,15 @@ TableManager requires a Zend\\Db\\Adapter\\Adapter database connection.
     );
 
     $adapter = new Adapter($config);
+
+    $options = array(
+        'path' => '/path/to/model/dir/',
+        'alias' => 'identifier_name', // default to 'default'
+    );
+
+    $driver = new ZeroConfDriver($adapter, $options);
        
-    $tm = new TableManager($adapter);
+    $tm = new TableManager($driver);
 
 .. note::     
    + The list of options supported by the adapter are explaind in the `Zend\\Db\\Adapter\\Adapter <http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html>`_ reference guide.
@@ -117,7 +125,7 @@ Synthetic tables are available through the TableManager object. Just call the Sy
    :emphasize-lines: 2
 
     <?php
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $userTable = $tm->table('user');
 
 
@@ -562,7 +570,7 @@ TableSearch is available through a Synthetic\\Table object. Just call the Synthe
    :emphasize-lines: 4
 
     <?php
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $userTable = $tm->table('user');
     $search = $userTable->search();
     echo get_class($search);
@@ -579,7 +587,7 @@ As a basic example, conditions or predicates can be given as an array.
    :emphasize-lines: 4-11
 
     <?php
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $userTable = $tm->table('user');
     $results = $userTable->search()
                          ->where(array(
@@ -613,7 +621,7 @@ Alternatively you can use PHP 5.3 closures to get the job done.
     <?php
     use Zend\Db\Sql\Where;
 
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $search = $tm->table('user')->search();
     $search->where(function (Where $where) {
         
@@ -670,7 +678,7 @@ sql injections. Always quote your values and identifiers !!!
    :emphasize-lines: 6-25
 
     <?php
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $platform = $tm->getDbAdapter()->getPlatform();
     echo get_class($platform);
     // -> Zend\Db\Adapter\Platform\PlatformInterface
@@ -696,7 +704,7 @@ Synthetic\\TableSearch::limit() and Synthetic\\TableSearch::offset() can be used
     <?php
     use Zend\Db\Sql\Where;
 
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $search = $tm->table('user')->search();
     $search->where(function(Where $where) {
         $where->like("email", "%@hotmail.com");
@@ -715,7 +723,7 @@ Synthetic\\TableSearch::columns() allows to specify columns to retrieve
 
     <?php
 
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     $search = $tm->table('user')->search();
     $search->columns(array(
                     'user_id', 
@@ -765,7 +773,7 @@ method ::join(), ::joinLeft() and ::joinRight();
    :emphasize-lines: 6,9-13
 
    <?php
-   $tm = new TableManager($adapter);
+   $tm = My\Namespace\CustomClass::getTableManager();
    $search = $tm->table('user')->search();        
    
    $results = $search
@@ -800,7 +808,7 @@ Alternatively a good practice is to alias your tables.
    <?php
    use Zend\Db\Sql\Expression;
 
-   $tm = new TableManager($adapter);
+   $tm = My\Namespace\CustomClass::getTableManager();
    
    $categTable = $tm->table('product_category');
    
@@ -923,7 +931,7 @@ Transaction example
     <?php
     use Normalist\Synthetic\TableManager;
     
-    $tm = new TableManager($adapter);
+    $tm = My\Namespace\CustomClass::getTableManager();
     
     $tm->transaction()->start();
     try {

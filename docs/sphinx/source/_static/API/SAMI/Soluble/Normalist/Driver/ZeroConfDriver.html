@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>Soluble\Normalist\Driver\ZeroConfDriver | </title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../traits.html">Traits</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title"></div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../Soluble/Normalist/Driver.html">Soluble\Normalist\Driver</a>\ZeroConfDriver</h1>
+    </div>
+        <div class="content">
+                <p>    class
+    <strong>ZeroConfDriver</strong>        implements
+        <a href="../../../Soluble/Normalist/Driver/DriverInterface.html"><abbr title="Soluble\Normalist\Driver\DriverInterface">DriverInterface</abbr></a></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $options = array())
+                    <p>Construct a new Zero configuration driver</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getModelsConfigFile">getModelsConfigFile</a>()
+                    <p>Return models configuration file</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_getModelsDefinition">getModelsDefinition</a>()
+                    <p>Get models definition according to options</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_getDbAdapter">getDbAdapter</a>()
+                    <p>Get underlying database adapter</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_getMetadata">getMetadata</a>()
+                    <p>Get internal metadata reader</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_clearMetadataCache">clearMetadataCache</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setMetadata">setMetadata</a>(<abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr> $metadata)
+                    <p>Set internal metadata reader</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 69</div>
+        <code>            public            
+    <strong>__construct</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $options = array())</code>
+    </h3>
+    <div class="details">
+        <p>Construct a new Zero configuration driver</p>
+        <p>$options allows you to specify the
+  path    : where to store the model definition (default to sys<em>get</em>temp_dir())
+  alias   : the alias to use when using multiple schemas, default: 'default'
+  version : the version to use, default to 'latest'
+  schema  : the database schema name, default to current adapter connection
+  permissions: by default the model file is created with permission 0666</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr></td>
+                <td>$adapter</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr></td>
+                <td>$options</td>
+                <td>[alias,path,version]</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ModelPathNotFoundException">ModelPathNotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ModelPathNotWritableException">ModelPathNotWritableException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getModelsConfigFile">
+        <div class="location">at line 124</div>
+        <code>            public            string
+    <strong>getModelsConfigFile</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return models configuration file</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getModelsDefinition">
+        <div class="location">at line 138</div>
+        <code>            public            array
+    <strong>getModelsDefinition</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get models definition according to options</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ModelFileNotFoundException">ModelFileNotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ModelFileCorruptedException">ModelFileCorruptedException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getDbAdapter">
+        <div class="location">at line 201</div>
+        <code>            public            <abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr>
+    <strong>getDbAdapter</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get underlying database adapter</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getMetadata">
+        <div class="location">at line 211</div>
+        <code>            public            <abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr>
+    <strong>getMetadata</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get internal metadata reader</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_clearMetadataCache">
+        <div class="location">at line 229</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
+    <strong>clearMetadataCache</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setMetadata">
+        <div class="location">at line 269</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
+    <strong>setMetadata</strong>(<abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr> $metadata)</code>
+    </h3>
+    <div class="details">
+        <p>Set internal metadata reader</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr></td>
+                <td>$metadata</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

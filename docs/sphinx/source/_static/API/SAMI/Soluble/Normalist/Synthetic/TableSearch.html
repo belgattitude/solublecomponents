@@ -49,8 +49,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_limit">limit</a>(int $limit)
-                    <p>
-</p>
+                    <p>Limit the number of results</p>
                 </td>
                 <td></td>
             </tr>
@@ -60,8 +59,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_offset">offset</a>(int $offset)
-                    <p>
-</p>
+                    <p>Set offset to use when a limit has been set.</p>
                 </td>
                 <td></td>
             </tr>
@@ -70,9 +68,18 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_columns">columns</a>(array $columns, boolean $prefixColumnsWithTable = false)
-                    <p>
-</p>
+                    <a href="#method_columns">columns</a>(array $columns, boolean $prefixColumnsWithTable = true)
+                    <p>Set the table columns to retrieve</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_prefixedColumns">prefixedColumns</a>(array $columns)
+                    <p>Add table prefixed columns, will automatically quote table parts identifiers found in the column name.</p>
                 </td>
                 <td></td>
             </tr>
@@ -81,9 +88,18 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_group">group</a>(array $group)
-                    <p>
-</p>
+                    <a href="#method_group">group</a>(array|string $group)
+                    <p>Set a group option</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_having">having</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array $predicate, string $combination = Predicate\PredicateSet::OP_AND)
+                    <p>Set a habing option</p>
                 </td>
                 <td></td>
             </tr>
@@ -93,8 +109,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_order">order</a>(string|array $order)
-                    <p>
-</p>
+                    <p>Set an order by clause</p>
                 </td>
                 <td></td>
             </tr>
@@ -104,8 +119,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_where">where</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = null)
-                    <p>
-</p>
+                    <p>Add a where condition</p>
                 </td>
                 <td></td>
             </tr>
@@ -115,8 +129,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_orWhere">orWhere</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)
-                    <p>
-</p>
+                    <p>Add an orWhere condition to the search</p>
                 </td>
                 <td></td>
             </tr>
@@ -125,9 +138,28 @@
                     <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_join">join</a>(string|array $table, string $on, string|array $columns = Select::SQL_STAR, string $type = Select::JOIN_INNER)
-                    <p>
-</p>
+                    <a href="#method_join">join</a>(string|array $table, string $on, string|array $columns = array())
+                    <p>Add an inner table join to the search</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_joinLeft">joinLeft</a>(string|array $table, string $on, string|array $columns = array())
+                    <p>Add an left outer table join to the search</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_joinRight">joinRight</a>(string|array $table, string $on, string|array $columns = array())
+                    <p>Add an right outer table join to the search</p>
                 </td>
                 <td></td>
             </tr>
@@ -137,8 +169,7 @@
                 </td>
                 <td class="last">
                     <a href="#method_getSelect">getSelect</a>()
-                    <p>
-</p>
+                    <p>Return the underlying select</p>
                 </td>
                 <td></td>
             </tr>
@@ -198,7 +229,7 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 37</div>
+        <div class="location">at line 49</div>
         <code>            public            
     <strong>__construct</strong>(<a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)</code>
     </h3>
@@ -231,13 +262,12 @@
     </div>
 
                 <h3 id="method_limit">
-        <div class="location">at line 48</div>
+        <div class="location">at line 63</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>limit</strong>(int $limit)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Limit the number of results</p>
         <p>
 </p>
         <div class="tags">
@@ -269,13 +299,12 @@
     </div>
 
                 <h3 id="method_offset">
-        <div class="location">at line 59</div>
+        <div class="location">at line 75</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>offset</strong>(int $offset)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Set offset to use when a limit has been set.</p>
         <p>
 </p>
         <div class="tags">
@@ -307,13 +336,12 @@
     </div>
 
                 <h3 id="method_columns">
-        <div class="location">at line 72</div>
+        <div class="location">at line 89</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>columns</strong>(array $columns, boolean $prefixColumnsWithTable = false)</code>
+    <strong>columns</strong>(array $columns, boolean $prefixColumnsWithTable = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Set the table columns to retrieve</p>
         <p>
 </p>
         <div class="tags">
@@ -323,8 +351,7 @@
                     <tr>
                 <td>array</td>
                 <td>$columns</td>
-                <td>
-</td>
+                <td>array list of columns, key are used as aliases</td>
             </tr>
                     <tr>
                 <td>boolean</td>
@@ -350,14 +377,40 @@
                     </div>
     </div>
 
-                <h3 id="method_group">
-        <div class="location">at line 83</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>group</strong>(array $group)</code>
+                <h3 id="method_prefixedColumns">
+        <div class="location">at line 104</div>
+        <code>            public            
+    <strong>prefixedColumns</strong>(array $columns)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Add table prefixed columns, will automatically quote table parts identifiers found in the column name.</p>
+        <p>It provides an alternative for defining columns from multiple/joined
+table in one go.</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_group">
+        <div class="location">at line 117</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+    <strong>group</strong>(array|string $group)</code>
+    </h3>
+    <div class="details">
+        <p>Set a group option</p>
         <p>
 </p>
         <div class="tags">
@@ -365,10 +418,9 @@
 
                     <table>
                     <tr>
-                <td>array</td>
+                <td>array|string</td>
                 <td>$group</td>
-                <td>
-</td>
+                <td>a column or an array of columns to group by</td>
             </tr>
             </table>
 
@@ -388,14 +440,55 @@
                     </div>
     </div>
 
+                <h3 id="method_having">
+        <div class="location">at line 132</div>
+        <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
+    <strong>having</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array $predicate, string $combination = Predicate\PredicateSet::OP_AND)</code>
+    </h3>
+    <div class="details">
+        <p>Set a habing option</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array</td>
+                <td>$predicate</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$combination</td>
+                <td>One of the OP_* constants from Predicate\PredicateSet</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_order">
-        <div class="location">at line 94</div>
+        <div class="location">at line 145</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>order</strong>(string|array $order)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Set an order by clause</p>
         <p>
 </p>
         <div class="tags">
@@ -405,8 +498,7 @@
                     <tr>
                 <td>string|array</td>
                 <td>$order</td>
-                <td>
-</td>
+                <td>a columns or an array definition of columns</td>
             </tr>
             </table>
 
@@ -427,13 +519,12 @@
     </div>
 
                 <h3 id="method_where">
-        <div class="location">at line 107</div>
+        <div class="location">at line 159</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>where</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate, string $combination = null)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Add a where condition</p>
         <p>
 </p>
         <div class="tags">
@@ -480,13 +571,12 @@
     </div>
 
                 <h3 id="method_orWhere">
-        <div class="location">at line 119</div>
+        <div class="location">at line 172</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
     <strong>orWhere</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Normalist\Synthetic\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Add an orWhere condition to the search</p>
         <p>
 </p>
         <div class="tags">
@@ -528,13 +618,12 @@
     </div>
 
                 <h3 id="method_join">
-        <div class="location">at line 133</div>
+        <div class="location">at line 187</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
-    <strong>join</strong>(string|array $table, string $on, string|array $columns = Select::SQL_STAR, string $type = Select::JOIN_INNER)</code>
+    <strong>join</strong>(string|array $table, string $on, string|array $columns = array())</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Add an inner table join to the search</p>
         <p>
 </p>
         <div class="tags">
@@ -556,13 +645,103 @@
                     <tr>
                 <td>string|array</td>
                 <td>$columns</td>
+                <td>by default won't retrieve any column from the joined table</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_joinLeft">
+        <div class="location">at line 207</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+    <strong>joinLeft</strong>(string|array $table, string $on, string|array $columns = array())</code>
+    </h3>
+    <div class="details">
+        <p>Add an left outer table join to the search</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|array</td>
+                <td>$table</td>
                 <td>
 </td>
             </tr>
                     <tr>
                 <td>string</td>
-                <td>$type</td>
-                <td>one of the JOIN_* constants</td>
+                <td>$on</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$columns</td>
+                <td>by default won't retrieve any column from the joined table</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_joinRight">
+        <div class="location">at line 225</div>
+        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableSearch.html"><abbr title="Soluble\Normalist\Synthetic\TableSearch">TableSearch</abbr></a>
+    <strong>joinRight</strong>(string|array $table, string $on, string|array $columns = array())</code>
+    </h3>
+    <div class="details">
+        <p>Add an right outer table join to the search</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|array</td>
+                <td>$table</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$on</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$columns</td>
+                <td>by default won't retrieve any column from the joined table</td>
             </tr>
             </table>
 
@@ -583,13 +762,12 @@
     </div>
 
                 <h3 id="method_getSelect">
-        <div class="location">at line 144</div>
+        <div class="location">at line 239</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
     <strong>getSelect</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return the underlying select</p>
         <p>
 </p>
         <div class="tags">
@@ -610,7 +788,7 @@
     </div>
 
                 <h3 id="method_getSql">
-        <div class="location">at line 154</div>
+        <div class="location">at line 249</div>
         <code>            public            string
     <strong>getSql</strong>()</code>
     </h3>
@@ -636,7 +814,7 @@
     </div>
 
                 <h3 id="method_toJson">
-        <div class="location">at line 165</div>
+        <div class="location">at line 261</div>
         <code>            public            string
     <strong>toJson</strong>()</code>
     </h3>
@@ -661,7 +839,7 @@
     </div>
 
                 <h3 id="method_toArray">
-        <div class="location">at line 174</div>
+        <div class="location">at line 271</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>
@@ -687,7 +865,7 @@
     </div>
 
                 <h3 id="method_execute">
-        <div class="location">at line 186</div>
+        <div class="location">at line 283</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
     <strong>execute</strong>()</code>
     </h3>
@@ -713,7 +891,7 @@
     </div>
 
                 <h3 id="method_toArrayColumn">
-        <div class="location">at line 204</div>
+        <div class="location">at line 299</div>
         <code>            public            array
     <strong>toArrayColumn</strong>(string $columnKey, string $indexKey)</code>
     </h3>

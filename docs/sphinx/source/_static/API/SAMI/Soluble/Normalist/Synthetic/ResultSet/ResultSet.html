@@ -38,9 +38,19 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table, $has_complete_record_definition = false)
                     <p>
 </p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_buffer">buffer</a>()
+                    <p>This method allows the results to be iterable multiple times for database drivers that does not support rewind() method.</p>
                 </td>
                 <td></td>
             </tr>
@@ -86,7 +96,7 @@
             </tr>
                     <tr>
                 <td class="type">
-                    array
+                    <a href="../../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
                 </td>
                 <td class="last">
                     <a href="#method_current">current</a>()
@@ -130,9 +140,9 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 47</div>
+        <div class="location">at line 56</div>
         <code>            public            
-    <strong>__construct</strong>(<a href="../../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)</code>
+    <strong>__construct</strong>(<a href="../../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a> $select, <a href="../../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table, $has_complete_record_definition = false)</code>
     </h3>
     <div class="details">
         <p>
@@ -146,12 +156,20 @@
                     <tr>
                 <td><a href="../../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a></td>
                 <td>$select</td>
-                <td>Originating select object</td>
+                <td>
+</td>
             </tr>
                     <tr>
                 <td><a href="../../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a></td>
                 <td>$table</td>
-                <td>Originating table</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$has_complete_record_definition</td>
+                <td>
+</td>
             </tr>
             </table>
 
@@ -161,8 +179,44 @@
                     </div>
     </div>
 
+                <h3 id="method_buffer">
+        <div class="location">at line 75</div>
+        <code>            public            <a href="../../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a>
+    <strong>buffer</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>This method allows the results to be iterable multiple times for database drivers that does not support rewind() method.</p>
+        <p>PDO_Mysql for example does not provide backward scrolling resultset,
+They are forward only. MySQLi provides backward scrolling so this method
+should not be used.</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../../Soluble/Normalist/Synthetic/ResultSet/ResultSet.html"><abbr title="Soluble\Normalist\Synthetic\ResultSet\ResultSet">ResultSet</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Zend\Db\ResultSet\Exception\RuntimeException">RuntimeException</abbr></td>
+                <td>Buffering must be enabled before iteration is started</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
                 <h3 id="method_toArray">
-        <div class="location">at line 59</div>
+        <div class="location">at line 86</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>
@@ -188,7 +242,7 @@
     </div>
 
                 <h3 id="method_toJson">
-        <div class="location">at line 68</div>
+        <div class="location">at line 95</div>
         <code>            public            string
     <strong>toJson</strong>()</code>
     </h3>
@@ -213,7 +267,7 @@
     </div>
 
                 <h3 id="method_next">
-        <div class="location">at line 79</div>
+        <div class="location">at line 106</div>
         <code>            public            void
     <strong>next</strong>()</code>
     </h3>
@@ -239,7 +293,7 @@
     </div>
 
                 <h3 id="method_key">
-        <div class="location">at line 90</div>
+        <div class="location">at line 117</div>
         <code>            public            mixed
     <strong>key</strong>()</code>
     </h3>
@@ -265,8 +319,8 @@
     </div>
 
                 <h3 id="method_current">
-        <div class="location">at line 100</div>
-        <code>            public            array
+        <div class="location">at line 128</div>
+        <code>            public            <a href="../../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>current</strong>()</code>
     </h3>
     <div class="details">
@@ -279,19 +333,28 @@
 
                     <table>
         <tr>
-            <td>array</td>
+            <td><a href="../../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
 </td>
         </tr>
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td>whenever a record cannot be instanciated, due to missing column specs</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
                 <h3 id="method_valid">
-        <div class="location">at line 113</div>
+        <div class="location">at line 155</div>
         <code>            public            bool
     <strong>valid</strong>()</code>
     </h3>
@@ -317,7 +380,7 @@
     </div>
 
                 <h3 id="method_rewind">
-        <div class="location">at line 123</div>
+        <div class="location">at line 165</div>
         <code>            public            void
     <strong>rewind</strong>()</code>
     </h3>
@@ -343,7 +406,7 @@
     </div>
 
                 <h3 id="method_count">
-        <div class="location">at line 133</div>
+        <div class="location">at line 175</div>
         <code>            public            int
     <strong>count</strong>()</code>
     </h3>

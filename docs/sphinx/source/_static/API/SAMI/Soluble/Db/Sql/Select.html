@@ -48,8 +48,28 @@
                     <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
                 </td>
                 <td class="last">
+                    <a href="#method_prefixedColumns">prefixedColumns</a>(array $columns)
+                    <p>Add table prefixed columns, will automatically quote table parts identifiers found in the column name.</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
+                </td>
+                <td class="last">
                     <a href="#method_setDbAdapter">setDbAdapter</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter)
                     <p>Set database adapter</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getSql">getSql</a>()
+                    <p>Return an sql string accordingly to the internat database adapter</p>
                 </td>
                 <td></td>
             </tr>
@@ -105,7 +125,7 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td><abbr title="Zend\Db\Sql\Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
                 <td>
 </td>
             </tr>
@@ -115,8 +135,66 @@
                     </div>
     </div>
 
+                <h3 id="method_prefixedColumns">
+        <div class="location">at line 60</div>
+        <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
+    <strong>prefixedColumns</strong>(array $columns)</code>
+    </h3>
+    <div class="details">
+        <p>Add table prefixed columns, will automatically quote table parts identifiers found in the column name.</p>
+        <p>It provides an alternative for defining columns from multiple/joined
+table in one go.</p>
+
+<p><code>
+$select->from(array('p' =>'product')
+       ->prefixedColumns(array('product_title' => 'p.title'));
+</code>
+Possible valid states:
+  array(value, ...)
+    value can be strings or Expression objects</p>
+
+<p>array(string => value, ...)
+    key string will be use as alias,
+    value can be string or Expression objects</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when usage not correct</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
                 <h3 id="method_setDbAdapter">
-        <div class="location">at line 43</div>
+        <div class="location">at line 126</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
     <strong>setDbAdapter</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter)</code>
     </h3>
@@ -152,8 +230,44 @@
                     </div>
     </div>
 
+                <h3 id="method_getSql">
+        <div class="location">at line 139</div>
+        <code>            public            string
+    <strong>getSql</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return an sql string accordingly to the internat database adapter</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
                 <h3 id="method_execute">
-        <div class="location">at line 56</div>
+        <div class="location">at line 155</div>
         <code>            public            <abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr>
     <strong>execute</strong>()</code>
     </h3>
@@ -174,6 +288,16 @@
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
