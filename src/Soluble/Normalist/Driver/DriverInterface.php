@@ -10,6 +10,13 @@ use Zend\Db\Adapter\Adapter;
 interface DriverInterface
 {
 
+    
+    /**
+     * @param Adapter $adapter
+     * @param array|Traversable $params [alias,path,version]
+     */
+    public function __construct(Adapter $adapter, $params=array());
+    
 
     /**
      * Get models definition according to options

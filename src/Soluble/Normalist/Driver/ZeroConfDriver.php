@@ -19,7 +19,7 @@ class ZeroConfDriver implements DriverInterface
      *
      * @var array
      */
-    protected $options;
+    protected $params;
 
 
     /**
@@ -52,7 +52,7 @@ class ZeroConfDriver implements DriverInterface
     /**
      * Construct a new Zero configuration driver
      *
-     * $options allows you to specify the
+     * $params allows you to specify the
      *   path    : where to store the model definition (default to sys_get_temp_dir())
      *   alias   : the alias to use when using multiple schemas, default: 'default'
      *   version : the version to use, default to 'latest'
@@ -61,54 +61,49 @@ class ZeroConfDriver implements DriverInterface
      *
      *
      * @param Adapter $adapter
-     * @param array|Traversable $options [alias,path,version]
+     * @param array|Traversable $params [alias,path,version]
      * @throws Exception\ModelPathNotFoundException
-     * @throws Exception\ModelPathNotWritableException
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct(Adapter $adapter, $options=array())
+    public function __construct(Adapter $adapter, $params=array())
     {
         $this->setDbAdapter($adapter);
 
-        if (!is_array($options) && !$options instanceof \Traversable) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options parameter expects an array or Traversable object');
+        if (!is_array($params) && !$params instanceof \Traversable) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params parameter expects an array or Traversable object');
         }
 
-        $this->options = array_merge($this->default_options, (array) $options);
+        $this->params = array_merge($this->default_options, (array) $params);
 
-        if (!is_string($this->options['alias']) || trim($this->options['alias']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["alias"] parameter expects valid string');
+        if (!is_string($this->params['alias']) || trim($this->params['alias']) == '') {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["alias"] parameter expects valid string');
         }
 
-        if ($this->options['schema'] !== null &&
-                (!is_string($this->options['schema']) || trim($this->options['schema']) == '')) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["schema"] parameter expects valid string');
+        if ($this->params['schema'] !== null &&
+                (!is_string($this->params['schema']) || trim($this->params['schema']) == '')) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["schema"] parameter expects valid string');
         }
 
 
-        if (!is_scalar($this->options['version']) || trim($this->options['version']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["version"] parameter expects valid scalar value');
+        if (!is_scalar($this->params['version']) || trim($this->params['version']) == '') {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["version"] parameter expects valid scalar value');
         }
 
-        if ($this->options['path'] == '') {
-            $this->options['path'] = sys_get_temp_dir();
-        } elseif (!is_string($this->options['path']) || trim($this->options['path']) == '') {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["path"] parameter expects valid string value');
+        if ($this->params['path'] == '') {
+            $this->params['path'] = sys_get_temp_dir();
+        } elseif (!is_string($this->params['path']) || trim($this->params['path']) == '') {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["path"] parameter expects valid string value');
         }
 
-        if (!is_dir($this->options['path'])) {
-            $path = (string) $this->options['path'];
+        if (!is_dir($this->params['path'])) {
+            $path = (string) $this->params['path'];
             throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
         }
-        if (!is_writable($this->options['path'])) {
-            $path = (string) $this->options['path'];
-            throw new Exception\ModelPathNotWritableException(__METHOD__ . " Model directory not writable '" . $path . "'");
-        }
 
-        if ($this->options['permissions'] != '') {
+        if ($this->params['permissions'] != '') {
 
-            if (!is_scalar($this->options['permissions'])) {
-                throw new Exception\InvalidArgumentException(__METHOD__ . ' $options["permission"] parameter expects string|interger|octal value');
+            if (!is_scalar($this->params['permissions'])) {
+                throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
             }
 
         }
@@ -123,7 +118,7 @@ class ZeroConfDriver implements DriverInterface
      */
     public function getModelsConfigFile()
     {
-        $o = $this->options;
+        $o = $this->params;
         $file =  $o['path'] . DIRECTORY_SEPARATOR . 'normalist_' . $o['alias'] . '-' . $o['version'] . '.php';
         return $file;
     }
@@ -168,7 +163,7 @@ class ZeroConfDriver implements DriverInterface
         $writer = new Writer\PhpArray();
         $models_definition['normalist'] = array('model_version' => Metadata\NormalistModels::VERSION);
         $writer->toFile($file, $models_definition, $exclusiveLock=true);
-        $perms = $this->options['permissions'];
+        $perms = $this->params['permissions'];
         if ($perms != '') {
             if (decoct(octdec($perms)) == $perms) {
                 $perms = octdec($perms);
@@ -210,7 +205,7 @@ class ZeroConfDriver implements DriverInterface
      */
     public function getMetadata()
     {
-        $cache_key = md5(serialize($this->options));
+        $cache_key = md5(serialize($this->params));
         if (!array_key_exists($cache_key, self::$metadataCache)) {
             if ($this->metadata === null) {
                 self::$metadataCache[$cache_key] = $this->getDefaultMetadata();
@@ -244,10 +239,10 @@ class ZeroConfDriver implements DriverInterface
 
             // means model definition does not exists
             // lets load it from the current connection
-            if ($this->options['schema'] == '') {
+            if ($this->params['schema'] == '') {
                 $schema = null;
             } else {
-                $schema = $this->options['schema'];
+                $schema = $this->params['schema'];
             }
             $md = new Source\Mysql\InformationSchema($this->adapter, $schema);
             $model_definition = $md->getSchemaConfig();

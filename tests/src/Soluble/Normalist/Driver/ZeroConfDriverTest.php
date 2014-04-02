@@ -115,14 +115,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);        
         
-        $catched=false;
-        try {
-            $options = array('path' => '/usr/bin'); 
-            $driver = new ZeroConfDriver($this->adapter, $options);
-        } catch (Exception\ModelPathNotWritableException $e) {
-            $catched=true;
-        }
-        $this->assertTrue($catched);        
         
         $catched=false;
         try {
