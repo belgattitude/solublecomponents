@@ -18,6 +18,10 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use ArrayObject;
 
+use Soluble\FlexStore\Metadata\ColumnModel;
+use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
+use \Soluble\FlexStore\Metadata\Reader as MetadataReader;
+
 class SelectSource extends AbstractSource
 {
 
@@ -29,7 +33,7 @@ class SelectSource extends AbstractSource
 
     /**
      *
-     * @var \Zend\Db\Adapter\Adapter
+     * @var Adapter
      */
     protected $adapter;
 
@@ -57,6 +61,12 @@ class SelectSource extends AbstractSource
      */
     protected static $cache_result_prototype;
 
+    
+    /**
+     *
+     * @var ColumnModel
+     */
+    protected $columnModel;
 
     /**
      *
@@ -123,6 +133,7 @@ class SelectSource extends AbstractSource
         if ($options === null) {
             $options = $this->getOptions();
         }
+        
         $select = $this->assignOptions(clone $this->select, $options);
 
 
@@ -135,6 +146,7 @@ class SelectSource extends AbstractSource
         }
         $this->query_string = $sql_string;
 
+
         // In case of unbuffered results (default on mysqli) !!!
         $driver = $this->adapter->getDriver();
         if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
@@ -143,10 +155,10 @@ class SelectSource extends AbstractSource
                 // With buffer results
                 self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
             }
-
-
             $driver->registerStatementPrototype(self::$cache_stmt_prototype);
-
+            //$is_mysqli = true;
+        } else {
+            //$is_mysqli = false;
         }
 /*
  * @todo optimize
@@ -166,7 +178,6 @@ class SelectSource extends AbstractSource
         try {
 
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
-
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
 
@@ -211,12 +222,53 @@ class SelectSource extends AbstractSource
         return $r;
     }
 
-    public function getMetadata()
-    {
-
-    }
-
+    
     /**
+     * @return ColumnModel
+     */
+    public function getColumnModel()
+    {
+        if ($this->columnModel === null) {
+            $sql = new Sql($this->adapter);
+            $select = clone $this->select;
+            $select->limit(0);
+            $sql_string = $sql->getSqlStringForSqlObject($select);
+            return $this->getMetadataReader()->getColumnModel($sql_string);
+        }
+        return $this->columnModel;
+    }
+    
+    
+    
+    /**
+     * 
+     * @return AbstractMetadataReader
+     */
+    public function getMetadataReader()
+    {
+        if ($this->metadataReader === null) {
+            $this->metadataReader = $this->getDefaultMetadataReader();
+        }
+        return $this->metadataReader;
+    }
+    
+    protected function getDefaultMetadataReader()
+    {
+        $conn = $this->adapter->getDriver()->getConnection()->getResource();
+        $class = strtolower(get_class($conn));
+        switch ($class) {
+            case 'pdo':
+                return new MetadataReader\PDOMysqlMetadataReader($conn);
+            case 'mysqli':
+                return new MetadataReader\MysqliMetadataReader($conn);
+            default:
+                throw new \Exception(__METHOD__ . " Cannot handle default metadata reader for driver '$class'");
+        }
+        
+    }
+    
+    /**
+     * Return the query string that was executed
      * @return string
      */
     public function getQueryString()
@@ -226,5 +278,6 @@ class SelectSource extends AbstractSource
         }
         return $this->query_string;
     }
+    
 
 }

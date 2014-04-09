@@ -1,14 +1,14 @@
 <?php
 
-namespace Soluble\FlexStore\Metadata\Source;
+namespace Soluble\FlexStore\Metadata\Reader;
 
 use Soluble\FlexStore\Metadata\Column;
 
-class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
+class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var MysqliMetadataSource
+     * @var MysqliMetadataReader
      */
     protected $metadata;
 
@@ -28,7 +28,7 @@ class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
         
         $conn = $this->adapter->getDriver()->getConnection()->getResource();
-        $this->metadata = new MysqliMetadataSource($conn);
+        $this->metadata = new MysqliMetadataReader($conn);
 
     }
 

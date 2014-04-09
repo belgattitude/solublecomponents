@@ -1,7 +1,10 @@
 <?php
 
-namespace Soluble\FlexStore\Metadata\Source;
-abstract class AbstractMetadataSource
+namespace Soluble\FlexStore\Metadata\Reader;
+
+use Soluble\FlexStore\Metadata\ColumnModel;
+
+abstract class AbstractMetadataReader
 {
 
     /**
@@ -13,13 +16,24 @@ abstract class AbstractMetadataSource
     /**
      *
      * @param boolean $active
-     * @return \Soluble\FlexStore\Metadata\Source\AbstractMetadataSource
+     * @return AbstractMetadataReader
      */
     public function setStaticCache($active=true)
     {
         $this->cache_active = $active;
         return $this;
     }
+    
+    /**
+     * 
+     * @param string $sql
+     * @return ColumnModel
+     */
+    public function getColumnModel($sql)
+    {
+        $columns = $this->getColumnsMetadata($sql);
+        return new ColumnModel($columns);
+    }        
 
     /**
      * Return
@@ -38,10 +52,10 @@ abstract class AbstractMetadataSource
 
             if (!array_key_exists($cache_key, static::$metadata_cache)) {
                 $md = $this->readColumnsMetadata($sql);
-                static::$metadata_cache = $md;
+                static::$metadata_cache[$cache_key] = $md;
             }
 
-            return static::$metadata_cache;
+            return static::$metadata_cache[$cache_key];
 
         } else {
             return $this->readColumnsMetadata($sql);

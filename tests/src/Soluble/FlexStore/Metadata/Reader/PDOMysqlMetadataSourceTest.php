@@ -1,6 +1,6 @@
 <?php
 
-namespace Soluble\FlexStore\Metadata\Source;
+namespace Soluble\FlexStore\Metadata\Reader;
 
 use Soluble\FlexStore\Metadata\Column;
 use Zend\Db\Adapter\Adapter;
@@ -8,11 +8,11 @@ use Zend\Db\Adapter\Adapter;
 /**
  * PDO_MySQL in PHP 5.3 does not return column names 
  */
-class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
+class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var PDOMysqlMetadataSource
+     * @var PDOMysqlMetadataReader
      */
     protected $metadata;
 
@@ -35,12 +35,12 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
     
     /**
      * 
-     * @return \Soluble\FlexStore\Metadata\Source\PDOMysqlMetadataSource
+     * @return \Soluble\FlexStore\Metadata\Reader\PDOMysqlMetadataReader
      */
-    public function getSource($conn)
+    public function getReader($conn)
     {
         
-        return new PDOMysqlMetadataSource($conn);
+        return new PDOMysqlMetadataReader($conn);
         
     }        
     
@@ -52,7 +52,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {                
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
         } else {
             $this->assertTrue(true);
         }
@@ -65,13 +65,13 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
             
         } else {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
             // Fake adapter
             $conn = new \PDO('sqlite::memory:');
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
         }
         
     }    
@@ -85,7 +85,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
             $sql = "select * from test_table_types";
             
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
             
             $md = $metadata->getColumnsMetadata($sql);
 
@@ -215,7 +215,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
             $sql = "select id, id from test_table_types";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
             
             $md = $metadata->getColumnsMetadata($sql);
         } else {
@@ -230,7 +230,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\EmptyQueryException');
             $sql = "";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
             
             $md = $metadata->getColumnsMetadata($sql);
         } else {
@@ -271,7 +271,7 @@ class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
             ";
 
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $metadata = $this->getSource($conn);
+            $metadata = $this->getReader($conn);
 
             $md = $metadata->getColumnsMetadata($sql);
 

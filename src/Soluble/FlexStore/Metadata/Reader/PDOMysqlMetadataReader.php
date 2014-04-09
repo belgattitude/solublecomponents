@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\FlexStore\Metadata\Source;
+namespace Soluble\FlexStore\Metadata\Reader;
 
 use Soluble\FlexStore\Metadata\Exception;
 use Soluble\FlexStore\Metadata\Column;
@@ -7,7 +7,7 @@ use Soluble\FlexStore\Metadata\Column\Types;
 
 use ArrayObject;
 
-class PDOMysqlMetadataSource extends AbstractMetadataSource
+class PDOMysqlMetadataReader extends AbstractMetadataReader
 {
 
 

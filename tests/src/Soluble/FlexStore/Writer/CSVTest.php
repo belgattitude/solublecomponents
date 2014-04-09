@@ -139,6 +139,7 @@ class CSVTest extends \PHPUnit_Framework_TestCase
 
         $this->csvWriter->setSource(new SelectSource($params));
         $data = $this->csvWriter->getData();
+        
         $data = explode(CSV::SEPARATOR_NEWLINE_UNIX, $data);
         $line1 = str_getcsv($data[1], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
         $this->assertInternalType('array', $line1);

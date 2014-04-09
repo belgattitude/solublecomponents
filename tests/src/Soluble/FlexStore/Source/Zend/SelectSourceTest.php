@@ -79,6 +79,22 @@ class SelectSourceTest extends \PHPUnit_Framework_TestCase
     }
     
     
+    public function testGetMetadata()
+    {
+        $metadata = $this->source->getMetadataReader();
+        $this->assertInstanceOf('\Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader', $metadata);
+        
+    }
+    
+    public function testGetColumnModel()
+    {
+        $columnModel = $this->source->getColumnModel();
+        $this->assertInstanceOf('\Soluble\FlexStore\Metadata\ColumnModel', $columnModel);
+        $columns = $columnModel->getColumns();
+        $this->assertInstanceOf('\ArrayObject', $columns);
+        
+        
+    }
     
     public function testSetColumns()
     {

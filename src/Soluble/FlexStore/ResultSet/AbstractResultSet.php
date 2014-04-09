@@ -33,6 +33,13 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      * @var int
      */
     protected $position = 0;
+    
+    
+    /**
+     *
+     * @var array
+     */
+    protected $buffer;
 
     /**
      * Set the data source for the result set
@@ -59,7 +66,6 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
             }
 
             if (is_array($this->buffer)) {
-
                 $this->dataSource->rewind();
             }
             return $this;

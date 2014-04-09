@@ -36,6 +36,12 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
+     * @var Paginator
+     */
+    protected $paginator;
+    
+    /**
+     *
      * @var boolean
      */
     protected $columnsChecked = false;

@@ -51,7 +51,7 @@ class ResultSet implements Iterator, Countable
      *
      * @param Select $select Originating select object
      * @param Table $table Originating table
-     * @param boolean $has_compete_record_definition
+     * @param boolean $has_complete_record_definition
      */
     public function __construct(Select $select, Table $table, $has_complete_record_definition=false)
     {

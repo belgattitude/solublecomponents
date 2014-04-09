@@ -6,7 +6,8 @@
 namespace Soluble\FlexStore\Source;
 
 use Soluble\FlexStore\Options;
-
+use Soluble\FlexStore\Reader\AbstractMetadataReader;
+use Soluble\FlexStore\Metadata\ColumnModel;
 
 abstract class AbstractSource implements SourceInterface
 {
@@ -26,6 +27,13 @@ abstract class AbstractSource implements SourceInterface
      * @var string|int
      */
     protected $identifier;
+    
+    
+    /**
+     *
+     * @var AbstractMetadataReader
+     */
+    protected $metadataReader;
 
 
     /**
@@ -101,5 +109,32 @@ abstract class AbstractSource implements SourceInterface
      * @return string
      */
     abstract public function getQueryString();
+    
+    
+    /**
+     * @return ColumnModel
+     */
+    abstract public function getColumnModel();
+    
+    
+    /**
+     * 
+     * @param AbstractMetadataReader $metadataReader
+     * @return AbstractSource
+     */
+    public function setMetadataReader(AbstractMetadataReader $metadataReader)
+    {
+        $this->metadataReader = $metadataReader;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return AbstractMetadataReader
+     */
+    public function getMetadataReader()
+    {
+        return $this->metadataReader;
+    }
 
 }
