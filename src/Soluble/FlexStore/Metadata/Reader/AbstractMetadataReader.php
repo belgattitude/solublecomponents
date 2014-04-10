@@ -23,9 +23,9 @@ abstract class AbstractMetadataReader
         $this->cache_active = $active;
         return $this;
     }
-    
+
     /**
-     * 
+     *
      * @param string $sql
      * @return ColumnModel
      */
@@ -33,7 +33,7 @@ abstract class AbstractMetadataReader
     {
         $columns = $this->getColumnsMetadata($sql);
         return new ColumnModel($columns);
-    }        
+    }
 
     /**
      * Return

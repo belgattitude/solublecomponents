@@ -27,8 +27,8 @@ abstract class AbstractSource implements SourceInterface
      * @var string|int
      */
     protected $identifier;
-    
-    
+
+
     /**
      *
      * @var AbstractMetadataReader
@@ -109,16 +109,16 @@ abstract class AbstractSource implements SourceInterface
      * @return string
      */
     abstract public function getQueryString();
-    
-    
+
+
     /**
      * @return ColumnModel
      */
     abstract public function getColumnModel();
-    
-    
+
+
     /**
-     * 
+     *
      * @param AbstractMetadataReader $metadataReader
      * @return AbstractSource
      */
@@ -127,9 +127,9 @@ abstract class AbstractSource implements SourceInterface
         $this->metadataReader = $metadataReader;
         return $this;
     }
-    
+
     /**
-     * 
+     *
      * @return AbstractMetadataReader
      */
     public function getMetadataReader()

@@ -6,25 +6,25 @@ use ArrayObject;
 
 class ColumnModel
 {
-    
+
     /**
      *
      * @var ArrayObject
      */
     protected $columns;
-    
-    function __construct(ArrayObject $columns)
+
+    public function __construct(ArrayObject $columns)
     {
         $this->columns = $columns;
     }
-    
-    
+
+
     /**
      * @return ArrayObject
      */
-    function getColumns()
+    public function getColumns()
     {
         return $this->columns;
     }
-    
+
 }

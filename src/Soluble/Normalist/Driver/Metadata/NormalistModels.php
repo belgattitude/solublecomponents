@@ -12,7 +12,7 @@ class NormalistModels extends Source\AbstractSource
      * Current class version
      */
     const VERSION = '1.0';
-    
+
     /**
      * @var array
      */

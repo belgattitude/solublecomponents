@@ -115,7 +115,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPaginator()
     {
-        /*
+        
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
         $parameters = array(
@@ -128,106 +128,14 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $source->getOptions()->setLimit(10, 0);
         $resultset = $source->getData();
         $paginator = $resultset->getPaginator();
-        $this->assertInstanceOf('Zend\Paginator\Paginator', $paginator);
-         *
-         */
+        
+        $this->assertInstanceOf('Soluble\FlexStore\Helper\Paginator', $paginator);
+        $pages = $paginator->getPages();
+        
+        $this->assertEquals(10, $pages->itemCountPerPage);
+        $this->assertEquals(1, $pages->first);
+        $this->assertEquals(1, $pages->current);
     }
 
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::setSource
-     * @todo   Implement testSetSource().
-     */
-    public function testSetSource()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::getSource
-     * @todo   Implement testGetSource().
-     */
-    public function testGetSource()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::setTotalRows
-     * @todo   Implement testSetTotalRows().
-     */
-    public function testSetTotalRows()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::getTotalRows
-     * @todo   Implement testGetTotalRows().
-     */
-    public function testGetTotalRows()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::setArrayObjectPrototype
-     * @todo   Implement testSetArrayObjectPrototype().
-     */
-    public function testSetArrayObjectPrototype()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::getArrayObjectPrototype
-     * @todo   Implement testGetArrayObjectPrototype().
-     */
-    public function testGetArrayObjectPrototype()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::getReturnType
-     * @todo   Implement testGetReturnType().
-     */
-    public function testGetReturnType()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::current
-     * @todo   Implement testCurrent().
-     */
-    public function testCurrent()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 
 }

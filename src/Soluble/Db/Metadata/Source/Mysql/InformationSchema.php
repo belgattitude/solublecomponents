@@ -82,7 +82,7 @@ class InformationSchema extends Source\AbstractSource
         $this->loadCacheInformation($table);
         $uniques = (array) self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
         if ($include_primary) {
-            //$uniques[] = 
+            //$uniques[] =
         }
         return $uniques;
     }
@@ -92,7 +92,7 @@ class InformationSchema extends Source\AbstractSource
      * Return indexes information on a table
      *
      * @param string $table table name
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
      * @throws Exception\ExceptionInterface
@@ -117,7 +117,7 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * 
+     *
      * @return string|int primary key
      */
     public function getPrimaryKey($table)
@@ -141,7 +141,7 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * 
+     *
      * @return array primary keys
      */
     public function getPrimaryKeys($table)
@@ -188,7 +188,7 @@ class InformationSchema extends Source\AbstractSource
      */
     public function getRelations($table)
     {
-        
+
         $this->loadCacheInformation($table);
         return self::$localCache[$this->schema]['tables'][$table]['foreign_keys'];
 
@@ -367,7 +367,7 @@ class InformationSchema extends Source\AbstractSource
             and (kcu.column_name = c.column_name or kcu.column_name is null)
             order by t.table_name, c.ordinal_position
         ";
-        
+
 
         $this->disableInnoDbStats();
         try {
@@ -427,7 +427,7 @@ class InformationSchema extends Source\AbstractSource
             if (in_array($data_type, array('int', 'tinyint', 'mediumint', 'bigint', 'int', 'smallint', 'year'))) {
                 $col_def['unsigned']  = (bool) preg_match('/unsigned/', strtolower($r['column_type']));
                 $col_def['precision'] = $r['numeric_precision'];
-                
+
             } elseif (in_array($data_type, array('real', 'double precision', 'decimal', 'numeric', 'float', 'dec', 'fixed'))) {
                 $col_def['precision'] = $r['numeric_precision'];
                 $col_def['scale']     = $r['numeric_scale'];
@@ -444,7 +444,7 @@ class InformationSchema extends Source\AbstractSource
                 $col_def['octet_length'] = $r['character_octet_length'];
                 $col_def['length'] = $r['character_maximum_length'];
                 $def = $r['column_type'];
-                
+
                 preg_match_all("/'([^']+)'/", $def, $matches);
                 if (is_array($matches[1]) && count($matches) > 0) {
                     $col_def['values'] = $matches[1];
@@ -567,10 +567,10 @@ class InformationSchema extends Source\AbstractSource
 
 
     /**
-     * 
+     *
      * @param string $table
      * @throws Exception\InvalidArgumentException
-     * 
+     *
      */
     protected function loadCacheInformation($table=null)
     {

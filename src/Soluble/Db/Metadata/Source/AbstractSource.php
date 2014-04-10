@@ -229,10 +229,10 @@ abstract class AbstractSource
         $this->validateSchema($schema);
         $this->schema = $schema;
         return $this;
-    }    
+    }
 
     /**
-     * 
+     *
      * @param string $table
      * @throws Exception\InvalidArgumentException
      */

@@ -61,7 +61,7 @@ class SelectSource extends AbstractSource
      */
     protected static $cache_result_prototype;
 
-    
+
     /**
      *
      * @var ColumnModel
@@ -133,7 +133,7 @@ class SelectSource extends AbstractSource
         if ($options === null) {
             $options = $this->getOptions();
         }
-        
+
         $select = $this->assignOptions(clone $this->select, $options);
 
 
@@ -221,7 +221,7 @@ class SelectSource extends AbstractSource
         return $r;
     }
 
-    
+
     /**
      * @return ColumnModel
      */
@@ -236,11 +236,11 @@ class SelectSource extends AbstractSource
         }
         return $this->columnModel;
     }
-    
-    
-    
+
+
+
     /**
-     * 
+     *
      * @return AbstractMetadataReader
      */
     public function getMetadataReader()
@@ -250,7 +250,7 @@ class SelectSource extends AbstractSource
         }
         return $this->metadataReader;
     }
-    
+
     protected function getDefaultMetadataReader()
     {
         $conn = $this->adapter->getDriver()->getConnection()->getResource();
@@ -263,9 +263,9 @@ class SelectSource extends AbstractSource
             default:
                 throw new \Exception(__METHOD__ . " Cannot handle default metadata reader for driver '$class'");
         }
-        
+
     }
-    
+
     /**
      * Return the query string that was executed
      * @return string
@@ -277,6 +277,6 @@ class SelectSource extends AbstractSource
         }
         return $this->query_string;
     }
-    
+
 
 }

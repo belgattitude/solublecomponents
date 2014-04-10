@@ -8,22 +8,22 @@ use Iterator;
 
 
 abstract class AbstractResultSet implements Iterator, ResultSetInterface
-{        
+{
 
     /**
      *
      * @var ZFResultSet
      */
     protected $zfResultSet;
-    
+
     public function __construct(ZFResultSet $resultSet)
     {
         $this->zfResultSet = $resultSet;
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @return AbstractResultSet
      */
     public function buffer()
@@ -34,7 +34,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
 
 
     /**
-     * 
+     *
      * @return boolean
      */
     public function isBuffered()
@@ -89,7 +89,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function current()
     {
-        
+
         return $this->zfResultSet->current();
     }
 
@@ -133,8 +133,8 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     {
         return $this->zfResultSet->toArray();
     }
-    
-    
 
-    
+
+
+
 }

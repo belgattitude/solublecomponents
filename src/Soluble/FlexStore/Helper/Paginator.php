@@ -14,6 +14,7 @@ class Paginator extends ZendPaginator
 
     public function __construct($totalRows, $limit, $offset=0)
     {
+
         if (!is_integer($limit)) {
             throw new Exception\InvalidUsageException(__FUNCTION__ . ' expects limit to be an integer');
         }

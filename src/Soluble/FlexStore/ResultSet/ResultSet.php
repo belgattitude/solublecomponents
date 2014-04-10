@@ -15,7 +15,7 @@ class ResultSet extends AbstractResultSet
      * @var Paginator
      */
     protected $paginator;
-    
+
     /**
      *
      * @var boolean
@@ -39,8 +39,8 @@ class ResultSet extends AbstractResultSet
      */
     protected $source;
 
-    
-    
+
+
 
     /**
      *
@@ -61,8 +61,8 @@ class ResultSet extends AbstractResultSet
     {
         return $this->source;
     }
-    
-    
+
+
     /**
      *
      * @return Paginator
@@ -109,7 +109,7 @@ class ResultSet extends AbstractResultSet
     {
         $this->columnsChecked = false;
         $this->columns = $columns;
-        
+
         return $this;
     }
 
@@ -132,7 +132,7 @@ class ResultSet extends AbstractResultSet
      */
     public function current()
     {
-        
+
         $data = $this->zfResultSet->current();
         if ($this->columns !== null) {
 
@@ -156,7 +156,7 @@ class ResultSet extends AbstractResultSet
         return $data;
     }
 
-    
+
     /**
      * Cast result set to array of arrays
      *
@@ -180,6 +180,6 @@ class ResultSet extends AbstractResultSet
             }
         }
         return $return;
-    }    
+    }
 
 }
