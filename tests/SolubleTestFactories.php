@@ -19,6 +19,19 @@ class SolubleTestFactories
     
     /**
      * 
+     * @return array
+     */
+    public static function getLibXLLicense()
+    {
+        return array(
+                    'name' => $_SERVER['LIBXL_LICENSE_NAME'],
+                    'key'  => $_SERVER['LIBXL_LICENSE_KEY']
+                    
+            );
+    }
+    
+    /**
+     * 
      * @param Adapter $adapter
      * @param Driver\DriverInterface
      * @return TableManager

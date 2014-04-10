@@ -2,7 +2,7 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class BlobColumn extends AbstractColumn
+class BlobColumn extends AbstractColumnDefinition
 {
     /**
      *

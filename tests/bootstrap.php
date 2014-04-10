@@ -11,3 +11,7 @@ require_once(dirname(__FILE__) . '/SolubleTestFactories.php');
 $loader = require __DIR__ . '/../vendor/autoload.php';
 $loader->add('Soluble', array($baseDir . '/src/', $baseDir . '/tests/'));
 $loader->register();
+
+// Set licence key
+$libxl_lic = \SolubleTestFactories::getLibXLLicense();
+\Soluble\FlexStore\Writer\Excel\LibXLWriter::setLicense($libxl_lic['name'], $libxl_lic['key']);

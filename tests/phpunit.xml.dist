@@ -26,6 +26,11 @@
         -->
 		<!-- if you don't start with a /, it will be relative to unit tests  -->
 		<server name="PHPUNIT_CACHE_DIR" value="./tmp/cache" />		
+        
+        <!-- In order to test the LIBXL flexstore writer -->
+        <server name="LIBXL_LICENSE_KEY" value="" />
+        <server name="LIBXL_LICENSE_NAME" value="" />
+        
     </php>
 
     <testsuites>

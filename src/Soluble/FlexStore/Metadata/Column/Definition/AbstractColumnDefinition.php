@@ -3,7 +3,7 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-abstract class AbstractColumn
+abstract class AbstractColumnDefinition
 {
 
     /**
@@ -372,5 +372,46 @@ abstract class AbstractColumn
         return ($this->tableName == '');
     }
 
+    
+    /**
+     * Tells whether the column is numeric
+     * 
+     * @return boolean
+     */
+    public function isNumeric()
+    {
+        return ($this instanceof NumericColumnInterface);        
+    }
+    
+    /**
+     * Tells whether the column is textual
+     * 
+     * @return boolean
+     */
+    public function isText() 
+    {
+        return ($this instanceof TextColumnInterface);
+    }
+    
+    /**
+     * Tells whether the column is a date
+     * 
+     * @return boolean
+     */
+    public function isDate() 
+    {
+        return ($this instanceof DateColumnInterface);        
+    }
+    
+    /**
+     * Tells whether the column is a timestamp
+     * 
+     * @return boolean
+     */
+    public function isDatetime()
+    {
+        return ($this instanceof DatetimeColumnInterface);        
+    }
+    
 
 }

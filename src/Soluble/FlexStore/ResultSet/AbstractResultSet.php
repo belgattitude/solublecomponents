@@ -79,7 +79,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function key()
     {
-        $this->zfResultSet->key();
+        return $this->zfResultSet->key();
     }
 
     /**

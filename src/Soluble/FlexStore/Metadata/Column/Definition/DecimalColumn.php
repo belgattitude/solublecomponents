@@ -3,7 +3,7 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class DecimalColumn extends AbstractColumn implements NumericColumnInterface
+class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInterface
 {
     /**
      *

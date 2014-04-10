@@ -2,7 +2,7 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class StringColumn extends AbstractColumn
+class StringColumn extends AbstractColumnDefinition implements TextColumnInterface
 {
     /**
      *

@@ -2,7 +2,7 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class IntegerColumn extends AbstractColumn implements NumericColumnInterface
+class IntegerColumn extends AbstractColumnDefinition implements NumericColumnInterface
 {
     /**
      *

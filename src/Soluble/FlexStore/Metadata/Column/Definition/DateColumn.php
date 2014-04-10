@@ -2,6 +2,6 @@
 namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 
-class DateColumn extends AbstractColumn
+class DateColumn extends AbstractColumnDefinition implements DateColumnInterface
 {
 }
