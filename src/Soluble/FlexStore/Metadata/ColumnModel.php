@@ -13,15 +13,15 @@ class ColumnModel
      * @var ArrayObject
      */
     protected $columns;
-    
+
 
     public function __construct(ArrayObject $columns)
     {
         $this->columns = $columns;
     }
-    
+
     /**
-     * 
+     *
      * @param string $column
      * @return AbstractColumnDefinition
      */
@@ -32,15 +32,15 @@ class ColumnModel
 
     /**
      * Return column names
-     * 
+     *
      * @return ArrayObject
      */
     public function getColumns()
     {
         return $this->columns;
     }
-    
-    
+
+
 
 
 }

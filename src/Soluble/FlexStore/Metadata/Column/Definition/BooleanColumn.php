@@ -4,11 +4,12 @@ namespace Soluble\FlexStore\Metadata\Column\Definition;
 
 class BooleanColumn extends AbstractColumnDefinition implements NumericColumnInterface
 {
-    
+
     /**
      * @return bool
      */
-    public function getNumericUnsigned() {
+    public function getNumericUnsigned()
+    {
         return false;
     }
 
@@ -16,10 +17,11 @@ class BooleanColumn extends AbstractColumnDefinition implements NumericColumnInt
      * @param  bool $numericUnsigned
      * @return ColumnObject
      */
-    public function setNumericUnsigned($numericUnsigned) {
+    public function setNumericUnsigned($numericUnsigned)
+    {
         // do nothing
         $numericUnsigned = false;
-        
+
         return $this;
     }
 
@@ -27,7 +29,8 @@ class BooleanColumn extends AbstractColumnDefinition implements NumericColumnInt
     /**
      * @return bool
      */
-    public function isNumericUnsigned() {
+    public function isNumericUnsigned()
+    {
         return false;
     }
 }

@@ -11,8 +11,8 @@ interface SourceInterface
      * @return Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null);
-    
-    
+
+
     /**
      * @return Soluble\FlexStore\Metadata\ColumnModel
      */

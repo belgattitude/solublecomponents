@@ -372,46 +372,46 @@ abstract class AbstractColumnDefinition
         return ($this->tableName == '');
     }
 
-    
+
     /**
      * Tells whether the column is numeric
-     * 
+     *
      * @return boolean
      */
     public function isNumeric()
     {
-        return ($this instanceof NumericColumnInterface);        
+        return ($this instanceof NumericColumnInterface);
     }
-    
+
     /**
      * Tells whether the column is textual
-     * 
+     *
      * @return boolean
      */
-    public function isText() 
+    public function isText()
     {
         return ($this instanceof TextColumnInterface);
     }
-    
+
     /**
      * Tells whether the column is a date
-     * 
+     *
      * @return boolean
      */
-    public function isDate() 
+    public function isDate()
     {
-        return ($this instanceof DateColumnInterface);        
+        return ($this instanceof DateColumnInterface);
     }
-    
+
     /**
      * Tells whether the column is a timestamp
-     * 
+     *
      * @return boolean
      */
     public function isDatetime()
     {
-        return ($this instanceof DatetimeColumnInterface);        
+        return ($this instanceof DatetimeColumnInterface);
     }
-    
+
 
 }
