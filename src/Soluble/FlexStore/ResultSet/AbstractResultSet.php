@@ -1,117 +1,45 @@
 <?php
 
 namespace Soluble\FlexStore\ResultSet;
-use Zend\Db\ResultSet\ResultSetInterface;
+use Soluble\FlexStore\ResultSet\ResultSetInterface;
+use Zend\Db\ResultSet\ResultSet as ZFResultSet;
 
-use ArrayIterator;
-use ArrayObject;
-use Countable;
 use Iterator;
-use IteratorAggregate;
-
 
 
 abstract class AbstractResultSet implements Iterator, ResultSetInterface
-{
+{        
 
-    /**
-     * @var null|int
-     */
-    protected $count = null;
-
-    /**
-     * @var Iterator|IteratorAggregate|ResultSetInterface
-     */
-    protected $dataSource = null;
-
-    /**
-     * @var int
-     */
-    protected $fieldCount = null;
-
-    /**
-     * @var int
-     */
-    protected $position = 0;
-    
-    
     /**
      *
-     * @var array
+     * @var ZFResultSet
      */
-    protected $buffer;
-
-    /**
-     * Set the data source for the result set
-     *
-     * @param  Iterator|IteratorAggregate|ResultSetInterface $dataSource
-     * @return ResultSet
-     * @throws Exception\InvalidArgumentException
-     */
-    public function initialize($dataSource)
+    protected $zfResultSet;
+    
+    public function __construct(ZFResultSet $resultSet)
     {
-        // reset buffering
-        if (is_array($this->buffer)) {
-            $this->buffer = array();
-        }
-
-
-        if ($dataSource instanceof ResultSetInterface) {
-
-            $this->count = $dataSource->count();
-            $this->fieldCount = $dataSource->getFieldCount();
-            $this->dataSource = $dataSource;
-            if ($dataSource->isBuffered()) {
-                $this->buffer = -1;
-            }
-
-            if (is_array($this->buffer)) {
-                $this->dataSource->rewind();
-            }
-            return $this;
-            
-        } elseif (is_array($dataSource)) {
-            // its safe to get numbers from an array
-            $first = current($dataSource);
-            reset($dataSource);
-            $this->count = count($dataSource);
-            $this->fieldCount = count($first);
-            $this->dataSource = new ArrayIterator($dataSource);
-            $this->buffer = -1; // array's are a natural buffer
-        } elseif ($dataSource instanceof IteratorAggregate) {
-            $this->dataSource = $dataSource->getIterator();
-        } elseif ($dataSource instanceof Iterator) {
-            $this->dataSource = $dataSource;
-        } else {
-            throw new Exception\InvalidArgumentException('DataSource provided is not an array, nor does it implement Iterator or IteratorAggregate');
-        }
-
-        if ($this->count == null && $this->dataSource instanceof Countable) {
-            $this->count = $this->dataSource->count();
-        }
-
-        return $this;
+        $this->zfResultSet = $resultSet;
     }
-
+    
+    
+    /**
+     * 
+     * @return AbstractResultSet
+     */
     public function buffer()
     {
-        if ($this->buffer === -2) {
-            throw new Exception\RuntimeException('Buffering must be enabled before iteration is started');
-        } elseif ($this->buffer === null) {
-            $this->buffer = array();
-            if ($this->dataSource instanceof ResultSetInterface) {
-                $this->dataSource->rewind();
-            }
-        }
+        $this->zfResultSet->buffer();
         return $this;
     }
 
+
+    /**
+     * 
+     * @return boolean
+     */
     public function isBuffered()
     {
-        if ($this->buffer === -1 || is_array($this->buffer)) {
-            return true;
-        }
-        return false;
+        return $this->zfResultSet->isBuffered();
     }
 
     /**
@@ -121,7 +49,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function getDataSource()
     {
-        return $this->dataSource;
+        return $this->zfResultSet->getDataSource();
     }
 
     /**
@@ -131,30 +59,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function getFieldCount()
     {
-        if (null !== $this->fieldCount) {
-            return $this->fieldCount;
-        }
-
-        $dataSource = $this->getDataSource();
-        if (null === $dataSource) {
-            return 0;
-        }
-
-        $dataSource->rewind();
-        if (!$dataSource->valid()) {
-            $this->fieldCount = 0;
-            return 0;
-        }
-
-        $row = $dataSource->current();
-        if (is_object($row) && $row instanceof Countable) {
-            $this->fieldCount = $row->count();
-            return $this->fieldCount;
-        }
-
-        $row = (array) $row;
-        $this->fieldCount = count($row);
-        return $this->fieldCount;
+        return $this->zfResultSet->getFieldCount();
     }
 
     /**
@@ -164,11 +69,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function next()
     {
-        if ($this->buffer === null) {
-            $this->buffer = -2; // implicitly disable buffering from here on
-        }
-        $this->dataSource->next();
-        $this->position++;
+        $this->zfResultSet->next();
     }
 
     /**
@@ -178,7 +79,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function key()
     {
-        return $this->position;
+        $this->zfResultSet->key();
     }
 
     /**
@@ -188,16 +89,8 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function current()
     {
-        if ($this->buffer === null) {
-            $this->buffer = -2; // implicitly disable buffering from here on
-        } elseif (is_array($this->buffer) && isset($this->buffer[$this->position])) {
-            return $this->buffer[$this->position];
-        }
-        $data = $this->dataSource->current();
-        if (is_array($this->buffer)) {
-            $this->buffer[$this->position] = $data;
-        }
-        return $data;
+        
+        return $this->zfResultSet->current();
     }
 
     /**
@@ -207,15 +100,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function valid()
     {
-        if (is_array($this->buffer) && isset($this->buffer[$this->position])) {
-            return true;
-        }
-        if ($this->dataSource instanceof Iterator) {
-            return $this->dataSource->valid();
-        } else {
-            $key = key($this->dataSource);
-            return ($key !== null);
-        }
+        return $this->zfResultSet->valid();
     }
 
     /**
@@ -225,22 +110,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function rewind()
     {
-        if (!is_array($this->buffer)) {
-            if ($this->dataSource instanceof Iterator) {
-                $this->buffer();
-                $this->dataSource->rewind();
-                /*
-                try {
-                    $this->dataSource->rewind();
-                } catch (\Zend\Db\Adapter\Exception\RuntimeException $e) {
-                    $this->buffer();
-                    $this->dataSource->rewind();
-                }*/
-            } else {
-                reset($this->dataSource);
-            }
-        }
-        $this->position = 0;
+        $this->zfResultSet->rewind();
     }
 
     /**
@@ -250,11 +120,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function count()
     {
-        if ($this->count !== null) {
-            return $this->count;
-        }
-        $this->count = count($this->dataSource);
-        return $this->count;
+        return $this->zfResultSet->count();
     }
 
     /**
@@ -265,20 +131,10 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function toArray()
     {
-        $return = array();
-        foreach ($this as $row) {
-            if (is_array($row)) {
-                $return[] = $row;
-            } elseif (method_exists($row, 'toArray')) {
-                $return[] = $row->toArray();
-            } elseif ($row instanceof ArrayObject) {
-                $return[] = $row->getArrayCopy();
-            } else {
-                throw new Exception\RuntimeException(
-                    'Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
-                );
-            }
-        }
-        return $return;
+        return $this->zfResultSet->toArray();
     }
+    
+    
+
+    
 }

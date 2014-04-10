@@ -8,30 +8,6 @@ use ArrayObject;
 
 class ResultSet extends AbstractResultSet
 {
-    const TYPE_ARRAYOBJECT = 'arrayobject';
-    const TYPE_ARRAY  = 'array';
-
-    /**
-     * Allowed return types
-     *
-     * @var array
-     */
-    protected $allowedReturnTypes = array(
-        self::TYPE_ARRAYOBJECT,
-        self::TYPE_ARRAY,
-    );
-
-    /**
-     * @var ArrayObject
-     */
-    protected $arrayObjectPrototype = null;
-
-    /**
-     * Return type to use when returning an object from the set
-     *
-     * @var ResultSet::TYPE_ARRAYOBJECT|ResultSet::TYPE_ARRAY
-     */
-    protected $returnType = self::TYPE_ARRAYOBJECT;
 
 
     /**
@@ -63,20 +39,30 @@ class ResultSet extends AbstractResultSet
      */
     protected $source;
 
+    
+    
+
     /**
-     * Constructor
      *
-     * @param string           $returnType
-     * @param null|ArrayObject $arrayObjectPrototype
+     * @param AbstractSource $source
+     * @return ResultSet
      */
-    public function __construct($returnType = self::TYPE_ARRAYOBJECT, $arrayObjectPrototype = null)
+    public function setSource(AbstractSource $source)
     {
-        $this->returnType = (in_array($returnType, array(self::TYPE_ARRAY, self::TYPE_ARRAYOBJECT))) ? $returnType : self::TYPE_ARRAYOBJECT;
-        if ($this->returnType === self::TYPE_ARRAYOBJECT) {
-            $this->setArrayObjectPrototype(($arrayObjectPrototype) ?: new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS));
-        }
+        $this->source = $source;
+        return $this;
     }
 
+    /**
+     *
+     * @return AbstractSource
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+    
+    
     /**
      *
      * @return Paginator
@@ -93,31 +79,11 @@ class ResultSet extends AbstractResultSet
 
 
 
-    /**
-     *
-     * @param AbstractSource $source
-     * @return ResultSet
-     */
-    public function setSource(AbstractSource $source)
-    {
-        $this->source = $source;
-        return $this;
-    }
-
-    /**
-     *
-     * @return \Soluble\FlexStore\Source\AbstractSource
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
 
     /**
      * Set the total rows
      * @param int $totalRows
-     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     * @return ResultSet
      */
     public function setTotalRows($totalRows)
     {
@@ -134,50 +100,6 @@ class ResultSet extends AbstractResultSet
         return $this->totalRows;
     }
 
-
-
-
-
-    /**
-     * Set the row object prototype
-     *
-     * @param  ArrayObject $arrayObjectPrototype
-     * @throws Exception\InvalidArgumentException
-     * @return ResultSet
-     */
-    public function setArrayObjectPrototype($arrayObjectPrototype)
-    {
-        if (!is_object($arrayObjectPrototype)
-            || (!$arrayObjectPrototype instanceof ArrayObject && !method_exists($arrayObjectPrototype, 'exchangeArray'))
-
-        ) {
-            throw new Exception\InvalidArgumentException('Object must be of type ArrayObject, or at least implement exchangeArray');
-        }
-        $this->arrayObjectPrototype = $arrayObjectPrototype;
-        return $this;
-    }
-
-    /**
-     * Get the row object prototype
-     *
-     * @return ArrayObject
-     */
-    public function getArrayObjectPrototype()
-    {
-        return $this->arrayObjectPrototype;
-    }
-
-    /**
-     * Get the return type to use when returning objects from the set
-     *
-     * @return string
-     */
-    public function getReturnType()
-    {
-        return $this->returnType;
-    }
-
-
     /**
      *
      * @param array $columns
@@ -187,6 +109,7 @@ class ResultSet extends AbstractResultSet
     {
         $this->columnsChecked = false;
         $this->columns = $columns;
+        
         return $this;
     }
 
@@ -209,8 +132,8 @@ class ResultSet extends AbstractResultSet
      */
     public function current()
     {
-        $data = parent::current();
-
+        
+        $data = $this->zfResultSet->current();
         if ($this->columns !== null) {
 
             $d = new \ArrayObject();
@@ -224,25 +147,39 @@ class ResultSet extends AbstractResultSet
                 }
                 $this->columnsChecked;
             }
-
             foreach($this->columns as $column) {
                 $d[$column] = $data[$column];
             }
             $data = $d;
 
-
-        }
-        if ($this->returnType === self::TYPE_ARRAYOBJECT && is_array($data)) {
-            /** @var $ao ArrayObject */
-            $ao = clone $this->arrayObjectPrototype;
-
-            if ($ao instanceof ArrayObject || method_exists($ao, 'exchangeArray')) {
-                $ao->exchangeArray($data);
-            }
-            return $ao;
         }
         return $data;
     }
 
+    
+    /**
+     * Cast result set to array of arrays
+     *
+     * @return array
+     * @throws Exception\RuntimeException if any row is not castable to an array
+     */
+    public function toArray()
+    {
+        $return = array();
+        foreach ($this as $row) {
+            if (is_array($row)) {
+                $return[] = $row;
+            } elseif (method_exists($row, 'toArray')) {
+                $return[] = $row->toArray();
+            } elseif (method_exists($row, 'getArrayCopy')) {
+                $return[] = $row->getArrayCopy();
+            } else {
+                throw new Exception\RuntimeException(
+                    'Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
+                );
+            }
+        }
+        return $return;
+    }    
 
 }

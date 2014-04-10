@@ -180,10 +180,9 @@ class SelectSource extends AbstractSource
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
+            //var_dump(get_class($results));
 
-
-            $r = new ResultSet();
-            $r->initialize($results);
+            $r = new ResultSet($results);
             $r->setSource($this);
 
             if ($options->hasLimit()) {
