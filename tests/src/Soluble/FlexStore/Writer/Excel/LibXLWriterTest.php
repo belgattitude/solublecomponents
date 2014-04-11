@@ -3,6 +3,7 @@
 namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Source\Zend\SelectSource;
+use Zend\Db\Sql\Select;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,8 +40,11 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         
         
                 $this->adapter = \SolubleTestFactories::getDbAdapter();
-                $select = new \Zend\Db\Sql\Select();
-                $select->from('product_category_translation')->where("lang = 'fr'")->limit(200);
+                $select = new Select();
+                $select->from(array('p' => 'product'))
+                        ->join(array('ppl' => 'product_pricelist'), 'ppl.product_id = p.product_id', Select::SQL_STAR, Select::JOIN_LEFT)
+                        ->limit(100);
+                
                 $params = array(
                     'adapter' => $this->adapter,
                     'select' => $select

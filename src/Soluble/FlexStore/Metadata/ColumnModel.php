@@ -19,6 +19,7 @@ class ColumnModel
     {
         $this->columns = $columns;
     }
+    
 
     /**
      *

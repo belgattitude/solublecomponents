@@ -13,6 +13,7 @@ abstract class AbstractMetadataReader
      */
     protected $cache_active = true;
 
+    
     /**
      *
      * @param boolean $active

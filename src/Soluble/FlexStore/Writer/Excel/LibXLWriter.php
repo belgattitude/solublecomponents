@@ -3,6 +3,7 @@ namespace Soluble\FlexStore\Writer\Excel;
 use Soluble\FlexStore\Writer\AbstractWriter;
 
 use Soluble\FlexStore\Writer\SendHeaders;
+use Soluble\FlexStore\Metadata\Column;
 use ExcelBook;
 use ExcelFormat;
 
@@ -21,6 +22,24 @@ class LibXLWriter extends AbstractWriter
      * @var string
      */
     protected static $license_key;
+    
+    
+    /**
+     * @var array
+     */
+    private static $typesMap = array(
+
+        Column\Type::TYPE_INTEGER	=> 'Definition\IntegerColumn',
+        Column\Type::TYPE_DECIMAL	=> 'Definition\DecimalColumn',
+        Column\Type::TYPE_STRING	=> 'Definition\StringColumn',
+        Column\Type::TYPE_BOOLEAN	=> 'Definition\BooleanColumn',
+        Column\Type::TYPE_DATETIME	=> 'Definition\DatetimeColumn',
+        Column\Type::TYPE_BLOB		=> 'Definition\BlobColumn',
+        Column\Type::TYPE_DATE		=> 'Definition\DateColumn',
+        Column\Type::TYPE_TIME		=> 'Definition\TimeColumn',
+        Column\Type::TYPE_FLOAT     => 'Definition\FloatColumn',
+
+    );    
 
 
     /**
@@ -77,12 +96,55 @@ class LibXLWriter extends AbstractWriter
         $cm = $this->source->getColumnModel();
         $columns = $cm->getColumns();
 
+        $formats = array();
+        $types   = array();
         $column_max_widths = array();
         foreach($columns as $name => $definition) {
-
             $header = $name;
-
-            $column_max_widths[$key] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$key]);
+            $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
+            
+            $datatype = $definition->getDataType();
+            switch ($datatype) {
+                case Column\Type::TYPE_DATE :
+					$mask = 'd/mm/yyyy';
+                    $cfid = $book->addCustomFormat($mask);
+                    $format = $book->addFormat();
+                    $format->numberFormat($cfid);				
+                    $formats[$name] = $format;    
+                    $types[$name] = 'date';
+                    break;
+                case Column\Type::TYPE_DATETIME:
+					$mask = 'd/mm/yyyy h:mm';
+                    $cfid = $book->addCustomFormat($mask);
+                    $format = $book->addFormat();
+                    $format->numberFormat($cfid);				
+                    $formats[$name] = $format;    
+                    $types[$name] = 'date';
+                    break;
+                case Column\Type::TYPE_INTEGER:
+                    $precision = 0;
+                    $hide_thousands_separator = true;
+                    
+                    if ($hide_thousands_separator) {
+                        $formatString = '0';
+                    } else {
+                        $formatString = '#,##0';
+                    }
+                    
+                    if ($precision > 0) {
+                        $zeros = str_repeat("0", $this->precision);
+                        $formatString = $formatString . '.' . $zeros;
+                    }
+			
+			
+                    $cfid = $book->addCustomFormat($formatString);
+                    $format = $book->addFormat();
+                    $format->numberFormat($cfid);				
+                    $formats[$name] = $format;                    
+                    $types[$name] = 'number';
+                    break;
+            }
+            
             $sheet->write($row=0, $col_idx, $header, $headerFormat);
             $col_idx++;
         }
@@ -96,13 +158,31 @@ class LibXLWriter extends AbstractWriter
             $col_idx = 0;
             $row_idx = $idx + 1;
             foreach ($columns as $name => $definition) {
-
                 $value = $row[$name];
-
-                $sheet->write($row_idx, $col_idx, $value);
-
+                if (array_key_exists($name, $formats)) {
+                    $format = $formats[$name];
+                    switch ($types[$name]) {
+                        case 'number' :
+                            $sheet->write($row_idx, $col_idx,  (string) $value, $format, ExcelFormat::AS_NUMERIC_STRING);
+                            break;
+                        case 'date' :
+                            $value = "2012-12-30 10:20:30";
+                            if ($value != '') {
+                                $time = strtotime($value);
+                            } else {
+                                $time = null;
+                            }
+                            $sheet->write($row_idx, $col_idx,  $time, $format, ExcelFormat::AS_DATE);
+                            break;
+                        default:
+                            $sheet->write($row_idx, $col_idx, $value);
+                        
+                    }
+                } else {
+                    $sheet->write($row_idx, $col_idx, $value);
+                }
+                
                 $column_max_widths[$name] = max(strlen($value) * $this->column_width_multiplier, $column_max_widths[$name]);
-
                 $col_idx++;
             }
         }

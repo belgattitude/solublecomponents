@@ -412,6 +412,24 @@ abstract class AbstractColumnDefinition
     {
         return ($this instanceof DatetimeColumnInterface);
     }
+    
+    /**
+     * Return an array version of the column definition
+     * @return array
+     */
+    public function toArray()
+    {
+        $reflectionClass = new \ReflectionClass(get_class($this));
+        $array = array();
+        foreach ($reflectionClass->getProperties() as $property) {
+            if ($property->isProtected()) {
+                $property->setAccessible(true);
+                $array[$property->getName()] = $property->getValue($this);
+                $property->setAccessible(false);
+            }
+        }        
+        return $array;
+    }
 
 
 }

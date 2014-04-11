@@ -87,8 +87,10 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
             $datatype = $type_map->offsetGet($datatype);
 
             $column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName=null);
-
-            $column->setAlias($field['name']);
+            $alias = $field['name'];
+            
+            
+            $column->setAlias($alias);
             $column->setTableAlias($field['table']);
             //$column->setCatalog($field->catalog);
             $column->setOrdinalPosition($idx + 1);
@@ -128,12 +130,24 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                 $column->setCharacterOctetLength($field['len']);
             }
 
-            $alias = $column->getAlias();
             if ($metadata->offsetExists($alias)) {
-                throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query.");
-            }
-
+                
+                $prev_column = $metadata->offsetGet($alias);
+                $prev_def = $prev_column->toArray();
+                $curr_def = $column->toArray();
+                if (    $prev_def['dataType'] != $curr_def['dataType']
+                    ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']  ) {
+                    throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
+                }
+                
+                // If the the previous definition, was a prev_def
+                if ($prev_def['isPrimary']) {
+                    $column = $prev_column;
+                }
+                
+            } 
             $metadata->offsetSet($alias, $column);
+            
 
         }
 

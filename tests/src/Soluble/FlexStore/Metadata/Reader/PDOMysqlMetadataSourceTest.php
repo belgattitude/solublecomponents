@@ -213,7 +213,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
-            $sql = "select id, id from test_table_types";
+            $sql = "select id, test_char_10 as id from test_table_types";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $metadata = $this->getReader($conn);
             

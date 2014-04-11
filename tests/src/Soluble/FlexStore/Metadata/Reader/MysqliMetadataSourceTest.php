@@ -71,7 +71,7 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
     public function testGetColumnsMetadataThrowsAmbiguousColumnException()
     {
         $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
-        $sql = "select id, id from test_table_types";
+        $sql = "select id, test_char_10 as id from test_table_types";
         $md = $this->metadata->getColumnsMetadata($sql);
 
     }    
