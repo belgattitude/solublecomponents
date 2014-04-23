@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Source\Zend\SelectSource;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,19 +42,37 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         
                 $this->adapter = \SolubleTestFactories::getDbAdapter();
                 $select = new Select();
-                $select->from(array('p' => 'product'))
-                        ->join(array('ppl' => 'product_pricelist'), 'ppl.product_id = p.product_id', Select::SQL_STAR, Select::JOIN_LEFT)
+                $select->from(array('p' => 'product'), array())
+                        ->join(array('ppl' => 'product_pricelist'), 'ppl.product_id = p.product_id', array(), Select::JOIN_LEFT)
                         ->limit(100);
+                
+                $select->columns(array(
+                   'product_id' => new Expression('p.product_id'),
+                   'brand_id'   => new Expression('p.brand_id'),
+                   'reference'  => new Expression('p.reference'),
+                   'description'    => new Expression('p.description'),
+                   'volume'         => new Expression('p.volume'),
+                   'weight'         => new Expression('p.weight'),
+                   'barcode_ean13'  => new Expression('1234567890123'),
+                   'created_at'     => new Expression('NOW()'),
+                   'price'          => new Expression('ppl.price'),
+                   'discount_1'     => new Expression('ppl.discount_1'),
+                   'promo_start_at' => new Expression('ppl.promo_start_at'),
+                   'promo_end_at'   => new Expression('cast(NOW() as date)')
+
+                ));
+                
                 
                 $params = array(
                     'adapter' => $this->adapter,
                     'select' => $select
                 );
+                
 
-                $this->source = new SelectSource($params);
+                $source = new SelectSource($params);
 
                 $this->xlsWriter = new LibXLWriter();
-                $this->xlsWriter->setSource($this->source);
+                $this->xlsWriter->setSource($source);
         }
     }
 

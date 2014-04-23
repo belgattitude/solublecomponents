@@ -119,30 +119,41 @@ class LibXLWriter extends AbstractWriter
                     $format = $book->addFormat();
                     $format->numberFormat($cfid);				
                     $formats[$name] = $format;    
-                    $types[$name] = 'date';
+                    $types[$name] = 'datetime';
                     break;
                 case Column\Type::TYPE_INTEGER:
-                    $precision = 0;
-                    $hide_thousands_separator = true;
                     
+                    $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
                         $formatString = '0';
                     } else {
                         $formatString = '#,##0';
                     }
-                    
-                    if ($precision > 0) {
-                        $zeros = str_repeat("0", $this->precision);
-                        $formatString = $formatString . '.' . $zeros;
-                    }
-			
-			
                     $cfid = $book->addCustomFormat($formatString);
                     $format = $book->addFormat();
                     $format->numberFormat($cfid);				
                     $formats[$name] = $format;                    
                     $types[$name] = 'number';
                     break;
+                case Column\Type::TYPE_DECIMAL:
+                    $precision = $definition->getNumericPrecision();
+                    $hide_thousands_separator = true;
+                    if ($hide_thousands_separator) {
+                        $formatString = '0';
+                    } else {
+                        $formatString = '#,##0';
+                    }
+                    if ($precision > 0) {
+                        $zeros = str_repeat("0", $precision);
+                        $formatString = $formatString . '.' . $zeros;
+                    }
+                    $cfid = $book->addCustomFormat($formatString);
+                    $format = $book->addFormat();
+                    $format->numberFormat($cfid);				
+                    $formats[$name] = $format;                    
+                    $types[$name] = 'number';
+                    break;
+                    
             }
             
             $sheet->write($row=0, $col_idx, $header, $headerFormat);
@@ -166,7 +177,7 @@ class LibXLWriter extends AbstractWriter
                             $sheet->write($row_idx, $col_idx,  (string) $value, $format, ExcelFormat::AS_NUMERIC_STRING);
                             break;
                         case 'date' :
-                            $value = "2012-12-30 10:20:30";
+                        case 'datetime' :    
                             if ($value != '') {
                                 $time = strtotime($value);
                             } else {
@@ -176,7 +187,6 @@ class LibXLWriter extends AbstractWriter
                             break;
                         default:
                             $sheet->write($row_idx, $col_idx, $value);
-                        
                     }
                 } else {
                     $sheet->write($row_idx, $col_idx, $value);
