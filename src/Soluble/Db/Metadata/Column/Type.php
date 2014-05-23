@@ -1,8 +1,8 @@
 <?php
-namespace Soluble\FlexStore\Metadata\Column;
+namespace Soluble\Db\Metadata\Column;
 
 
-use Soluble\FlexStore\Metadata\Exception;
+use Soluble\Db\Metadata\Column\Exception;
 
 
 class Type
@@ -44,7 +44,7 @@ class Type
      * @param string $tableName
      * @param tring $schemaName
      * @throws Exception\UnsupportedDatatypeException
-     * @return \Soluble\FlexStore\Metadata\Column\Definition\AbstractColumn
+     * @return \Soluble\Db\Metadata\Column\Definition\AbstractColumn
      */
     public static function createColumnDefinition($datatype, $name, $tableName = null, $schemaName = null)
     {

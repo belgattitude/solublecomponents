@@ -3,7 +3,7 @@ namespace Soluble\FlexStore\Writer\Excel;
 use Soluble\FlexStore\Writer\AbstractWriter;
 
 use Soluble\FlexStore\Writer\SendHeaders;
-use Soluble\FlexStore\Metadata\Column;
+use Soluble\Db\Metadata\Column;
 use ExcelBook;
 use ExcelFormat;
 

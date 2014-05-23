@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Metadata\Reader;
 
-use Soluble\FlexStore\Metadata\Column;
+use Soluble\Db\Metadata\Column;
 
 class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
 {

@@ -2,8 +2,9 @@
 namespace Soluble\FlexStore\Metadata\Reader;
 
 use Soluble\FlexStore\Metadata\Exception;
-use Soluble\FlexStore\Metadata\Column;
-use Soluble\FlexStore\Metadata\Column\Types;
+use Soluble\Db\Metadata\Column;
+use Soluble\Db\Metadata\Column\Types;
+use Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException;
 
 use ArrayObject;
 
@@ -58,7 +59,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
      *
      * @param string $sql
      * @return \ArrayObject
-     * @throws Exception\UnsupportedDatatypeException
+     * @throws UnsupportedDatatypeException
      * @throws Exception\AmbiguousColumnException
      * @throws Exception\ConnectionException
      */
@@ -80,7 +81,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
             $datatype = strtoupper($field['native_type']);
             //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
-                throw new Exception\UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
+                throw new UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
             }
             //@codeCoverageIgnoreEnd
 

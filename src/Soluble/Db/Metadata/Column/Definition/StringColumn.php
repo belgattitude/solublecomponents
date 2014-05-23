@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\FlexStore\Metadata\Column\Definition;
+namespace Soluble\Db\Metadata\Column\Definition;
 
 
 class StringColumn extends AbstractColumnDefinition implements TextColumnInterface
@@ -22,7 +22,7 @@ class StringColumn extends AbstractColumnDefinition implements TextColumnInterfa
 
     /**
      * @param int $characterMaximumLength the $characterMaximumLength to set
-     * @return \Soluble\FlexStore\Metadata\Column\StringColumn
+     * @return \Soluble\Db\Metadata\Column\StringColumn
      */
     public function setCharacterMaximumLength($characterMaximumLength)
     {

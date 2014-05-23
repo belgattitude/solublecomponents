@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\FlexStore\Metadata\Column\Definition;
+namespace Soluble\Db\Metadata\Column\Definition;
 
 
 class BlobColumn extends AbstractColumnDefinition
@@ -20,7 +20,7 @@ class BlobColumn extends AbstractColumnDefinition
 
     /**
      * @param int $characterOctetLength the $characterOctetLength to set
-     * @return \Soluble\FlexStore\Metadata\Column\BlobColumn
+     * @return \Soluble\Db\Metadata\Column\BlobColumn
      */
     public function setCharacterOctetLength($characterOctetLength)
     {

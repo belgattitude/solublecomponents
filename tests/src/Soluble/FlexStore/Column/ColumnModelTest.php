@@ -1,6 +1,6 @@
 <?php
 
-namespace Soluble\FlexStore\Metadata;
+namespace Soluble\FlexStore\Column;
 
 use Soluble\FlexStore\Source\Zend\SelectSource;
 use Zend\Db\Sql\Select;
@@ -57,7 +57,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         
         $columnModel = $this->columnModel;
-        $this->assertInstanceOf('\Soluble\FlexStore\Metadata\ColumnModel', $columnModel);
+        $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
         $this->assertInstanceOf('\ArrayObject', $columns);
     }
@@ -106,7 +106,11 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($col->isText());
         $this->assertFalse($col->isDate());
         $this->assertTrue($col->isDatetime());
-        $this->assertFalse($col->isNumeric());        
+        $this->assertFalse($col->isNumeric());
+        
+        
+        
+        
         
     }
     

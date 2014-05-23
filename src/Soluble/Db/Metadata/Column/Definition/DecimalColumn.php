@@ -1,6 +1,6 @@
 <?php
 
-namespace Soluble\FlexStore\Metadata\Column\Definition;
+namespace Soluble\Db\Metadata\Column\Definition;
 
 
 class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInterface
@@ -69,7 +69,7 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
 
     /**
      * @param int $numericPrecision the $numericPrevision to set
-     * @return \Soluble\FlexStore\Metadata\Column\DecimalColumn
+     * @return \Soluble\Db\Metadata\Column\DecimalColumn
      */
     public function setNumericPrecision($numericPrecision)
     {
@@ -94,7 +94,7 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
 
     /**
      * @param int $numericScale the $numericScale to set
-     * @return \Soluble\FlexStore\Metadata\Column\DecimalColumn
+     * @return \Soluble\Db\Metadata\Column\DecimalColumn
      */
     public function setNumericScale($numericScale)
     {

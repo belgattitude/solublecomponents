@@ -7,7 +7,7 @@ namespace Soluble\FlexStore\Source;
 
 use Soluble\FlexStore\Options;
 use Soluble\FlexStore\Reader\AbstractMetadataReader;
-use Soluble\FlexStore\Metadata\ColumnModel;
+use Soluble\FlexStore\Column\ColumnModel;
 
 abstract class AbstractSource implements SourceInterface
 {

@@ -70,7 +70,11 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
                 
 
                 $source = new SelectSource($params);
-
+                $source->getColumnModel();
+                $cm = $source->getColumnModel();
+                
+                
+                
                 $this->xlsWriter = new LibXLWriter();
                 $this->xlsWriter->setSource($source);
         }

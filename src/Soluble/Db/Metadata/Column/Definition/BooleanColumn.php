@@ -1,5 +1,5 @@
 <?php
-namespace Soluble\FlexStore\Metadata\Column\Definition;
+namespace Soluble\Db\Metadata\Column\Definition;
 
 
 class BooleanColumn extends AbstractColumnDefinition implements NumericColumnInterface

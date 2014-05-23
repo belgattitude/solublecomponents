@@ -18,9 +18,9 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use ArrayObject;
 
-use Soluble\FlexStore\Metadata\ColumnModel;
+use Soluble\FlexStore\Column\ColumnModel;
 use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
-use \Soluble\FlexStore\Metadata\Reader as MetadataReader;
+use Soluble\FlexStore\Metadata\Reader as MetadataReader;
 
 class SelectSource extends AbstractSource
 {
@@ -232,7 +232,7 @@ class SelectSource extends AbstractSource
             $select = clone $this->select;
             $select->limit(0);
             $sql_string = $sql->getSqlStringForSqlObject($select);
-            return $this->getMetadataReader()->getColumnModel($sql_string);
+            $this->columnModel = $this->getMetadataReader()->getColumnModel($sql_string);
         }
         return $this->columnModel;
     }
@@ -251,6 +251,10 @@ class SelectSource extends AbstractSource
         return $this->metadataReader;
     }
 
+    /**
+     * 
+     * @return \Soluble\FlexStore\Metadata\Reader\AbstractMetadataReader
+     */
     protected function getDefaultMetadataReader()
     {
         $conn = $this->adapter->getDriver()->getConnection()->getResource();

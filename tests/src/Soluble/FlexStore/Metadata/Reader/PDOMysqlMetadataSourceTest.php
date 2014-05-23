@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Metadata\Reader;
 
-use Soluble\FlexStore\Metadata\Column;
+use Soluble\Db\Metadata\Column;
 use Zend\Db\Adapter\Adapter;
 
 /**

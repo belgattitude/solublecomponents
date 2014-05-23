@@ -14,7 +14,7 @@ interface SourceInterface
 
 
     /**
-     * @return Soluble\FlexStore\Metadata\ColumnModel
+     * @return Soluble\FlexStore\Column\ColumnModel
      */
     public function getColumnModel();
 }
