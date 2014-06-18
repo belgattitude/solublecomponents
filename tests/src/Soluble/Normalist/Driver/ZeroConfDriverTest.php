@@ -63,6 +63,8 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $driver = new ZeroConfDriver($this->adapter, $options);
         $md = $driver->getMetadata();        
         $file = $driver->getModelsConfigFile();
+        //var_dump($file);
+        
         $driver->clearMetadataCache();
         chmod($file, 0000);
         $catched = false;
