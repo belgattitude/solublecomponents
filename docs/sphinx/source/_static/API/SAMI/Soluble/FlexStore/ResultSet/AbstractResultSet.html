@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="robots" content="index, follow, all" />
-        <title>Soluble\FlexStore\ResultSet\AbstractResultSet | </title>
+        <title>Soluble\FlexStore\ResultSet\AbstractResultSet | Soluble API</title>
                     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
                             </head>
         <body id="class">
@@ -17,7 +17,7 @@
             
         </ul>
 
-        <div id="title"></div>
+        <div id="title">Soluble API</div>
 
             <div class="type">Class</div>
     <h1><a href="../../../Soluble/FlexStore/ResultSet.html">Soluble\FlexStore\ResultSet</a>\AbstractResultSet</h1>
@@ -25,7 +25,7 @@
         <div class="content">
                 <p>abstract     class
     <strong>AbstractResultSet</strong>        implements
-        <a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>, <abbr title="Zend\Db\ResultSet\ResultSetInterface">ResultSetInterface</abbr></p>
+        <a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>, <a href="../../../Soluble/FlexStore/ResultSet/ResultSetInterface.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSetInterface">ResultSetInterface</abbr></a></p>
 
     
     
@@ -35,17 +35,18 @@
             <table>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
+                    
                 </td>
                 <td class="last">
-                    <a href="#method_initialize">initialize</a>(<a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>|<a href="http://php.net/IteratorAggregate"><abbr title="IteratorAggregate">IteratorAggregate</abbr></a>|<abbr title="Zend\Db\ResultSet\ResultSetInterface">ResultSetInterface</abbr> $dataSource)
-                    <p>Set the data source for the result set</p>
+                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet)
+                    <p>
+</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    
+                    <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a>
                 </td>
                 <td class="last">
                     <a href="#method_buffer">buffer</a>()
@@ -56,7 +57,7 @@
             </tr>
                     <tr>
                 <td class="type">
-                    
+                    boolean
                 </td>
                 <td class="last">
                     <a href="#method_isBuffered">isBuffered</a>()
@@ -160,13 +161,14 @@
 
         <h2>Details</h2>
 
-                        <h3 id="method_initialize">
-        <div class="location">at line 44</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-    <strong>initialize</strong>(<a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>|<a href="http://php.net/IteratorAggregate"><abbr title="IteratorAggregate">IteratorAggregate</abbr></a>|<abbr title="Zend\Db\ResultSet\ResultSetInterface">ResultSetInterface</abbr> $dataSource)</code>
+                        <h3 id="method___construct">
+        <div class="location">at line 19</div>
+        <code>            public            
+    <strong>__construct</strong>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet)</code>
     </h3>
     <div class="details">
-        <p>Set the data source for the result set</p>
+        <p>
+</p>
         <p>
 </p>
         <div class="tags">
@@ -174,42 +176,22 @@
 
                     <table>
                     <tr>
-                <td><a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>|<a href="http://php.net/IteratorAggregate"><abbr title="IteratorAggregate">IteratorAggregate</abbr></a>|<abbr title="Zend\Db\ResultSet\ResultSetInterface">ResultSetInterface</abbr></td>
-                <td>$dataSource</td>
+                <td><abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr></td>
+                <td>$resultSet</td>
                 <td>
 </td>
             </tr>
             </table>
 
             
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
             
-                            <h4>Exceptions</h4>
-
-                    <table>
-                    <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
                     </div>
     </div>
 
                 <h3 id="method_buffer">
-        <div class="location">at line 90</div>
-        <code>            public            
+        <div class="location">at line 29</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a>
     <strong>buffer</strong>()</code>
     </h3>
     <div class="details">
@@ -219,14 +201,24 @@
 </p>
         <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
             
             
                     </div>
     </div>
 
                 <h3 id="method_isBuffered">
-        <div class="location">at line 103</div>
-        <code>            public            
+        <div class="location">at line 40</div>
+        <code>            public            boolean
     <strong>isBuffered</strong>()</code>
     </h3>
     <div class="details">
@@ -236,13 +228,23 @@
 </p>
         <div class="tags">
             
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
             
             
                     </div>
     </div>
 
                 <h3 id="method_getDataSource">
-        <div class="location">at line 116</div>
+        <div class="location">at line 50</div>
         <code>            public            null|<a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>
     <strong>getDataSource</strong>()</code>
     </h3>
@@ -268,7 +270,7 @@
     </div>
 
                 <h3 id="method_getFieldCount">
-        <div class="location">at line 126</div>
+        <div class="location">at line 60</div>
         <code>            public            int
     <strong>getFieldCount</strong>()</code>
     </h3>
@@ -294,7 +296,7 @@
     </div>
 
                 <h3 id="method_next">
-        <div class="location">at line 159</div>
+        <div class="location">at line 70</div>
         <code>            public            void
     <strong>next</strong>()</code>
     </h3>
@@ -320,7 +322,7 @@
     </div>
 
                 <h3 id="method_key">
-        <div class="location">at line 173</div>
+        <div class="location">at line 80</div>
         <code>            public            mixed
     <strong>key</strong>()</code>
     </h3>
@@ -346,7 +348,7 @@
     </div>
 
                 <h3 id="method_current">
-        <div class="location">at line 183</div>
+        <div class="location">at line 90</div>
         <code>            public            array
     <strong>current</strong>()</code>
     </h3>
@@ -372,7 +374,7 @@
     </div>
 
                 <h3 id="method_valid">
-        <div class="location">at line 202</div>
+        <div class="location">at line 101</div>
         <code>            public            bool
     <strong>valid</strong>()</code>
     </h3>
@@ -398,7 +400,7 @@
     </div>
 
                 <h3 id="method_rewind">
-        <div class="location">at line 220</div>
+        <div class="location">at line 111</div>
         <code>            public            void
     <strong>rewind</strong>()</code>
     </h3>
@@ -424,7 +426,7 @@
     </div>
 
                 <h3 id="method_count">
-        <div class="location">at line 245</div>
+        <div class="location">at line 121</div>
         <code>            public            int
     <strong>count</strong>()</code>
     </h3>
@@ -450,7 +452,7 @@
     </div>
 
                 <h3 id="method_toArray">
-        <div class="location">at line 260</div>
+        <div class="location">at line 132</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>

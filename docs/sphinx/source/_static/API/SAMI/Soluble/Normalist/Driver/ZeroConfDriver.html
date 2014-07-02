@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="robots" content="index, follow, all" />
-        <title>Soluble\Normalist\Driver\ZeroConfDriver | </title>
+        <title>Soluble\Normalist\Driver\ZeroConfDriver | Soluble API</title>
                     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
                             </head>
         <body id="class">
@@ -17,7 +17,7 @@
             
         </ul>
 
-        <div id="title"></div>
+        <div id="title">Soluble API</div>
 
             <div class="type">Class</div>
     <h1><a href="../../../Soluble/Normalist/Driver.html">Soluble\Normalist\Driver</a>\ZeroConfDriver</h1>
@@ -38,7 +38,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $options = array())
+                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $params = array())
                     <p>Construct a new Zero configuration driver</p>
                 </td>
                 <td></td>
@@ -110,13 +110,13 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 69</div>
+        <div class="location">at line 68</div>
         <code>            public            
-    <strong>__construct</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $options = array())</code>
+    <strong>__construct</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter, array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr> $params = array())</code>
     </h3>
     <div class="details">
         <p>Construct a new Zero configuration driver</p>
-        <p>$options allows you to specify the
+        <p>$params allows you to specify the
   path    : where to store the model definition (default to sys<em>get</em>temp_dir())
   alias   : the alias to use when using multiple schemas, default: 'default'
   version : the version to use, default to 'latest'
@@ -134,7 +134,7 @@
             </tr>
                     <tr>
                 <td>array|<abbr title="Soluble\Normalist\Driver\Traversable">Traversable</abbr></td>
-                <td>$options</td>
+                <td>$params</td>
                 <td>[alias,path,version]</td>
             </tr>
             </table>
@@ -150,11 +150,6 @@
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Exception\ModelPathNotWritableException">ModelPathNotWritableException</abbr></td>
-                <td>
-</td>
-            </tr>
-                    <tr>
                 <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
                 <td>
 </td>
@@ -166,7 +161,7 @@
     </div>
 
                 <h3 id="method_getModelsConfigFile">
-        <div class="location">at line 124</div>
+        <div class="location">at line 119</div>
         <code>            public            string
     <strong>getModelsConfigFile</strong>()</code>
     </h3>
@@ -192,7 +187,7 @@
     </div>
 
                 <h3 id="method_getModelsDefinition">
-        <div class="location">at line 138</div>
+        <div class="location">at line 133</div>
         <code>            public            array
     <strong>getModelsDefinition</strong>()</code>
     </h3>
@@ -233,7 +228,7 @@
     </div>
 
                 <h3 id="method_getDbAdapter">
-        <div class="location">at line 201</div>
+        <div class="location">at line 196</div>
         <code>            public            <abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr>
     <strong>getDbAdapter</strong>()</code>
     </h3>
@@ -259,7 +254,7 @@
     </div>
 
                 <h3 id="method_getMetadata">
-        <div class="location">at line 211</div>
+        <div class="location">at line 206</div>
         <code>            public            <abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr>
     <strong>getMetadata</strong>()</code>
     </h3>
@@ -285,7 +280,7 @@
     </div>
 
                 <h3 id="method_clearMetadataCache">
-        <div class="location">at line 229</div>
+        <div class="location">at line 224</div>
         <code>            public            <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
     <strong>clearMetadataCache</strong>()</code>
     </h3>
@@ -312,7 +307,7 @@
     </div>
 
                 <h3 id="method_setMetadata">
-        <div class="location">at line 269</div>
+        <div class="location">at line 264</div>
         <code>            public            <a href="../../../Soluble/Normalist/Driver/ZeroConfDriver.html"><abbr title="Soluble\Normalist\Driver\ZeroConfDriver">ZeroConfDriver</abbr></a>
     <strong>setMetadata</strong>(<abbr title="Soluble\Normalist\Driver\Source\AbstractSource">AbstractSource</abbr> $metadata)</code>
     </h3>

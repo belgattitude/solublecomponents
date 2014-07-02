@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="robots" content="index, follow, all" />
-        <title>Soluble\FlexStore\Source\AbstractSource | </title>
+        <title>Soluble\FlexStore\Source\AbstractSource | Soluble API</title>
                     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
                             </head>
         <body id="class">
@@ -17,7 +17,7 @@
             
         </ul>
 
-        <div id="title"></div>
+        <div id="title">Soluble API</div>
 
             <div class="type">Class</div>
     <h1><a href="../../../Soluble/FlexStore/Source.html">Soluble\FlexStore\Source</a>\AbstractSource</h1>
@@ -108,13 +108,46 @@
                 </td>
                 <td></td>
             </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getColumnModel">getColumnModel</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setMetadataReader">setMetadataReader</a>(<abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr> $metadataReader)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_getMetadataReader">getMetadataReader</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
             </table>
 
 
         <h2>Details</h2>
 
                         <h3 id="method_setColumns">
-        <div class="location">at line 36</div>
+        <div class="location">at line 44</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>setColumns</strong>(array $columns)</code>
     </h3>
@@ -152,7 +185,7 @@
     </div>
 
                 <h3 id="method_unsetColumns">
-        <div class="location">at line 47</div>
+        <div class="location">at line 55</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>unsetColumns</strong>()</code>
     </h3>
@@ -179,7 +212,7 @@
     </div>
 
                 <h3 id="method_getOptions">
-        <div class="location">at line 57</div>
+        <div class="location">at line 65</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
     <strong>getOptions</strong>()</code>
     </h3>
@@ -206,7 +239,7 @@
     </div>
 
                 <h3 id="method_getData">
-        <div class="location">at line 71</div>
+        <div class="location">at line 79</div>
         <code>    abstract        public            <abbr title="Soluble\FlexStore\Source\Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr>
     <strong>getData</strong>(<a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a> $options = null)</code>
     </h3>
@@ -244,7 +277,7 @@
     </div>
 
                 <h3 id="method_setIdentifier">
-        <div class="location">at line 83</div>
+        <div class="location">at line 91</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>setIdentifier</strong>(string|integer $identifier)</code>
     </h3>
@@ -280,7 +313,7 @@
     </div>
 
                 <h3 id="method_getIdentifier">
-        <div class="location">at line 94</div>
+        <div class="location">at line 102</div>
         <code>            public            string|integer|null
     <strong>getIdentifier</strong>()</code>
     </h3>
@@ -306,7 +339,7 @@
     </div>
 
                 <h3 id="method_getQueryString">
-        <div class="location">at line 103</div>
+        <div class="location">at line 111</div>
         <code>    abstract        public            string
     <strong>getQueryString</strong>()</code>
     </h3>
@@ -322,6 +355,98 @@
                     <table>
         <tr>
             <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getColumnModel">
+        <div class="location">at line 117</div>
+        <code>    abstract        public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>getColumnModel</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setMetadataReader">
+        <div class="location">at line 125</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
+    <strong>setMetadataReader</strong>(<abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr> $metadataReader)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr></td>
+                <td>$metadataReader</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getMetadataReader">
+        <div class="location">at line 135</div>
+        <code>            public            <abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr>
+    <strong>getMetadataReader</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Soluble\FlexStore\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr></td>
             <td>
 </td>
         </tr>

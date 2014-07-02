@@ -36,7 +36,7 @@
 	"require-dev": {
         "adodb/adodb-php": "dev-master",
         "satooshi/php-coveralls": "0.6.*",	
-		"sami/sami": "1.*",
+		"sami/sami": "2.*",
         "phpunit/phpunit": "~4.0"
 	},
 	"suggest": {
