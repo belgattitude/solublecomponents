@@ -46,16 +46,24 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         
-        $this->metadata = new InformationSchema($this->adapter, array('schema_not_valid'));
+        $metadata = new InformationSchema($this->adapter, array('schema_not_valid'));
     }        
 
     public function testConstructThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $adapter = \SolubleTestFactories::getDbAdapter();
-        $this->metadata = new InformationSchema($this->adapter, $schema="   ");
+        $metadata = new InformationSchema($this->adapter, $schema="   ");
     }            
     
+    public function testGetSchemaConfigThrowsSchemaNotFoundException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\SchemaNotFoundException');
+        
+        $metadata = new InformationSchema($this->adapter, $schema="fdgdfgdfgppooaze");
+        $metadata->getSchemaConfig();
+        
+    }
     
     
 
@@ -67,6 +75,13 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('product', $schema['tables']));
     }
     
+    public function testGetTableConfigThrowsTableNotFoundException()
+    {
+        
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
+        $config = $this->metadata->getTableConfig('table_unexistent_999');
+   
+    }
     
     public function testGetTableConfig()
     {
@@ -144,19 +159,64 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $primary);
         $this->assertEquals('user_id', $primary);
     }
-    /*
+    
+          
+    
     public function testGetPrimaryKeyThrowsTableNotFoundException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
-        $primary = $this->metadata->getPrimaryKey('table_not_found');
+        $primary = $this->metadata->getPrimaryKey('table_not_found_899');
     } 
-     * 
-     */   
+      
+    public function testGetPrimaryKeyThrowsMultiplePrimaryKeyException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\MultiplePrimaryKeyException');
+        $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
+    }    
+    
+    public function testGetColumns()
+    {
+        $columns = $this->metadata->getColumns('user');
+        $this->assertEquals('user_id', $columns[0]);
+        $this->assertEquals('password', $columns[4]);
+        
+    }
+    
+    public function testGetTableInformation()
+    {
+        $info = $this->metadata->getTableInformation('user');
+        $this->assertEquals('user', $info['name']);
+        $this->assertEquals('user_id', $info['primary_keys'][0]);
+    }
+
+    public function testHasTable()
+    {
+        $this->assertTrue($this->metadata->hasTable('user'));
+        $this->assertFalse($this->metadata->hasTable('user_not_exists_888'));
+    }
+    
     
     public function testInnoDbStat() {
         
-        $this->metadata->clearCacheInformation();
         
+        $adapter = $this->adapter;
+        $this->metadata->clearCacheInformation();
+        $sql = "show global variables like 'innodb_stats_on_metadata'";
+        $results = $adapter->query($sql, Adapter::QUERY_MODE_EXECUTE);
+        $row = $results->current();
+        $status = strtoupper($row['Value']);
+        if ($status == 'OFF') {
+            // Let's make it ON
+            $adapter->query("set global innodb_stats_on_metadata='ON'", Adapter::QUERY_MODE_EXECUTE);
+            $results = $adapter->query($sql, Adapter::QUERY_MODE_EXECUTE);
+            //$row = $results->current();
+            //var_dump($row);
+            
+            
+            $this->metadata->getPrimaryKey('user');
+            $adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);        
+            
+        }
     }
      
 

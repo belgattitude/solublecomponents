@@ -191,7 +191,7 @@ abstract class AbstractSource
      *
      * @param string $table
      * @return AbstractSource
-     */
+     
     protected function validateTable($table)
     {
         $this->checkTableArgument($table);
@@ -200,6 +200,7 @@ abstract class AbstractSource
         }
         return $this;
     }
+    */
 
     /**
      * Check whether a schema parameter is valid
