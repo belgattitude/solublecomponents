@@ -97,14 +97,29 @@ class Record implements ArrayAccess
      */
     public function save($validate_datatype=false)
     {
-
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException(__METHOD__ . "Record has already been deleted in database.");
         }
 
-        $data = $this->toArray();
-
+        switch($state) {
+            case self::STATE_NEW:
+                // Means insert
+                $new_record = $this->getTable()->insert($this->toArray(), $validate_datatype);
+                break;
+            case self::STATE_CLEAN:
+            case self::STATE_DIRTY:
+                // Means update
+                $predicate = $this->getRecordPrimaryKeyPredicate();
+                $this->getTable()->update($this->toArray(), $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatype);
+                $new_record = $this->getTable()->findOneBy($predicate);
+                break;
+            default:
+                //@codeCoverageIgnoreStart
+                throw new Exception\LogicException(__METHOD__ . ": Record is not on manageable state.");
+                //@codeCoverageIgnoreEnd
+        }
+        /*
         if ($state == self::STATE_NEW) {
             // Means insert
             $new_record = $this->getTable()->insert($data, $validate_datatype);
@@ -120,9 +135,11 @@ class Record implements ArrayAccess
             throw new Exception\LogicException(__METHOD__ . ": Record is not on manageable state.");
              //@codeCoverageIgnoreEnd
         }
+         
+         */
         $this->setData($new_record->toArray());
-        unset($new_record);
         $this->setState(Record::STATE_CLEAN);
+        unset($new_record);        
         return $this;
     }
 
