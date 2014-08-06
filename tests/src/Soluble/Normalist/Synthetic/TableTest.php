@@ -85,8 +85,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $product = $tm->table('product');
         $record = $product->record(array('invalid_column' => 'value'), $false);
         $this->assertInstanceOf($this->recordclass, $record);
-        
-        
     }
     
 
@@ -179,9 +177,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
     
     public function testFindThrowsPrimaryKeyNotFoundException()
     {
+        
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
-        $table = $this->tableManager->table('test_table_without_pk');        
-        $record = $table->find(array('cool'));
+        $table = $this->tableManager->table('test_table_without_pk');   
+        
+        $record = $table->find('cool0');
     }    
     
 
@@ -907,6 +907,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pk_2', $pks[1]);
         
     }
+    
+    public function testGetPrimaryKeyThrowsMultiplePrimaryKeysFoundException()
+    {
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\MultiplePrimaryKeysFoundException');        
+        $tm = $this->tableManager;
+        $ttwm = $tm->table('test_table_with_multipk');
+        $pks = $ttwm->getPrimaryKey();
+        
+    }    
 
     public function testGetPrefixedTableName()
     {

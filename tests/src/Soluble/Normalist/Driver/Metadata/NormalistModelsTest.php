@@ -79,7 +79,16 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         
         
     }
+/*
+    public function testGetIndexesInformationKeys()
+    {
+        $indexes = $this->metadata->getIndexesInformation('product');
+
+        // Actually nothing
+        
+    }
     
+  */  
     public function testGetUniqueKeys()
     {
         $unique = $this->metadata->getUniqueKeys('test_table_with_unique_key');
@@ -109,14 +118,14 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $primary);
         $this->assertEquals('user_id', $primary);
     }
-    /*
-    public function testGetPrimaryKeyThrowsTableNotFoundException()
+    
+    public function testGetPrimaryKeyThrowsMultiplePrimaryKeyException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
-        $primary = $this->metadata->getPrimaryKey('table_not_found');
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\MultiplePrimaryKeyException');
+        $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
     } 
-     * 
-     */   
+      
+        
 
     public function testgetPrimaryKeyThrowsInvalidArgumentException()
     {
@@ -148,6 +157,15 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetColumnsInformation()
+    {
+        $columns = $this->metadata->getColumnsInformation('user');
+        $this->assertInternalType('array', $columns);
+        $this->assertEquals('varchar', $columns['password']['type']);
+
+    }
+
+    
     
     public function testGetPrimaryKeysThrowsNoPrimaryKeyException()
     {

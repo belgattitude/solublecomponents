@@ -211,7 +211,7 @@ class ImageConverter implements ConverterInterface
                 $imagine = new GdImagine();
                 break;
             default:
-                throw new \Exception("Library '$library' not supported");
+                throw new \Exception("Library '$backend' not supported");
 
         }
         return $imagine;

@@ -695,7 +695,8 @@ class Table
      * Return primary key, if multiple primary keys found will
      * throw an exception
      *
-     * @throws Exception\PrimaryKeyNotFoundException when no pk or multiple pk found
+     * @throws Exception\PrimaryKeyNotFoundException when no pk found
+     * @throws Exception\MultiplePrimaryKeysFoundException when multiple primary keys found
      * @throws Exception\RuntimeException when it cannot determine primary key on table
      *
      * @return int|string
@@ -705,7 +706,7 @@ class Table
         if (!$this->primary_key) {
             $pks = $this->getPrimaryKeys();
             if (count($pks) > 1) {
-                throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ": Error getting unique primary key on table, multiple found on table " . $this->prefixed_table);
+                throw new Exception\MultiplePrimaryKeysFoundException(__METHOD__ . ": Error getting unique primary key on table, multiple found on table " . $this->prefixed_table);
             }
             $this->primary_key = $pks[0];
         }
@@ -839,15 +840,11 @@ class Table
      */
     protected function getPrimaryKeyPredicate($id)
     {
+        
         if (!is_scalar($id) && !is_array($id)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": Id must be scalar or array, type " . gettype($id) . " received");
         }
-
-        try {
-            $keys = $this->getPrimaryKeys();
-        } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
-            throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ": cannot find any primary key (single or multiple) on table '{$this->table}'.");
-        }
+        $keys = $this->getPrimaryKeys();
         if (count($keys) == 1) {
             $pk = $keys[0];
             if (!is_scalar($id)) {

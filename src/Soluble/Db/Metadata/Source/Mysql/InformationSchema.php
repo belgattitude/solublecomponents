@@ -368,7 +368,6 @@ class InformationSchema extends Source\AbstractSource
             order by t.table_name, c.ordinal_position
         ";
 
-
         $this->disableInnoDbStats();
         try {
             $results = $this->adapter->query($query, Adapter::QUERY_MODE_EXECUTE);
@@ -401,8 +400,7 @@ class InformationSchema extends Source\AbstractSource
                        'comment'   => $r['table_comment'],
                        'collation' => $r['table_collation'],
                        'type'      => $r['table_type'],
-                        'engine'    => $r['engine']
-
+                       'engine'    => $r['engine']
                     );
                 }
                 $tables->offsetSet($table_name, $table_def);
@@ -576,10 +574,7 @@ class InformationSchema extends Source\AbstractSource
     protected function loadCacheInformation($table=null)
     {
         $schema = $this->schema;
-
         $this->checkTableArgument($table);
-
-
         if (!in_array($schema, self::$fullyCachedSchemas)) {
             if ($table !== null) {
                   $this->getTableConfig($table);
@@ -588,6 +583,24 @@ class InformationSchema extends Source\AbstractSource
             }
         }
 
+    }
+    
+    /**
+     * Clear local cache information for the current schema
+     * 
+     * @throws Exception\InvalidArgumentException
+     */
+    public function clearCacheInformation()
+    {
+        
+        $schema = $this->schema;
+        if (array_key_exists($schema, self::$localCache)) {
+            unset(self::$localCache[$schema]);
+            if (($key = array_search($schema, self::$fullyCachedSchemas)) !== false) {
+                unset(self::$fullyCachedSchemas[$key]);
+            }
+        }
+        
     }
 
 

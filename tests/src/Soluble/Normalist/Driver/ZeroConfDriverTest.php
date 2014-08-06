@@ -61,8 +61,13 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $schema = $this->adapter->getCurrentSchema();
         $options = array('schema' => $schema); 
         $driver = new ZeroConfDriver($this->adapter, $options);
+        // remove eventual config file
+        $file = $driver->getModelsConfigFile();        
+        unlink($file);        
         $md = $driver->getMetadata();        
-        $file = $driver->getModelsConfigFile();
+        $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
+         
+        
         //var_dump($file);
         
         $driver->clearMetadataCache();
@@ -77,6 +82,30 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);
     }
+    
+    public function testSaveModelDefinitionWithOctDec()
+    {
+        $schema = $this->adapter->getCurrentSchema();
+        $options = array('schema' => $schema, 'permissions' => 666); 
+        $driver = new ZeroConfDriver($this->adapter, $options);
+        $file = $driver->getModelsConfigFile();        
+        unlink($file);
+        
+        $md = $driver->getMetadata();        
+        $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
+
+        $driver->clearMetadataCache();
+        chmod($file, 0000);
+        $catched = false;
+        try {
+            $driver->getMetadata();
+        } catch (\Soluble\Normalist\Driver\Exception\ModelFileNotWritableException $e) {
+            chmod($file, 0666);
+            $catched = true;
+            
+        }
+        $this->assertTrue($catched);
+    }    
     
     
     public function testConstructWithException()

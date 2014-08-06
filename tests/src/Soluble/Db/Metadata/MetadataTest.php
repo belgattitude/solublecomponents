@@ -44,6 +44,13 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Soluble\Db\Metadata\Source\AbstractSource', $source);
     }
 
+    public function testGetDbAdapter()
+    {
+        $adapter = $this->metadata->getDbAdapter();
+        $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $adapter);
+    }
+    
+    
     function testConstructThrowsUnsupportedDriverException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\UnsupportedDriverException');

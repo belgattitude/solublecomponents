@@ -40,6 +40,8 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         
     }
     
+
+    
     public function testConstructThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
@@ -53,6 +55,8 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $adapter = \SolubleTestFactories::getDbAdapter();
         $this->metadata = new InformationSchema($this->adapter, $schema="   ");
     }            
+    
+    
     
 
     public function testGetSchemaConfig()
@@ -148,8 +152,15 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     } 
      * 
      */   
+    
+    public function testInnoDbStat() {
+        
+        $this->metadata->clearCacheInformation();
+        
+    }
+     
 
-    public function testgetPrimaryKeyThrowsInvalidArgumentException()
+    public function testGetPrimaryKeyThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKey(array('cool'));
@@ -157,7 +168,7 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     }
     
 
-    public function testgetPrimaryKeysThrowsInvalidArgumentException()
+    public function testGetPrimaryKeysThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKeys(array('cool'));
