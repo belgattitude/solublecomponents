@@ -36,7 +36,7 @@ class TableManager
 
     /**
      *
-     * @var Zend\Db\Sql\Sql
+     * @var \Zend\Db\Sql\Sql
      */
     protected $sql;
 

@@ -24,7 +24,7 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
-     * @var array
+     * @var array|null
      */
     protected $columns;
 
@@ -132,8 +132,7 @@ class ResultSet extends AbstractResultSet
      */
     public function current()
     {
-
-        $data = $this->zfResultSet->current();
+        $data = (array) $this->zfResultSet->current();
         if ($this->columns !== null) {
 
             $d = new \ArrayObject();
@@ -141,7 +140,7 @@ class ResultSet extends AbstractResultSet
                 foreach($this->columns as $column) {
                     //if (!$data->offsetExists($column)) {
                     if (!array_key_exists($column, $data)) {
-                        $msg = "Column '$column' does not exists";
+                        $msg = __METHOD__ . ": Column '$column' does not exists";
                         throw new Exception\UnknownColumnException($msg);
                     }
                 }
@@ -175,7 +174,7 @@ class ResultSet extends AbstractResultSet
                 $return[] = $row->getArrayCopy();
             } else {
                 throw new Exception\RuntimeException(
-                    'Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
+                    __METHOD__ . ': Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
                 );
             }
         }

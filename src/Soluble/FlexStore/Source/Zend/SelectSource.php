@@ -126,6 +126,8 @@ class SelectSource extends AbstractSource
     /**
      *
      * @param Options $options
+     * @throws Exception\EmptyQueryException
+     * @throws Exception\ErrorException
      * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null)
@@ -138,43 +140,32 @@ class SelectSource extends AbstractSource
 
 
         $sql = new Sql($this->adapter);
-        $sql_string = $sql->getSqlStringForSqlObject($select);
+        $sql_string = (string) $sql->getSqlStringForSqlObject($select);
 
         // In  ZF 2.3.0 an empty query will return SELECT .*
         if (in_array($sql_string, array('', 'SELECT .*'))) {
-            throw new Exception\EmptyQueryException('Query was empty');
+            throw new Exception\EmptyQueryException(__METHOD__ . ': Cannot return data of an empty query');
         }
         $this->query_string = $sql_string;
 
 
         // In case of unbuffered results (default on mysqli) !!!
+        // Seems to not be needed anymore in ZF 2.3+
+        // Uncomment if necessary, see also below is_mysqli
+        /*
+        $is_mysqli = false;
         $driver = $this->adapter->getDriver();
-        if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
+        if (false && $driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
             $stmt_prototype_backup = $driver->getStatementPrototype();
             if (self::$cache_stmt_prototype === null) {
                 // With buffer results
                 self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
             }
             $driver->registerStatementPrototype(self::$cache_stmt_prototype);
-            //$is_mysqli = true;
-        } else {
-            //$is_mysqli = false;
+            $is_mysqli = true;
         }
-/*
- * @todo optimize
-        // Setting result prototype
-        if (self::$cache_result_prototype === null) {
-             self::$cache_result_prototype = new \Soluble\FlexStore\ResultSet\ResultSet();
-        }
-        try {
-        $result_prototype_backup = $this->adapter->getDriver()->getResultPrototype();
-        $this->adapter->getDriver()->registerResultPrototype(self::$cache_result_prototype);
-        } catch(\Exception $e) {
-            var_dump($e->getMessage());
-            die();
-        }
- *
- */
+        */
+        
         try {
 
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
@@ -186,7 +177,8 @@ class SelectSource extends AbstractSource
             $r->setSource($this);
 
             if ($options->hasLimit()) {
-                $row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
+                //$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
+                $row = $this->adapter->createStatement('select FOUND_ROWS() as total_count')->execute()->current();
                 $r->setTotalRows($row['total_count']);
             } else {
 
@@ -199,24 +191,29 @@ class SelectSource extends AbstractSource
             }
 
             // restore result prototype
-     //       $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
+            // $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
 
             // restore statement prototype
+            // seems not needed in zf 2.3
+            /*
             if ($is_mysqli) {
                 $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
             }
+            */
+             
 
         } catch (\Exception $e) {
             // restore result prototype
-       //     $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
+            //$this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
 
+            // seems not needed in zf 2.3
+            /*
             if ($is_mysqli) {
                 $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
             }
-
-            throw $e;
-
-
+            */
+            throw new Exception\ErrorException(__METHOD__ . ': Cannot retrieve data (' . $e->getMessage() . ')');            
+            
         }
         return $r;
     }
@@ -253,7 +250,7 @@ class SelectSource extends AbstractSource
 
     /**
      * 
-     * @return \Soluble\FlexStore\Metadata\Reader\AbstractMetadataReader
+     * @return AbstractMetadataReader
      */
     protected function getDefaultMetadataReader()
     {

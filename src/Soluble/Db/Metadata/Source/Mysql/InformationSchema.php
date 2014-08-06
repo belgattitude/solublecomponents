@@ -374,17 +374,18 @@ class InformationSchema extends Source\AbstractSource
             $results = $this->adapter->query($query, Adapter::QUERY_MODE_EXECUTE);
         } catch (\Exception $e) {
             $this->restoreInnoDbStats();
-            throw new Exception\ErrorException($e->getMessage());
+            throw new Exception\ErrorException(__METHOD__ . ": " . $e->getMessage());
         }
         $this->restoreInnoDbStats();
 
         $references = array();
         $config = new Config(array('tables' => array()), true);
-
+        $tables = $config->offsetGet('tables');
+        
         foreach($results as $r) {
             // Setting table information
             $table_name = $r['table_name'];
-            if (!$config->tables->offsetExists($table_name)) {
+            if (!$tables->offsetExists($table_name)) {
 
                 $table_def = array(
                     'name'          => $table_name,
@@ -404,9 +405,9 @@ class InformationSchema extends Source\AbstractSource
 
                     );
                 }
-                $config->tables->offsetSet($table_name, $table_def);
+                $tables->offsetSet($table_name, $table_def);
             }
-            $table   = $config->tables->offsetGet($table_name);
+            $table   = $tables->offsetGet($table_name);
             $columns = $table->columns;
             $column_name = $r['column_name'];
 

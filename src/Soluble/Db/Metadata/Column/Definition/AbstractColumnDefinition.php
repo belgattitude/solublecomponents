@@ -103,7 +103,7 @@ abstract class AbstractColumnDefinition
      * Set name
      *
      * @param string $name
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setName($name)
     {
@@ -135,7 +135,7 @@ abstract class AbstractColumnDefinition
      * Set table name
      *
      * @param string $tableName
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setTableName($tableName)
     {
@@ -148,7 +148,7 @@ abstract class AbstractColumnDefinition
      * Set schema name
      *
      * @param string $schemaName
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setSchemaName($schemaName)
     {
@@ -178,7 +178,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param int $ordinalPosition to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setOrdinalPosition($ordinalPosition)
     {
@@ -195,8 +195,8 @@ abstract class AbstractColumnDefinition
     }
 
     /**
-     * @param mixed $columnDefault to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @param string $columnDefault to set
+     * @return AbstractColumn
      */
     public function setColumnDefault($columnDefault)
     {
@@ -207,7 +207,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param bool $isNullable to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setIsNullable($isNullable)
     {
@@ -226,7 +226,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param bool $isPrimary to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setIsPrimary($isPrimary)
     {
@@ -252,7 +252,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param string $dataType the $dataType to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setDataType($dataType)
     {
@@ -273,7 +273,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param string $nativeDataType the $dataType to set
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setNativeDataType($nativeDataType)
     {
@@ -285,7 +285,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $alias column alias name
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setAlias($alias)
     {
@@ -304,7 +304,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $tableAlias table alias name
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setTableAlias($tableAlias)
     {
@@ -326,7 +326,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $catalog db catalog
-     * @return \Soluble\Db\Metadata\Column\AbstractColumn
+     * @return AbstractColumn
      */
     public function setCatalog($catalog)
     {

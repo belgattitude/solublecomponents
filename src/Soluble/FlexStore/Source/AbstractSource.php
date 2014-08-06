@@ -6,7 +6,7 @@
 namespace Soluble\FlexStore\Source;
 
 use Soluble\FlexStore\Options;
-use Soluble\FlexStore\Reader\AbstractMetadataReader;
+use Soluble\FlexStore\Metadata\Reader\AbstractMetadataReader;
 use Soluble\FlexStore\Column\ColumnModel;
 
 abstract class AbstractSource implements SourceInterface
@@ -19,7 +19,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      * columns to retrieve when calling getData
-     * @var array
+     * @var array|null
      */
     protected $columns;
 

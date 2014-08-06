@@ -15,7 +15,7 @@ class ResultSet implements Iterator, Countable
 
     /**
      *
-     * @var Zend\Db\ResultSet\ResultSet
+     * @var \Zend\Db\ResultSet\ResultSet
      */
     protected $dataSource;
 
