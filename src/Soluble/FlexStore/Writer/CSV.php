@@ -32,7 +32,11 @@ class CSV extends AbstractWriter
 
 // TODO - TEST database connection charset !!!
 //
+        
         ini_set("default_charset", 'UTF-8');
+        if (version_compare(PHP_VERSION, '5.6.0', '<')) {        
+            iconv_set_encoding('internal_encoding', 'UTF-8');
+        }         
 /*
         $backup_encoding = iconv_get_encoding("internal_encoding");
         iconv_set_encoding("internal_encoding", "UTF-8");
@@ -40,8 +44,6 @@ class CSV extends AbstractWriter
         iconv_set_encoding("output_encoding", "UTF-8");
         mb_internal_encoding("UTF-8");
 */
-
-        iconv_set_encoding("internal_encoding", "UTF-8");
 
 
         $csv = '';
