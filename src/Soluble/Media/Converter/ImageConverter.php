@@ -219,7 +219,7 @@ class ImageConverter implements ConverterInterface
 
     /**
      *
-     * @param \Zend\Cache\Storage\StorageInterface $storage
+     * @param StorageInterface $storage
      * @return \Soluble\Media\Converter\ImageConverter
      */
     public function setCache(StorageInterface $storage)

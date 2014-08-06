@@ -516,8 +516,8 @@ class InformationSchema extends Source\AbstractSource
 
 
         foreach ($references as $referenced_table_name => $refs) {
-            if ($config->tables->offsetExists($referenced_table_name)) {
-                $table = $config->tables[$referenced_table_name];
+            if ($tables->offsetExists($referenced_table_name)) {
+                $table = $tables[$referenced_table_name];
                 $references = $table->references;
                 $references[$referenced_table_name] = $refs;
             }
