@@ -34,7 +34,8 @@ class CSV extends AbstractWriter
 //
         
         ini_set("default_charset", 'UTF-8');
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {        
+               
+        if (PHP_VERSION_ID < 50600) {
             iconv_set_encoding('internal_encoding', 'UTF-8');
         }         
 /*
