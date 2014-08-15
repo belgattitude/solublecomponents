@@ -22,7 +22,7 @@ before_script:
   - sh -c "php -m"
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
-  - composer install --prefer-dist --dev
+  - composer install --no-interaction --prefer-dist --dev
   - mkdir build
   - mkdir -p build/logs
   - wget https://scrutinizer-ci.com/ocular.phar
