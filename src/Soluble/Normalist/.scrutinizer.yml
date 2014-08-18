@@ -1,0 +1,23 @@
+imports:
+    - php
+filter:
+    #paths: [src/*]
+    #excluded_paths: [tests/*, vendor/*, bin/*, docs/*]
+before_commands:
+    - 'composer install --dev --prefer-source'    
+tools:
+    #external_code_coverage: 
+    #    timeout: 600
+    php_cpd:
+        #excluded_dirs: [vendor, tests, bin, docs]    
+    php_pdepend:
+        #excluded_dirs: [vendor, tests, bin, docs]     
+    #php_code_sniffer: true
+    php_loc: 
+        #excluded_dirs: [vendor, tests, bin, docs]        
+    php_cs_fixer:
+        config:
+            level: psr2
+    php_analyzer: true
+    php_hhvm: false
+    php_mess_detector: true
