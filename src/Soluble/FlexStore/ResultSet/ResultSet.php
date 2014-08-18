@@ -139,7 +139,7 @@ class ResultSet extends AbstractResultSet
             if (!$this->columnsChecked) {
                 foreach($this->columns as $column) {
                     //if (!$data->offsetExists($column)) {
-                    if (!array_key_exists($column, $data)) {
+                    if (!array_key_exists($column, (array) $data)) {
                         $msg = __METHOD__ . ": Column '$column' does not exists";
                         throw new Exception\UnknownColumnException($msg);
                     }

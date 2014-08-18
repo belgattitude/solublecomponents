@@ -114,8 +114,8 @@ class Record implements ArrayAccess
                 $this->getTable()->update($this->toArray(), $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatype);
                 $new_record = $this->getTable()->findOneBy($predicate);
                 break;
-            default:
                 //@codeCoverageIgnoreStart
+            default:
                 throw new Exception\LogicException(__METHOD__ . ": Record is not on manageable state.");
                 //@codeCoverageIgnoreEnd
         }
