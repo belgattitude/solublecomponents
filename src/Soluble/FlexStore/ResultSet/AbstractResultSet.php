@@ -5,10 +5,36 @@ use Soluble\FlexStore\ResultSet\ResultSetInterface;
 use Zend\Db\ResultSet\ResultSet as ZFResultSet;
 
 use Iterator;
+use ArrayObject;
 
 
 abstract class AbstractResultSet implements Iterator, ResultSetInterface
 {
+    const TYPE_ARRAYOBJECT = 'arrayobject';
+    const TYPE_ARRAY  = 'array';
+    
+    /**
+     * Return type to use when returning an object from the set
+     *
+     * @var ResultSet::TYPE_ARRAYOBJECT|ResultSet::TYPE_ARRAY
+     */
+    protected $returnType = self::TYPE_ARRAYOBJECT;
+
+    /**
+     * Allowed return types
+     *
+     * @var array
+     */
+    protected $allowedReturnTypes = array(
+        self::TYPE_ARRAYOBJECT,
+        self::TYPE_ARRAY,
+    );
+
+    /**
+     * @var ArrayObject
+     */
+    protected $arrayObjectPrototype = null;
+
 
     /**
      *
@@ -16,9 +42,54 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     protected $zfResultSet;
 
-    public function __construct(ZFResultSet $resultSet)
+    
+    /**
+     * Constructor
+     *
+     * @param ZFResultSet      $resultSet
+     * @param string           $returnType
+     * @param null|ArrayObject $arrayObjectPrototype
+     */
+    public function __construct(ZFResultSet $resultSet, $returnType = self::TYPE_ARRAYOBJECT, $arrayObjectPrototype = null)
     {
         $this->zfResultSet = $resultSet;
+        $this->returnType = (in_array($returnType, array(self::TYPE_ARRAY, self::TYPE_ARRAYOBJECT))) ? $returnType : self::TYPE_ARRAYOBJECT;
+        if ($this->returnType === self::TYPE_ARRAYOBJECT) {
+            $this->setArrayObjectPrototype(($arrayObjectPrototype) ?: new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS));
+        }
+    }
+
+    /**
+     * Set the row object prototype
+     *
+     * @param  ArrayObject $arrayObjectPrototype
+     * @throws Exception\InvalidArgumentException
+     * @return AbstractResultSet
+     */
+    public function setArrayObjectPrototype($arrayObjectPrototype)
+    {
+        $this->zfResultSet->setArrayObjectPrototype($arrayObjectPrototype);
+        return $this;
+    }
+
+    /**
+     * Get the row object prototype
+     *
+     * @return ArrayObject
+     */
+    public function getArrayObjectPrototype()
+    {
+        return $this->zfResultSet->getArrayObjectPrototype();
+    }
+
+    /**
+     * Get the return type to use when returning objects from the set
+     *
+     * @return string
+     */
+    public function getReturnType()
+    {
+        return $this->zfResultSet->getReturnType();
     }
 
 
