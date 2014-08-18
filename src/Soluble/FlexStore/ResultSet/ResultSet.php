@@ -132,7 +132,7 @@ class ResultSet extends AbstractResultSet
      */
     public function current()
     {
-        $data = (array) $this->zfResultSet->current();
+        $data = $this->zfResultSet->current();
         if ($this->columns !== null) {
 
             $d = new \ArrayObject();
@@ -149,7 +149,12 @@ class ResultSet extends AbstractResultSet
             foreach($this->columns as $column) {
                 $d[$column] = $data[$column];
             }
-            $data = $d;
+            
+            if ($this->returnType === self::TYPE_ARRAYOBJECT) {
+                $data = $d;
+            } else {
+                $data = (array) $d; 
+            }
 
         }
         return $data;
