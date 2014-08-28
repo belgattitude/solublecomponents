@@ -108,6 +108,7 @@ class ImageConverter implements ConverterInterface
         switch ($format) {
             case 'jpg' :
                 $content_type = 'image/jpeg';
+                break;
             case 'png':
                 $content_type = 'image/png';
                 break;
