@@ -31,7 +31,7 @@ before_script:
   - sh -c "pwd"
   - sh -c "which zcat"
   - sh -c "which php"
-  - sh -c "php -m"
+  - if [[ $HHVM == false ]] ; then sh -c "php -m" ; fi 
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --no-interaction --prefer-dist --dev
