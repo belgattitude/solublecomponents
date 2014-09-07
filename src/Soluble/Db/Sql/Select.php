@@ -19,6 +19,20 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      */
     protected $adapter;
 
+    /**
+     * Constructor
+     *
+     * @param  null|string|array|TableIdentifier $table
+     * @param Adapter $adapter
+     */
+    public function __construct($table = null, Adapter $adapter=null)
+    {
+
+        if ($adapter) {
+            $this->setDbAdapter($adapter);
+        }
+        parent::__construct($table);
+    }    
 
 
     /**
