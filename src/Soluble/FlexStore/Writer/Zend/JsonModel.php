@@ -4,7 +4,7 @@ use Zend\View\Model\JsonModel as ZendJsonModel;
 use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Writer\AbstractWriter;
 use Soluble\FlexStore\Writer\SendHeaders;
-
+use Soluble\FlexStore\Source\QueryableSourceInterface;
 
 class JsonModel extends AbstractWriter
 {
@@ -25,8 +25,12 @@ class JsonModel extends AbstractWriter
         );
 
         if ($this->options['debug']) {
-            $d['query'] = $data->getSource()->getQueryString();
+            $source = $data->getSource();
+            if ($source instanceof QueryableSourceInterface) {
+                $d['query'] = $source->getQueryString();
+            }
         }
+
         $json = new ZendJsonModel($d);
         return $json;
     }

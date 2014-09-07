@@ -3,6 +3,7 @@ namespace Soluble\FlexStore\Writer\Zend;
 use Soluble\FlexStore\Writer\AbstractWriter;
 use Zend\Json\Encoder;
 use Soluble\FlexStore\Writer\SendHeaders;
+use Soluble\FlexStore\Source\QueryableSourceInterface;
 
 class Json extends AbstractWriter
 {
@@ -22,7 +23,10 @@ class Json extends AbstractWriter
         );
 
         if ($this->options['debug']) {
-            $d['query'] = $data->getSource()->getQueryString();
+            $source = $data->getSource();
+            if ($source instanceof QueryableSourceInterface) {
+                $d['query'] = $source->getQueryString();
+            }
         }
         return Encoder::encode($d);
     }

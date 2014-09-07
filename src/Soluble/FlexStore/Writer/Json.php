@@ -1,6 +1,7 @@
 <?php
 namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Writer\AbstractWriter;
+use Soluble\FlexStore\Source\QueryableSourceInterface;
 
 
 class Json extends AbstractWriter
@@ -22,8 +23,12 @@ class Json extends AbstractWriter
         );
 
         if ($this->options['debug']) {
-            $d['query'] = $data->getSource()->getQueryString();
+            $source = $data->getSource();
+            if ($source instanceof QueryableSourceInterface) {
+                $d['query'] = $source->getQueryString();
+            }
         }
+
         return json_encode($d);
     }
 

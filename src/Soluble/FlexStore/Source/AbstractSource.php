@@ -104,11 +104,7 @@ abstract class AbstractSource implements SourceInterface
         return $this->identifier;
     }
 
-    /**
-     *
-     * @return string
-     */
-    abstract public function getQueryString();
+
 
 
     /**

@@ -8,6 +8,7 @@
 namespace Soluble\FlexStore\Source\Zend;
 
 use Soluble\FlexStore\Source\AbstractSource;
+use Soluble\FlexStore\Source\QueryableSourceInterface;
 
 use Soluble\FlexStore\ResultSet\ResultSet;
 use Soluble\FlexStore\Exception;
@@ -22,7 +23,7 @@ use Soluble\FlexStore\Column\ColumnModel;
 use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
 use Soluble\FlexStore\Metadata\Reader as MetadataReader;
 
-class SelectSource extends AbstractSource
+class SelectSource extends AbstractSource implements QueryableSourceInterface
 {
 
     /**
@@ -276,7 +277,7 @@ class SelectSource extends AbstractSource
         if ($this->query_string == '') {
             throw new Exception\InvalidUsageException(__METHOD__ . ": Invalid usage, getQueryString must be called after data has been loaded (performance reason).");
         }
-        return $this->query_string;
+        return str_replace("\n", ' ', $this->query_string);
     }
 
 
