@@ -32,6 +32,7 @@ class LibXLWriter extends AbstractWriter
     /**
      * @var array
      */
+    /*
     private static $typesMap = array(
 
         Column\Type::TYPE_INTEGER	=> 'Definition\IntegerColumn',
@@ -44,7 +45,7 @@ class LibXLWriter extends AbstractWriter
         Column\Type::TYPE_TIME		=> 'Definition\TimeColumn',
         Column\Type::TYPE_FLOAT     => 'Definition\FloatColumn',
 
-    );    
+    );*/    
 
     /**
      * 
@@ -193,7 +194,7 @@ class LibXLWriter extends AbstractWriter
             $col_idx = 0;
             $row_idx = $idx + 1;
             foreach ($columns as $name) {
-                $definition = $cm->getColumnDefinition($name);
+                //$definition = $cm->getColumnDefinition($name);
                 $value = $row[$name];
                 if (array_key_exists($name, $formats)) {
                     $format = $formats[$name];
