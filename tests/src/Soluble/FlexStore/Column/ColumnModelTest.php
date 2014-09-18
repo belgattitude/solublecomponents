@@ -59,10 +59,75 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $columnModel = $this->columnModel;
         $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
-        $this->assertInstanceOf('\ArrayObject', $columns);
+        $this->assertInternalType('array', $columns);
     }
     
-    public function testGetColumnDefinition()
+    public function testExclusion()
+    {
+        $select = new \Zend\Db\Sql\Select();        
+        $select->from('product');
+        $params = array(
+                'adapter' => $this->adapter,
+                'select'  => $select
+            );
+        $source = new SelectSource($params);        
+        $cm = $source->getColumnModel();
+        
+        $excluded = array('product_id', 'legacy_mapping');
+        $cm->setExcluded($excluded);
+        $this->assertEquals($excluded, $cm->getExcluded());
+        
+    }
+  
+    public function testIncludeOnly()
+    {
+        $select = new \Zend\Db\Sql\Select();        
+        $select->from('user')->columns(array('user_id', 'email', 'displayName', 'username', 'password'));
+        $params = array(
+                'adapter' => $this->adapter,
+                'select'  => $select
+            );
+        $source = new SelectSource($params);        
+        $cm = $source->getColumnModel();
+        
+        $include_only = array('user_id', 'email');
+        $cm->setIncludeOnly($include_only);
+
+        $this->assertEquals($include_only, $cm->getColumns());
+        
+    }
+      
+    
+    public function testExclusionRetrieval()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('user')->columns(array('user_id', 'email', 'displayname', 'username', 'password'));
+        $params = array(
+                'adapter' => $this->adapter,
+                'select'  => $select
+            );
+
+        $source = new SelectSource($params);        
+        
+        $excluded = array('user_id', 'email');
+        $cm = $source->getColumnModel();
+        $cm->setExcluded($excluded);
+        $this->assertEquals($excluded, $cm->getExcluded());
+        
+        $data = $source->getData();
+        $this->isInstanceOf('Soluble\FlexStore\ResultSet\ResultSet');
+
+        $d = $data->toArray();
+        $first = array_keys($d[0]);
+
+        $this->assertEquals(3, count($first));
+        $this->assertEquals('displayname', array_shift($first));
+        $this->assertEquals('username', array_shift($first));
+        
+    }
+
+    
+    public function testGetColumnMeta()
     {
 
         $select = new \Zend\Db\Sql\Select();        
@@ -74,7 +139,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $source = new SelectSource($params);        
         $columnModel = $source->getColumnModel();
-        
         
         
         $charColumn = $columnModel->getColumnDefinition('test_char_10');
@@ -107,8 +171,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($col->isDate());
         $this->assertTrue($col->isDatetime());
         $this->assertFalse($col->isNumeric());
-        
-        
         
         
         

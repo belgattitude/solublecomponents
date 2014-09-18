@@ -93,37 +93,12 @@ class SelectSourceTest extends \PHPUnit_Framework_TestCase
         $columnModel = $this->source->getColumnModel();
         $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
-        $this->assertInstanceOf('\ArrayObject', $columns);
+        $this->assertInternalType('array', $columns);
         
         
     }
     
-    public function testSetColumns()
-    {
-        $columns = array('email', 'user_id');
-        $this->source->setColumns($columns);
-        $data = $this->source->getData();
-        $this->isInstanceOf('Soluble\FlexStore\ResultSet\ResultSet');
 
-        $d = $data->toArray();
-        $first = array_keys($d[0]);
-
-        $this->assertEquals(array_shift($columns), array_shift($first));
-        $this->assertEquals(array_shift($columns), array_shift($first));
-    }
-
-    /**
-     * @covers Soluble\FlexStore\Source\Zend\SelectSource::getData
-     * @covers Soluble\FlexStore\Source\AbstractSource::setColumns
-     */
-    public function testSetColumnsThrowsInvalidColumnsException()
-    {
-        $columns = array('email', 'ur_id');
-        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\UnknownColumnException');
-        $this->source->setColumns($columns);
-        $data = $this->source->getData();
-        $d = $data->toArray();
-    }
     
     public function testCustomQuery()
     {

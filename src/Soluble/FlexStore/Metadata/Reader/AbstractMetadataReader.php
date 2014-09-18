@@ -26,16 +26,7 @@ abstract class AbstractMetadataReader
         return $this;
     }
 
-    /**
-     *
-     * @param string $sql
-     * @return ColumnModel
-     */
-    public function getColumnModel($sql)
-    {
-        $columns = $this->getColumnsMetadata($sql);
-        return new ColumnModel($columns);
-    }
+
 
     /**
      * Return
@@ -47,22 +38,16 @@ abstract class AbstractMetadataReader
      */
     public function getColumnsMetadata($sql)
     {
-
-
         if ($this->cache_active) {
             $cache_key = md5($sql);
-
             if (!array_key_exists($cache_key, static::$metadata_cache)) {
                 $md = $this->readColumnsMetadata($sql);
                 static::$metadata_cache[$cache_key] = $md;
             }
-
             return static::$metadata_cache[$cache_key];
-
         } else {
             return $this->readColumnsMetadata($sql);
         }
-
     }
 
 

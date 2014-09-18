@@ -18,10 +18,10 @@ abstract class AbstractSource implements SourceInterface
 
 
     /**
-     * columns to retrieve when calling getData
-     * @var array|null
+     * Column model
+     * @var ColumnModel
      */
-    protected $columns;
+    protected $columnModel;
 
     /**
      * @var string|int
@@ -36,11 +36,7 @@ abstract class AbstractSource implements SourceInterface
     protected $metadataReader;
 
 
-    /**
-     *
-     * @param array $columns
-     * @return AbstractSource
-     */
+/*
     public function setColumns(array $columns)
     {
         $this->columns = $columns;
@@ -48,16 +44,12 @@ abstract class AbstractSource implements SourceInterface
     }
 
 
-    /**
-     *
-     * @return AbstractSource
-     */
     public function unsetColumns()
     {
         $this->columns = null;
         return $this;
     }
-
+*/
     /**
      *
      * @return Options
@@ -105,12 +97,36 @@ abstract class AbstractSource implements SourceInterface
     }
 
 
+    /**
+     * Return column model
+     * 
+     * @return ColumnModel
+     */
+    public function getColumnModel()
+    {
+        if ($this->columnModel === null) {
+            $this->loadDefaultColumnModel();
+        }
+        return $this->columnModel;
+    }
+    
+    /**
+     * Set column model associated with the datasource
+     * 
+     * @param ColumnModel $columnModel
+     * @return AbstractSource
+     */
+    public function setColumnModel(ColumnModel $columnModel)
+    {
+        $this->columnModel = $columnModel;
+        return $this;
+    }
 
 
     /**
-     * @return ColumnModel
+     * Default column model initialization
      */
-    abstract public function getColumnModel();
+    abstract public function loadDefaultColumnModel();
 
 
     /**

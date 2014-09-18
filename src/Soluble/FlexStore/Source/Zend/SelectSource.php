@@ -123,6 +123,8 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         return $select;
     }
 
+    
+    
 
     /**
      *
@@ -138,7 +140,6 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         }
 
         $select = $this->assignOptions(clone $this->select, $options);
-
 
         $sql = new Sql($this->adapter);
         $sql_string = (string) $sql->getSqlStringForSqlObject($select);
@@ -166,7 +167,11 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             $is_mysqli = true;
         }
         */
-        
+        $cm = $this->getColumnModel();
+        //$cm->setExcluded(array('user_id'));
+        $this->columns = $cm->getColumns();
+        //var_dump($this->columns);
+        //die();
         try {
 
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
@@ -187,7 +192,10 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             }
 
 
-            if ($this->columns !== null) {
+            //if (count($this->getColumnModel()->getExcluded()) > 0) {
+            if (true) {
+                
+                //$r->limitColumns($this->getColumnModel()->getColumns());
                 $r->limitColumns($this->columns);
             }
 
@@ -221,18 +229,26 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
 
 
     /**
-     * @return ColumnModel
+     * 
      */
-    public function getColumnModel()
+    public function loadDefaultColumnModel()
     {
-        if ($this->columnModel === null) {
-            $sql = new Sql($this->adapter);
-            $select = clone $this->select;
-            $select->limit(0);
-            $sql_string = $sql->getSqlStringForSqlObject($select);
-            $this->columnModel = $this->getMetadataReader()->getColumnModel($sql_string);
-        }
-        return $this->columnModel;
+        
+        $sql = new Sql($this->adapter);
+        $select = clone $this->select;
+        $select->limit(0);
+        $sql_string = $sql->getSqlStringForSqlObject($select);
+        
+        $columns = $this->getMetadataReader()->getColumnsMetadata($sql_string);
+        $columnModel = new ColumnModel();
+        foreach ($columns as $column => $meta) {
+            $config = array(
+                'definition' => $meta
+            );
+            $columnModel->addColumn($column, $config);
+        }    
+        $this->columnModel = $columnModel;
+        
     }
 
 
