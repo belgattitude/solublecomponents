@@ -201,16 +201,5 @@ class CSVTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('alpha\; beta\;', $data);
 
     }
-    /**
-     * @covers Soluble\FlexStore\Writer\CSV::send
-     * @todo   Implement testSend().
-     */
-    public function testSend()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 
 }

@@ -18,7 +18,7 @@ class LibXLWriter extends AbstractWriter
 
     /**
      *
-     * @var string
+     * @var array
      */
     protected static $default_license;
     

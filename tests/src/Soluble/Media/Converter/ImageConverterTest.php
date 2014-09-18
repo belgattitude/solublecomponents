@@ -70,40 +70,5 @@ class ImageConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\Media\Converter\ImageConverter', $ret);
     }
 
-    /**
-     * @covers Soluble\Media\Converter\ImageConverter::getThumbnail
-     * @todo   Implement testGetThumbnail().
-     */
-    public function testGetThumbnail()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\Media\Converter\ImageConverter::setCache
-     * @todo   Implement testSetCache().
-     */
-    public function testSetCache()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\Media\Converter\ImageConverter::unsetCache
-     * @todo   Implement testUnsetCache().
-     */
-    public function testUnsetCache()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
 
 }

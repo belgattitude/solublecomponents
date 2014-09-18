@@ -45,30 +45,6 @@ class SelectTest extends \PHPUnit_Framework_TestCase
     
     
 
-    /**
-     * @covers Soluble\Db\Sql\Select::orWhere
-     * @todo   Implement testOrWhere().
-     */
-    public function testOrWhere()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Soluble\Db\Sql\Select::addColumns
-     * @todo   Implement testAddColumns().
-     */
-    public function testAddColumns()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
     public function testPrefixedColumns()
     {
         $s = $this->select->setDbAdapter($this->adapter);
