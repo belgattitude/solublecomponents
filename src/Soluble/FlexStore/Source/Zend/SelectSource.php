@@ -167,6 +167,17 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             $is_mysqli = true;
         }
         */
+       
+        
+        /**
+         * Check whether there's a column model
+         */
+        $limit_columns = false;
+        if ($this->columnModel !== null) {
+            // TODO: optimize when the column model haven't been modified.
+            $limit_columns = $this->columnModel->getColumns();
+        } 
+        
         $cm = $this->getColumnModel();
         //$cm->setExcluded(array('user_id'));
         $this->columns = $cm->getColumns();
@@ -192,12 +203,9 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             }
 
 
-            //if (count($this->getColumnModel()->getExcluded()) > 0) {
-            if (true) {
-                
-                //$r->limitColumns($this->getColumnModel()->getColumns());
-                $r->limitColumns($this->columns);
-            }
+            
+            if ($limit_columns) $r->limitColumns($limit_columns);
+            
 
             // restore result prototype
             // $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
