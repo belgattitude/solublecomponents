@@ -106,10 +106,8 @@ class SolubleTestFactories
     public static function getCacheStorage(array $storageFactoryOptions=null)
     {
             if ($storageFactoryOptions == null) {
-                $cache_dir = $_SERVER['PHPUNIT_CACHE_DIR'];
-                if (!preg_match('/^\//', $cache_dir)) {
-                    $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . $cache_dir;
-                }
+                
+                $cache_dir = self::getCachePath();
 
                 $cache_config = array();
                 $cache_config['adapter'] = 'filesystem';
@@ -131,6 +129,20 @@ class SolubleTestFactories
             }
             return self::$_cache_instances[$key];
 
+    }
+    
+    /**
+     * @return string
+     */
+    
+    static public function getCachePath()
+    {
+        
+        $cache_dir = $_SERVER['PHPUNIT_CACHE_DIR'];
+        if (!preg_match('/^\//', $cache_dir)) {
+            $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . $cache_dir;
+        }
+        return $cache_dir;
     }
 
 }

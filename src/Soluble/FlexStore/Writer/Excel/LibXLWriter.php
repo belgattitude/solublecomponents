@@ -2,26 +2,31 @@
 namespace Soluble\FlexStore\Writer\Excel;
 use Soluble\FlexStore\Writer\AbstractWriter;
 
+use Soluble\Spreadsheet\Library\LibXL;
+
 use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\Db\Metadata\Column;
 use ExcelBook;
 use ExcelFormat;
 
+
+
 class LibXLWriter extends AbstractWriter
 {
     protected $column_width_multiplier = 1.7;
 
-    /**
-     *
-     * @var string
-     */
-    protected static $license_name;
 
     /**
      *
      * @var string
      */
-    protected static $license_key;
+    protected static $default_license;
+    
+    /**
+     *
+     * @var ExcelBook
+     */
+    protected $excelBook;
     
     
     /**
@@ -41,6 +46,29 @@ class LibXLWriter extends AbstractWriter
 
     );    
 
+    /**
+     * 
+     * @param string $locale
+     * @param string $file_format
+     * @return ExcelBook
+     * @throws Exception\RuntimeException
+     */
+    public function getExcelBook($locale='UTF-8', $file_format=LibXL::FILE_FORMAT_XLSX)
+    {
+        if (!extension_loaded('excel')) {
+            throw new Exception\RuntimeException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
+        }
+        
+        if ($this->excelBook === null) {
+            $libXL = new LibXL();
+            if (is_array(self::$default_license)) {
+                $libXL->setLicense(self::$default_license);
+            }
+            $this->excelBook = $libXL->getExcelBook($locale, $file_format);
+        }
+        return $this->excelBook;
+    }
+    
 
     /**
      *
@@ -48,12 +76,7 @@ class LibXLWriter extends AbstractWriter
      */
     public function getData()
     {
-        if (!extension_loaded('excel')) {
-            throw new Exception\RuntimeException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
-        }
-        $license_name = self::$license_name;
-        $license_key = self::$license_key;
-        $book = new ExcelBook($license_name, $license_key, $excel2007=true);
+        $book = $this->getExcelBook();
         $this->generateExcel($book);
         //$book->setLocale($locale);
         $filename = tempnam('/tmp', 'libxl');
@@ -231,11 +254,10 @@ class LibXLWriter extends AbstractWriter
      * @param string $license_name
      * @param string $license_key
      */
-    public static function setLicense($license_name, $license_key)
+    public static function setDefaultLicense($license_name, $license_key)
     {
 
-        self::$license_name = $license_name;
-        self::$license_key = $license_key;
+        self::$default_license = array('name' => $license_name, 'key' => $license_key);
     }
 
 }

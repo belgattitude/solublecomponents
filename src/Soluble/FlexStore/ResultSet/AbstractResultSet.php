@@ -29,6 +29,8 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
         self::TYPE_ARRAYOBJECT,
         self::TYPE_ARRAY,
     );
+    
+ 
 
     /**
      * @var ArrayObject
@@ -204,8 +206,5 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     {
         return $this->zfResultSet->toArray();
     }
-
-
-
 
 }

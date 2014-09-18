@@ -188,7 +188,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
 
 
             if ($this->columns !== null) {
-                $r->setColumns($this->columns);
+                $r->limitColumns($this->columns);
             }
 
             // restore result prototype

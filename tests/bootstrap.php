@@ -14,4 +14,5 @@ $loader->register();
 
 // Set licence key
 $libxl_lic = \SolubleTestFactories::getLibXLLicense();
-\Soluble\FlexStore\Writer\Excel\LibXLWriter::setLicense($libxl_lic['name'], $libxl_lic['key']);
+
+\Soluble\Spreadsheet\Library\LibXL::setDefaultLicense($libxl_lic);

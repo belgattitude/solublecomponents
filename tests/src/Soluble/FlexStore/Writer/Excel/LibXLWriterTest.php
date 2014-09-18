@@ -3,8 +3,12 @@
 namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Source\Zend\SelectSource;
-use Zend\Db\Sql\Select;
+use Soluble\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
+use Soluble\Spreadsheet\Library\LibXL;
+
+use PHPExcel_IOFactory;
+use PHPExcel;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,14 +43,15 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             
         } else {
         
-        
                 $this->adapter = \SolubleTestFactories::getDbAdapter();
-                $select = new Select();
+                $select = new Select($this->adapter);
                 $select->from(array('p' => 'product'), array())
                         ->join(array('ppl' => 'product_pricelist'), 'ppl.product_id = p.product_id', array(), Select::JOIN_LEFT)
+                        ->join(array('p18' => 'product_translation'), new Expression("p.product_id = p18.product_id and p18.lang = 'fr'"), array(), Select::JOIN_LEFT)
                         ->limit(100);
                 
                 $select->columns(array(
+                   'test_chars' => new Expression('"french accents éàùêûçâµè and chinese 请收藏我们的网址"'),
                    'product_id' => new Expression('p.product_id'),
                    'brand_id'   => new Expression('p.brand_id'),
                    'reference'  => new Expression('p.reference'),
@@ -58,25 +63,27 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
                    'price'          => new Expression('ppl.price'),
                    'discount_1'     => new Expression('ppl.discount_1'),
                    'promo_start_at' => new Expression('ppl.promo_start_at'),
-                   'promo_end_at'   => new Expression('cast(NOW() as date)')
+                   'promo_end_at'   => new Expression('cast(NOW() as date)'),
+                   'title_fr'       => new Expression('p18.title'),
 
                 ));
                 
+
                 
                 $params = array(
                     'adapter' => $this->adapter,
                     'select' => $select
                 );
                 
-
                 $source = new SelectSource($params);
+                
                 $source->getColumnModel();
                 $cm = $source->getColumnModel();
                 
                 
-                
                 $this->xlsWriter = new LibXLWriter();
                 $this->xlsWriter->setSource($source);
+                
         }
     }
 
@@ -95,7 +102,28 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     {
         //$data = $this->xlsWriter->getData();
         //$this->assertInternalType('string', $data);
-        $this->xlsWriter->save('/tmp/a.xlsx');
+        $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test1.xlsx';
+        $this->xlsWriter->save($output_file);
+        
+        $this->assertFileExists($output_file);
+        $filesize = filesize($output_file);
+        $this->assertGreaterThan(0, $filesize);
+        
+        // test Output
+        
+        $excelReader = PHPExcel_IOFactory::createReader('Excel2007');
+        $excelFile = $excelReader->load($output_file);
+        $excelFile->setActiveSheetIndex(0);  
+        $sheet = $excelFile->getActiveSheet();
+        $a1 = $sheet->getCellByColumnAndRow('A', '1')->getFormattedValue();
+
+        //var_dump($a1); 
+        $arr = $sheet->toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = true);
+        $this->assertEquals('french accents éàùêûçâµè and chinese 请收藏我们的网址', $arr[2]['A']);
+        $this->assertEquals(113, $arr[5]['B']);
+        
+        
+        
         
     }
 

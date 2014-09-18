@@ -66,10 +66,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * @covers Soluble\FlexStore\ResultSet\ResultSet::setColumns
-     */
-    public function testSetColumns()
+    public function testLimitColumns()
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
@@ -81,7 +78,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 
         $columns = array('legacy_mapping', 'brand_id');
         $resultset = $this->store->getSource()->getData();
-        $resultset->setColumns($columns);
+        $resultset->limitColumns($columns);
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
 
@@ -98,7 +95,105 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array_shift($columns), array_shift($test));
         $this->assertEquals(array_shift($columns), array_shift($test));
     }
+    
+    public function testLimitColumnsWithSpaces()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
 
+        $columns = array('legacy_mapping ', ' brand_id');
+        $resultset = $this->store->getSource()->getData();
+        $resultset->limitColumns($columns);
+        $arr = $resultset->toArray();
+        $this->assertInternalType('array', $arr);
+
+        $first = $arr[0];
+        foreach($columns as $column) {
+            $this->assertArrayHasKey(trim($column), $first);
+        }
+    }    
+
+    public function testLimitColumnsThrowsInvalidArgumentException()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\InvalidArgumentException');
+        // Empty array
+        $columns = array();
+        $resultset = $store->getSource()->getData();
+        $resultset->limitColumns($columns);
+
+    }
+
+    public function testLimitColumnsThrowsDuplicateColumnException()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\DuplicateColumnException');
+        // Empty array
+        $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
+        $resultset = $store->getSource()->getData();
+        $resultset->limitColumns($columns);
+    }    
+
+    public function testLimitColumnsDoesNotThrowsDuplicateColumnException()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        
+        // Empty array
+        $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
+        $resultset = $store->getSource()->getData();
+        $resultset->limitColumns($columns, $ignore_duplicate_columns=true);
+        $arr = $resultset->toArray();
+        $this->assertInternalType('array', $arr);
+
+        $first = $arr[0];
+        foreach(array_unique($columns) as $column) {
+            $this->assertArrayHasKey(trim($column), $first);
+        }
+        
+    }       
+    
+    public function testCurrentThrowsUnknownColumnException()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\UnknownColumnException');
+        // Empty array
+        $columns = array('legacy_mapping', 'columns_that_soes_not_exists');
+        $resultset = $store->getSource()->getData();
+        $resultset->limitColumns($columns);
+        $row = $resultset->current();
+
+    }    
+    
+    
 
     /**
      * @covers Soluble\FlexStore\ResultSet\ResultSet::getPaginator

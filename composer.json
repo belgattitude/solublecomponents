@@ -37,7 +37,8 @@
         "adodb/adodb-php": "dev-master",
         "satooshi/php-coveralls": "0.6.*",	
 		"sami/sami": "2.*",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "phpoffice/phpexcel": "1.8.0"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",
