@@ -187,6 +187,10 @@ class LibXLWriter extends AbstractWriter
 
         $sheet->setRowHeight(0, 30);
 
+        // Fix the header
+        $split = $sheet->splitSheet(1, 0);
+        
+
         // Fill document content
         $data = $this->source->getData();
 
