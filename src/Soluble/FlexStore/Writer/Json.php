@@ -2,7 +2,7 @@
 namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Writer\AbstractWriter;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
-
+use DateTime;
 
 class Json extends AbstractWriter
 {
@@ -13,12 +13,16 @@ class Json extends AbstractWriter
     public function getData()
     {
         $data = $this->source->getData();
+        $now = new DateTime();
+        
         $d = array(
             'success'	 => true,
+            'timestamp'  => $now->format(DateTime::W3C),
             'total'		 => $data->getTotalRows(),
             'start'		 => $data->getSource()->getOptions()->getOffset(),
             'limit'		 => $data->getSource()->getOptions()->getLimit(),
-            'data'		 => $data->toArray()
+            'data'		 => $data->toArray(),
+            
 
         );
 

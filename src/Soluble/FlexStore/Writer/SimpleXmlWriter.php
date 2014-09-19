@@ -4,7 +4,7 @@ use Soluble\FlexStore\Writer\AbstractWriter;
 use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Writer\SendHeaders;
 
-
+use DateTime;
 use Traversable;
 
 
@@ -79,12 +79,15 @@ class SimpleXmlWriter extends AbstractWriter
         $encoding = $this->options['encoding'];
         $xml = new \SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");
 
+        $now = new DateTime();
         $d = array(
             'success'	 => true,
+            'timestamp'  => $now->format(DateTime::W3C),
             'total'		 => $data->getTotalRows(),
             'start'		 => $data->getSource()->getOptions()->getOffset(),
             'limit'		 => $data->getSource()->getOptions()->getLimit(),
-            'data'		 => $data->toArray()
+            'data'		 => $data->toArray(),
+            
 
         );
 
