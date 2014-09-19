@@ -93,7 +93,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $sort = array('email', 'user_id');
         $cm->sortColumns($sort);
         
-        $this->assertEquals(array('email', 'user_id', 'password', 'username'), $columns);
+        $this->assertEquals(array('email', 'user_id', 'password', 'username'), $cm->getColumns());
         
         
     }
