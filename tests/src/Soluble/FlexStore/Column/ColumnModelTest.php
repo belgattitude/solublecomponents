@@ -78,6 +78,25 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($excluded, $cm->getExcluded());
         
     }
+    
+    public function testSortColumns()
+    {
+        $select = new \Zend\Db\Sql\Select();        
+        $select->from('user')->columns(array('user_id', 'password', 'email', 'username'));
+        $params = array(
+                'adapter' => $this->adapter,
+                'select'  => $select
+            );
+        $source = new SelectSource($params);        
+        $cm = $source->getColumnModel();
+        
+        $sort = array('email', 'user_id');
+        $cm->sortColumns($sort);
+        
+        $this->assertEquals(array('email', 'user_id', 'password', 'username'), $columns);
+        
+        
+    }
   
     public function testIncludeOnly()
     {
@@ -90,7 +109,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $source = new SelectSource($params);        
         $cm = $source->getColumnModel();
         
-        $include_only = array('user_id', 'email');
+        $include_only = array('email', 'user_id');
         $cm->setIncludeOnly($include_only);
 
         $this->assertEquals($include_only, $cm->getColumns());
