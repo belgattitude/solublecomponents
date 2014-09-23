@@ -8,11 +8,11 @@ php:
 matrix:
     include:
         - php: 5.3
-          env: EXTERNAL=false MYSQLDRIVER=mysqli
+          env: EXTERNAL=false ADAPTER=mysqli
         - php: 5.5
-          env: EXTERNAL=true MYSQLDRIVER=mysqli
+          env: EXTERNAL=true ADAPTER=mysqli
         - php: 5.5
-          env: EXTERNAL=false MYSQLDRIVER=pdo_mysql          
+          env: EXTERNAL=false ADAPTER=pdo_mysql          
     allow_failures:
         - php: hhvm
 
@@ -21,8 +21,8 @@ env:
         - DB=mysql
         - EXTERNAL=false
     matrix:
-        - MYSQLDRIVER=mysqli
-        - MYSQLDRIVER=pdo_mysql
+        - ADAPTER=mysqli
+        - ADAPTER=pdo_mysql
 
 before_script:
   - if [[ $HHVM == false ]] ; then pecl install imagick ; fi 
@@ -40,18 +40,18 @@ before_script:
   - composer install --no-interaction --prefer-dist --dev
   - mkdir build
   - mkdir -p build/logs
-  - wget https://scrutinizer-ci.com/ocular.phar
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: 
     
-  - phpunit -v --configuration tests/config/phpunit.$MYSQLDRIVER.travis.xml 
+  - phpunit -v --configuration tests/config/phpunit.$ADAPTER.travis.xml 
   #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 50
 
 after_script:
   - ls build/logs  
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  - if [[ $EXTERNAL == true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $EXTERNAL == true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
   - sh -c "which java"
   - sh -c "java -version"
   #- ./bin/coveralls -c=./coveralls.yml -v 
