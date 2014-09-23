@@ -1,17 +1,18 @@
 language: php
 
 php:
-  - 5.3  
   - 5.4
   - 5.6
   - hhvm  
   
 matrix:
     include:
+        - php: 5.3
+          env: EXTERNAL=false MYSQLDRIVER=mysqli
         - php: 5.5
-          env: EXTERNAL=true MYSQLIDRIVER=mysqli
+          env: EXTERNAL=true MYSQLDRIVER=mysqli
         - php: 5.5
-          env: EXTERNAL=false MYSQLIDRIVER=pdo_mysql          
+          env: EXTERNAL=false MYSQLDRIVER=pdo_mysql          
     allow_failures:
         - php: hhvm
 
