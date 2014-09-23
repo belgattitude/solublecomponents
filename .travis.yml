@@ -3,15 +3,15 @@ language: php
 php:
   - 5.3  
   - 5.4
-  - 5.5
   - 5.6
   - hhvm  
   
-
 matrix:
     include:
         - php: 5.5
-          env: DB=mysql EXTERNAL=true
+          env: EXTERNAL=true MYSQLIDRIVER=mysqli
+        - php: 5.5
+          env: EXTERNAL=false MYSQLIDRIVER=pdo_mysql          
     allow_failures:
         - php: hhvm
 
