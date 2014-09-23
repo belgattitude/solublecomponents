@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="../../tests/bootstrap.php"
+>
+
+    <php>
+
+
+        <server name="MYSQL_DRIVER" value="PDO_Mysql" />
+        <server name="MYSQL_HOSTNAME" value="localhost" />
+        <server name="MYSQL_USERNAME" value="root" />
+		<server name="MYSQL_PASSWORD" value="" />
+		<server name="MYSQL_DATABASE" value="phpunit_soluble_test_db" />
+
+		<!-- if you don't start with a /, it will be relative to unit tests  -->
+		<server name="PHPUNIT_CACHE_DIR" value="tmp/cache" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Soluble Components test suite">
+            <directory>../../tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>../../src</directory>
+			<exclude>
+			  <directory suffix=".php">./../src/Soluble/Normalist/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/Normalist/Synthetic/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/Media/Converter/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/FlexStore/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/FlexStore/ResultSet/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/FlexStore/Writer/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/FlexStore/Metadata/Exception</directory>
+			  <directory suffix=".php">./../src/Soluble/Db/Metadata/Exception</directory>
+			  <file>./../src/Soluble/Normalist/SyntheticTable.php</file>
+			  <file>./../src/Soluble/Normalist/SyntheticRecord.php</file>
+			</exclude>		
+			
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="../../build/logs/clover.xml"/>
+		<!--
+        <log type="junit" target="./tests/build/logs/junit.xml" logIncompleteSkipped="false"/>
+		-->
+    </logging>
+
+</phpunit>

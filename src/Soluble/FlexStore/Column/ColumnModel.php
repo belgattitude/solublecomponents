@@ -1,28 +1,33 @@
 <?php
 
 namespace Soluble\FlexStore\Column;
+
 use Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition;
 use Soluble\FlexStore\Renderer\RendererInterface;
 use ArrayObject;
-
 use Zend\Validator\ValidatorInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-
-
 class ColumnModel
 {
+
     /**
      *
      * @var ArrayObject
      */
     protected $config;
-    
+
     /**
      *
      * @var ArrayObject
      */
     protected $columns;
+
+    /**
+     *
+     * @var ArrayObject
+     */
+    protected $renderers;
 
     /*
      * A columns is
@@ -44,9 +49,42 @@ class ColumnModel
     {
         $this->config = new ArrayObject(array('columns' => new ArrayObject()));
         $this->columns = new ArrayObject();
+        $this->renderers = new ArrayObject();
     }
-    
-    
+
+    /**
+     * Add a column renderer
+     * 
+     * @throws Exception\InvalidArgumentException
+     * @param string $column
+     * @param type $renderer
+     */
+    public function addRowRenderer($renderer)
+    {
+        $this->renderers->append($renderer);
+
+        /*
+          try {
+          if (!$this->exists($column)) {
+          throw new Exception\InvalidArgumentException("Column does not exists '$column'");
+          }
+          } catch (Exception\InvalidArgumentException $e) {
+          throw new Exception\InvalidArgumentException(__METHOD__ . ": Cannot add renderer to unexistent column '$column'.");
+          }
+
+          if (!$this->renderers->offsetExists($column)) {
+          $this->renderers->offsetSet($column, new ArrayObject());
+          }
+
+          $this->renderers->offsetGet($column)->append($renderer);
+         */
+    }
+
+    function getRowRenderers()
+    {
+        return $this->renderers;
+    }
+
     /**
      * 
      * @param string $column
@@ -54,17 +92,18 @@ class ColumnModel
      * @throws Exception\InvalidArgumentException when column nam is not correct
      * @return ColumnModel
      */
-    public function addColumn($column, $definition) {
+    public function addColumn($column, $definition)
+    {
         if (!is_string($column)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column name must be a valid string");
         }
-        
+
         $column = trim($column);
         if ($column == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column name cannot be empty");
         }
         $this->config['columns'][$column] = $definition;
-        $this->columns->offsetSet($column, $column);
+        $this->columns->offsetSet($column, new Column($column));
         return $this;
     }
 
@@ -75,20 +114,21 @@ class ColumnModel
      * @throws Exception\InvalidArgumentException     
      * @return ColumnModel
      */
-    public function setExcluded(array $excluded_columns, $excluded=true) {
-        
-        foreach($excluded_columns as $column) {
+    public function setExcluded(array $excluded_columns, $excluded = true)
+    {
+
+        foreach ($excluded_columns as $column) {
             $column = trim($column);
             $this->addColumnParam($column, 'excluded', $excluded);
             if ($excluded) {
                 $this->columns->offsetUnset($column);
             } else {
-                $this->columns->offsetSet($column, $column);
+                $this->columns->offsetSet($column, $this->getColumn($column));
             }
         }
         return $this;
     }
-    
+
     /**
      * Return column that have been excluded in getData() and getColumns()
      * 
@@ -97,14 +137,48 @@ class ColumnModel
     public function getExcluded()
     {
         $excluded = array();
-        foreach($this->getColumnsConfig() as $column => $config) {
+        foreach ($this->getColumnsConfig() as $column => $config) {
             if ($config['params']['excluded']) {
-               $excluded[] = $column;     
+                $excluded[] = $column;
             }
         }
         return $excluded;
     }
     
+    /**
+     * Return column from identifier name
+     * 
+     * @throws Exception\InvalidArgumentException 
+     * @throws Exception\ColumnNotFoundException when column does not exists in model
+     * @param string $column column name
+     * @return Column
+     */
+    public function getColumn($column)
+    {
+        if (!is_string($column)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Column parameter must be a string.");
+        }
+        
+        if (!$this->hasColumn($column)) {
+            throw new Exception\ColumnNotFoundException(__METHOD__ . " Column '$column' not present in column model.");
+        }
+        return $this->columns->offsetGet($column);
+    }
+    
+    /**
+     * Whether the column identifier name exists in the column model
+     * 
+     * @throws Exception\InvalidArgumentException 
+     * @param string $column
+     * @return boolean
+     */
+    public function hasColumn($column)
+    {
+        if (!is_string($column)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Column parameter must be a string.");
+        }
+        return $this->columns->offsetExists($column);
+    }
 
     /**
      * Sort columns in the order specified, columns that exists
@@ -116,33 +190,42 @@ class ColumnModel
      */
     public function sortColumns(array $sorted_columns)
     {
-        $new_columns = array();
-        foreach($sorted_columns as $column) {
-            if (!$this->exists($column)) {
+        $diff = array_diff_assoc($sorted_columns, array_unique($sorted_columns));
+        if (count($diff) > 0) {
+            $cols = join(',', $diff);
+            throw new Exception\DuplicateColumnException(__METHOD__ . " Duplicate column found in paramter sorted_columns : '$cols'");
+        }
+        $columns = array();
+        foreach ($sorted_columns as $idx => $column) {
+            if (!$this->hasColumn($column)) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Column '$column' does not exists.");
             }
-            $new_columns[$column] = $column;
+            $columns[$column] = $this->getColumn($column);
         }
-
         // Appending eventual non sorted columns at the end
-        $new_columns = array_merge($new_columns, (array) $this->columns);
-        $this->columns->exchangeArray($new_columns);
-        
+        $columns = array_merge($columns, (array) $this->columns);
+        $this->columns = new \ArrayObject($columns);
         return $this;
     }
-    
+
     /**
      * Tells whether a column exists
      * 
+     * @throws Exception\InvalidArgumentException 
      * @param string $column
      * @return boolean
      */
     public function exists($column)
     {
+        if (!is_string($column)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Column name must be a valid string");
+        }
+        if ($column == '') {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Column name cannot be empty");
+        }
         return array_key_exists($column, $this->config['columns']);
-        
     }
-    
+
     /**
      * Exclude all other columns that the one specified
      * Column sort is preserved in getData()
@@ -151,13 +234,13 @@ class ColumnModel
      * @param bool $sort automatically apply sortColumns
      * @return ColumnModel
      */
-    public function setIncludeOnly(array $include_only_columns, $sorted=true) 
+    public function setIncludeOnly(array $include_only_columns, $sorted = true)
     {
         $columns = $this->getColumnsConfig();
         // trim column
         $include_only_columns = array_map('trim', $include_only_columns);
-        
-        foreach($columns as $column => $config) {
+
+        foreach ($columns as $column => $config) {
             if (in_array($column, $include_only_columns)) {
                 $this->setExcluded(array($column), false);
             } else {
@@ -166,13 +249,10 @@ class ColumnModel
         }
         if ($sorted) {
             $this->sortColumns($include_only_columns);
-        } 
-        return $this;        
-        
+        }
+        return $this;
     }
-    
-    
-    
+
     /**
      * Add column paramter
      * @param string $column
@@ -180,13 +260,14 @@ class ColumnModel
      * @param mixed $value
      * @throws Exception\InvalidArgumentException
      */
-    protected function addColumnParam($column, $key, $value) {
+    protected function addColumnParam($column, $key, $value)
+    {
         if (!array_key_exists($column, $this->getColumnsConfig())) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column '$column' does not exists in columnModel");
         }
         $this->config['columns'][$column]['params'][$key] = $value;
     }
-    
+
     /**
      * 
      * @throws Exception\InvalidArgumentException
@@ -194,43 +275,25 @@ class ColumnModel
      * @param string $key
      * @return mixed
      */
-    protected function getColumnParam($column, $key) {
+    protected function getColumnParam($column, $key)
+    {
         if (!$this->exists($column)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column '$column' does not exists in dataset.");
         }
-        
-        
+
+
         return $this->config['columns']['params'][$key];
-        
     }
-    
-    
+
     /**
      * Return columns
      * 
-     * @return array
+     * @return ArrayObject
      */
     public function getColumns()
     {
-        
-        return array_values((array) $this->columns);
-        /*
-        $columns = array();
-
-        foreach($this->getColumnsConfig() as $column => $config) {
-            if ($config['params']['excluded'] !== true) {
-               $columns[] = $column;     
-            } 
-        }
-        
-        return $columns;
-         * 
-         */
-
+        return $this->columns;
     }
-    
-    
-    
 
     /**
      * Return column definition
@@ -247,7 +310,6 @@ class ColumnModel
         return $this->config['columns'][$column]['definition'];
     }
 
-    
     /**
      * Return columns underlying configuration
      *

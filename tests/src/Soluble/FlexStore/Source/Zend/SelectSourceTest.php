@@ -93,7 +93,7 @@ class SelectSourceTest extends \PHPUnit_Framework_TestCase
         $columnModel = $this->source->getColumnModel();
         $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
-        $this->assertInternalType('array', $columns);
+        $this->assertInstanceOf('ArrayObject', $columns);
         
         
     }

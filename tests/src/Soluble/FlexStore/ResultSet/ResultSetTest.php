@@ -66,7 +66,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testLimitColumns()
+    public function testSetHydratedColumns()
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
@@ -78,7 +78,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 
         $columns = array('legacy_mapping', 'brand_id');
         $resultset = $this->store->getSource()->getData();
-        $resultset->limitColumns($columns);
+        $resultset->setHydratedColumns($columns);
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
 
@@ -108,7 +108,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 
         $columns = array('legacy_mapping ', ' brand_id');
         $resultset = $this->store->getSource()->getData();
-        $resultset->limitColumns($columns);
+        $resultset->setHydratedColumns($columns);
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
 
@@ -131,11 +131,11 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         // Empty array
         $columns = array();
         $resultset = $store->getSource()->getData();
-        $resultset->limitColumns($columns);
+        $resultset->setHydratedColumns($columns);
 
     }
 
-    public function testLimitColumnsThrowsDuplicateColumnException()
+    public function testSetHydratedColumnsThrowsDuplicateColumnException()
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
@@ -148,7 +148,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         // Empty array
         $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
         $resultset = $store->getSource()->getData();
-        $resultset->limitColumns($columns);
+        $resultset->setHydratedColumns($columns);
     }    
 
     public function testLimitColumnsDoesNotThrowsDuplicateColumnException()
@@ -164,7 +164,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         // Empty array
         $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
         $resultset = $store->getSource()->getData();
-        $resultset->limitColumns($columns, $ignore_duplicate_columns=true);
+        $resultset->setHydratedColumns($columns, $ignore_duplicate_columns=true);
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
 
@@ -188,7 +188,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         // Empty array
         $columns = array('legacy_mapping', 'columns_that_soes_not_exists');
         $resultset = $store->getSource()->getData();
-        $resultset->limitColumns($columns);
+        $resultset->setHydratedColumns($columns);
         $row = $resultset->current();
 
     }    

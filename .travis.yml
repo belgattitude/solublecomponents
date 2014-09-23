@@ -19,7 +19,8 @@ env:
     global:
         - EXTERNAL=false
     matrix:
-        - DB=mysql
+        - DB=mysqli
+        - DB=pdo_mysql
 
 before_script:
   - if [[ $HHVM == false ]] ; then pecl install imagick ; fi 

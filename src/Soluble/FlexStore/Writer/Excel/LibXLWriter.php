@@ -123,7 +123,7 @@ class LibXLWriter extends AbstractWriter
         $formats = array();
         $types   = array();
         $column_max_widths = array();
-        foreach($columns as $name) {
+        foreach($columns as $name => $col) {
             $definition = $cm->getColumnDefinition($name);
             $header = $name;
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
@@ -197,7 +197,7 @@ class LibXLWriter extends AbstractWriter
         foreach($data as $idx => $row) {
             $col_idx = 0;
             $row_idx = $idx + 1;
-            foreach ($columns as $name) {
+            foreach ($columns as $name => $col) {
                 //$definition = $cm->getColumnDefinition($name);
                 $value = $row[$name];
                 if (array_key_exists($name, $formats)) {

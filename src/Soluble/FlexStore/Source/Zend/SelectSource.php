@@ -20,8 +20,11 @@ use Zend\Db\Sql\Expression;
 use ArrayObject;
 
 use Soluble\FlexStore\Column\ColumnModel;
+use Soluble\FlexStore\Column\Column;
 use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
 use Soluble\FlexStore\Metadata\Reader as MetadataReader;
+
+
 
 class SelectSource extends AbstractSource implements QueryableSourceInterface
 {
@@ -131,7 +134,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
      * @param Options $options
      * @throws Exception\EmptyQueryException
      * @throws Exception\ErrorException
-     * @return \Soluble\FlexStore\ResultSet\ResultSet
+     * @return ResultSet
      */
     public function getData(Options $options = null)
     {
@@ -173,18 +176,22 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
          * Check whether there's a column model
          */
         $limit_columns = false;
+        $renderers     = false;
         if ($this->columnModel !== null) {
             // TODO: optimize when the column model haven't been modified.
             $limit_columns = $this->columnModel->getColumns();
+            $renderers     = $this->columnModel->getRowRenderers();
         } 
         
-        $cm = $this->getColumnModel();
+        //$cm = $this->getColumnModel();
         //$cm->setExcluded(array('user_id'));
-        $this->columns = $cm->getColumns();
+        //$this->columns = $cm->getColumns();
         //var_dump($this->columns);
         //die();
         try {
 
+            
+            
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
@@ -193,18 +200,26 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             $r = new ResultSet($results);
             $r->setSource($this);
 
+            if ($this->columnModel !== null) {
+                $limited_columns = $this->columnModel->getColumns();
+
+                $r->setHydratedColumns(array_keys((array) $limited_columns));
+                
+                $row_renderers = $this->columnModel->getRowRenderers();
+                if ($row_renderers->count() > 0) {
+                    $r->setRowRenderers($row_renderers);
+                }
+            }
+            
+
             if ($options->hasLimit()) {
                 //$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
                 $row = $this->adapter->createStatement('select FOUND_ROWS() as total_count')->execute()->current();
                 $r->setTotalRows($row['total_count']);
             } else {
-
                 $r->setTotalRows($r->count());
             }
 
-
-            
-            if ($limit_columns) $r->limitColumns($limit_columns);
             
 
             // restore result prototype

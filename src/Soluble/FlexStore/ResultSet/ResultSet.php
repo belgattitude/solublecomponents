@@ -18,20 +18,25 @@ class ResultSet extends AbstractResultSet
 
     
     /**
-     * Limited columns
+     * Columns to be hydrated (limited)
      * @var array|null
      */
-    protected $limitedColumns;
+    protected $hydratedColumns;
     
     
     /**
-     * Tells whether columns names in limitColumns have been checked
+     * Tells whether columns names in $hydratedColumns have been checked
      * for existence;
      * @var boolean
      */
-    protected $limitedColumnsAreChecked;
+    protected $hydratedColumnsChecked;
     
 
+    /**
+     * Row renderes
+     * @var array|null
+     */
+    protected $rowRenderers;    
 
 
     /**
@@ -106,57 +111,66 @@ class ResultSet extends AbstractResultSet
         return $this->totalRows;
     }
 
+    
+    public function setRowRenderers($renderers)
+    {
+        $this->rowRenderers = $renderers;
+    }
+    
     /**
-     * By using limitColumns on a resultset, you ensure that only
+     * By using setHydratedColumns() on a resultset, you ensure that only
      * those columns will be available/returned even if they are
      * more available in the original dataset 
      * 
      * Checks against column name existence can only be done 
-     * lazily when current() is called. 
+     * lazily when current() is called. (in case the resultset does
+     * not contain rows, we don't know about columns)
      *  
      *
      * @throws Exception\InvalidArgumentException
      * @throws Exception\DuplicateColumnException only when $ignore_duplicate_columns is false (default) 
-     * @param array $limited_columns columns nams in an array
+     * @param array $hydrated_columns columns nams in an array
      * @param array $ignore_duplicate_columns check whether we can ignore duplicate columns
      * @return ResultSet
      */
-    public function limitColumns(array $limited_columns, $ignore_duplicate_columns=false)
+    public function setHydratedColumns(array $hydrated_columns, $ignore_duplicate_columns=false)
     {
-        if (count($limited_columns) == 0) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ': $limited_columns parameter is empty.');
+        // Test count
+        if (count($hydrated_columns) == 0) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ': $hydrated_columns parameter is empty.');
         }
         
+        // Test duplicate
         if (!$ignore_duplicate_columns) {
-            $values = array_count_values($limited_columns);
+            $values = array_count_values($hydrated_columns);
             foreach($values as $column_name => $count) {
                 if ($count > 1) {
                     throw new Exception\DuplicateColumnException(__METHOD__ . ": Duplicate column detected '$column_name' in column list.");
                 }
             }
         } else {
-            $limited_columns = array_unique($limited_columns);
+            $hydrated_columns = array_unique($hydrated_columns);
         }
         
         // clean up with trim
-        foreach($limited_columns as $idx => $column) {
-            $limited_columns[$idx] = trim($column);
+        foreach($hydrated_columns as $idx => $column) {
+            $hydrated_columns[$idx] = trim($column);
         }
         
-        $this->limitedColumnsAreChecked = false;
-        $this->limitedColumns = $limited_columns;        
+        $this->hydratedColumnsChecked = false;
+        $this->hydratedColumns = $hydrated_columns;        
         return $this;
     }
 
 
     /**
-     * Reset eventual limited columns set by limitColumns() method
+     * Reset eventual limited columns set by setHydratedColumns() method
      * @return ResultSet
      */
-    public function resetLimitColumns()
+    public function unsetHydratedColumns()
     {
-        $this->limitedColumnsAreChecked = false;
-        $this->limitedColumns = null;
+        $this->hydratedColumnsChecked = false;
+        $this->hydratedColumns = null;
         return $this;
     }
 
@@ -171,33 +185,40 @@ class ResultSet extends AbstractResultSet
     public function current()
     {
         $data = $this->zfResultSet->current();
+
+        // 1 row renderers
+        if ($this->rowRenderers) {
+            // Apply all renderers
+            foreach ($this->rowRenderers as $renderer) {
+                $renderer($data);
+            }
+            
+        }
         
         // 2 cases when limited columns are set 
-        
-        if ($this->limitedColumns !== null) {
+        if ($this->hydratedColumns !== null) {
             
             // Step 1: check limited columns existence
             
-            if (!$this->limitedColumnsAreChecked) {
+            if (!$this->hydratedColumnsChecked) {
                 // check all limited columns
                 // this check is made only for the first row.
-                foreach($this->limitedColumns as $column) {
+                foreach($this->hydratedColumns as $column) {
                     if (!array_key_exists($column, (array) $data)) {
-                        $msg = __METHOD__ . ": Resultset has limited columns option and column '$column' does not exists in it";
+                        $msg = __METHOD__ . ": Resultset has hydrateColumns option and column '$column' does not exists in it";
                         throw new Exception\UnknownColumnException($msg);
                     }
                 }
-                $this->limitedColumnsAreChecked = true;
+                $this->hydratedColumnsChecked = true;
             }
 
             $d = new ArrayObject();
             //$lc = array_fill_keys($this->limitedColumns, null);
             //$t = array_intersect_key((array) $data, $lc);
             //$data->exchangeArray($t);
-            foreach($this->limitedColumns as $column) {
+            foreach($this->hydratedColumns as $column) {
                 $d->offsetSet($column, $data[$column]);
             }
-            
             
             if ($this->returnType === self::TYPE_ARRAYOBJECT) {
                 $data = $d;
