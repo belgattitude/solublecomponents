@@ -1,51 +1,53 @@
 <?php
+
 namespace Soluble\FlexStore\Writer\Excel;
-use Soluble\FlexStore\Writer\AbstractWriter;
 
+use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\Spreadsheet\Library\LibXL;
-
-use Soluble\FlexStore\Writer\SendHeaders;
+use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\Db\Metadata\Column;
 use ExcelBook;
 use ExcelFormat;
 
-
-
-class LibXLWriter extends AbstractWriter
+class LibXLWriter extends AbstractSendableWriter
 {
-    protected $column_width_multiplier = 1.7;
 
+    /**
+     *
+     * @var SimpleHeaders
+     */
+    protected $headers;
+    protected $column_width_multiplier = 1.7;
 
     /**
      *
      * @var array
      */
     protected static $default_license;
-    
+
     /**
      *
      * @var ExcelBook
      */
     protected $excelBook;
-    
-    
+
     /**
      * @var array
      */
     /*
-    private static $typesMap = array(
+      private static $typesMap = array(
 
-        Column\Type::TYPE_INTEGER	=> 'Definition\IntegerColumn',
-        Column\Type::TYPE_DECIMAL	=> 'Definition\DecimalColumn',
-        Column\Type::TYPE_STRING	=> 'Definition\StringColumn',
-        Column\Type::TYPE_BOOLEAN	=> 'Definition\BooleanColumn',
-        Column\Type::TYPE_DATETIME	=> 'Definition\DatetimeColumn',
-        Column\Type::TYPE_BLOB		=> 'Definition\BlobColumn',
-        Column\Type::TYPE_DATE		=> 'Definition\DateColumn',
-        Column\Type::TYPE_TIME		=> 'Definition\TimeColumn',
-        Column\Type::TYPE_FLOAT     => 'Definition\FloatColumn',
+      Column\Type::TYPE_INTEGER	=> 'Definition\IntegerColumn',
+      Column\Type::TYPE_DECIMAL	=> 'Definition\DecimalColumn',
+      Column\Type::TYPE_STRING	=> 'Definition\StringColumn',
+      Column\Type::TYPE_BOOLEAN	=> 'Definition\BooleanColumn',
+      Column\Type::TYPE_DATETIME	=> 'Definition\DatetimeColumn',
+      Column\Type::TYPE_BLOB		=> 'Definition\BlobColumn',
+      Column\Type::TYPE_DATE		=> 'Definition\DateColumn',
+      Column\Type::TYPE_TIME		=> 'Definition\TimeColumn',
+      Column\Type::TYPE_FLOAT     => 'Definition\FloatColumn',
 
-    );*/    
+      ); */
 
     /**
      * 
@@ -54,12 +56,12 @@ class LibXLWriter extends AbstractWriter
      * @return ExcelBook
      * @throws Exception\RuntimeException
      */
-    public function getExcelBook($locale='UTF-8', $file_format=LibXL::FILE_FORMAT_XLSX)
+    public function getExcelBook($locale = 'UTF-8', $file_format = LibXL::FILE_FORMAT_XLSX)
     {
         if (!extension_loaded('excel')) {
             throw new Exception\RuntimeException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
         }
-        
+
         if ($this->excelBook === null) {
             $libXL = new LibXL();
             if (is_array(self::$default_license)) {
@@ -69,7 +71,6 @@ class LibXLWriter extends AbstractWriter
         }
         return $this->excelBook;
     }
-    
 
     /**
      *
@@ -84,11 +85,10 @@ class LibXLWriter extends AbstractWriter
 
         $book->save($filename);
 
-        $data =  file_get_contents($filename);
+        $data = file_get_contents($filename);
         unlink($filename);
         return $data;
     }
-
 
     protected function generateExcel(ExcelBook $book)
     {
@@ -121,33 +121,33 @@ class LibXLWriter extends AbstractWriter
         $columns = $cm->getColumns();
 
         $formats = array();
-        $types   = array();
+        $types = array();
         $column_max_widths = array();
-        foreach($columns as $name => $col) {
+        foreach ($columns as $name => $col) {
             $definition = $cm->getColumnDefinition($name);
             $header = $name;
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
-            
+
             $datatype = $definition->getDataType();
             switch ($datatype) {
                 case Column\Type::TYPE_DATE :
-					$mask = 'd/mm/yyyy';
+                    $mask = 'd/mm/yyyy';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
-                    $format->numberFormat($cfid);				
-                    $formats[$name] = $format;    
+                    $format->numberFormat($cfid);
+                    $formats[$name] = $format;
                     $types[$name] = 'date';
                     break;
                 case Column\Type::TYPE_DATETIME:
-					$mask = 'd/mm/yyyy h:mm';
+                    $mask = 'd/mm/yyyy h:mm';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
-                    $format->numberFormat($cfid);				
-                    $formats[$name] = $format;    
+                    $format->numberFormat($cfid);
+                    $formats[$name] = $format;
                     $types[$name] = 'datetime';
                     break;
                 case Column\Type::TYPE_INTEGER:
-                    
+
                     $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
                         $formatString = '0';
@@ -156,8 +156,8 @@ class LibXLWriter extends AbstractWriter
                     }
                     $cfid = $book->addCustomFormat($formatString);
                     $format = $book->addFormat();
-                    $format->numberFormat($cfid);				
-                    $formats[$name] = $format;                    
+                    $format->numberFormat($cfid);
+                    $formats[$name] = $format;
                     $types[$name] = 'number';
                     break;
                 case Column\Type::TYPE_DECIMAL:
@@ -174,14 +174,13 @@ class LibXLWriter extends AbstractWriter
                     }
                     $cfid = $book->addCustomFormat($formatString);
                     $format = $book->addFormat();
-                    $format->numberFormat($cfid);				
-                    $formats[$name] = $format;                    
+                    $format->numberFormat($cfid);
+                    $formats[$name] = $format;
                     $types[$name] = 'number';
                     break;
-                    
             }
-            
-            $sheet->write($row=0, $col_idx, $header, $headerFormat);
+
+            $sheet->write($row = 0, $col_idx, $header, $headerFormat);
             $col_idx++;
         }
 
@@ -189,12 +188,12 @@ class LibXLWriter extends AbstractWriter
 
         // Fix the header
         $split = $sheet->splitSheet(1, 0);
-        
+
 
         // Fill document content
         $data = $this->source->getData();
 
-        foreach($data as $idx => $row) {
+        foreach ($data as $idx => $row) {
             $col_idx = 0;
             $row_idx = $idx + 1;
             foreach ($columns as $name => $col) {
@@ -204,16 +203,16 @@ class LibXLWriter extends AbstractWriter
                     $format = $formats[$name];
                     switch ($types[$name]) {
                         case 'number' :
-                            $sheet->write($row_idx, $col_idx,  (string) $value, $format, ExcelFormat::AS_NUMERIC_STRING);
+                            $sheet->write($row_idx, $col_idx, (string) $value, $format, ExcelFormat::AS_NUMERIC_STRING);
                             break;
                         case 'date' :
-                        case 'datetime' :    
+                        case 'datetime' :
                             if ($value != '') {
                                 $time = strtotime($value);
                             } else {
                                 $time = null;
                             }
-                            $sheet->write($row_idx, $col_idx,  $time, $format, ExcelFormat::AS_DATE);
+                            $sheet->write($row_idx, $col_idx, $time, $format, ExcelFormat::AS_DATE);
                             break;
                         default:
                             $sheet->write($row_idx, $col_idx, $value);
@@ -221,13 +220,13 @@ class LibXLWriter extends AbstractWriter
                 } else {
                     $sheet->write($row_idx, $col_idx, $value);
                 }
-                
+
                 $column_max_widths[$name] = max(strlen($value) * $this->column_width_multiplier, $column_max_widths[$name]);
                 $col_idx++;
             }
         }
 
-        foreach(array_values($column_max_widths) as $idx => $width) {
+        foreach (array_values($column_max_widths) as $idx => $width) {
             $sheet->setColWidth($idx, ceil($idx), $width);
         }
 
@@ -237,24 +236,8 @@ class LibXLWriter extends AbstractWriter
         //$sheet->setVerPageBreak($col_idx, true);
 
         return $book;
-
     }
 
-
-
-    /**
-     *
-     * @param \Soluble\FlexStore\Writer\SendHeaders $headers
-     */
-    public function send(SendHeaders $headers=null)
-    {
-        if ($headers === null) $headers = new SendHeaders();
-        ob_end_clean();
-        $headers->setContentType('application/excel; charset=utf-8');
-        $headers->printHeaders();
-        $json = $this->getData();
-        echo $json;
-    }
 
     /**
      *
@@ -267,4 +250,18 @@ class LibXLWriter extends AbstractWriter
         self::$default_license = array('name' => $license_name, 'key' => $license_key);
     }
 
+    /**
+     * Return default headers for sending store data via http 
+     * @return SimpleHeaders
+     */
+    public function getHttpHeaders()
+    {
+        if ($this->headers === null) {
+            $this->headers = new SimpleHeaders();
+            $this->headers->setContentType('application/excel', 'utf-8');
+            $this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
+        }
+        return $this->headers;
+    }    
+    
 }
