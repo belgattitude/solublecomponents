@@ -1,12 +1,22 @@
 <?php
+
 namespace Soluble\FlexStore\Writer\Zend;
-use Soluble\FlexStore\Writer\AbstractWriter;
+
+use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Zend\Json\Encoder;
-use Soluble\FlexStore\Writer\SendHeaders;
+use Soluble\FlexStore\Writer\AbstractSendableWriter;
+use Soluble\FlexStore\Writer\Http\SendHeaders;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
 
-class Json extends AbstractWriter
+class Json extends AbstractSendableWriter
 {
+
+    /**
+     *
+     * @var SimpleHeaders
+     */
+    protected $headers;
+
     /**
      *
      * @return \Zend\View\Model\JsonModel
@@ -15,11 +25,11 @@ class Json extends AbstractWriter
     {
         $data = $this->source->getData();
         $d = array(
-            'success'	 => true,
-            'total'		 => $data->getTotalRows(),
-            'start'		 => $data->getSource()->getOptions()->getOffset(),
-            'limit'		 => $data->getSource()->getOptions()->getLimit(),
-            'data'		 => $data->toArray()
+            'success' => true,
+            'total' => $data->getTotalRows(),
+            'start' => $data->getSource()->getOptions()->getOffset(),
+            'limit' => $data->getSource()->getOptions()->getLimit(),
+            'data' => $data->toArray()
         );
 
         if ($this->options['debug']) {
@@ -32,17 +42,17 @@ class Json extends AbstractWriter
     }
 
     /**
-     *
-     * @param \Soluble\FlexStore\Writer\SendHeaders $headers
+     * Return default headers for sending store data via http 
+     * @return SimpleHeaders
      */
-    public function send(SendHeaders $headers=null)
+    public function getHttpHeaders()
     {
-        if ($headers === null) $headers = new SendHeaders();
-        ob_end_clean();
-        $headers->setContentType('application/json; charset=utf-8');
-        $headers->printHeaders();
-        $json = $this->getData();
-        echo $json;
+        if ($this->headers === null) {
+            $this->headers = new SimpleHeaders();
+            $this->headers->setContentType('application/json', 'utf-8');
+            //$this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
+        }
+        return $this->headers;
     }
 
 }

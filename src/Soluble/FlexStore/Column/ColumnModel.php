@@ -5,8 +5,6 @@ namespace Soluble\FlexStore\Column;
 use Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition;
 use Soluble\FlexStore\Renderer\RendererInterface;
 use ArrayObject;
-use Zend\Validator\ValidatorInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 class ColumnModel
 {

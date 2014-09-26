@@ -1,11 +1,19 @@
 <?php
 namespace Soluble\FlexStore\Writer;
-use Soluble\FlexStore\Writer\AbstractWriter;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
+use Soluble\FlexStore\Writer\Http\SimpleHeaders;
+
 use DateTime;
 
-class Json extends AbstractWriter
+class Json extends AbstractSendableWriter
 {
+    
+    /**
+     *
+     * @var SimpleHeaders
+     */
+    protected $headers;
+    
     /**
      *
      * @return \Zend\View\Model\JsonModel
@@ -37,16 +45,17 @@ class Json extends AbstractWriter
     }
 
     /**
-     *
-     * @param \Soluble\FlexStore\Writer\SendHeaders $headers
+     * Return default headers for sending store data via http 
+     * @return SimpleHeaders
      */
-    public function send(SendHeaders $headers=null)
+    public function getHttpHeaders()
     {
-        if ($headers === null) $headers = new SendHeaders();
-        ob_end_clean();
-        $headers->setContentType('application/json; charset=utf-8');
-        $headers->printHeaders();
-        $json = $this->getData();
-        echo $json;
-    }
+        if ($this->headers === null) {
+            $this->headers = new SimpleHeaders();
+            $this->headers->setContentType('application/json', 'utf-8');
+            //$this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
+        }
+        return $this->headers;
+    }    
+    
 }

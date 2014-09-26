@@ -2,7 +2,6 @@
 
 namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Source\SourceInterface;
-use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\FlexStore\Exception;
 use Traversable;
 
@@ -57,11 +56,7 @@ abstract class AbstractWriter
     abstract public function getData();
 
 
-    /**
-     * @param SendHeaders $headers
-     * @return void
-     */
-    abstract public function send(SendHeaders $headers=null);
+
 
 
     /**
@@ -115,7 +110,7 @@ stream_copy_to_stream($fd, fopen($output, 'w'));
 
 
     /**
-     * Se options
+     * Set options
      *
      * @throws Exception\InvalidArgumentException
      *

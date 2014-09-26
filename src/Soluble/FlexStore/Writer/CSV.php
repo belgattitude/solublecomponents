@@ -1,15 +1,24 @@
 <?php
-namespace Soluble\FlexStore\Writer;
-use Soluble\FlexStore\Writer\AbstractWriter;
-use Soluble\FlexStore\Writer\Exception;
 
-class CSV extends AbstractWriter
+namespace Soluble\FlexStore\Writer;
+
+use Soluble\FlexStore\Writer\Exception;
+use Soluble\FlexStore\Writer\Http\SimpleHeaders;
+
+class CSV extends AbstractSendableWriter
 {
+
     const SEPARATOR_TAB = "\t";
     const SEPARATOR_COMMA = ',';
     const SEPARATOR_SEMICOLON = ';';
     const SEPARATOR_NEWLINE_UNIX = "\n";
     const SEPARATOR_NEWLINE_WIN = "\r\n";
+
+    /**
+     *
+     * @var SimpleHeaders
+     */
+    protected $headers;
 
     /**
      * @var array
@@ -22,7 +31,6 @@ class CSV extends AbstractWriter
         'escape' => '\\'
     );
 
-
     /**
      * @throws Exception\CharsetConversionException
      * @return string csv encoded data
@@ -32,19 +40,19 @@ class CSV extends AbstractWriter
 
 // TODO - TEST database connection charset !!!
 //
-        
+
         ini_set("default_charset", 'UTF-8');
-               
+
         if (PHP_VERSION_ID < 50600) {
             iconv_set_encoding('internal_encoding', 'UTF-8');
-        }         
-/*
-        $backup_encoding = iconv_get_encoding("internal_encoding");
-        iconv_set_encoding("internal_encoding", "UTF-8");
-        iconv_set_encoding("input_encoding", "UTF-8");
-        iconv_set_encoding("output_encoding", "UTF-8");
-        mb_internal_encoding("UTF-8");
-*/
+        }
+        /*
+          $backup_encoding = iconv_get_encoding("internal_encoding");
+          iconv_set_encoding("internal_encoding", "UTF-8");
+          iconv_set_encoding("input_encoding", "UTF-8");
+          iconv_set_encoding("output_encoding", "UTF-8");
+          mb_internal_encoding("UTF-8");
+         */
 
 
         $csv = '';
@@ -74,7 +82,6 @@ class CSV extends AbstractWriter
                     break;
                 default:
                     array_walk($row, array($this, 'escapeFieldDelimiter'));
-
             }
 
             array_walk($row, array($this, 'escapeLineDelimiter'));
@@ -109,25 +116,6 @@ class CSV extends AbstractWriter
         return $csv;
     }
 
-
-    /**
-     *
-     * @param SendHeaders $headers
-     * @return void
-     */
-    public function send(SendHeaders $headers=null)
-    {
-        if ($headers === null) $headers = new SendHeaders();
-        ob_end_clean();
-        //Content-Type: text/csv; name="filename.csv"
-        //Content-Disposition: attachment; filename="filename.csv"
-
-        $headers->setContentType('text/csv; charset=' . $this->options['charset']);
-        $headers->printHeaders();
-        $json = $this->getData();
-        echo $json;
-    }
-
     /**
      *
      * @param string $item
@@ -160,7 +148,6 @@ class CSV extends AbstractWriter
         $item = str_replace($this->options['field_separator'], $this->options['escape'] . $this->options['field_separator'], $item);
     }
 
-
     /**
      *
      * @param string $item
@@ -177,4 +164,19 @@ class CSV extends AbstractWriter
             $item = $enc . str_replace($enc, $escape . $enc, $item) . $enc;
         }
     }
+
+    /**
+     * Return default headers for sending store data via http 
+     * @return SimpleHeaders
+     */
+    public function getHttpHeaders()
+    {
+        if ($this->headers === null) {
+            $this->headers = new SimpleHeaders();
+            $this->headers->setContentType('text/csv', $this->options['charset']);
+            //$this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
+        }
+        return $this->headers;
+    }
+
 }

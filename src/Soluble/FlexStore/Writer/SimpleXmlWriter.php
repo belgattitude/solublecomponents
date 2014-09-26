@@ -1,16 +1,20 @@
 <?php
-namespace Soluble\FlexStore\Writer;
-use Soluble\FlexStore\Writer\AbstractWriter;
-use Soluble\FlexStore\Source\SourceInterface;
-use Soluble\FlexStore\Writer\SendHeaders;
 
+namespace Soluble\FlexStore\Writer;
+
+use Soluble\FlexStore\Source\SourceInterface;
+use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use DateTime;
 use Traversable;
 
-
-class SimpleXmlWriter extends AbstractWriter
+class SimpleXmlWriter extends AbstractSendableWriter
 {
 
+    /**
+     *
+     * @var SimpleHeaders
+     */
+    protected $headers;
     protected $php_54_compatibility = true;
 
     /**
@@ -25,17 +29,15 @@ class SimpleXmlWriter extends AbstractWriter
          * XML tag for rows
          */
         'row_tag' => 'row',
-
         'encoding' => 'UTF-8'
     );
 
-
-     /**
-      *
-      * @param SourceInterface|null $source
-      * @param array|Traversable|null $options
-      */
-    public function __construct(SourceInterface $source=null, $options=null)
+    /**
+     *
+     * @param SourceInterface|null $source
+     * @param array|Traversable|null $options
+     */
+    public function __construct(SourceInterface $source = null, $options = null)
     {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->php_54_compatibility = false;
@@ -43,7 +45,6 @@ class SimpleXmlWriter extends AbstractWriter
 
         parent::__construct($source, $options);
     }
-
 
     /**
      *
@@ -67,7 +68,6 @@ class SimpleXmlWriter extends AbstractWriter
         return $this;
     }
 
-
     /**
      *
      * @return string xml encoded data
@@ -81,14 +81,12 @@ class SimpleXmlWriter extends AbstractWriter
 
         $now = new DateTime();
         $d = array(
-            'success'	 => true,
-            'timestamp'  => $now->format(DateTime::W3C),
-            'total'		 => $data->getTotalRows(),
-            'start'		 => $data->getSource()->getOptions()->getOffset(),
-            'limit'		 => $data->getSource()->getOptions()->getLimit(),
-            'data'		 => $data->toArray(),
-            
-
+            'success' => true,
+            'timestamp' => $now->format(DateTime::W3C),
+            'total' => $data->getTotalRows(),
+            'start' => $data->getSource()->getOptions()->getOffset(),
+            'limit' => $data->getSource()->getOptions()->getLimit(),
+            'data' => $data->toArray(),
         );
 
         if ($this->options['debug']) {
@@ -99,19 +97,20 @@ class SimpleXmlWriter extends AbstractWriter
 
         return $xml->asXML();
     }
-   /**
-    *
-    * @param array $result
-    * @param \SimpleXMLElement $xml
-    */
-   protected function createXmlNode($result, &$xml)
-   {
-        foreach($result as $key => $value) {
+
+    /**
+     *
+     * @param array $result
+     * @param \SimpleXMLElement $xml
+     */
+    protected function createXmlNode($result, &$xml)
+    {
+        foreach ($result as $key => $value) {
 
             if (is_array($value)) {
                 if (!is_numeric($key)) {
-                  $subnode = $xml->addChild("$key");
-                  $this->createXmlNode($value, $subnode);
+                    $subnode = $xml->addChild("$key");
+                    $this->createXmlNode($value, $subnode);
                 } else {
                     $v = array($this->options['row_tag'] => $value);
                     $this->createXmlNode($v, $xml);
@@ -132,26 +131,25 @@ class SimpleXmlWriter extends AbstractWriter
                             $encoded .= $char;
                         }
                     }
-
                 }
                 $xml->addChild($key, $encoded);
-
             }
         }
-   }
+    }
 
     /**
-     *
-     * @param SendHeaders $headers
-     * @return void
+     * Return default headers for sending store data via http 
+     * @return SimpleHeaders
      */
-    public function send(SendHeaders $headers=null)
+    public function getHttpHeaders()
     {
-        if ($headers === null) $headers = new SendHeaders();
-        ob_end_clean();
-        $headers->setContentType('application/xml; charset=utf-8');
-        $headers->printHeaders();
-        $xml = $this->getData();
-        echo $xml;
+        if ($this->headers === null) {
+            $this->headers = new SimpleHeaders();
+            $this->headers->setContentType('application/xml', 'utf-8');
+            $this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
+        }
+        return $this->headers;
     }
+
+
 }
