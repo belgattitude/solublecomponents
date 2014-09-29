@@ -48,7 +48,7 @@
 		"zendframework/zend-servicemanager": "ZF2 integration for services"
 	},
 	"autoload": {
-		"psr-4": {"Soluble": "src/Soluble"}
+		"psr-4": {"Soluble\\": "src/Soluble/"}
 	},
 	"config": {
 		"bin-dir": "bin"
