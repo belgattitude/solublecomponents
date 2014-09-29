@@ -66,7 +66,8 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testSetHydratedColumns()
+    
+    public function testGetSetHydratedColumns()
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
@@ -79,6 +80,8 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $columns = array('legacy_mapping', 'brand_id');
         $resultset = $this->store->getSource()->getData();
         $resultset->setHydratedColumns($columns);
+        
+        $this->assertEquals($columns, $resultset->getHydratedColumns());
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
 
@@ -95,6 +98,118 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array_shift($columns), array_shift($test));
         $this->assertEquals(array_shift($columns), array_shift($test));
     }
+
+    
+    public function testUnsetHydratedColumns()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand');
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+
+        $columns = array('legacy_mapping', 'brand_id');
+        $resultset = $this->store->getSource()->getData();
+        $resultset->setHydratedColumns($columns);
+        $this->assertEquals($columns, $resultset->getHydratedColumns());
+        
+        $resultset->unsetHydratedColumns();
+        $this->assertNull($resultset->getHydratedColumns());
+        
+    }
+    
+    public function testGetSource()
+    {
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->limit(1);
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $resultset = $store->getSource()->getData();
+        $this->assertInstanceOf('Soluble\FlexStore\Source\AbstractSource', $resultset->getSource());
+        
+        
+    }
+
+    public function testGetFieldCount()
+    {   
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->limit(1)->columns(array('reference'));
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $resultset = $store->getSource()->getData();
+        $this->assertEquals(1, $resultset->getFieldCount());
+        
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->limit(1)->columns(array('reference', 'brand_id'));
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $resultset = $store->getSource()->getData();
+        $this->assertEquals(2, $resultset->getFieldCount());
+
+        
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->limit(1);
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $resultset = $store->getSource()->getData();
+        $this->assertEquals(14, $resultset->getFieldCount());
+        
+        
+    }        
+    
+    public function testGetTotal()
+    {   
+        // With limit in the rquery
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->limit(10)->columns(array('reference'));
+        
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        
+        $store = new FlexStore('zend\select', $parameters);
+        //$options = new \Soluble\FlexStore\Options();
+        //$options->setLimit(10);
+        $resultset = $store->getSource()->getData();
+        $total = $resultset->getTotalRows();
+        
+        $this->assertEquals(10, $total);
+        $this->assertEquals(10, count($resultset));
+        $this->assertEquals(10, $resultset->count());
+
+        // With no limit
+        $select = new \Soluble\Db\Sql\Select($this->adapter);
+        $select->from('product_brand')->columns(array('reference'));
+        $parameters = array(
+            'adapter' => $this->adapter,
+            'select' => $select
+        );
+        $store = new FlexStore('zend\select', $parameters);
+        $options = new \Soluble\FlexStore\Options();
+        $options->setLimit(10);
+        $resultset = $store->getSource()->getData($options);
+        $total = $resultset->getTotalRows();
+        
+        $this->assertEquals(93, $total);
+        $this->assertEquals(10, count($resultset));
+        
+    }    
+    
     
     public function testLimitColumnsWithSpaces()
     {
@@ -107,7 +222,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $store = new FlexStore('zend\select', $parameters);
 
         $columns = array('legacy_mapping ', ' brand_id');
-        $resultset = $this->store->getSource()->getData();
+        $resultset = $store->getSource()->getData();
         $resultset->setHydratedColumns($columns);
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);

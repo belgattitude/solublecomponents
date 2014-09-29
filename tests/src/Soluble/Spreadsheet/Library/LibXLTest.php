@@ -80,6 +80,20 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
         
     }
 
+    public function testConstructThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
+        $libxl = new LibXL(array("cool"));
+    }       
+    
+    public function testSetLicenseThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
+        $libxl = new LibXL();
+        $libxl->setLicense(array("cool"));
+        
+    }    
+    
     public function testGetDefaultLicense()
     {
         $default_license = LibXL::getDefaultLicense();
@@ -98,7 +112,7 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function unSetDefaultLicense()
+    public function testUnSetDefaultLicense()
     {
         LibXL::setDefaultLicense($this->dummy_license);
         $this->assertEquals($this->dummy_license, LibXL::getDefaultLicense());
@@ -106,5 +120,12 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
         $this->assertNull(LibXL::getDefaultLicense());
     }    
 
+    
+    public function testSetDefaultLicenseThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
+        //die('cool');
+        LibXL::setDefaultLicense(array('cool'));
+    }        
     
 }

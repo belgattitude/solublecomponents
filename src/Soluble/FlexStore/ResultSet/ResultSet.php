@@ -161,6 +161,16 @@ class ResultSet extends AbstractResultSet
         $this->hydratedColumns = $hydrated_columns;        
         return $this;
     }
+    
+    /**
+     * Return hydrated columns
+     * 
+     * @return array|null
+     */
+    public function getHydratedColumns()
+    {
+        return $this->hydratedColumns;
+    }
 
 
     /**

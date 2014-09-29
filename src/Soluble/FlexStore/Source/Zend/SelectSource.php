@@ -9,7 +9,6 @@ namespace Soluble\FlexStore\Source\Zend;
 
 use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
-
 use Soluble\FlexStore\ResultSet\ResultSet;
 use Soluble\FlexStore\Exception;
 use Soluble\FlexStore\Options;
@@ -18,13 +17,10 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use ArrayObject;
-
 use Soluble\FlexStore\Column\ColumnModel;
 use Soluble\FlexStore\Column\Column;
 use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
 use Soluble\FlexStore\Metadata\Reader as MetadataReader;
-
-
 
 class SelectSource extends AbstractSource implements QueryableSourceInterface
 {
@@ -64,7 +60,6 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
      * @var Zend\Db\Adapter\Driver\ResultInterface
      */
     protected static $cache_result_prototype;
-
 
     /**
      *
@@ -126,9 +121,6 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         return $select;
     }
 
-    
-    
-
     /**
      *
      * @param Options $options
@@ -138,15 +130,18 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
      */
     public function getData(Options $options = null)
     {
+
         if ($options === null) {
             $options = $this->getOptions();
         }
-
+        
         $select = $this->assignOptions(clone $this->select, $options);
+
 
         $sql = new Sql($this->adapter);
         $sql_string = (string) $sql->getSqlStringForSqlObject($select);
-
+        //echo $this->select->getSqlString($this->adapter->getPlatform());
+        //echo "----" . var_dump($sql_string) . "----\n";
         // In  ZF 2.3.0 an empty query will return SELECT .*
         if (in_array($sql_string, array('', 'SELECT .*'))) {
             throw new Exception\EmptyQueryException(__METHOD__ . ': Cannot return data of an empty query');
@@ -158,31 +153,32 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         // Seems to not be needed anymore in ZF 2.3+
         // Uncomment if necessary, see also below is_mysqli
         /*
-        $is_mysqli = false;
-        $driver = $this->adapter->getDriver();
-        if (false && $driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
-            $stmt_prototype_backup = $driver->getStatementPrototype();
-            if (self::$cache_stmt_prototype === null) {
-                // With buffer results
-                self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
-            }
-            $driver->registerStatementPrototype(self::$cache_stmt_prototype);
-            $is_mysqli = true;
-        }
-        */
-       
-        
+          $is_mysqli = false;
+          $driver = $this->adapter->getDriver();
+          if (false && $driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
+          $stmt_prototype_backup = $driver->getStatementPrototype();
+          if (self::$cache_stmt_prototype === null) {
+          // With buffer results
+          self::$cache_stmt_prototype = new \Zend\Db\Adapter\Driver\Mysqli\Statement($buffer=true);
+          }
+          $driver->registerStatementPrototype(self::$cache_stmt_prototype);
+          $is_mysqli = true;
+          }
+         */
+
+
         /**
          * Check whether there's a column model
          */
-        $limit_columns = false;
-        $renderers     = false;
-        if ($this->columnModel !== null) {
-            // TODO: optimize when the column model haven't been modified.
-            $limit_columns = $this->columnModel->getColumns();
-            $renderers     = $this->columnModel->getRowRenderers();
-        } 
-        
+        /*
+          $limit_columns = false;
+          $renderers     = false;
+          if ($this->columnModel !== null) {
+          // TODO: optimize when the column model haven't been modified.
+          $limit_columns = $this->columnModel->getColumns();
+          $renderers     = $this->columnModel->getRowRenderers();
+          }
+         */
         //$cm = $this->getColumnModel();
         //$cm->setExcluded(array('user_id'));
         //$this->columns = $cm->getColumns();
@@ -190,8 +186,8 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         //die();
         try {
 
-            
-            
+
+
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
@@ -201,16 +197,16 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             $r->setSource($this);
 
             if ($this->columnModel !== null) {
-                $limited_columns = $this->columnModel->getColumns();
+                $hydrated_columns = $this->columnModel->getColumns();
 
-                $r->setHydratedColumns(array_keys((array) $limited_columns));
-                
+                $r->setHydratedColumns(array_keys((array) $hydrated_columns));
+
                 $row_renderers = $this->columnModel->getRowRenderers();
                 if ($row_renderers->count() > 0) {
                     $r->setRowRenderers($row_renderers);
                 }
             }
-            
+
 
             if ($options->hasLimit()) {
                 //$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();
@@ -220,48 +216,41 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
                 $r->setTotalRows($r->count());
             }
 
-            
+
 
             // restore result prototype
             // $this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
-
             // restore statement prototype
             // seems not needed in zf 2.3
             /*
-            if ($is_mysqli) {
-                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
-            }
-            */
-             
-
+              if ($is_mysqli) {
+              $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
+              }
+             */
         } catch (\Exception $e) {
             // restore result prototype
             //$this->adapter->getDriver()->registerResultPrototype($result_prototype_backup);
-
             // seems not needed in zf 2.3
             /*
-            if ($is_mysqli) {
-                $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
-            }
-            */
-            throw new Exception\ErrorException(__METHOD__ . ': Cannot retrieve data (' . $e->getMessage() . ')');            
-            
+              if ($is_mysqli) {
+              $this->adapter->getDriver()->registerStatementPrototype($stmt_prototype_backup);
+              }
+             */
+            throw new Exception\ErrorException(__METHOD__ . ': Cannot retrieve data (' . $e->getMessage() . ')');
         }
         return $r;
     }
-
 
     /**
      * 
      */
     public function loadDefaultColumnModel()
     {
-        
+
         $sql = new Sql($this->adapter);
         $select = clone $this->select;
         $select->limit(0);
         $sql_string = $sql->getSqlStringForSqlObject($select);
-        
         $columns = $this->getMetadataReader()->getColumnsMetadata($sql_string);
         $columnModel = new ColumnModel();
         foreach ($columns as $column => $meta) {
@@ -269,12 +258,9 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
                 'definition' => $meta
             );
             $columnModel->addColumn($column, $config);
-        }    
+        }
         $this->columnModel = $columnModel;
-        
     }
-
-
 
     /**
      *
@@ -304,11 +290,11 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             default:
                 throw new \Exception(__METHOD__ . " Cannot handle default metadata reader for driver '$class'");
         }
-
     }
 
     /**
      * Return the query string that was executed
+     * @throws Exception\InvalidUsageException
      * @return string
      */
     public function getQueryString()
@@ -319,5 +305,16 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         return str_replace("\n", ' ', $this->query_string);
     }
 
+    /**
+     * Return the query string
+     * See getQueryString()
+     * 
+     * @throws Exception\InvalidUsageException
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getQueryString();
+    }
 
 }
