@@ -201,5 +201,16 @@ class CSVTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('alpha\; beta\;', $data);
 
     }
+    
+    public function testGetHTTPHeaders()
+    {
+        $headers = $this->csvWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('text/csv', $headers->getContentType());
+        $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));
+        
+        
+    }
+    
 
 }

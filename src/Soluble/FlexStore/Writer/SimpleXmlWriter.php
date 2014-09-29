@@ -6,6 +6,7 @@ use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use DateTime;
 use Traversable;
+use SimpleXMLElement;
 
 class SimpleXmlWriter extends AbstractSendableWriter
 {
@@ -77,7 +78,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
         $data = $this->source->getData();
         $bt = $this->options['body_tag'];
         $encoding = $this->options['encoding'];
-        $xml = new \SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");
+        $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");
 
         $now = new DateTime();
         $d = array(
@@ -101,9 +102,9 @@ class SimpleXmlWriter extends AbstractSendableWriter
     /**
      *
      * @param array $result
-     * @param \SimpleXMLElement $xml
+     * @param SimpleXMLElement $xml
      */
-    protected function createXmlNode($result, &$xml)
+    protected function createXmlNode($result, SimpleXMLElement $xml)
     {
         foreach ($result as $key => $value) {
 
@@ -145,11 +146,11 @@ class SimpleXmlWriter extends AbstractSendableWriter
     {
         if ($this->headers === null) {
             $this->headers = new SimpleHeaders();
-            $this->headers->setContentType('application/xml', 'utf-8');
+            $this->headers->setContentType('application/xml', $this->options['encoding']);
             $this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
         }
         return $this->headers;
     }
-
+    
 
 }

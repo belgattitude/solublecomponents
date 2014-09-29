@@ -119,16 +119,14 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * @covers Soluble\FlexStore\Writer\SimpleXmlWriter::send
-     * @todo   Implement testSend().
-     */
-    public function testSend()
+    public function testGetHTTPHeaders()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $headers = $this->xmlWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('application/xml', $headers->getContentType());
+        $this->assertEquals('UTF-8', $headers->getCharset());
+        $this->assertEquals('attachement', $headers->getContentDispositionType());
+        
     }
 
 }
