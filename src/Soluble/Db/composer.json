@@ -16,11 +16,10 @@
 		}
 	],
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Soluble\\Db\\": ""
         }
     },
-    "target-dir": "Soluble/Db",
     "require": {
         "php": ">=5.3.3",
         "rhumsaa/array_column": "~1.1",

@@ -1,14 +1,12 @@
 {
-	"name": "soluble/normalist",
-	"description": "Normalist ORM",
+	"name": "soluble/spreadsheet",
+	"description": "Soluble spreadsheet",
     "license": "MIT",
 	"keywords": [
-        "Normalist", 
-        "Synthetic", 
-        "ORM", 
-        "Database",
-        "Table",
-        "ActiveRecord"
+        "LibXL", 
+        "Spreadsheet", 
+        "Excel", 
+        "FlexStore"
     ],
 	"homepage": "https://github.com/belgattitude/solublecomponents",
 	"type": "library",
@@ -20,14 +18,11 @@
 	],
     "autoload": {
         "psr-4": {
-            "Soluble\\Normalist\\": ""
+            "Soluble\\Spreadsheet\\": ""
         }
     },
     "require": {
-        "php": ">=5.3.3",
-        "soluble/db": "self.version",
-        "rhumsaa/array_column": "~1.1",
-        "zendframework/zend-config": "2.*"
+        "php": ">=5.3.3"
     },    
 	"suggest": {
 		"soluble/flexstore": "Super easy query data"
