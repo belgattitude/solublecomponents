@@ -34,7 +34,10 @@ before_script:
   - sh -c "pwd"
   - sh -c "which zcat"
   - sh -c "which php"
-  - if [[ $HHVM == false ]] ; then sh -c "php -m" ; fi 
+  - if [[ $HHVM == false ]] ; then php --version; fi 
+  - if [[ $HHVM == false ]] ; then php --modules; fi 
+  - if [[ $HHVM == false ]] ; then php --info; fi 
+  - if [[ $HHVM == false ]] ; then php -r 'echo ini_get("error_log") . "\n";'; fi
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --no-interaction --prefer-dist --dev
@@ -49,7 +52,7 @@ script:
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 50
 
 after_script:
-  - php -r 'echo readfile(ini_get('error_log')) . "\n";'
+  - if [[ $HHVM == false ]] ; then php -r 'echo readfile(ini_get("error_log")) . "\n";'; fi
   #- cat $TRAVIS_BUILD_DIR/config/config.ini.php  
   - ls build/logs  
   - if [[ $EXTERNAL == true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
