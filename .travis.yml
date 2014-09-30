@@ -34,10 +34,6 @@ before_script:
   - sh -c "pwd"
   - sh -c "which zcat"
   - sh -c "which php"
-  - if [[ $HHVM == false ]] ; then php --version; fi 
-  - if [[ $HHVM == false ]] ; then php --modules; fi 
-  - if [[ $HHVM == false ]] ; then php --info; fi 
-  - if [[ $HHVM == false ]] ; then php -r 'echo ini_get("error_log") . "\n";'; fi
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
   - composer install --no-interaction --prefer-dist --dev
@@ -46,13 +42,14 @@ before_script:
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: 
-    
-  - phpunit -v --configuration tests/config/phpunit.$ADAPTER.travis.xml 
+  - php -d error_log=`pwd`/log.txt -d display_errors=On "./vendor/phpunit/phpunit/phpunit" -v --debug tests/config/phpunit.$ADAPTER.travis.xml   
+  #- phpunit -v --configuration tests/config/phpunit.$ADAPTER.travis.xml 
   #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 50
 
 after_script:
   - if [[ $HHVM == false ]] ; then php -r 'echo readfile(ini_get("error_log")) . "\n";'; fi
+  - cat log.txt
   #- cat $TRAVIS_BUILD_DIR/config/config.ini.php  
   - ls build/logs  
   - if [[ $EXTERNAL == true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
@@ -60,9 +57,9 @@ after_script:
   - sh -c "which java"
   - sh -c "java -version"
   #- ./bin/coveralls -c=./coveralls.yml -v 
-  - php -r 'echo readfile(ini_get("error_log"));'
-  - php --version
-  - php --info
-  - php -d error_log=`pwd`/log.txt -d display_errors=On "./vendor/phpunit/phpunit/phpunit" -v --debug tests/config/phpunit.mysqli.travis.xml 
-  - cat log.txt
+  #- php -r 'echo readfile(ini_get("error_log"));'
+  #- php --version
+  #- php --info
+  #- php -d error_log=`pwd`/log.txt -d display_errors=On "./vendor/phpunit/phpunit/phpunit" -v --debug tests/config/phpunit.mysqli.travis.xml 
+  #- cat log.txt
   
