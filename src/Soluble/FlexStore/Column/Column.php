@@ -61,6 +61,19 @@ class Column {
     
 
     /**
+     *
+     * @var array
+     */
+    protected $defaults = array(
+        'filterable' => true,
+        'groupable' => true,
+        'sortable' => true,
+        'hidden' => false,
+        'excluded' => false
+    );
+    
+
+    /**
      * Constructor
      * @param string $name
      * @throws Exception\InvalidArgumentException
@@ -75,6 +88,20 @@ class Column {
         }
         $this->name = $name;
         $this->setHeader($name);
+        $this->setDefaults();
+    }
+    
+    /**
+     * Set defaults
+     */
+    protected function setDefaults()
+    {
+        $this->sortable     = $this->defaults['sortable'];
+        $this->groupable    = $this->defaults['groupable'];
+        $this->filterable   = $this->defaults['filterable'];
+        $this->hidden       = $this->defaults['hidden'];
+        $this->excluded     = $this->defaults['excluded'];
+        
     }
     
     /**

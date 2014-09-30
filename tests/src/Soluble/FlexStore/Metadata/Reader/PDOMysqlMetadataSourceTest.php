@@ -202,9 +202,17 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals($md['test_set']->getDatatype(), Column\Type::TYPE_STRING);
             $this->assertEquals($md['test_set']->getNativeDatatype(), 'CHAR');
+            
+            $this->assertEquals($md['test_bit']->getDatatype(), Column\Type::TYPE_BOOLEAN);
+            $this->assertEquals('BIT', $md['test_bit']->getNativeDatatype());
+
+            $this->assertEquals($md['test_bool']->getDatatype(), Column\Type::TYPE_INTEGER);
+            $this->assertEquals('TINYINT', $md['test_bool']->getNativeDatatype());
+            
 
         } else {
-            $this->assertTrue(true);
+            $this->markTestSkipped('Only valid for PHP 5.4+ version');
+            
         }
 
     }
@@ -216,10 +224,9 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $sql = "select id, test_char_10 as id from test_table_types";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $metadata = $this->getReader($conn);
-            
             $md = $metadata->getColumnsMetadata($sql);
         } else {
-            $this->assertTrue(true);
+            $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
 
     }
@@ -234,7 +241,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             
             $md = $metadata->getColumnsMetadata($sql);
         } else {
-            $this->assertTrue(true);
+            $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
     }
     
@@ -356,7 +363,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(Column\Type::TYPE_INTEGER, $md['min_time']->getDatatype());
             $this->assertEquals(Column\Type::TYPE_DECIMAL, $md['avg_time']->getDatatype());
         } else {
-            $this->assertTrue(true);
+            $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
     }    
 

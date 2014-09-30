@@ -188,6 +188,12 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($md['test_set']->getDatatype(), Column\Type::TYPE_STRING);
         $this->assertEquals('SET', $md['test_set']->getNativeDatatype());
+        
+        $this->assertEquals($md['test_bit']->getDatatype(), Column\Type::TYPE_BOOLEAN);
+        $this->assertEquals('BIT', $md['test_bit']->getNativeDatatype());
+        
+        $this->assertEquals($md['test_bool']->getDatatype(), Column\Type::TYPE_INTEGER);
+        $this->assertEquals('TINYINT', $md['test_bool']->getNativeDatatype());
 
 
 
