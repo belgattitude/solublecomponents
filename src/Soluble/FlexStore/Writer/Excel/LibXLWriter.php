@@ -189,8 +189,8 @@ class LibXLWriter extends AbstractSendableWriter
 
         $sheet->setRowHeight(0, 30);
 
-        // Fix the header
-        $split = $sheet->splitSheet(1, 0);
+        // fixed header
+        $sheet->splitSheet(1, 0);
 
 
         // Fill document content

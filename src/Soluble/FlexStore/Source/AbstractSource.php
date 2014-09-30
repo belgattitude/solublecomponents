@@ -66,7 +66,7 @@ abstract class AbstractSource implements SourceInterface
     /**
      *
      * @param Options $options
-     * @return Soluble\FlexStore\ResultSet\ResultSet
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     abstract public function getData(Options $options = null);
 

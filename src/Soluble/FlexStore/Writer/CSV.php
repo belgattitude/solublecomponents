@@ -54,64 +54,64 @@ class CSV extends AbstractSendableWriter
           mb_internal_encoding("UTF-8");
          */
 
+        $internal_encoding = strtoupper(ini_get('default_charset'));
+        $charset = strtoupper($this->options['charset']);
 
         $csv = '';
         $data = $this->source->getData()->toArray();
 //echo "éééééààà";
 //	var_dump($data); die();
         if (count($data) == 0) {
-            return $data;
-        }
-
-        //$internal_encoding = strtoupper(iconv_get_encoding('internal_encoding'));
-        $internal_encoding = strtoupper(ini_get('default_charset'));
-
-
-        $charset = strtoupper($this->options['charset']);
+            $columns = $this->source->getColumnModel()->getColumns();
+            $header_line = join($this->options['field_separator'], array_keys($columns));
+            $csv .= $header_line . $this->options['line_separator'];
+            
+        } else {
 
 
-        $header_line = join($this->options['field_separator'], array_keys($data[0]));
-        $csv .= $header_line . $this->options['line_separator'];
+            $header_line = join($this->options['field_separator'], array_keys($data[0]));
+            $csv .= $header_line . $this->options['line_separator'];
 
 
-        foreach ($data as $row) {
+            foreach ($data as $row) {
 
-            switch ($this->options['field_separator']) {
-                case self::SEPARATOR_TAB:
-                    array_walk($row, array($this, 'escapeTabDelimiter'));
-                    break;
-                default:
-                    array_walk($row, array($this, 'escapeFieldDelimiter'));
-            }
-
-            array_walk($row, array($this, 'escapeLineDelimiter'));
-
-            if ($this->options['enclosure'] != '') {
-                array_walk($row, array($this, 'addEnclosure'));
-            }
-
-            $line = join($this->options['field_separator'], $row);
-
-
-            if ($charset != $internal_encoding) {
-
-                if (!function_exists('iconv')) {
-                    throw new Exception\RuntimeException('CSV writer requires iconv extension');
+                switch ($this->options['field_separator']) {
+                    case self::SEPARATOR_TAB:
+                        array_walk($row, array($this, 'escapeTabDelimiter'));
+                        break;
+                    default:
+                        array_walk($row, array($this, 'escapeFieldDelimiter'));
                 }
 
-                $l = (string) $line;
-                if ($l != '') {
-                    $l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
+                array_walk($row, array($this, 'escapeLineDelimiter'));
 
-                    if ($l === false) {
-                        throw new Exception\CharsetConversionException("Cannot convert the charset to '" . $this->options['charset'] . "' from charset '$internal_encoding', value: '$line'.");
-                    } else {
-                        $line = $l;
+                if ($this->options['enclosure'] != '') {
+                    array_walk($row, array($this, 'addEnclosure'));
+                }
+
+                $line = join($this->options['field_separator'], $row);
+
+
+                if ($charset != $internal_encoding) {
+
+                    if (!function_exists('iconv')) {
+                        throw new Exception\RuntimeException('CSV writer requires iconv extension');
+                    }
+
+                    $l = (string) $line;
+                    if ($l != '') {
+                        $l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
+
+                        if ($l === false) {
+                            throw new Exception\CharsetConversionException("Cannot convert the charset to '" . $this->options['charset'] . "' from charset '$internal_encoding', value: '$line'.");
+                        } else {
+                            $line = $l;
+                        }
                     }
                 }
-            }
 
-            $csv .= $line . $this->options['line_separator'];
+                $csv .= $line . $this->options['line_separator'];
+            }
         }
         return $csv;
     }
