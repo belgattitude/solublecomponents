@@ -29,9 +29,7 @@ class Json extends AbstractSendableWriter
             'total'		 => $data->getTotalRows(),
             'start'		 => $data->getSource()->getOptions()->getOffset(),
             'limit'		 => $data->getSource()->getOptions()->getLimit(),
-            'data'		 => $data->toArray(),
-            
-
+            'data'		 => $data->toArray()
         );
 
         if ($this->options['debug']) {

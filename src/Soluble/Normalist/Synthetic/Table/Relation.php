@@ -40,7 +40,7 @@ class Relation
      *
      * @param Record $record
      * @param string $parent_table
-     * @return Record
+     * @return Record|false
      */
     public function getParent(Record $record, $parent_table)
     {

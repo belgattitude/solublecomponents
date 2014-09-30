@@ -7,14 +7,14 @@ interface SourceInterface
 {
     /**
      *
-     * @param Soluble\FlexStore\Options $options
-     * @return Soluble\FlexStore\ResultSet\ResultSet
+     * @param \Soluble\FlexStore\Options $options
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null);
 
 
     /**
-     * @return Soluble\FlexStore\Column\ColumnModel
+     * @return \Soluble\FlexStore\Column\ColumnModel
      */
     public function getColumnModel();
 }
