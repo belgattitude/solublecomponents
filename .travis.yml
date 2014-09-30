@@ -60,8 +60,6 @@ after_script:
   - sh -c "which java"
   - sh -c "java -version"
   #- ./bin/coveralls -c=./coveralls.yml -v 
-
-after_failure:
   - php -r 'echo readfile(ini_get("error_log"))
   - php --version
   - php --info
