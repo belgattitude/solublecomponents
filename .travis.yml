@@ -42,8 +42,8 @@ before_script:
   #- sudo apt-get install jpegoptim libjpeg-progs optipng
 
 script: 
-  - php -d error_log=`pwd`/log.txt -d display_errors=On "./vendor/phpunit/phpunit/phpunit" -v --debug tests/config/phpunit.$ADAPTER.travis.xml   
-  #- phpunit -v --configuration tests/config/phpunit.$ADAPTER.travis.xml 
+  #- php -d error_log=`pwd`/log.txt -d display_errors=On ./vendor/phpunit/phpunit/phpunit -v --debug tests/config/phpunit.$ADAPTER.travis.xml   
+  - phpunit -v --configuration tests/config/phpunit.$ADAPTER.travis.xml 
   #- ./bin/phpcs --standard=PSR2 ./src --report=full --report-file=./tests/build/phpcs_report.txt
   #- php tests/coverage-checker.php "$HOME/belgattitude/solublecomponents/tests/build/logs/clover.xml" 50
 
