@@ -60,7 +60,9 @@ after_script:
   - sh -c "which java"
   - sh -c "java -version"
   #- ./bin/coveralls -c=./coveralls.yml -v 
-  - php -r 'echo readfile(ini_get("error_log"))
+  - php -r 'echo readfile(ini_get("error_log"));'
   - php --version
   - php --info
-  - phpunit -v --debug --configuration tests/config/phpunit.mysqli.travis.xml 
+  - php -d error_log=`pwd`/log.txt -d display_errors=On "./vendor/phpunit/phpunit/phpunit" -v --debug tests/config/phpunit.mysqli.travis.xml 
+  - cat log.txt
+  
