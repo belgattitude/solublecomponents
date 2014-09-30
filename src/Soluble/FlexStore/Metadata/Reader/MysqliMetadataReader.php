@@ -276,8 +276,11 @@ class MysqliMetadataReader extends AbstractMetadataReader
 
             // boolean
 
-            MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
-            MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
+            MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BIT, 'native' => 'BIT'),
+            MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN'),
+            
+            MYSQLI_TYPE_GEOMETRY => array('type' => Column\Type::TYPE_SPATIAL_GEOMETRY, 'native' => null),
+            
 
         ));
 

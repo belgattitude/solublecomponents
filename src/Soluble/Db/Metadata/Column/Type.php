@@ -16,7 +16,8 @@ class Type
     const TYPE_DATE		= 'date';
     const TYPE_TIME		= 'time';
     const TYPE_FLOAT	= 'float';
-
+    const TYPE_BIT      = 'bit';
+    const TYPE_SPATIAL_GEOMETRY = 'geometry';
 
     /**
      * @var array
@@ -32,7 +33,8 @@ class Type
         self::TYPE_DATE		=> 'Definition\DateColumn',
         self::TYPE_TIME		=> 'Definition\TimeColumn',
         self::TYPE_FLOAT	=> 'Definition\FloatColumn',
-
+        self::TYPE_BIT      => 'Definition\BitColumn',
+        self::TYPE_SPATIAL_GEOMETRY         => 'Definition\GeometryColumn',
     );
 
 

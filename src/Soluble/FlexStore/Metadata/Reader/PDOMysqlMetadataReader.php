@@ -54,7 +54,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
     }
 
 
-
+    
+    
     /**
      *
      * @param string $sql
@@ -79,6 +80,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
 
             $datatype = strtoupper($field['native_type']);
+            
+            
             //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
                 throw new UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
@@ -243,8 +246,9 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
             // boolean
 
-            'BIT' => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BIT'),
-            'BOOLEAN' => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN')
+            'BIT' => array('type' => Column\Type::TYPE_BIT, 'native' => 'BIT'),
+            'BOOLEAN' => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN'),
+            'GEOMETRY' => array('type' => Column\Type::TYPE_SPATIAL_GEOMETRY, 'native' => null)
 
         ));
 

@@ -203,11 +203,35 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($md['test_set']->getDatatype(), Column\Type::TYPE_STRING);
             $this->assertEquals($md['test_set']->getNativeDatatype(), 'CHAR');
             
-            $this->assertEquals($md['test_bit']->getDatatype(), Column\Type::TYPE_BOOLEAN);
+            $this->assertEquals($md['test_bit']->getDatatype(), Column\Type::TYPE_BIT);
             $this->assertEquals('BIT', $md['test_bit']->getNativeDatatype());
 
             $this->assertEquals($md['test_bool']->getDatatype(), Column\Type::TYPE_INTEGER);
             $this->assertEquals('TINYINT', $md['test_bool']->getNativeDatatype());
+            
+            $this->assertEquals($md['test_geometry']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_geometry']->getNativeDatatype());
+
+            $this->assertEquals($md['test_point']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_point']->getNativeDatatype());
+
+            $this->assertEquals($md['test_linestring']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_linestring']->getNativeDatatype());
+
+            $this->assertEquals($md['test_polygon']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_polygon']->getNativeDatatype());
+
+            $this->assertEquals($md['test_multipolygon']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_multipolygon']->getNativeDatatype());
+
+            $this->assertEquals($md['test_multipoint']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_multipoint']->getNativeDatatype());
+
+            $this->assertEquals($md['test_multilinestring']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_multilinestring']->getNativeDatatype());
+
+            $this->assertEquals($md['test_geometrycollection']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
+            $this->assertEquals(null, $md['test_geometrycollection']->getNativeDatatype());            
             
 
         } else {
