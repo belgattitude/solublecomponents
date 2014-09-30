@@ -7,13 +7,14 @@ use Soluble\Db\Metadata\Column\Types;
 use Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException;
 
 use ArrayObject;
+use PDO;
 
 class PDOMysqlMetadataReader extends AbstractMetadataReader
 {
 
 
     /**
-     * @var \PDO
+     * @var PDO
      */
     protected $pdo;
 
@@ -32,11 +33,11 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
     /**
      *
-     * @param \PDO $pdo
+     * @param PDO $pdo
      * @throws Exception\UnsupportedFeatureException
      * @throws Exception\UnsupportedDriverException
      */
-    public function __construct(\PDO $pdo)
+    public function __construct(PDO $pdo)
     {
         //@codeCoverageIgnoreStart
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
@@ -45,7 +46,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
         };
         //@codeCoverageIgnoreEnd
 
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $driver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
         if (strtolower($driver) != 'mysql') {
             throw new Exception\UnsupportedDriverException(__CLASS__ . " supports only pdo_mysql driver, '$driver' given.");
         }
