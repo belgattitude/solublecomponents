@@ -83,7 +83,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
         $tm = $this->tableManager;
         $product = $tm->table('product');
-        $record = $product->record(array('invalid_column' => 'value'), $false);
+        $record = $product->record(array('invalid_column' => 'value'), false);
         $this->assertInstanceOf($this->recordclass, $record);
     }
     

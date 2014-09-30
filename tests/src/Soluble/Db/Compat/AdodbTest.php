@@ -79,6 +79,7 @@ class AdoDbTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException("Soluble\Db\Compat\Exception\AdoNotConnectedException");
         $ado = NewADOConnection("pdo");
+        $o = $this->db_options;
         $ado->connect("mysql:host=" . $o['hostname'], 'notexist_user', 'invalidpassword', $o['database']);
         $adapter = Adodb::getAdapter($ado);
     }

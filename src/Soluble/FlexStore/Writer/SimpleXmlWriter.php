@@ -30,7 +30,8 @@ class SimpleXmlWriter extends AbstractSendableWriter
          * XML tag for rows
          */
         'row_tag' => 'row',
-        'encoding' => 'UTF-8'
+        'encoding' => 'UTF-8',
+        'debug' => false
     );
 
     /**
@@ -120,7 +121,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
 
                 if ($this->php_54_compatibility) {
                     // assuming php 5.4+
-                    $encoded = htmlspecialchars($value, ENT_XML1, $this->options->encoding);
+                    $encoded = htmlspecialchars($value, ENT_XML1, $this->options['encoding']);
                 } else {
                     $encoded = '';
 

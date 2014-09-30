@@ -61,6 +61,7 @@ class Record implements ArrayAccess
     {
         $this->_securedFieldForArrayAccess = new \ArrayObject();
         $this->_securedFieldForArrayAccess['table'] = $table;
+        $this->_securedFieldForArrayAccess['state'] = null;
         //$this->table = $table;
         $this->setData($data);
     }

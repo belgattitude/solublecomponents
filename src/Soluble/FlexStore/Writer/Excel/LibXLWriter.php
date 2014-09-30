@@ -126,6 +126,9 @@ class LibXLWriter extends AbstractSendableWriter
         foreach ($columns as $name => $col) {
             $definition = $cm->getColumnDefinition($name);
             $header = $name;
+            if (!array_key_exists($name, $column_max_widths)) {
+                $column_max_widths[$name] = 0;
+            }
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
 
             $datatype = $definition->getDataType();

@@ -40,7 +40,7 @@ class Transaction
         try {
             $this->adapter->getDriver()->getConnection()->beginTransaction();
         } catch (\Exception $e) {
-            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD_ . ". cannot start transaction '{$e->getMessage()}'.");
+            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot start transaction '{$e->getMessage()}'.");
         }
         return $this;
     }
@@ -56,7 +56,7 @@ class Transaction
         try {
             $this->adapter->getDriver()->getConnection()->commit();
         } catch (\Exception $e) {
-            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD_ . ". cannot commit transaction '{$e->getMessage()}'.");
+            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot commit transaction '{$e->getMessage()}'.");
         }
 
         return $this;
@@ -73,7 +73,7 @@ class Transaction
         try {
             $this->adapter->getDriver()->getConnection()->rollback();
         } catch (\Exception $e) {
-            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD_ . ". cannot rollback transaction '{$e->getMessage()}'.");
+            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot rollback transaction '{$e->getMessage()}'.");
         }
 
         return $this;

@@ -136,7 +136,7 @@ class ColumnModel
     {
         $excluded = array();
         foreach ($this->getColumnsConfig() as $column => $config) {
-            if ($config['params']['excluded']) {
+            if (array_key_exists('params', $config) && $config['params']['excluded']) {
                 $excluded[] = $column;
             }
         }
