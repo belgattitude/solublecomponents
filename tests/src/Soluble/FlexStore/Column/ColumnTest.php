@@ -79,6 +79,12 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $column->setSortable(false);
         $this->assertFalse($column->isSortable());                
         
+        // Editable
+        $this->assertFalse($column->isEditable());
+        $column->setEditable();
+        $this->assertTrue($column->isEditable());
+        $column->setEditable(false);
+        $this->assertFalse($column->isEditable());         
         
     }
 

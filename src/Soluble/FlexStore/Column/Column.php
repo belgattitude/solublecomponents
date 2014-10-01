@@ -59,6 +59,12 @@ class Column {
      */
     protected $groupable;
     
+    /**
+     *
+     * @var boolean
+     */
+    protected $editable;
+    
 
     /**
      *
@@ -69,7 +75,8 @@ class Column {
         'groupable' => true,
         'sortable' => true,
         'hidden' => false,
-        'excluded' => false
+        'excluded' => false,
+        'editable' => false
     );
     
 
@@ -101,6 +108,7 @@ class Column {
         $this->filterable   = $this->defaults['filterable'];
         $this->hidden       = $this->defaults['hidden'];
         $this->excluded     = $this->defaults['excluded'];
+        $this->editable     = $this->defaults['editable'];
         
     }
     
@@ -133,6 +141,27 @@ class Column {
     {
         return $this->excluded;
     }
+
+    /**
+     * 
+     * @param boolean $editable
+     * @return Column
+     */
+    function setEditable($editable=true)
+    {
+        $this->editable = (bool) $editable;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return boolean
+     */
+    function isEditable()
+    {
+        return $this->editable;
+    }
+    
     
     /**
      * 
