@@ -2,13 +2,13 @@
 
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         colors="false"
+         colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
+         syntaxCheck="true"
          bootstrap="../../tests/bootstrap.php"
 >
 
@@ -23,6 +23,8 @@
 
 		<!-- if you don't start with a /, it will be relative to unit tests  -->
 		<server name="PHPUNIT_CACHE_DIR" value="tmp/cache" />
+        <server name="LIBXL_LICENSE_KEY" value="" />
+        <server name="LIBXL_LICENSE_NAME" value="" />        
     </php>
 
     <testsuites>

@@ -26,7 +26,6 @@ class SolubleTestFactories
         return array(
                     'name' => $_SERVER['LIBXL_LICENSE_NAME'],
                     'key'  => $_SERVER['LIBXL_LICENSE_KEY']
-                    
             );
     }
     
