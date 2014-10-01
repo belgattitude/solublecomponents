@@ -6,6 +6,7 @@ use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\Db\Metadata\Column;
+use Soluble\FlexStore\Options;
 use ExcelBook;
 use ExcelFormat;
 
@@ -73,13 +74,14 @@ class LibXLWriter extends AbstractSendableWriter
     }
 
     /**
-     *
+     * @param Options $options
      * @return string
      */
-    public function getData()
+    public function getData(Options $options=null)
     {
+        
         $book = $this->getExcelBook();
-        $this->generateExcel($book);
+        $this->generateExcel($book, $options);
         //$book->setLocale($locale);
         $filename = tempnam('/tmp', 'libxl');
 
@@ -90,7 +92,13 @@ class LibXLWriter extends AbstractSendableWriter
         return $data;
     }
 
-    protected function generateExcel(ExcelBook $book)
+    /**
+     * 
+     * @param ExcelBook $book
+     * @param \Soluble\FlexStore\Options $options
+     * @return ExcelBook
+     */
+    protected function generateExcel(ExcelBook $book, Options $options=null)
     {
         $sheet = $book->addSheet("Sheet");
 
@@ -194,7 +202,7 @@ class LibXLWriter extends AbstractSendableWriter
 
 
         // Fill document content
-        $data = $this->source->getData();
+        $data = $this->source->getData($options);
 
         foreach ($data as $idx => $row) {
             $col_idx = 0;

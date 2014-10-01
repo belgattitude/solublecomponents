@@ -1,45 +1,53 @@
 <?php
-namespace Soluble\FlexStore;
 
+namespace Soluble\FlexStore;
 
 class Options
 {
+
     /**
      *
-     * @var integer
+     * @var integer|null
      */
     protected $limit;
 
-
     /**
      *
-     * @var integer
+     * @var integer|null
      */
     protected $offset;
 
-
-
     public function __construct()
     {
-
+        
     }
-
 
     /**
      * Set the (maximum) number of results to return
      *
      * @param int $limit
+     * @param int $offset
      * @return Options
      */
-    public function setLimit($limit)
+    public function setLimit($limit, $offset=null)
     {
-        $this->limit = (int) $limit;
+        if ($limit === null) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": limit parameter cannot be null, use unsetLimit instead.");
+        }
+        $l = filter_var($limit, FILTER_VALIDATE_INT);
+        if (!is_int($l)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": limit parameter must be an int.");
+        }        
+        $this->limit = $l;
+        if ($offset !== null) {
+            $this->setOffset($offset);
+        }
         return $this;
     }
 
     /**
      *
-     * @return integer
+     * @return integer|null
      */
     public function getLimit()
     {
@@ -64,10 +72,18 @@ class Options
      */
     public function hasLimit()
     {
-        return ($this->limit > 0 && $this->limit !== null);
+        return $this->limit !== null;
     }
 
-
+    /**
+     * Tells whether the option contains an offset
+     * @return boolean
+     */
+    public function hasOffset()
+    {
+        return $this->offset !== null;
+    }    
+    
     /**
      * Set the offset (the record to start reading when using limit)
      * @param int $offset
@@ -75,7 +91,14 @@ class Options
      */
     public function setOffset($offset)
     {
-        $this->offset = (int) $offset;
+        if ($offset === null) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": offset parameter cannot be null, use unsetOffset instead.");
+        }
+        $o = filter_var($offset, FILTER_VALIDATE_INT);
+        if (!is_int($o)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": offset parameter must be an int.");
+        }        
+        $this->offset = $o;
         return $this;
     }
 
@@ -83,11 +106,21 @@ class Options
      * Return the offset when using limit
      * Offset gives the record number to start reading
      * from when a paging query is in use
-     * @return int
+     * @return int|null
      */
     public function getOffset()
     {
         return $this->offset;
+    }
+    
+    /**
+     * Unset previously set offset
+     * @return \Soluble\FlexStore\Options
+     */
+    public function unsetOffset()
+    {
+        $this->offset = null;
+        return $this;
     }
 
 }

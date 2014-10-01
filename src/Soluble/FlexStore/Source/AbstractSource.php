@@ -12,7 +12,7 @@ use Soluble\FlexStore\Column\ColumnModel;
 abstract class AbstractSource implements SourceInterface
 {
     /**
-     * @var Options
+     * @var \Soluble\FlexStore\Options
      */
     protected $options;
 
@@ -52,7 +52,7 @@ abstract class AbstractSource implements SourceInterface
 */
     /**
      *
-     * @return Options
+     * @return \Soluble\FlexStore\Options
      */
     public function getOptions()
     {

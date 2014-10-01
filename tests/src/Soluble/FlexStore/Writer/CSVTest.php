@@ -55,18 +55,38 @@ class CSVTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-     * @covers Soluble\FlexStore\Writer\CSV::getData
-     */
+    public function testGetEmptyData()
+    {
+        $enclosure = '"';
+        $this->csvWriter->setOptions(
+                array(
+                    'field_separator' => CSV::SEPARATOR_TAB,
+                    'line_separator' => CSV::SEPARATOR_NEWLINE_UNIX,
+                    'enclosure' => $enclosure,
+                    'charset' => 'UTF-8'
+                    )
+                );
+        
+        
+        $options = new \Soluble\FlexStore\Options();
+        $options->setLimit(0);
+        $data = $this->csvWriter->getData($options);
+        $this->assertInternalType('string', $data);
+        
+        $data = explode(CSV::SEPARATOR_NEWLINE_UNIX, $data);
+        $header = str_getcsv($data[0], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
+        $columns = array_keys((array) $this->source->getColumnModel()->getColumns());
+        $this->assertEquals($columns, $header);
+    }        
+    
     public function testGetData()
     {
         $data = $this->csvWriter->getData();
         $this->assertInternalType('string', $data);
     }
+    
 
-    /**
-     * @covers Soluble\FlexStore\Writer\CSV::getData
-     */
+
     public function testGetDataLatin1Charset()
     {
         //die();
@@ -102,6 +122,11 @@ class CSVTest extends \PHPUnit_Framework_TestCase
         $line1 = str_getcsv($data[1], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
         $this->assertInternalType('array', $line1);
         $title = $line1[4];
+        
+        $header = str_getcsv($data[0], CSV::SEPARATOR_TAB, $enclosure, $escape=null);
+        $columns = array_keys((array) $this->source->getColumnModel()->getColumns());
+        $this->assertEquals($columns, $header);
+        
 
         $this->assertTrue(mb_check_encoding($title, 'ISO-8859-1'));
     }

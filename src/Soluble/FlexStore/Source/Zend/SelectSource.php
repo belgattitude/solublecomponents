@@ -291,7 +291,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
                 throw new \Exception(__METHOD__ . " Cannot handle default metadata reader for driver '$class'");
         }
     }
-
+    
     /**
      * Return the query string that was executed
      * @throws Exception\InvalidUsageException

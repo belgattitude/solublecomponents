@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\Writer;
 
 use Soluble\FlexStore\Writer\Exception;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
+use Soluble\FlexStore\Options;
 
 class CSV extends AbstractSendableWriter
 {
@@ -32,10 +33,12 @@ class CSV extends AbstractSendableWriter
     );
 
     /**
+     * 
      * @throws Exception\CharsetConversionException
+     * @param Options $options 
      * @return string csv encoded data
      */
-    public function getData()
+    public function getData(Options $options=null)
     {
 
 // TODO - TEST database connection charset !!!
@@ -58,12 +61,12 @@ class CSV extends AbstractSendableWriter
         $charset = strtoupper($this->options['charset']);
 
         $csv = '';
-        $data = $this->source->getData()->toArray();
+        $data = $this->source->getData($options)->toArray();
 //echo "éééééààà";
 //	var_dump($data); die();
         if (count($data) == 0) {
             $columns = $this->source->getColumnModel()->getColumns();
-            $header_line = join($this->options['field_separator'], array_keys($columns));
+            $header_line = join($this->options['field_separator'], array_keys((array) $columns));
             $csv .= $header_line . $this->options['line_separator'];
             
         } else {

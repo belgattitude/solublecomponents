@@ -7,17 +7,19 @@ use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
+use Soluble\FlexStore\Options;
 
 class JsonModel extends AbstractWriter
 {
 
     /**
      *
+     * @param Options $options
      * @return \Zend\View\Model\JsonModel
      */
-    public function getData()
+    public function getData(Options $options=null)
     {
-        $data = $this->source->getData();
+        $data = $this->source->getData($options);
         $d = array(
             'success' => true,
             'total' => $data->getTotalRows(),

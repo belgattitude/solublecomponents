@@ -7,6 +7,7 @@ use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use DateTime;
 use Traversable;
 use SimpleXMLElement;
+use Soluble\FlexStore\Options;
 
 class SimpleXmlWriter extends AbstractSendableWriter
 {
@@ -71,12 +72,12 @@ class SimpleXmlWriter extends AbstractSendableWriter
     }
 
     /**
-     *
+     * @param Options $options
      * @return string xml encoded data
      */
-    public function getData()
+    public function getData(Options $options = null)
     {
-        $data = $this->source->getData();
+        $data = $this->source->getData($options);
         $bt = $this->options['body_tag'];
         $encoding = $this->options['encoding'];
         $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");
@@ -152,6 +153,5 @@ class SimpleXmlWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-    
 
 }

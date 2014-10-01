@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Exception;
 use Traversable;
+use Soluble\FlexStore\Options;
 
 abstract class AbstractWriter
 {
@@ -51,9 +52,11 @@ abstract class AbstractWriter
 
 
     /**
+     * Return data
+     * @param Options $options 
      * @return string
      */
-    abstract public function getData();
+    abstract public function getData(Options $options=null);
 
 
 
