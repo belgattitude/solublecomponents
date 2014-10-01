@@ -113,7 +113,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
     {
         if ($options->hasLimit()) {
             $select->limit($options->getLimit());
-            if (is_numeric($options->getOffset())) {
+            if ($options->hasOffset()) {
                 $select->offset($options->getOffset());
             }
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
