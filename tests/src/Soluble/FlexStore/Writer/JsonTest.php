@@ -97,31 +97,13 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers Soluble\FlexStore\Writer\Json::send
-     */
-    public function testSend()
+    public function testGetHTTPHeaders()
     {
-        // Remove the following lines when you implement this test.
-        /*
-        ob_end_flush();
-        ob_end_clean();
-        ob_start();
-        $this->jsonWriter->send();
-        $a = ob_get_contents();
-        ob_end_clean();
-        var_dump($a);
-//		$headers_list = headers_list();
-
-        die();
-        /*
-
-        var_dump($headers_list); die();
-        $this->assertNotEmpty($headers_list);
-
-        $this->assertContains('Location: foo', $headers_list);
-         *
-         */
-    }
-
+        $headers = $this->jsonWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('application/json', $headers->getContentType());
+        $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));
+        
+        
+    }    
 }

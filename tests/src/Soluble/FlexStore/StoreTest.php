@@ -64,7 +64,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $cm    = $store->getColumnModel();
         //$config = new Zend\Config\Config();
         //$cm->mergeConfiguration($config);
-        $cm->setExcluded(array('test_multipoint'));
+        $cm->exclude(array('test_multipoint'));
         
         
         $search = $cm->search();

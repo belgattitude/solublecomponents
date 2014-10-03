@@ -26,6 +26,11 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 {
 
     /**
+     * @var Sql
+     */
+    protected $sql;
+    
+    /**
      *
      * @var Select
      */

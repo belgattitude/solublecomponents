@@ -11,7 +11,6 @@ interface ColumnSettableInterface {
      * Set column datatype
      * @param string|\Soluble\FlexStore\Column\Type\AbstractType $type
      * @throws Exception\InvalidArgumentException when the type is not supported.
-     * @return Column
      */
     function setType($type);    
     

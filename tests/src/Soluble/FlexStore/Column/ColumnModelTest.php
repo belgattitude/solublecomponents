@@ -182,7 +182,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $cm = $source->getColumnModel();
 
         $excluded = array('product_id', 'legacy_mapping');
-        $cm->setExcluded($excluded);
+        $cm->exclude($excluded);
         $this->assertEquals($excluded, $cm->getExcluded());
     }
 
@@ -198,7 +198,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $cm = $source->getColumnModel();
 
         $sort = array('email', 'user_id');
-        $cm->sortColumns($sort);
+        $cm->sort($sort);
 
         $this->assertEquals(array('email', 'user_id', 'password', 'username'), array_keys((array) $cm->getColumns()));
     }
@@ -217,7 +217,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $sort = array('email', 'user_id', 'email', 'user_id');
 
-        $cm->sortColumns($sort);
+        $cm->sort($sort);
     }
 
     public function testGetColumn()
@@ -230,7 +230,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $col = $cm->getColumn('user_id');
+        $col = $cm->get('user_id');
         $this->assertInstanceOf('Soluble\FlexStore\Column\Column', $col);
 
         $select = new \Zend\Db\Sql\Select();
@@ -241,7 +241,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $col = $cm->getColumn('email');
+        $col = $cm->get('email');
         $this->assertInstanceOf('Soluble\FlexStore\Column\Column', $col);
     }
 
@@ -271,7 +271,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $cm->getColumn('this_column_not_exists');
+        $cm->get('this_column_not_exists');
     }
 
     public function testGetColumnThrowsInvalidArgumentException()
@@ -285,7 +285,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $cm->getColumn(new \stdClass());
+        $cm->get(new \stdClass());
     }
 
     public function testHasColumnThrowsInvalidArgumentException()
@@ -315,7 +315,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $include_only = array('email', 'user_id');
 
-        $cm->setIncludeOnly($include_only);
+        $cm->includeOnly($include_only);
         $this->assertEquals($include_only, array_keys((array) $cm->getColumns()));
     }
 
@@ -332,7 +332,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $excluded = array('user_id', 'email');
         $cm = $source->getColumnModel();
-        $cm->setExcluded($excluded);
+        $cm->exclude($excluded);
         $this->assertEquals($excluded, $cm->getExcluded());
 
         $data = $source->getData();

@@ -73,7 +73,7 @@ class ColumnModel
      * @param Column $column
      * @return ColumnModel
      */
-    public function addColumn(Column $column)
+    public function add(Column $column)
     {
         $this->columns->offsetSet($column->getName(), $column);
         return $this;
@@ -98,23 +98,6 @@ class ColumnModel
     }
     
     
-    /**
-     * Set column that must be excluded in getData() and getColumns()
-     * 
-     * @param array|string|ArrayObject $columns column nams to exclude
-     * @throws Exception\InvalidArgumentException     
-     * @return ColumnModel
-     */
-    public function setExcluded($excluded_columns, $excluded = true)
-    {
-        if (!is_array($excluded_columns) && !is_string($excluded_columns) && !$excluded_columns instanceof ArrayObject) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $excluded_columns param to be array|ArrayObject|string');
-        }
-        $result = $this->search()->in((array) $excluded_columns);
-        $result->setExcluded($excluded);
-        
-        return $this;
-    }
 
     /**
      * Return column that have been excluded in getData() and getColumns()
@@ -141,7 +124,7 @@ class ColumnModel
      * @throws Exception\ColumnNotFoundException when column does not exists in model
      * @return Column
      */
-    public function getColumn($column)
+    public function get($column)
     {
         if (!$this->exists($column)) {
             throw new Exception\ColumnNotFoundException(__METHOD__ . " Column '$column' not present in column model.");
@@ -157,7 +140,7 @@ class ColumnModel
      * @param array $sorted_columns
      * @return ColumnModel
      */
-    public function sortColumns(array $sorted_columns)
+    public function sort(array $sorted_columns)
     {
         $diff = array_diff_assoc($sorted_columns, array_unique($sorted_columns));
         if (count($diff) > 0) {
@@ -170,15 +153,33 @@ class ColumnModel
             if (!$this->exists($column)) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Column '$column' does not exists.");
             }
-            $columns[$column] = $this->getColumn($column);
+            $columns[$column] = $this->get($column);
         }
         // Appending eventual non sorted columns at the end
         $columns = array_merge($columns, (array) $this->columns);
-        $this->columns = new \ArrayObject($columns);
+        $this->columns = new ArrayObject($columns);
         return $this;
     }
 
+    /**
+     * Set column that must be excluded in getData() and getColumns()
+     * 
+     * @param array|string|ArrayObject $columns column nams to exclude
+     * @throws Exception\InvalidArgumentException     
+     * @return ColumnModel
+     */
+    public function exclude($excluded_columns, $excluded = true)
+    {
+        if (!is_array($excluded_columns) && !is_string($excluded_columns) && !$excluded_columns instanceof ArrayObject) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $excluded_columns param to be array|ArrayObject|string');
+        }
+        $result = $this->search()->in((array) $excluded_columns);
+        $result->setExcluded($excluded);
+        
+        return $this;
+    }
 
+    
     /**
      * Exclude all other columns that the one specified
      * Column sort is preserved in getData()
@@ -187,20 +188,20 @@ class ColumnModel
      * @param bool $sort automatically apply sortColumns
      * @return ColumnModel
      */
-    public function setIncludeOnly(array $include_only_columns, $sorted = true)
+    public function includeOnly(array $include_only_columns, $sort = true)
     {
         // trim column
         $include_only_columns = array_map('trim', $include_only_columns);
 
         foreach ($this->columns as $name => $column) {
             if (in_array($name, $include_only_columns)) {
-                $this->setExcluded($name, false);
+                $this->exclude($name, false);
             } else {
-                $this->setExcluded($name, true);
+                $this->exclude($name, true);
             }
         }
-        if ($sorted) {
-            $this->sortColumns($include_only_columns);
+        if ($sort) {
+            $this->sort($include_only_columns);
         }
         return $this;
     }

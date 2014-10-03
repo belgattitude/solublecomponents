@@ -124,7 +124,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $source = $this->getTestSource();
         
         $cm = $source->getColumnModel();
-        $cm->setExcluded(array('reference', 'description', 'volume', 'weight', 'barcode_ean13', 'created_at', 'price', 'discount_1', 'promo_start_at', 'promo_end_at'));
+        $cm->exclude(array('reference', 'description', 'volume', 'weight', 'barcode_ean13', 'created_at', 'price', 'discount_1', 'promo_start_at', 'promo_end_at'));
         
         $xlsWriter = new LibXLWriter();
         $xlsWriter->setSource($source);

@@ -89,7 +89,7 @@ class CSVTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataLatin1Charset()
     {
-        //die();
+        
         $enclosure = '"';
         $this->csvWriter->setOptions(
                 array(
@@ -97,7 +97,6 @@ class CSVTest extends \PHPUnit_Framework_TestCase
                     'line_separator' => CSV::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     'charset' => 'ISO-8859-1'
-                    //'charset' => 'UTF-8'
                     )
                 );
 
@@ -129,6 +128,14 @@ class CSVTest extends \PHPUnit_Framework_TestCase
         
 
         $this->assertTrue(mb_check_encoding($title, 'ISO-8859-1'));
+        $this->assertFalse(mb_check_encoding($title, 'UTF-8'));
+        $this->assertFalse(mb_check_encoding($title, 'ASCII'));
+        $this->assertEquals(utf8_decode('Modèles Electriques'), $title);
+        
+        $headers = $this->csvWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('text/csv', $headers->getContentType());
+        $this->assertEquals('ISO-8859-1', strtoupper($headers->getCharset()));        
     }
 
     /**
@@ -171,6 +178,15 @@ class CSVTest extends \PHPUnit_Framework_TestCase
         $title = $line1[4];
 
         $this->assertTrue(mb_check_encoding($title, 'UTF-8'));
+        $this->assertFalse(mb_check_encoding($title, 'ASCII'));
+        $this->assertNotEquals(utf8_decode($title), $title);
+        $this->assertEquals('Modèles Electriques', $title);
+        
+        
+        $headers = $this->csvWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('text/csv', $headers->getContentType());
+        $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));        
     }
 
 
