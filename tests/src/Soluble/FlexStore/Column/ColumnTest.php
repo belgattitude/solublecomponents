@@ -26,7 +26,85 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     {
         
     }
+    
+    public function testGetProperties()
+    {
+        $properties = array(
+            'type' => 'string',
+            'header' => 'header',
+            'width' => '100%',
+            'filterable' => false,
+            'groupable' => false,
+            'sortable' => false,
+            'hidden' => true,
+            'excluded' => true,
+            'editable' => true            
+        );
+        
+        $column = new Column('cool', $properties);
+        $this->assertEquals($properties, $column->getProperties());
+    }
+    
+    public function testWithProperties()
+    {
+        $properties = array(
+            'type' => Type::TYPE_DATE,
+            'header' => 'header',
+            'width' => '100%',
+            'filterable' => false,
+            'groupable' => false,
+            'sortable' => false,
+            'hidden' => true,
+            'excluded' => true,
+            'editable' => true            
+        );
+        
+        $column = new Column('cool', $properties);
+        $this->assertFalse($column->isSortable());
+        $this->assertFalse($column->isGroupable());
+        $this->assertFalse($column->isFilterable());
+        $this->assertTrue($column->isHidden());
+        $this->assertTrue($column->isExcluded());
+        $this->assertTrue($column->isEditable());
+        $this->assertEquals('header', $column->getHeader());
+        $this->assertEquals(Type::TYPE_DATE, $column->getType());
+        $this->assertEquals('100%', $column->getWidth());
 
+        $properties = array(
+            'header' => 'changed',
+        );
+        $column->setProperties($properties);
+        $this->assertEquals('changed', $column->getHeader());
+    }
+    
+    public function testSetPropertiesThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
+        
+        $properties = array(
+            'header' => 'header',
+            'not_exists' => '100%',
+        );
+        
+        $column = new Column('cool', $properties);
+        
+    }
+
+    public function testSetPropertiesThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
+        
+        $properties = array(
+            'header' => 'header',
+            'not_exists' => '100%',
+        );
+        
+        $column = new Column('cool');
+        $column->setProperties($properties);
+        
+    }
+    
+    
 
     public function testGetSet()
     {
@@ -84,7 +162,9 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $column->setEditable();
         $this->assertTrue($column->isEditable());
         $column->setEditable(false);
-        $this->assertFalse($column->isEditable());         
+        $this->assertFalse($column->isEditable()); 
+        
+        
         
     }
 

@@ -50,6 +50,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         
     }
+    
 
     public function testAddRowRenderer()
     {
@@ -254,9 +255,9 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $this->assertTrue($cm->hasColumn('user_id'));
-        $this->assertTrue($cm->hasColumn('password'));
-        $this->assertFalse($cm->hasColumn('email'));
+        $this->assertTrue($cm->exists('user_id'));
+        $this->assertTrue($cm->exists('password'));
+        $this->assertFalse($cm->exists('email'));
     }
 
     public function testGetColumnThrowsColumnNotFoundException()
@@ -298,7 +299,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         );
         $source = new SelectSource($params);
         $cm = $source->getColumnModel();
-        $cm->hasColumn(new \stdClass());
+        $cm->exists(new \stdClass());
     }
 
     public function testIncludeOnly()
@@ -345,50 +346,5 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('username', array_shift($first));
     }
 
-    public function testGetColumnMeta()
-    {
-
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('test_table_types');
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-
-        $source = new SelectSource($params);
-        $columnModel = $source->getColumnModel();
-
-
-        $charColumn = $columnModel->getColumnDefinition('test_char_10');
-        $this->assertTrue($charColumn->isText());
-        $this->assertFalse($charColumn->isDate());
-        $this->assertFalse($charColumn->isDatetime());
-        $this->assertFalse($charColumn->isNumeric());
-
-        $col = $columnModel->getColumnDefinition('test_float');
-        $this->assertFalse($col->isText());
-        $this->assertFalse($col->isDate());
-        $this->assertFalse($col->isDatetime());
-        $this->assertTrue($col->isNumeric());
-
-        $col = $columnModel->getColumnDefinition('test_date');
-        $this->assertFalse($col->isText());
-        $this->assertTrue($col->isDate());
-        $this->assertFalse($col->isDatetime());
-        $this->assertFalse($col->isNumeric());
-
-
-        $col = $columnModel->getColumnDefinition('test_datetime');
-        $this->assertFalse($col->isText());
-        $this->assertFalse($col->isDate());
-        $this->assertTrue($col->isDatetime());
-        $this->assertFalse($col->isNumeric());
-
-        $col = $columnModel->getColumnDefinition('test_timestamp');
-        $this->assertFalse($col->isText());
-        $this->assertFalse($col->isDate());
-        $this->assertTrue($col->isDatetime());
-        $this->assertFalse($col->isNumeric());
-    }
 
 }

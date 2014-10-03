@@ -22,7 +22,7 @@ class Type
     /**
      * @var array
      */
-    private static $typesMap = array(
+    protected static $typesMap = array(
 
         self::TYPE_INTEGER	=> 'Definition\IntegerColumn',
         self::TYPE_DECIMAL	=> 'Definition\DecimalColumn',
@@ -51,7 +51,7 @@ class Type
     public static function createColumnDefinition($datatype, $name, $tableName = null, $schemaName = null)
     {
         if (!array_key_exists($datatype, self::$typesMap)) {
-            throw new Exception\UnsupportedDatatypeException("Type '$datatype', is not supported");
+            throw new Exception\UnsupportedDatatypeException(__METHOD__ . " Type '$datatype' is not supported.");
         }
         $class = __NAMESPACE__ . '\\' . self::$typesMap[$datatype];
 

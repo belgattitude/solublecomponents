@@ -22,7 +22,7 @@ use Soluble\FlexStore\Column\Type\MetadataMapper;
 use Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader;
 use Soluble\FlexStore\Metadata\Reader as MetadataReader;
 
-class SelectSource extends AbstractSource implements QueryableSourceInterface
+class SqlSource extends AbstractSource implements QueryableSourceInterface
 {
 
     /**
@@ -69,39 +69,48 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
 
     /**
      *
-     * @param array|ArrayObject $params
-     * @throws Exception\InvalidArgumentException
-     * @throws Exception\MissingArgumentException
+     * @param Adapter $params
      */
-    public function __construct($params)
+    public function __construct(Adapter $adapter, Select $select=null)
     {
-        if (is_array($params)) {
-            $params = new ArrayObject($params);
-        } elseif (!$params instanceof ArrayObject) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ": Params must be either an ArrayObject or an array");
+        $this->adapter = $adapter;
+        $this->sql = new Sql($this->adapter);
+        if ($select !== null) {
+            $this->setSelect($select);
         }
-
-        if ($params->offsetExists('select')) {
-            if ($params['select'] instanceof Select) {
-                $this->select = $params['select'];
-            } else {
-                throw new Exception\InvalidArgumentException(__METHOD__ . ": Param 'source' must be an instance of Zend\Db\Sql\Select");
-            }
-        } else {
-            throw new Exception\MissingArgumentException(__METHOD__ . ": Missing param 'select'");
-        }
-
-        if ($params->offsetExists('adapter')) {
-            if ($params['adapter'] instanceof \Zend\Db\Adapter\Adapter) {
-                $this->adapter = $params['adapter'];
-            } else {
-                throw new Exception\InvalidArgumentException(__METHOD__ . ": Param 'adapter' must be an instance of Zend\Db\Adapter\Adapter");
-            }
-        } else {
-            throw new Exception\MissingArgumentException(__METHOD__ . ": Missing param 'adapter'");
-        }
-        $this->params = $params;
     }
+    
+    /**
+     * @param Select
+     * @return SqlSource 
+     */
+    public function setSelect(Select $select)
+    {
+        $this->select = $select;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return Select
+     */
+    public function getSelect()
+    {
+        return $this->select();
+    }
+    
+    /**
+     * 
+     * @return Select
+     */
+    public function select()
+    {
+        if ($this->select === null) {
+            $this->select = $this->sql->select();
+        }
+        return $this->select;
+    }
+    
 
     /**
      *
@@ -135,7 +144,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
             $options = $this->getOptions();
         }
         
-        $select = $this->assignOptions(clone $this->select, $options);
+        $select = $this->assignOptions(clone $this->getSelect(), $options);
 
 
         $sql = new Sql($this->adapter);

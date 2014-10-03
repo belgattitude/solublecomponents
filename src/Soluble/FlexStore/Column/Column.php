@@ -2,75 +2,25 @@
 
 namespace Soluble\FlexStore\Column;
 
-class Column {
-    
+use Soluble\FlexStore\Column\Type\AbstractType;
+
+class Column implements ColumnSettableInterface
+{
+
     /**
      *
      * @var string
      */
     protected $name;
-    
-    
-    /**
-     *
-     * @var boolean
-     */
-    protected $excluded = false;
-    
-    /**
-     *
-     * @var boolean 
-     */
-    protected $hidden = false;
-    
-    /**
-     *
-     * @var string
-     */
-    protected $header;
-    
-    /**
-     *
-     * @var float|null
-     */
-    protected $width;
-    
-    
-    /**
-     *
-     * @var string
-     */
-    protected $type;
-    
-    /**
-     *
-     * @var boolean
-     */
-    protected $sortable;
-    
-    /**
-     * @var boolean
-     */
-    protected $filterable;
-    
-    /**
-     *
-     * @var boolean
-     */
-    protected $groupable;
-    
-    /**
-     *
-     * @var boolean
-     */
-    protected $editable;
-    
 
     /**
      *
      * @var array
      */
-    protected $defaults = array(
+    protected $properties = array(
+        'type' => null, // will be defaulted to string
+        'header' => null, // will be defaulted to name
+        'width' => null,
         'filterable' => true,
         'groupable' => true,
         'sortable' => true,
@@ -78,14 +28,14 @@ class Column {
         'excluded' => false,
         'editable' => false
     );
-    
 
     /**
      * Constructor
-     * @param string $name
+     * @param string $name unique identifier name for the column
+     * @param array $properties associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)
      * @throws Exception\InvalidArgumentException
      */
-    function __construct($name)
+    function __construct($name, array $properties = null)
     {
         if (!is_string($name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column name must be a string");
@@ -94,24 +44,17 @@ class Column {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column name cannot be empty");
         }
         $this->name = $name;
-        $this->setHeader($name);
-        $this->setDefaults();
+        if ($properties !== null) {
+            $this->setProperties($properties);
+        }
+        if ($this->properties['header'] == '') {
+            $this->setHeader($name);
+        }
+        if ($this->properties['type'] == '') {
+            $this->setType(Type::createType(Type::TYPE_STRING));
+        }
     }
-    
-    /**
-     * Set defaults
-     */
-    protected function setDefaults()
-    {
-        $this->sortable     = $this->defaults['sortable'];
-        $this->groupable    = $this->defaults['groupable'];
-        $this->filterable   = $this->defaults['filterable'];
-        $this->hidden       = $this->defaults['hidden'];
-        $this->excluded     = $this->defaults['excluded'];
-        $this->editable     = $this->defaults['editable'];
-        
-    }
-    
+
     /**
      * Get the name of the column
      * 
@@ -121,15 +64,41 @@ class Column {
     {
         return $this->name;
     }
-    
+
+    /**
+     * Set column datatype
+     * @param string|AbstractType $type
+     * @throws Exception\InvalidArgumentException when the type is not supported.
+     * @return Column
+     */
+    function setType($type)
+    {
+        if (is_string($type)) {
+            $type = Type::createType($type);
+        } else if (!$type instanceof AbstractType) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " setType() accepts only AbstractType or string.");
+        }
+        $this->properties['type'] = $type;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return AbstractType
+     */
+    function getType()
+    {
+        return $this->properties['type'];
+    }
+
     /**
      * 
      * @param boolean $excluded
      * @return Column
      */
-    function setExcluded($excluded=true)
+    function setExcluded($excluded = true)
     {
-        $this->excluded = (bool) $excluded;
+        $this->properties['excluded'] = (bool) $excluded;
         return $this;
     }
 
@@ -139,7 +108,7 @@ class Column {
      */
     function isExcluded()
     {
-        return $this->excluded;
+        return $this->properties['excluded'];
     }
 
     /**
@@ -147,9 +116,9 @@ class Column {
      * @param boolean $editable
      * @return Column
      */
-    function setEditable($editable=true)
+    function setEditable($editable = true)
     {
-        $this->editable = (bool) $editable;
+        $this->properties['editable'] = (bool) $editable;
         return $this;
     }
 
@@ -159,18 +128,17 @@ class Column {
      */
     function isEditable()
     {
-        return $this->editable;
+        return $this->properties['editable'];
     }
-    
-    
+
     /**
      * 
      * @param boolean $hidden
      * @return Column
      */
-    function setHidden($hidden=true)
+    function setHidden($hidden = true)
     {
-        $this->hidden = (bool) $hidden;
+        $this->properties['hidden'] = (bool) $hidden;
         return $this;
     }
 
@@ -180,18 +148,17 @@ class Column {
      */
     function isHidden()
     {
-        return (bool) $this->hidden;
+        return (bool) $this->properties['hidden'];
     }
 
-    
     /**
      * 
      * @param boolean $sortable
      * @return Column
      */
-    function setSortable($sortable=true)
+    function setSortable($sortable = true)
     {
-        $this->sortable = (bool) $sortable;
+        $this->properties['sortable'] = (bool) $sortable;
         return $this;
     }
 
@@ -201,19 +168,17 @@ class Column {
      */
     function isSortable()
     {
-        return (bool) $this->sortable;
+        return (bool) $this->properties['sortable'];
     }
 
-    
-    
     /**
      * 
      * @param boolean $groupable
      * @return Column
      */
-    function setGroupable($groupable=true)
+    function setGroupable($groupable = true)
     {
-        $this->groupable = (bool) $groupable;
+        $this->properties['groupable'] = (bool) $groupable;
         return $this;
     }
 
@@ -223,17 +188,17 @@ class Column {
      */
     function isGroupable()
     {
-        return (bool) $this->groupable;
-    }    
+        return (bool) $this->properties['groupable'];
+    }
 
     /**
      * 
      * @param boolean $filterable
      * @return Column
      */
-    function setFilterable($filterable=true)
+    function setFilterable($filterable = true)
     {
-        $this->filterable = (bool) $filterable;
+        $this->properties['filterable'] = (bool) $filterable;
         return $this;
     }
 
@@ -243,10 +208,9 @@ class Column {
      */
     function isFilterable()
     {
-        return (bool) $this->filterable;
-    }    
-        
-    
+        return (bool) $this->properties['filterable'];
+    }
+
     /**
      * Set recommended width for the column
      * 
@@ -259,19 +223,19 @@ class Column {
         if (!is_scalar($width)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Width parameter must be scalar.");
         }
-        $this->width = $width;
+        $this->properties['width'] = $width;
         return $this;
     }
-    
+
     /**
      * 
      * @return float|int|string
      */
     function getWidth()
     {
-        return $this->width;
+        return $this->properties['width'];
     }
-    
+
     /**
      * Set table header for this column
      * 
@@ -281,19 +245,48 @@ class Column {
      */
     function setHeader($header)
     {
-        $this->header = $header;
+        $this->properties['header'] = $header;
         return $this;
-    }    
-    
+    }
+
     /**
      * 
      * @return string|null
      */
     function getHeader()
     {
-        return $this->header;
+        return $this->properties['header'];
     }
-    
+
+    /**
+     * 
+     * @return array
+     */
+    function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * Set properties for the column
+     * 
+     * @throws Exception\InvalidArgumentException
+     * @param array $properties associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)
+     * @return Column
+     */
+    function setProperties(array $properties)
+    {
+        foreach ($properties as $key => $value) {
+            if (array_key_exists($key, $this->properties)) {
+                $method = 'set' . ucfirst($key);
+                $this->$method($value);
+            } else {
+                throw new Exception\InvalidArgumentException(__METHOD__ . " property '$key' is not supported in column.");
+            }
+        }
+        return $this;
+    }
+
     /**
      * 
      * @return string
@@ -302,4 +295,5 @@ class Column {
     {
         return $this->name;
     }
+
 }

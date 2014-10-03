@@ -5,7 +5,7 @@ namespace Soluble\FlexStore\Writer\Excel;
 use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
-use Soluble\Db\Metadata\Column;
+use Soluble\FlexStore\Column\Type;
 use Soluble\FlexStore\Options;
 use ExcelBook;
 use ExcelFormat;
@@ -32,23 +32,6 @@ class LibXLWriter extends AbstractSendableWriter
      */
     protected $excelBook;
 
-    /**
-     * @var array
-     */
-    /*
-      private static $typesMap = array(
-
-      Column\Type::TYPE_INTEGER	=> 'Definition\IntegerColumn',
-      Column\Type::TYPE_DECIMAL	=> 'Definition\DecimalColumn',
-      Column\Type::TYPE_STRING	=> 'Definition\StringColumn',
-      Column\Type::TYPE_BOOLEAN	=> 'Definition\BooleanColumn',
-      Column\Type::TYPE_DATETIME	=> 'Definition\DatetimeColumn',
-      Column\Type::TYPE_BLOB		=> 'Definition\BlobColumn',
-      Column\Type::TYPE_DATE		=> 'Definition\DateColumn',
-      Column\Type::TYPE_TIME		=> 'Definition\TimeColumn',
-      Column\Type::TYPE_FLOAT     => 'Definition\FloatColumn',
-
-      ); */
 
     /**
      * 
@@ -95,14 +78,12 @@ class LibXLWriter extends AbstractSendableWriter
     /**
      * 
      * @param ExcelBook $book
-     * @param \Soluble\FlexStore\Options $options
+     * @param Options $options
      * @return ExcelBook
      */
     protected function generateExcel(ExcelBook $book, Options $options=null)
     {
         $sheet = $book->addSheet("Sheet");
-
-
 
 
         // Font selection
@@ -127,21 +108,20 @@ class LibXLWriter extends AbstractSendableWriter
         $col_idx = 0;
         $cm = $this->source->getColumnModel();
         $columns = $cm->getColumns();
+        
 
         $formats = array();
         $types = array();
         $column_max_widths = array();
-        foreach ($columns as $name => $col) {
-            $definition = $cm->getColumnDefinition($name);
+        foreach ($columns as $name => $column) {
             $header = $name;
             if (!array_key_exists($name, $column_max_widths)) {
                 $column_max_widths[$name] = 0;
             }
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
 
-            $datatype = $definition->getDataType();
-            switch ($datatype) {
-                case Column\Type::TYPE_DATE :
+            switch ($column->getType()) {
+                case Type::TYPE_DATE :
                     $mask = 'd/mm/yyyy';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
@@ -149,7 +129,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'date';
                     break;
-                case Column\Type::TYPE_DATETIME:
+                case Type::TYPE_DATETIME:
                     $mask = 'd/mm/yyyy h:mm';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
@@ -157,7 +137,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'datetime';
                     break;
-                case Column\Type::TYPE_INTEGER:
+                case Type::TYPE_INTEGER:
 
                     $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
@@ -171,18 +151,20 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'number';
                     break;
-                case Column\Type::TYPE_DECIMAL:
-                    $precision = $definition->getNumericPrecision();
+                case Type::TYPE_DECIMAL:
+                    //$precision = $definition->getNumericPrecision();
                     $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
-                        $formatString = '0';
+                        $formatString = '0.';
                     } else {
-                        $formatString = '#,##0';
+                        $formatString = '#,##0.';
                     }
+                    /*
                     if ($precision > 0) {
                         $zeros = str_repeat("0", $precision);
                         $formatString = $formatString . '.' . $zeros;
-                    }
+                    }*/
+                    
                     $cfid = $book->addCustomFormat($formatString);
                     $format = $book->addFormat();
                     $format->numberFormat($cfid);
@@ -207,8 +189,7 @@ class LibXLWriter extends AbstractSendableWriter
         foreach ($data as $idx => $row) {
             $col_idx = 0;
             $row_idx = $idx + 1;
-            foreach ($columns as $name => $col) {
-                //$definition = $cm->getColumnDefinition($name);
+            foreach ($columns as $name => $column) {
                 $value = $row[$name];
                 if (array_key_exists($name, $formats)) {
                     $format = $formats[$name];
