@@ -10,7 +10,6 @@ interface NumericColumnInterface
 
     /**
      * @param  bool $numericUnsigned
-     * @return ColumnObject
      */
     public function setNumericUnsigned($numericUnsigned);
 

@@ -47,8 +47,17 @@ class Column implements ColumnSettableInterface
         if ($properties !== null) {
             $this->setProperties($properties);
         }
+        $this->initDefaults();
+    }
+    
+    /**
+     * This method ensure some properties are defaulted.
+     * For example header with name and type is string
+     */
+    protected function initDefaults()
+    {
         if ($this->properties['header'] == '') {
-            $this->setHeader($name);
+            $this->setHeader($this->name);
         }
         if ($this->properties['type'] == '') {
             $this->setType(Type::createType(Type::TYPE_STRING));
@@ -60,7 +69,7 @@ class Column implements ColumnSettableInterface
      * 
      * @return string 
      */
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
