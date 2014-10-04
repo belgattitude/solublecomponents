@@ -13,7 +13,7 @@ class LibXL
 
     /**
      *
-     * @var array
+     * @var array|null
      */
     static $default_license;
 
@@ -22,12 +22,11 @@ class LibXL
      * @var array
      */
     protected $license;
-
     protected static $supportedFormats = array(
         self::FILE_FORMAT_XLS,
         self::FILE_FORMAT_XLSX
     );
-    
+
     /**
      * 
      * @throws Exception\InvalidArgumentException
@@ -91,14 +90,19 @@ class LibXL
         }
         return $this->license;
     }
-    
+
     /**
      * Check whether the format is supported
+     * 
+     * @throws Exception\InvalidArgumentException
      * @param string $format
      * @return boolean
      */
-    static function isSupportedFormat($format) 
+    static function isSupportedFormat($format)
     {
+        if (!is_string($format)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " file_format must be a string");
+        }
         return in_array((string) $format, self::$supportedFormats);
     }
 

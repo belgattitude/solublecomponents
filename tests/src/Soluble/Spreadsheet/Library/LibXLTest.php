@@ -80,6 +80,37 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
         
     }
 
+    public function testGetExcelBookThrowsInvalidArgumentException()
+    {
+        if (!extension_loaded('excel')) {
+            $this->markTestSkipped(
+              "Excel extension not available, skipping getExcelBook"
+            );
+            
+        } else {        
+            $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
+            $valid_license = \SolubleTestFactories::getLibXLLicense();
+            $libxl = new LibXL($valid_license);
+            $bookXLS  = $libxl->getExcelBook('hello');
+        }
+    }       
+
+    public function testGetExcelBookThrowsInvalidArgumentException2()
+    {
+        if (!extension_loaded('excel')) {
+            $this->markTestSkipped(
+              "Excel extension not available, skipping getExcelBook"
+            );
+            
+        } else {        
+            $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
+            $valid_license = \SolubleTestFactories::getLibXLLicense();
+            $libxl = new LibXL($valid_license);
+            $bookXLS  = $libxl->getExcelBook(array('hello'));
+        }
+    }       
+    
+    
     public function testConstructThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');

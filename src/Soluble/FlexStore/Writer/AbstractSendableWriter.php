@@ -27,6 +27,9 @@ abstract class AbstractSendableWriter extends AbstractWriter implements HttpSend
         ob_end_clean();
         $headers->outputHeaders($die_after);
         echo $this->getData();
+        if ($die_after) {
+            die();
+        }
     }
             
     
