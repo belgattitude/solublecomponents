@@ -23,6 +23,11 @@ class LibXL
      */
     protected $license;
 
+    protected static $supportedFormats = array(
+        self::FILE_FORMAT_XLS,
+        self::FILE_FORMAT_XLSX
+    );
+    
     /**
      * 
      * @throws Exception\InvalidArgumentException
@@ -40,8 +45,8 @@ class LibXL
      * Return an empty ExcelBook instance
      * 
      * @throws Exception\RuntimeException if no excel extension is found
-     * 
-     
+     * @throws Exception\InvalidArgumentException if unsupported format
+     *
      * @param string $file_format by default xlsx, see constants FILE_FORMAT_* 
      * @param string $locale by default utf-8
      * @return ExcelBook
@@ -53,7 +58,9 @@ class LibXL
             throw new Exception\RuntimeException(__METHOD__ . ' LibXL requires excel extension (https://github.com/iliaal/php_excel) and http://libxl.com/.');
         }
         //@codeCoverageIgnoreEnd
-
+        if (!$this->isSupportedFormat($file_format)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Unsupported file format '$file_format'.");
+        }
 
         $license = $this->getLicense();
         $license_name = $license['name'];
@@ -83,6 +90,16 @@ class LibXL
             return self::getDefaultLicense();
         }
         return $this->license;
+    }
+    
+    /**
+     * Check whether the format is supported
+     * @param string $format
+     * @return boolean
+     */
+    static function isSupportedFormat($format) 
+    {
+        return in_array((string) $format, self::$supportedFormats);
     }
 
     /**

@@ -80,15 +80,15 @@ abstract class AbstractWriter
 
         /*
 
-$data = file_get_contents($npath);
-$data = mb_convert_encoding($data, 'UTF-8', 'OLD-ENCODING');
-file_put_contents('tempfolder/'.$a, $data);
+            $data = file_get_contents($npath);
+            $data = mb_convert_encoding($data, 'UTF-8', 'OLD-ENCODING');
+            file_put_contents('tempfolder/'.$a, $data);
 
-Or alternatively, with PHP's stream filters:
+            Or alternatively, with PHP's stream filters:
 
-$fd = fopen($file, 'r');
-stream_filter_append($fd, 'convert.iconv.UTF-8/OLD-ENCODING');
-stream_copy_to_stream($fd, fopen($output, 'w'));
+            $fd = fopen($file, 'r');
+            stream_filter_append($fd, 'convert.iconv.UTF-8/OLD-ENCODING');
+            stream_copy_to_stream($fd, fopen($output, 'w'));
          *
          * mb_convert_encoding($data, 'UTF-8', 'auto');
          * mb_convert_encoding($data, 'UTF-8', mb_detect_encoding($data));

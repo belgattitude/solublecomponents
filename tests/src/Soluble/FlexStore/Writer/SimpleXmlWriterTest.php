@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Writer;
 
-use Soluble\FlexStore\Source\Zend\SelectSource;
+use Soluble\FlexStore\Source\Zend\SqlSource;
 use DateTime;
 
 /**
@@ -17,7 +17,7 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
     protected $xmlWriter;
 
     /**
-     * @var SelectSource
+     * @var SqlSource
      */
     protected $source;
 
@@ -36,12 +36,8 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
 
-        $this->source = new SelectSource($params);
+        $this->source = new SqlSource($this->adapter, $select);
 
 
         $this->xmlWriter = new SimpleXmlWriter();

@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Column;
 
-use Soluble\FlexStore\Source\Zend\SelectSource;
+use Soluble\FlexStore\Source\Zend\SqlSource;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 
@@ -13,7 +13,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var SelectSource
+     * @var SqlSource
      */
     protected $source;
 
@@ -33,12 +33,11 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         $select = new \Zend\Db\Sql\Select();
         $select->from('user');
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
 
-        $this->source = new SelectSource($params);
+
+        
+        $this->source = new SqlSource($this->adapter, $select);
+
         $this->columnModel = $this->source->getColumnModel();
     }
 
@@ -66,58 +65,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'public_price' => new Expression('ppl.public_price')
         ));
 
-        /*
-          new SelectSource($params);
-
-          $store = new FlexStore($select);
-          $store->setAdapter($adapter);
-
-          $cm = $store->setColumnModel();
-          $cm->setTranslate($translate)
-
-         */
-        /**
-          $store->setSource($selectSource);
-          $cm = $store->getSource()->getColumnModel();
-
-
-
-          $cm = $store->getSource()->getColumnModel();
-          $cm->setTranslate();
-          $cm->getColumns();
-
-
-          $store->getData();
-
-          ->from(array('p' => 'product'));
-          $store->select()
-
-          $store = new Store('zend\db', $params);
-
-          $cm = $store->getColumnModel();
-          $moneyRenderer = new MoneyRenderer();
-          $cm->get('col1')->setHeader('cool');
-          $cm->find(['price', 'list_price'])->setRenderer($moneyRenderer);
-          $cm->findByRegExp('/^price$/')->setRenderer();
-          $cm->all()->translateHeader($translate);
-          $cm->all()->translateDescription($translate);
-
-
-          $cm->setIncludeOnly(array('col1', 'col2'));
-          $cm->getColumn('col1')->setRenderer()
-          ->setHeader()
-          ->setNumber()
-          ->setSortable()
-          ->setExcluded()
-          ->setHidden()
-          ->setGroupable();
-
-         */
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
         /*
@@ -174,11 +122,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('product');
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
         $excluded = array('product_id', 'legacy_mapping');
@@ -190,11 +134,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'email', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
         $sort = array('email', 'user_id');
@@ -208,11 +148,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\DuplicateColumnException');
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'email', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
         $sort = array('email', 'user_id', 'email', 'user_id');
@@ -224,22 +160,14 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'email', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $col = $cm->get('user_id');
         $this->assertInstanceOf('Soluble\FlexStore\Column\Column', $col);
 
         $select = new \Zend\Db\Sql\Select();
         $select->from('user');
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $col = $cm->get('email');
         $this->assertInstanceOf('Soluble\FlexStore\Column\Column', $col);
@@ -249,11 +177,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $this->assertTrue($cm->exists('user_id'));
         $this->assertTrue($cm->exists('password'));
@@ -265,11 +189,8 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\ColumnNotFoundException');
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $cm->get('this_column_not_exists');
     }
@@ -279,11 +200,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $cm->get(new \stdClass());
     }
@@ -293,11 +210,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'username'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $cm->exists(new \stdClass());
     }
@@ -306,11 +219,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'email', 'displayName', 'username', 'password'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
         $include_only = array('email', 'user_id');
@@ -323,12 +232,8 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'email', 'displayname', 'username', 'password'));
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
 
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
 
         $excluded = array('user_id', 'email');
         $cm = $source->getColumnModel();

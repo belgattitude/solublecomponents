@@ -3,6 +3,7 @@
 namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Writer\AbstractSendableWriter;
+use Soluble\FlexStore\Writer\Exception;;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\FlexStore\Column\Type;
@@ -32,26 +33,54 @@ class LibXLWriter extends AbstractSendableWriter
      */
     protected $excelBook;
 
-
+    /**
+     *
+     * @var string
+     */
+    protected $file_format = LibXL::FILE_FORMAT_XLSX;
+    
+    /**
+     * Set file format (xls, xlsx), default is xlsx
+     * 
+     * @param string $file_format
+     * @return LibXLWriter
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setFormat($file_format)
+    {
+        if (!LibXL::isSupportedFormat($file_format)) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . " Unsupported format given '$file_format'");
+        }
+        $this->file_format = $file_format;
+        return $this;
+    }
+    
     /**
      * 
      * @param string $locale
      * @param string $file_format
      * @return ExcelBook
      * @throws Exception\RuntimeException
+     * @throws Exception\InvalidArgumentException
      */
-    public function getExcelBook($locale = 'UTF-8', $file_format = LibXL::FILE_FORMAT_XLSX)
+    public function getExcelBook($locale = 'UTF-8', $file_format = null)
     {
         if (!extension_loaded('excel')) {
             throw new Exception\RuntimeException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
         }
-
+        
         if ($this->excelBook === null) {
             $libXL = new LibXL();
             if (is_array(self::$default_license)) {
                 $libXL->setLicense(self::$default_license);
             }
-            $this->excelBook = $libXL->getExcelBook($locale, $file_format);
+            if ($file_format === null) {
+                $file_format = $this->file_format;
+            } else if (!LibXL::isSupportedFormat($file_format)) {
+                throw new Exception\InvalidArgumentException(__METHOD__ . " Unsupported format given '$file_format'");
+            }
+            
+            $this->excelBook = $libXL->getExcelBook($file_format, $locale);
         }
         return $this->excelBook;
     }

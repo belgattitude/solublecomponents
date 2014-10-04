@@ -7,6 +7,8 @@ namespace Soluble\FlexStore;
 use Soluble\FlexStore\Source;
 use Soluble\FlexStore\Exception;
 use Soluble\FlexStore\Options;
+use Soluble\FlexStore\Column\ColumnModel;
+use Soluble\FlexStore\ResultSet\ResultSet;
 
 class Store implements FlexStoreInterface
 {
@@ -42,7 +44,7 @@ class Store implements FlexStoreInterface
      * @throws Exception\EmptyQueryException when query is empty
      * @throws Exception\ErrorException whenever an error occured
      * @param Options $options
-     * @return Soluble\FlexStore\ResultSet\ResultSet
+     * @return ResuleSet
      */
     public function getData(Options $options=null)
     {
@@ -52,7 +54,7 @@ class Store implements FlexStoreInterface
     
     /**
      * 
-     * @return Soluble\FlexStore\Column\ColumnModel
+     * @return ColumnModel
      */
     public function getColumnModel()
     {

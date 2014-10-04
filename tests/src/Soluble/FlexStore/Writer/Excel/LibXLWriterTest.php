@@ -2,10 +2,11 @@
 
 namespace Soluble\FlexStore\Writer\Excel;
 
-use Soluble\FlexStore\Source\Zend\SelectSource;
+use Soluble\FlexStore\Source\Zend\SqlSource;
 use Soluble\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use PHPExcel_IOFactory;
+use Soluble\Spreadsheet\Library\LibXL;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +17,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     protected $xlsWriter;
 
     /**
-     * @var SelectSource
+     * @var SqlSource
      */
     protected $source;
 
@@ -76,22 +77,18 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 
 
 
-        $params = array(
-            'adapter' => $this->adapter,
-            'select' => $select
-        );
 
-        $source = new SelectSource($params);
+        $source = new SqlSource($this->adapter, $select);
 
         return $source;
     }
 
     protected function tearDown()
     {
-        
+        ini_set("error_reporting", E_ALL);
     }
 
-    public function testGetData()
+    public function testGetDataXlsx()
     {
         //$data = $this->xlsWriter->getData();
         //$this->assertInternalType('string', $data);
@@ -115,7 +112,36 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $arr = $this->excelToArray($output_file);
         //$this->assertEquals(113, $arr[5]['B']);
         $this->assertEquals('french accents éàùêûçâµè and chinese 请收藏我们的网址', $arr[2]['A']);
+        $this->assertEquals('.030 Corde séparée pour guitare électrique.', $arr[4]['N']);
     }
+    
+   public function testGetDataXls()
+    {
+        //$data = $this->xlsWriter->getData();
+        //$this->assertInternalType('string', $data);
+        
+        $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test1.xls';
+
+        $source = $this->getTestSource();
+        
+        $cm = $source->getColumnModel();
+
+        $xlsWriter = new LibXLWriter();
+        $xlsWriter->setFormat(LibXL::FILE_FORMAT_XLS);
+        $xlsWriter->setSource($source);
+        
+        $xlsWriter->save($output_file);
+
+        $this->assertFileExists($output_file);
+        $filesize = filesize($output_file);
+        $this->assertGreaterThan(0, $filesize);
+
+        // test Output
+
+        $arr = $this->excelToArray($output_file, "Excel5");
+        //$this->assertEquals(113, $arr[5]['B']);
+        $this->assertEquals('french accents éàùêûçâµè and chinese 请收藏我们的网址', $arr[2]['A']);
+    }    
 
     public function testGetDataWithColumnExclusion()
     {
@@ -139,10 +165,16 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(173, $arr[2]['C']);
         $this->assertEquals('french accents éàùêûçâµè', trim($arr[2]['D']));
     }
+
     
-    protected function excelToArray($file)
+    
+    protected function excelToArray($file, $reader="Excel2007")
     {
-        $excelReader = PHPExcel_IOFactory::createReader('Excel2007');
+        // Due to notice by php_excel class
+        if (strtoupper($reader) == "EXCEL5") {
+            ini_set("error_reporting", E_ALL ^ E_NOTICE);
+        }
+        $excelReader = PHPExcel_IOFactory::createReader($reader);
         $excelFile = $excelReader->load($file);
         $excelFile->setActiveSheetIndex(0);
         $sheet = $excelFile->getActiveSheet();
@@ -150,20 +182,14 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 
         //var_dump($a1); 
         $arr = $sheet->toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = true);
+        if (strtoupper($reader) == "EXCEL5") {
+            ini_set("error_reporting", E_ALL);
+        }
+        
         return $arr;
     }
     
     
-    /**
-     * @covers Soluble\FlexStore\Writer\CSV::send
-     * @todo   Implement testSend().
-     */
-    public function testSend()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
+
 
 }
