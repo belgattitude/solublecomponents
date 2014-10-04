@@ -58,7 +58,7 @@ after_script:
   - if [[ $EXTERNAL == true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
   - sh -c "which java"
   - sh -c "java -version"
-  #- ./bin/coveralls -c=./coveralls.yml -v 
+  - ./bin/coveralls -c=./coveralls.yml -v 
   #- php -r 'echo readfile(ini_get("error_log"));'
   #- php --version
   #- php --info
