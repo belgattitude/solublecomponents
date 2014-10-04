@@ -4,15 +4,15 @@ namespace Soluble\FlexStore\Writer;
 use Soluble\FlexStore\Exception;
 use Traversable;
 use Soluble\FlexStore\Options;
-use Soluble\FlexStore\Store;
+use Soluble\FlexStore\StoreInterface;
 
 abstract class AbstractWriter
 {
     /**
      *
-     * @var SourceInterface
+     * @var StoreInterface
      */
-    protected $source;
+    protected $store;
 
     /**
      *
@@ -25,10 +25,10 @@ abstract class AbstractWriter
 
      /**
       *
-      * @param Store|null $store
+      * @param StoreInterface|null $store
       * @param array|Traversable|null $options
       */
-    public function __construct(Store $store=null, $options=null)
+    public function __construct(StoreInterface $store=null, $options=null)
     {
         if ($store !== null) {
             $this->setStore($store);
@@ -41,10 +41,10 @@ abstract class AbstractWriter
 
     /**
      *
-     * @param Store $store
+     * @param StoreInterface $store
      * @return AbstractWriter
      */
-    public function setStore(Store $store)
+    public function setStore(StoreInterface $store)
     {
         $this->store = $store;
         return $this;

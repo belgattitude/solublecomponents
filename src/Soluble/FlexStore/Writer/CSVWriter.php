@@ -6,7 +6,7 @@ use Soluble\FlexStore\Writer\Exception;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\FlexStore\Options;
 
-class CSV extends AbstractSendableWriter
+class CSVWriter extends AbstractSendableWriter
 {
 
     const SEPARATOR_TAB = "\t";

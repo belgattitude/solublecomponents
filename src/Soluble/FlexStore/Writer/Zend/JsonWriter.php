@@ -9,7 +9,7 @@ use Soluble\FlexStore\Writer\Http\SendHeaders;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
 use Soluble\FlexStore\Options;
 
-class Json extends AbstractSendableWriter
+class JsonWriter extends AbstractSendableWriter
 {
 
     /**

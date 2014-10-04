@@ -1,33 +1,27 @@
 <?php
 
-namespace Soluble\FlexStore\Writer;
+namespace Soluble\FlexStore\Writer\Zend;
 
+use Zend\View\Model\JsonModel as ZendJsonModel;
+use Soluble\FlexStore\Source\AbstractSource;
+use Soluble\FlexStore\Writer\AbstractSendableWriter;
+use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
-use Soluble\FlexStore\Writer\Http\SimpleHeaders;
-use DateTime;
 use Soluble\FlexStore\Options;
 
-class Json extends AbstractSendableWriter
+class JsonModelWriter extends AbstractWriter
 {
 
     /**
      *
-     * @var SimpleHeaders
-     */
-    protected $headers;
-
-    /**
      * @param Options $options
      * @return \Zend\View\Model\JsonModel
      */
     public function getData(Options $options=null)
     {
         $data = $this->store->getData($options);
-        $now = new DateTime();
-
         $d = array(
             'success' => true,
-            'timestamp' => $now->format(DateTime::W3C),
             'total' => $data->getTotalRows(),
             'start' => $data->getSource()->getOptions()->getOffset(),
             'limit' => $data->getSource()->getOptions()->getLimit(),
@@ -41,21 +35,8 @@ class Json extends AbstractSendableWriter
             }
         }
 
-        return json_encode($d);
-    }
-
-    /**
-     * Return default headers for sending store data via http 
-     * @return SimpleHeaders
-     */
-    public function getHttpHeaders()
-    {
-        if ($this->headers === null) {
-            $this->headers = new SimpleHeaders();
-            $this->headers->setContentType('application/json', 'utf-8');
-            //$this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
-        }
-        return $this->headers;
+        $json = new ZendJsonModel($d);
+        return $json;
     }
 
 }
