@@ -135,7 +135,7 @@ class LibXLWriter extends AbstractSendableWriter
 
         // print header
         $col_idx = 0;
-        $cm = $this->source->getColumnModel();
+        $cm = $this->store->getColumnModel();
         $columns = $cm->getColumns();
         
 
@@ -213,7 +213,7 @@ class LibXLWriter extends AbstractSendableWriter
 
 
         // Fill document content
-        $data = $this->source->getData($options);
+        $data = $this->store->getData($options);
 
         foreach ($data as $idx => $row) {
             $col_idx = 0;

@@ -22,7 +22,7 @@ class Json extends AbstractSendableWriter
      */
     public function getData(Options $options=null)
     {
-        $data = $this->source->getData($options);
+        $data = $this->store->getData($options);
         $now = new DateTime();
 
         $d = array(

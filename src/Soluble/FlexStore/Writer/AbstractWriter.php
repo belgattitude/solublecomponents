@@ -1,10 +1,10 @@
 <?php
 
 namespace Soluble\FlexStore\Writer;
-use Soluble\FlexStore\Source\SourceInterface;
 use Soluble\FlexStore\Exception;
 use Traversable;
 use Soluble\FlexStore\Options;
+use Soluble\FlexStore\Store;
 
 abstract class AbstractWriter
 {
@@ -25,13 +25,13 @@ abstract class AbstractWriter
 
      /**
       *
-      * @param SourceInterface|null $source
+      * @param Store|null $store
       * @param array|Traversable|null $options
       */
-    public function __construct(SourceInterface $source=null, $options=null)
+    public function __construct(Store $store=null, $options=null)
     {
-        if ($source !== null) {
-            $this->setSource($source);
+        if ($store !== null) {
+            $this->setStore($store);
         }
         if ($options !== null) {
             $this->setOptions($options);
@@ -41,12 +41,12 @@ abstract class AbstractWriter
 
     /**
      *
-     * @param SourceInterface $source
+     * @param Store $store
      * @return AbstractWriter
      */
-    public function setSource(SourceInterface $source)
+    public function setStore(Store $store)
     {
-        $this->source = $source;
+        $this->store = $store;
         return $this;
     }
 

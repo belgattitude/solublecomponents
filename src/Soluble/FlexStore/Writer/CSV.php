@@ -61,11 +61,11 @@ class CSV extends AbstractSendableWriter
         $charset = strtoupper($this->options['charset']);
 
         $csv = '';
-        $data = $this->source->getData($options)->toArray();
+        $data = $this->store->getData($options)->toArray();
 //echo "éééééààà";
 //	var_dump($data); die();
         if (count($data) == 0) {
-            $columns = $this->source->getColumnModel()->getColumns();
+            $columns = $this->store->getColumnModel()->getColumns();
             $header_line = join($this->options['field_separator'], array_keys((array) $columns));
             $csv .= $header_line . $this->options['line_separator'];
             

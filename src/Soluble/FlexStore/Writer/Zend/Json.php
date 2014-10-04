@@ -25,7 +25,7 @@ class Json extends AbstractSendableWriter
      */
     public function getData(Options $options=null)
     {
-        $data = $this->source->getData($options);
+        $data = $this->store->getData($options);
         $d = array(
             'success' => true,
             'total' => $data->getTotalRows(),

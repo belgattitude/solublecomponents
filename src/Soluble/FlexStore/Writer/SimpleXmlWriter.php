@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Writer;
 
-use Soluble\FlexStore\Source\SourceInterface;
+use Soluble\FlexStore\Store;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use DateTime;
 use Traversable;
@@ -37,16 +37,16 @@ class SimpleXmlWriter extends AbstractSendableWriter
 
     /**
      *
-     * @param SourceInterface|null $source
+     * @param Store|null $store
      * @param array|Traversable|null $options
      */
-    public function __construct(SourceInterface $source = null, $options = null)
+    public function __construct(Store $store = null, $options = null)
     {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->php_54_compatibility = false;
         };
 
-        parent::__construct($source, $options);
+        parent::__construct($store, $options);
     }
 
     /**
@@ -77,7 +77,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
-        $data = $this->source->getData($options);
+        $data = $this->store->getData($options);
         $bt = $this->options['body_tag'];
         $encoding = $this->options['encoding'];
         $xml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"$encoding\" ?><$bt></$bt>");

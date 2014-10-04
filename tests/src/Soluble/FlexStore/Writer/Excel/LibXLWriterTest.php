@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Source\Zend\SqlSource;
 use Soluble\Db\Sql\Select;
+use Soluble\FlexStore\Store;
 use Zend\Db\Sql\Expression;
 use PHPExcel_IOFactory;
 use Soluble\Spreadsheet\Library\LibXL;
@@ -76,8 +77,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         ));
 
 
-
-
         $source = new SqlSource($this->adapter, $select);
 
         return $source;
@@ -99,7 +98,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $cm = $source->getColumnModel();
 
         $xlsWriter = new LibXLWriter();
-        $xlsWriter->setSource($source);
+        $xlsWriter->setStore(new Store($source));
         
         $xlsWriter->save($output_file);
 
@@ -128,7 +127,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 
         $xlsWriter = new LibXLWriter();
         $xlsWriter->setFormat(LibXL::FILE_FORMAT_XLS);
-        $xlsWriter->setSource($source);
+        $xlsWriter->setStore(new Store($source));
         
         $xlsWriter->save($output_file);
 
@@ -153,17 +152,20 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $cm->exclude(array('reference', 'description', 'volume', 'weight', 'barcode_ean13', 'created_at', 'price', 'discount_1', 'promo_start_at', 'promo_end_at'));
         
         $xlsWriter = new LibXLWriter();
-        $xlsWriter->setSource($source);
+        $xlsWriter->setStore(new Store($source));
         
         $xlsWriter->save($output_file);
         $this->assertFileExists($output_file);
+        $filesize = filesize($output_file);
+        $this->assertGreaterThan(0, $filesize);
 
         // test Output
 
         $arr = $this->excelToArray($output_file);
         $this->assertEquals(10, $arr[2]['B']);
         $this->assertEquals(173, $arr[2]['C']);
-        $this->assertEquals('french accents éàùêûçâµè', trim($arr[2]['D']));
+        
+        $this->assertEquals('french accents éàùêûçâµè ', $arr[2]['D']);
     }
 
     
@@ -185,11 +187,8 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         if (strtoupper($reader) == "EXCEL5") {
             ini_set("error_reporting", E_ALL);
         }
-        
         return $arr;
     }
-    
-    
 
 
 }
