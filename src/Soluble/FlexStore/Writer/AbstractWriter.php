@@ -1,6 +1,7 @@
 <?php
 
 namespace Soluble\FlexStore\Writer;
+
 use Soluble\FlexStore\Exception;
 use Traversable;
 use Soluble\FlexStore\Options;
@@ -28,7 +29,7 @@ abstract class AbstractWriter
       * @param StoreInterface|null $store
       * @param array|Traversable|null $options
       */
-    public function __construct(StoreInterface $store=null, $options=null)
+    public function __construct(StoreInterface $store = null, $options = null)
     {
         if ($store !== null) {
             $this->setStore($store);
@@ -53,10 +54,10 @@ abstract class AbstractWriter
 
     /**
      * Return data
-     * @param Options $options 
+     * @param Options $options
      * @return string
      */
-    abstract public function getData(Options $options=null);
+    abstract public function getData(Options $options = null);
 
 
 
@@ -70,7 +71,7 @@ abstract class AbstractWriter
      * @return void
      *
      */
-    public function save($filename, $charset=null)
+    public function save($filename, $charset = null)
     {
         $data = $this->getData();
         if ($charset === null) {
@@ -105,7 +106,7 @@ abstract class AbstractWriter
      * @param boolean $debug
      * @return AbstractWriter
      */
-    public function setDebug($debug=true)
+    public function setDebug($debug = true)
     {
         $this->options['debug'] = $debug;
         return $this;
@@ -133,7 +134,6 @@ abstract class AbstractWriter
         foreach ($options as $key => $value) {
             $setter = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
             if (method_exists($this, $setter)) {
-
                 $this->{$setter}($value);
             } elseif (array_key_exists($key, $this->options)) {
                 $this->options[$key] = $value;
@@ -156,5 +156,4 @@ abstract class AbstractWriter
     {
         return $this->options;
     }
-
 }

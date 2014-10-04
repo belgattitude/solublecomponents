@@ -19,7 +19,7 @@ interface StoreInterface
 
     /**
      * Return the underlying store data as a resultset
-     * 
+     *
      * @param Options $options
      * @return \Soluble\FlexStore\ResultSet\ResultSet
      */

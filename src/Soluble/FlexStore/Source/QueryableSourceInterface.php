@@ -7,5 +7,5 @@ interface QueryableSourceInterface
      * Return underlying query (sql) string
      * @return string
      */
-    public function getQueryString();    
+    public function getQueryString();
 }

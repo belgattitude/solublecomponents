@@ -11,5 +11,4 @@ class BlobType extends AbstractType
     {
         return Type::TYPE_BLOB;
     }
-
 }

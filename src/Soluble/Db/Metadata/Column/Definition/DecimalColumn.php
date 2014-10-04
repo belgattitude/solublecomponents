@@ -2,7 +2,6 @@
 
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
 class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInterface
 {
     /**
@@ -101,7 +100,4 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
         $this->numericScale = $numericScale;
         return $this;
     }
-
-
-
 }

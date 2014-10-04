@@ -1,7 +1,6 @@
 <?php
 namespace Soluble\Db\Metadata\Source;
 
-
 use Soluble\Db\Metadata\Exception;
 
 abstract class AbstractSource
@@ -26,7 +25,7 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    abstract public function getUniqueKeys($table, $include_primary=false);
+    abstract public function getUniqueKeys($table, $include_primary = false);
 
 
     /**
@@ -191,7 +190,7 @@ abstract class AbstractSource
      *
      * @param string $table
      * @return AbstractSource
-     
+
     protected function validateTable($table)
     {
         $this->checkTableArgument($table);
@@ -237,7 +236,7 @@ abstract class AbstractSource
      * @param string $table
      * @throws Exception\InvalidArgumentException
      */
-    protected function checkTableArgument($table=null)
+    protected function checkTableArgument($table = null)
     {
         if ($table !== null) {
             if (!is_string($table) || trim($table) == '') {
@@ -246,5 +245,4 @@ abstract class AbstractSource
         }
 
     }
-
 }

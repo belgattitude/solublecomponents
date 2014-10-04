@@ -23,16 +23,16 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      * Constructor
      *
      * @param Adapter $adapter
-     * @param  null|string|array|TableIdentifier $table     
+     * @param  null|string|array|TableIdentifier $table
      */
-    public function __construct(Adapter $adapter=null, $table=null)
+    public function __construct(Adapter $adapter = null, $table = null)
     {
 
         if ($adapter) {
             $this->setDbAdapter($adapter);
         }
         parent::__construct($table);
-    }    
+    }
 
 
     /**
@@ -77,7 +77,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         $identifierSeparator = $pf->getIdentifierSeparator();
         $names = array();
         $cols = array();
-        foreach($columns as $alias => $column) {
+        foreach ($columns as $alias => $column) {
             if (is_string($column)) {
                 if (strpos($column, self::SQL_STAR) !== false) {
                     $msg = __METHOD__ . " Invalid argument, prefixedColumn() does not accept sql * column specification";
@@ -94,7 +94,9 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                     //die();
                     $last_part = $parts[count($parts)-1];
 
-                    if (!is_string($alias)) $alias = $last_part;
+                    if (!is_string($alias)) {
+                        $alias = $last_part;
+                    }
 
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
@@ -177,6 +179,4 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         //return $this->adapter->createStatement($sql_string)->execute();
         return $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
     }
-
-
 }

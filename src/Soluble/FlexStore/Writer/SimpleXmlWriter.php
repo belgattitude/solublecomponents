@@ -109,7 +109,6 @@ class SimpleXmlWriter extends AbstractSendableWriter
     protected function createXmlNode($result, SimpleXMLElement $xml)
     {
         foreach ($result as $key => $value) {
-
             if (is_array($value)) {
                 if (!is_numeric($key)) {
                     $subnode = $xml->addChild("$key");
@@ -119,12 +118,11 @@ class SimpleXmlWriter extends AbstractSendableWriter
                     $this->createXmlNode($v, $xml);
                 }
             } else {
-
-                if ($this->php_54_compatibility) {
+if ($this->php_54_compatibility) {
                     // assuming php 5.4+
                     $encoded = htmlspecialchars($value, ENT_XML1, $this->options['encoding']);
-                } else {
-                    $encoded = '';
+} else {
+                        $encoded = '';
 
                     foreach (str_split(utf8_decode(htmlspecialchars($value))) as $char) {
                         $num = ord($char);
@@ -134,14 +132,14 @@ class SimpleXmlWriter extends AbstractSendableWriter
                             $encoded .= $char;
                         }
                     }
-                }
-                $xml->addChild($key, $encoded);
+}
+                    $xml->addChild($key, $encoded);
             }
         }
     }
 
     /**
-     * Return default headers for sending store data via http 
+     * Return default headers for sending store data via http
      * @return SimpleHeaders
      */
     public function getHttpHeaders()
@@ -153,5 +151,4 @@ class SimpleXmlWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-
 }

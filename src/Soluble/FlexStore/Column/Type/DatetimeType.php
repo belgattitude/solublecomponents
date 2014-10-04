@@ -11,5 +11,4 @@ class DatetimeType extends AbstractType
     {
         return Type::TYPE_DATETIME;
     }
-
 }

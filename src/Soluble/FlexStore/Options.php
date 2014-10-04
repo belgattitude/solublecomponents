@@ -29,7 +29,7 @@ class Options
      * @param int $offset
      * @return Options
      */
-    public function setLimit($limit, $offset=null)
+    public function setLimit($limit, $offset = null)
     {
         if ($limit === null) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": limit parameter cannot be null, use unsetLimit instead.");
@@ -37,7 +37,7 @@ class Options
         $l = filter_var($limit, FILTER_VALIDATE_INT);
         if (!is_int($l)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": limit parameter must be an int.");
-        }        
+        }
         $this->limit = $l;
         if ($offset !== null) {
             $this->setOffset($offset);
@@ -82,7 +82,7 @@ class Options
     public function hasOffset()
     {
         return $this->offset !== null;
-    }    
+    }
     
     /**
      * Set the offset (the record to start reading when using limit)
@@ -97,7 +97,7 @@ class Options
         $o = filter_var($offset, FILTER_VALIDATE_INT);
         if (!is_int($o)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": offset parameter must be an int.");
-        }        
+        }
         $this->offset = $o;
         return $this;
     }
@@ -122,5 +122,4 @@ class Options
         $this->offset = null;
         return $this;
     }
-
 }

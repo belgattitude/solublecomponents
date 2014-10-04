@@ -38,7 +38,8 @@
         "satooshi/php-coveralls": "0.6.*",	
 		"sami/sami": "2.*",
         "phpunit/phpunit": "~4.0",
-        "phpoffice/phpexcel": "1.8.0"
+        "phpoffice/phpexcel": "1.8.0",
+        "squizlabs/php_codesniffer": "2.0.0RC2"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",
@@ -57,5 +58,8 @@
         "soluble/db": "self.version",
         "soluble/normalist": "self.version",
         "soluble/flexstore": "self.version"
-    }
+    },
+    "archive": {
+        "exclude": ["tests", "docs", ".travis.yml", ".coveralls.yml", ".scrutinizer.yml", ".php_cs", ".gitignore"]
+    }    
 }

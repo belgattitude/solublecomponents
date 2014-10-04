@@ -6,7 +6,6 @@ use Soluble\Db\Driver\Exception;
 use Soluble\Db\Metadata\Source;
 use Zend\Db\Adapter\Adapter;
 
-
 interface DriverInterface
 {
 
@@ -15,7 +14,7 @@ interface DriverInterface
      * @param Adapter $adapter
      * @param array|Traversable $params [alias,path,version]
      */
-    public function __construct(Adapter $adapter, $params=array());
+    public function __construct(Adapter $adapter, $params = array());
 
 
     /**
@@ -49,7 +48,4 @@ interface DriverInterface
      * @return Adapter
      */
     public function getDbAdapter();
-
-
-
 }

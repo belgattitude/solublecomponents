@@ -11,5 +11,4 @@ class StringType extends AbstractType
     {
         return Type::TYPE_STRING;
     }
-
 }

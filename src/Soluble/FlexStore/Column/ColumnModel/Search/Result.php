@@ -31,7 +31,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string|AbstractType $type
      * @return Result
@@ -46,7 +46,7 @@ class Result implements ColumnSettableInterface
     
     
     /**
-     * 
+     *
      * @param boolean $excluded
      * @return Result
      */
@@ -59,7 +59,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $editable
      * @return Result
      */
@@ -72,7 +72,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $hidden
      * @return Result
      */
@@ -85,7 +85,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $sortable
      * @return Result
      */
@@ -98,7 +98,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $groupable
      * @return Result
      */
@@ -111,7 +111,7 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $filterable
      * @return Result
      */
@@ -125,7 +125,7 @@ class Result implements ColumnSettableInterface
 
     /**
      * Set recommended width for the column
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param float|int|string $width
      * @return Result
@@ -140,7 +140,7 @@ class Result implements ColumnSettableInterface
 
     /**
      * Set table header for this column
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string|null $header
      * @return Result
@@ -154,12 +154,11 @@ class Result implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return array
      */
     function toArray()
     {
         return $this->results;
     }
-
 }

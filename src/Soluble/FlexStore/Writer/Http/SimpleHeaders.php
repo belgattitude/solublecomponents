@@ -22,7 +22,7 @@ class SimpleHeaders
         'content-type'                  => null,
         'content-type-charset'          => null,
         'content-disposition-filename'  => null,
-        'content-disposition-type'      => null, 
+        'content-disposition-type'      => null,
         'content-length'                => null
     );
     
@@ -38,12 +38,12 @@ class SimpleHeaders
     }
     
     /**
-     * 
+     *
      * @param string $content_type
      * @param string $charset
      * @return SimpleHeaders
      */
-    function setContentType($content_type, $charset=null)
+    function setContentType($content_type, $charset = null)
     {
         $this->params['content-type'] = $content_type;
         if ($charset !== null) {
@@ -60,12 +60,12 @@ class SimpleHeaders
     
     /**
      * Set the content disposition filename and type
-     * 
+     *
      * @param string $filename filename when downloading
      * @param string $content_disposition_type by default attachment
      * @return SimpleHeaders
      */
-    function setFilename($filename, $content_disposition_type='attachement')
+    function setFilename($filename, $content_disposition_type = 'attachement')
     {
         $this->params['content-disposition-filename'] = $filename;
         $this->setContentDispositionType($content_disposition_type);
@@ -74,7 +74,7 @@ class SimpleHeaders
     
     /**
      * Return the content disposition filename
-     * 
+     *
      * @return string|null
      */
     function getFilename()
@@ -84,7 +84,7 @@ class SimpleHeaders
     
     /**
      * Set the content type charset
-     * 
+     *
      * @throws Exception\RuntimeException
      * @param string $charset
      * @return SimpleHeaders
@@ -100,7 +100,7 @@ class SimpleHeaders
     }
     
     /**
-     * 
+     *
      * @return string
      */
     function getCharset()
@@ -111,7 +111,7 @@ class SimpleHeaders
     
     /**
      * Set the preferred content disposition type 'attachement' or 'inline'
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string $content_disposition_type
      * @return SimpleHeaders
@@ -138,7 +138,7 @@ class SimpleHeaders
     }
     
     /**
-     * 
+     *
      * @param int $length
      * @return SimpleHeaders
      */
@@ -149,7 +149,7 @@ class SimpleHeaders
     }
     
     /**
-     * 
+     *
      * @return int
      */
     function getContentLength()
@@ -187,17 +187,15 @@ class SimpleHeaders
     
     /**
      * Output the headers (php)
-     * 
+     *
      * @param boolean $replace tells to replace eventual headers
      * @return void
      */
-    function outputHeaders($replace=true)
+    function outputHeaders($replace = true)
     {
         $lines = $this->getHeaderLines();
-        foreach($lines as $line) {
+        foreach ($lines as $line) {
             header($line, $replace);
         }
     }
-
-    
 }

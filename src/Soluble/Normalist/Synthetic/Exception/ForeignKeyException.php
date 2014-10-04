@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class ForeignKeyException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class ForeignKeyException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

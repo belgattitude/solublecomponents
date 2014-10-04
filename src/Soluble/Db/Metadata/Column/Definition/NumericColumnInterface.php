@@ -18,5 +18,4 @@ interface NumericColumnInterface
      * @return bool
      */
     public function isNumericUnsigned();
-
 }

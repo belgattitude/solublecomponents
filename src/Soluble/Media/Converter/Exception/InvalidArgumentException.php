@@ -1,4 +1,6 @@
 <?php
 namespace Soluble\Media\Converter\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException {};
+class InvalidArgumentException extends \InvalidArgumentException
+{
+};

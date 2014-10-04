@@ -2,4 +2,6 @@
 
 namespace Soluble\Normalist\Driver\Exception;
 
-interface ExceptionInterface {};
+interface ExceptionInterface
+{
+};

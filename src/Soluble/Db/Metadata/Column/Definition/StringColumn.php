@@ -1,7 +1,6 @@
 <?php
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
 class StringColumn extends AbstractColumnDefinition implements TextColumnInterface
 {
     /**
@@ -29,8 +28,4 @@ class StringColumn extends AbstractColumnDefinition implements TextColumnInterfa
         $this->characterMaximumLength = $characterMaximumLength;
         return $this;
     }
-
-
-
-
 }

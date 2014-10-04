@@ -1,8 +1,7 @@
 <?php
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
-class GeometryColumn extends AbstractColumnDefinition 
+class GeometryColumn extends AbstractColumnDefinition
 {
 
 }

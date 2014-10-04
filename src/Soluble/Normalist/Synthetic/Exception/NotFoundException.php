@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class NotFoundException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class NotFoundException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

@@ -2,4 +2,6 @@
 
 namespace Soluble\Normalist\Driver\Exception;
 
-class ModelFileNotFoundException extends \RuntimeException implements ExceptionInterface {};
+class ModelFileNotFoundException extends \RuntimeException implements ExceptionInterface
+{
+};

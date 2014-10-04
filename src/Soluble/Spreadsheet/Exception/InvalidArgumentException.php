@@ -2,7 +2,7 @@
 
 namespace Soluble\Spreadsheet\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException {
+class InvalidArgumentException extends \InvalidArgumentException
+{
     
 };
-

@@ -1,4 +1,6 @@
 <?php
 namespace Soluble\Media\Converter\Exception;
 
-class LogicException extends \LogicException {};
+class LogicException extends \LogicException
+{
+};

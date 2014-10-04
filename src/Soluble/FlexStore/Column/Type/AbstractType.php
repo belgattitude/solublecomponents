@@ -19,12 +19,11 @@ abstract class AbstractType
     abstract function getName();
 
     /**
-     * 
+     *
      * @return string
      */
     public function __toString()
     {
         return $this->getName();
     }
-
 }

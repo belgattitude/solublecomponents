@@ -4,20 +4,20 @@ namespace Soluble\FlexStore\Writer;
 
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 
-interface HttpSendableInterface {
+interface HttpSendableInterface
+{
     
     /**
-     * Return (default) headers for sending store data via http 
+     * Return (default) headers for sending store data via http
      * @return \Soluble\FlexStore\Writer\Http\SimpleHeaders
      */
     public function getHttpHeaders();
     
     /**
      * Send the store data via http
-     * 
+     *
      * @param SimpleHeaders $headers
      * @param type $die_after
      */
-    public function send(SimpleHeaders $headers=null, $die_after=true);
-     
+    public function send(SimpleHeaders $headers = null, $die_after = true);
 }

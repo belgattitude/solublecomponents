@@ -53,7 +53,7 @@ class ResultSet implements Iterator, Countable
      * @param Table $table Originating table
      * @param boolean $has_complete_record_definition
      */
-    public function __construct(Select $select, Table $table, $has_complete_record_definition=false)
+    public function __construct(Select $select, Table $table, $has_complete_record_definition = false)
     {
         $this->select = $select;
         $this->table = $table;
@@ -142,7 +142,7 @@ class ResultSet implements Iterator, Countable
             $this->has_complete_record_definition = true;
         }
 
-        $record = $this->table->record($data, $ignore=true);
+        $record = $this->table->record($data, $ignore = true);
         $record->setState(Record::STATE_CLEAN);
         return $record;
     }
@@ -179,5 +179,4 @@ class ResultSet implements Iterator, Countable
         }
         return $this->count;
     }
-
 }

@@ -1,4 +1,6 @@
 <?php
 namespace Soluble\Normalist\Exception;
 
-class LogicException extends \LogicException implements ExceptionInterface {};
+class LogicException extends \LogicException implements ExceptionInterface
+{
+};

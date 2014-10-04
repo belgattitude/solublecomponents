@@ -157,8 +157,8 @@ class TableManager
      */
     public function setTablePrefix($table_prefix)
     {
-       $this->table_prefix = $table_prefix;
-       return $this;
+        $this->table_prefix = $table_prefix;
+        return $this;
     }
 
     /**
@@ -182,7 +182,7 @@ class TableManager
      */
     public function getPrefixedTable($table)
     {
-       return $this->table_prefix . $table;
+        return $this->table_prefix . $table;
     }
 
 
@@ -226,7 +226,7 @@ class TableManager
             case 'mysql':
                 // supported
                 break;
-            default :
+            default:
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . ":  Adapter '$adapterName' is not yet supported.");
         }
         $this->metadata = $this->driver->getMetadata();
@@ -242,5 +242,4 @@ class TableManager
         $this->metadata = $metadata;
         return $this;
     }
-
 }

@@ -2,7 +2,8 @@
 
 namespace Soluble\FlexStore\Renderer;
 
-interface RendererInterface {
+interface RendererInterface
+{
     
     
 };

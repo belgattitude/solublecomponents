@@ -2,4 +2,6 @@
 
 namespace Soluble\Normalist\Driver\Exception;
 
-class ModelPathNotWritableException extends \RuntimeException implements ExceptionInterface {};
+class ModelPathNotWritableException extends \RuntimeException implements ExceptionInterface
+{
+};

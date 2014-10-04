@@ -76,7 +76,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
      *
      * @param Adapter $params
      */
-    public function __construct(Adapter $adapter, Select $select=null)
+    public function __construct(Adapter $adapter, Select $select = null)
     {
         $this->adapter = $adapter;
         $this->sql = new Sql($this->adapter);
@@ -87,7 +87,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     
     /**
      * @param Select
-     * @return SqlSource 
+     * @return SqlSource
      */
     public function setSelect(Select $select)
     {
@@ -96,7 +96,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     }
     
     /**
-     * 
+     *
      * @return Select
      */
     public function getSelect()
@@ -105,7 +105,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     }
     
     /**
-     * 
+     *
      * @return Select
      */
     public function select()
@@ -199,9 +199,6 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
         //var_dump($this->columns);
         //die();
         try {
-
-
-
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
@@ -256,7 +253,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     }
 
     /**
-     * 
+     *
      */
     public function loadDefaultColumnModel()
     {
@@ -270,7 +267,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     }
 
     /**
-     * 
+     *
      * @throws Exception\UnsupportedFeatureException
      * @return AbstractMetadataReader
      */
@@ -316,7 +313,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     /**
      * Return the query string
      * See getQueryString()
-     * 
+     *
      * @throws Exception\InvalidUsageException
      * @return string
      */
@@ -324,5 +321,4 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     {
         return $this->getQueryString();
     }
-
 }

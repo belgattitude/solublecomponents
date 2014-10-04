@@ -1,6 +1,7 @@
 <?php
 
 namespace Soluble\Media\Converter;
+
 use Soluble\Media\BoxDimension;
 use Soluble\Media\Converter\Exception;
 
@@ -11,7 +12,6 @@ use Imagine\Image\ImageInterface;
 use Imagine\Image\Box;
 
 use Zend\Cache\Storage\StorageInterface;
-
 
 class ImageConverter implements ConverterInterface
 {
@@ -37,7 +37,7 @@ class ImageConverter implements ConverterInterface
      *
      * @param array $params
      */
-    public function __construct(array $params=array())
+    public function __construct(array $params = array())
     {
         if (array_key_exists('backend', $params)) {
             $this->setBackend($params['backend']);
@@ -79,17 +79,18 @@ class ImageConverter implements ConverterInterface
      * @throws \Soluble\Media\Converter\Exception
      * @throws \Exception
      */
-    public function getThumbnail($filename, BoxDimension $box, $format=null, $quality=null)
+    public function getThumbnail($filename, BoxDimension $box, $format = null, $quality = null)
     {
         $width    = $box->getWidth();
         $height   = $box->getHeight();
 
-        if ($quality === null) $quality = $this->default_quality;
+        if ($quality === null) {
+            $quality = $this->default_quality;
+        }
 
         $cache_key = md5("$filename/$width/$height/$quality/$format");
 
         if ($this->cacheEnabled && $this->cacheStorage->hasItem($cache_key)) {
-
             $cacheMd = $this->cacheStorage->getMetadata($cache_key);
             if ($cacheMd['mtime'] < filemtime($filename)) {
                 // invalid cache
@@ -106,7 +107,7 @@ class ImageConverter implements ConverterInterface
         }
 
         switch ($format) {
-            case 'jpg' :
+            case 'jpg':
                 $content_type = 'image/jpeg';
                 break;
             case 'png':
@@ -132,7 +133,7 @@ class ImageConverter implements ConverterInterface
 
     }
 
-    protected function generateThumbnail($filename, BoxDimension $box, $format=null, $quality=null, $strip=true)
+    protected function generateThumbnail($filename, BoxDimension $box, $format = null, $quality = null, $strip = true)
     {
         $width    = $box->getWidth();
         $height   = $box->getHeight();
@@ -201,14 +202,16 @@ class ImageConverter implements ConverterInterface
      * @param string $backend
      * @return
      */
-    protected function getImagine($backend=null)
+    protected function getImagine($backend = null)
     {
-        if ($backend === null) $backend = $this->backend;
+        if ($backend === null) {
+            $backend = $this->backend;
+        }
         switch(strtolower($backend)) {
-            case 'imagick' :
+            case 'imagick':
                 $imagine = new ImagickImagine();
                 break;
-            case 'gd' :
+            case 'gd':
                 $imagine = new GdImagine();
                 break;
             default:
@@ -240,7 +243,4 @@ class ImageConverter implements ConverterInterface
         $this->cacheStorage = null;
         return $this;
     }
-
-
-
 }

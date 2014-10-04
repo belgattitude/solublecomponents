@@ -185,9 +185,6 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
         //var_dump($this->columns);
         //die();
         try {
-
-
-
             $results = $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
             //$stmt = $sql->prepareStatementForSqlObject( $select );
             //$results = $stmt->execute();
@@ -242,7 +239,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
     }
 
     /**
-     * 
+     *
      */
     public function loadDefaultColumnModel()
     {
@@ -256,7 +253,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
     }
 
     /**
-     * 
+     *
      * @throws Exception\UnsupportedFeatureException
      * @return AbstractMetadataReader
      */
@@ -302,7 +299,7 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
     /**
      * Return the query string
      * See getQueryString()
-     * 
+     *
      * @throws Exception\InvalidUsageException
      * @return string
      */
@@ -310,5 +307,4 @@ class SelectSource extends AbstractSource implements QueryableSourceInterface
     {
         return $this->getQueryString();
     }
-
 }

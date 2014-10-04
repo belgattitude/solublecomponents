@@ -7,7 +7,6 @@ use Soluble\Media\Converter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-
 class MediaConverterFactory implements FactoryInterface
 {
     /**

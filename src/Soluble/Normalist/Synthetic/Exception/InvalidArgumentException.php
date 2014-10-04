@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class InvalidArgumentException extends \InvalidArgumentException
-                               implements SyntheticExceptionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements SyntheticExceptionInterface
 {
 
 }

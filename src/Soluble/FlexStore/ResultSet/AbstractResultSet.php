@@ -1,12 +1,12 @@
 <?php
 
 namespace Soluble\FlexStore\ResultSet;
+
 use Soluble\FlexStore\ResultSet\ResultSetInterface;
 use Zend\Db\ResultSet\ResultSet as ZFResultSet;
 
 use Iterator;
 use ArrayObject;
-
 
 abstract class AbstractResultSet implements Iterator, ResultSetInterface
 {
@@ -206,5 +206,4 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     {
         return $this->zfResultSet->toArray();
     }
-
 }

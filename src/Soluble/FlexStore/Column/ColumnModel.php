@@ -36,7 +36,7 @@ class ColumnModel
 
     /**
      * Add a column renderer
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string $column
      * @param type $renderer
@@ -69,7 +69,7 @@ class ColumnModel
 
     /**
      * Add a column to the column model
-     *  
+     *
      * @param Column $column
      * @return ColumnModel
      */
@@ -81,8 +81,8 @@ class ColumnModel
 
     /**
      * Tells whether a column exists
-     * 
-     * @throws Exception\InvalidArgumentException 
+     *
+     * @throws Exception\InvalidArgumentException
      * @param string $column
      * @return boolean
      */
@@ -101,7 +101,7 @@ class ColumnModel
 
     /**
      * Return column that have been excluded in getData() and getColumns()
-     * 
+     *
      * @return array
      */
     public function getExcluded()
@@ -119,8 +119,8 @@ class ColumnModel
      * Return column from identifier name
      *
      * @param string $column column name
-     *  
-     * @throws Exception\InvalidArgumentException 
+     *
+     * @throws Exception\InvalidArgumentException
      * @throws Exception\ColumnNotFoundException when column does not exists in model
      * @return Column
      */
@@ -136,7 +136,7 @@ class ColumnModel
      * Sort columns in the order specified, columns that exists
      * in the dataset but not in the sorted_columns will be
      * appended to the end
-     * 
+     *
      * @param array $sorted_columns
      * @return ColumnModel
      */
@@ -163,9 +163,9 @@ class ColumnModel
 
     /**
      * Set column that must be excluded in getData() and getColumns()
-     * 
+     *
      * @param array|string|ArrayObject $columns column nams to exclude
-     * @throws Exception\InvalidArgumentException     
+     * @throws Exception\InvalidArgumentException
      * @return ColumnModel
      */
     public function exclude($excluded_columns, $excluded = true)
@@ -183,7 +183,7 @@ class ColumnModel
     /**
      * Exclude all other columns that the one specified
      * Column sort is preserved in getData()
-     * 
+     *
      * @param array $include_only_columns
      * @param bool $sort automatically apply sortColumns
      * @return ColumnModel
@@ -209,7 +209,7 @@ class ColumnModel
 
     /**
      * Return columns
-     * 
+     *
      * @return ArrayObject
      */
     public function getColumns()
@@ -233,5 +233,4 @@ class ColumnModel
         }
         return $this->search;
     }
-
 }

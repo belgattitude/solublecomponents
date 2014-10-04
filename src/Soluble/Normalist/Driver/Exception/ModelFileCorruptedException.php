@@ -2,4 +2,6 @@
 
 namespace Soluble\Normalist\Driver\Exception;
 
-class ModelFileCorruptedException extends \RuntimeException implements ExceptionInterface {};
+class ModelFileCorruptedException extends \RuntimeException implements ExceptionInterface
+{
+};

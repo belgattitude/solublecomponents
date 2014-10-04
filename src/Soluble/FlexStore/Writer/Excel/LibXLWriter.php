@@ -3,7 +3,8 @@
 namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Writer\AbstractSendableWriter;
-use Soluble\FlexStore\Writer\Exception;;
+use Soluble\FlexStore\Writer\Exception;
+;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\FlexStore\Column\Type;
@@ -41,7 +42,7 @@ class LibXLWriter extends AbstractSendableWriter
     
     /**
      * Set file format (xls, xlsx), default is xlsx
-     * 
+     *
      * @param string $file_format
      * @return LibXLWriter
      * @throws Exception\InvalidArgumentException
@@ -56,7 +57,7 @@ class LibXLWriter extends AbstractSendableWriter
     }
     
     /**
-     * 
+     *
      * @param string $locale
      * @param string $file_format
      * @return ExcelBook
@@ -76,7 +77,7 @@ class LibXLWriter extends AbstractSendableWriter
             }
             if ($file_format === null) {
                 $file_format = $this->file_format;
-            } else if (!LibXL::isSupportedFormat($file_format)) {
+            } elseif (!LibXL::isSupportedFormat($file_format)) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Unsupported format given '$file_format'");
             }
             
@@ -89,7 +90,7 @@ class LibXLWriter extends AbstractSendableWriter
      * @param Options $options
      * @return string
      */
-    public function getData(Options $options=null)
+    public function getData(Options $options = null)
     {
         
         $book = $this->getExcelBook();
@@ -105,12 +106,12 @@ class LibXLWriter extends AbstractSendableWriter
     }
 
     /**
-     * 
+     *
      * @param ExcelBook $book
      * @param Options $options
      * @return ExcelBook
      */
-    protected function generateExcel(ExcelBook $book, Options $options=null)
+    protected function generateExcel(ExcelBook $book, Options $options = null)
     {
         $sheet = $book->addSheet("Sheet");
 
@@ -150,7 +151,7 @@ class LibXLWriter extends AbstractSendableWriter
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
 
             switch ($column->getType()) {
-                case Type::TYPE_DATE :
+                case Type::TYPE_DATE:
                     $mask = 'd/mm/yyyy';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
@@ -223,11 +224,11 @@ class LibXLWriter extends AbstractSendableWriter
                 if (array_key_exists($name, $formats)) {
                     $format = $formats[$name];
                     switch ($types[$name]) {
-                        case 'number' :
+                        case 'number':
                             $sheet->write($row_idx, $col_idx, (string) $value, $format, ExcelFormat::AS_NUMERIC_STRING);
                             break;
-                        case 'date' :
-                        case 'datetime' :
+                        case 'date':
+                        case 'datetime':
                             if ($value != '') {
                                 $time = strtotime($value);
                             } else {
@@ -272,7 +273,7 @@ class LibXLWriter extends AbstractSendableWriter
     }
 
     /**
-     * Return default headers for sending store data via http 
+     * Return default headers for sending store data via http
      * @return SimpleHeaders
      */
     public function getHttpHeaders()
@@ -283,6 +284,5 @@ class LibXLWriter extends AbstractSendableWriter
             $this->headers->setContentDispositionType(SimpleHeaders::DIPOSITION_ATTACHEMENT);
         }
         return $this->headers;
-    }    
-    
+    }
 }

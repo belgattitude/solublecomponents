@@ -7,6 +7,7 @@
  *  @license   https://github.com/belgattitude/solublecomponents/blob/master/LICENSE.txt MIT License
  */
 namespace Soluble\Db\Compat;
+
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\Driver;
 
@@ -23,5 +24,4 @@ class Mysqli
         $adapter = new Adapter($driver);
         return $adapter;
     }
-
 }

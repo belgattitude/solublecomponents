@@ -19,7 +19,7 @@ class BoxDimension
      * @param int $width
      * @param int $heigth
      */
-    public function __construct($width=null, $height=null)
+    public function __construct($width = null, $height = null)
     {
         $this->setWidth($width);
         $this->setHeight($height);
@@ -66,5 +66,4 @@ class BoxDimension
     {
         return $this->height;
     }
-
 }

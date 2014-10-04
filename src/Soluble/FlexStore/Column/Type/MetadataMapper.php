@@ -27,11 +27,11 @@ class MetadataMapper
     );
 
     /**
-     * 
+     *
      * @param string $metadata_type
      * @return AbstractType
      */
-    static public function getColumnTypeByMetadataType($metadata_type)
+    public static function getColumnTypeByMetadataType($metadata_type)
     {
         if (!array_key_exists($metadata_type, self::$mapper)) {
             $mt = (string) $metadata_type;
@@ -41,11 +41,11 @@ class MetadataMapper
     }
 
     /**
-     * 
+     *
      * @param ArrayObject $metadata_columns
      * @return ColumnModel
      */
-    static public function getColumnModelFromMetadata(ArrayObject $metadata_columns)
+    public static function getColumnModelFromMetadata(ArrayObject $metadata_columns)
     {
         $cm = new ColumnModel();
         foreach ($metadata_columns as $name => $meta) {
@@ -55,5 +55,4 @@ class MetadataMapper
         }
         return $cm;
     }
-
 }

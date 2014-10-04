@@ -176,7 +176,6 @@ class Table
             $results = $select->execute()
                               ->toArray();
         } catch (\Exception $e) {
-
             $messages = array();
             $ex = $e;
             do {
@@ -192,17 +191,18 @@ class Table
                 $rex = new Exception\ColumnNotFoundException(__METHOD__ . ": $message");
                 throw $rex;
             } else {
-
                 $sql_string = $select->getSqlString($this->sql->getAdapter()->getPlatform());
                 $iqex = new Exception\InvalidArgumentException(__METHOD__ . ": $message - $sql_string");
                 throw $iqex;
             }
         }
 
-        if (count($results) == 0)
+        if (count($results) == 0) {
             return false;
-        if (count($results) > 1)
+        }
+        if (count($results) > 1) {
             throw new Exception\UnexpectedValueException(__METHOD__ . ": return more than one record");
+        }
 
         $record = $this->record($results[0]);
         $record->setState(Record::STATE_CLEAN);
@@ -396,11 +396,11 @@ class Table
      * @return int number of affected rows
      */
 
-    public function update($data, $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatypes=false)
+    public function update($data, $predicate, $combination = Predicate\PredicateSet::OP_AND, $validate_datatypes = false)
     {
         $prefixed_table = $this->prefixed_table;
 
-        if ($data instanceOf ArrayObject) {
+        if ($data instanceof ArrayObject) {
             $d = (array) $data;
         } elseif (is_array($data)) {
             $d = $data;
@@ -438,7 +438,7 @@ class Table
      *
      * @return Record
      */
-    public function insert($data, $validate_datatypes=false)
+    public function insert($data, $validate_datatypes = false)
     {
         $prefixed_table = $this->prefixed_table;
 
@@ -507,13 +507,13 @@ class Table
      *
      * @return Record
      */
-    public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes=false)
+    public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes = false)
     {
         $platform = $this->tableManager->getDbAdapter()->platform;
 
         $primary = $this->getPrimaryKey();
 
-        if ($data instanceOf ArrayObject) {
+        if ($data instanceof ArrayObject) {
             $d = (array) $data;
         } else {
             $d = $data;
@@ -534,20 +534,17 @@ class Table
         $excluded_columns = array_merge($duplicate_exclude, array($primary));
 
         foreach ($d as $column => $value) {
-
-            if (!in_array($column, $excluded_columns)) {
+if (!in_array($column, $excluded_columns)) {
                 $v = ($value === null) ? 'NULL' : $v = $platform->quoteValue($value);
                 $extras[] = $platform->quoteIdentifier($column) . ' = ' . $v;
-            }
+        }
         }
         $sql_string .= ' on duplicate key update ' . join(',', $extras);
 
         try {
-
             $this->executeStatement($sql_string);
 
         } catch (\Exception $e) {
-
             $messages = array();
             $ex = $e;
             do {
@@ -563,7 +560,6 @@ class Table
             $pk_value = $d[$primary];
             $record = $this->findOrFail($pk_value);
         } else {
-
             $id = $this->tableManager->getDbAdapter()->getDriver()->getLastGeneratedValue();
 
             // This test is not made with id !== null, understand why before changing
@@ -642,7 +638,7 @@ class Table
      * @param boolean $ignore_invalid_column if true will throw an exception if a column does not exists
      * @return Record
      */
-    public function record($data = array(), $ignore_invalid_columns=true)
+    public function record($data = array(), $ignore_invalid_columns = true)
     {
         if (!$ignore_invalid_columns) {
             $this->checkDataColumns((array) $data);
@@ -762,7 +758,7 @@ class Table
      */
     public function getTableManager()
     {
-       return $this->tableManager;
+        return $this->tableManager;
     }
 
     /**
@@ -792,8 +788,7 @@ class Table
         try {
             $result = $statement->execute();
         } catch (\Exception $e) {
-
-            // In ZF2, PDO_Mysql and MySQLi return different exception,
+// In ZF2, PDO_Mysql and MySQLi return different exception,
             // attempt to normalize by catching one exception instead
             // of RuntimeException and InvalidQueryException
 
@@ -900,12 +895,11 @@ class Table
         // integer -> numeric
         // etc, etc...
         $columnInfo = $this->getColumnsInformation();
-        foreach($data as $column => $value) {
+        foreach ($data as $column => $value) {
             // checks on types
 
 
         }
 
     }
-
 }

@@ -43,11 +43,11 @@ class Type
         }
         $class = __NAMESPACE__ . '\\' . self::$typesMap[$type_name];
         return new $class();
-    }    
+    }
     
     /**
      * Whether a type is supported
-     * 
+     *
      * @param string $type_name
      * @return boolean
      */
@@ -58,12 +58,11 @@ class Type
     
     /**
      * Return supported types
-     * 
+     *
      * @return array
      */
     public static function getSupported()
     {
         return array_keys(self::$typesMap);
     }
-    
 }

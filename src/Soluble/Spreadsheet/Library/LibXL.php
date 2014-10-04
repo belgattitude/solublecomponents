@@ -28,7 +28,7 @@ class LibXL
     );
 
     /**
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
@@ -42,11 +42,11 @@ class LibXL
 
     /**
      * Return an empty ExcelBook instance
-     * 
+     *
      * @throws Exception\RuntimeException if no excel extension is found
      * @throws Exception\InvalidArgumentException if unsupported format
      *
-     * @param string $file_format by default xlsx, see constants FILE_FORMAT_* 
+     * @param string $file_format by default xlsx, see constants FILE_FORMAT_*
      * @param string $locale by default utf-8
      * @return ExcelBook
      */
@@ -66,7 +66,7 @@ class LibXL
         $license_key = $license['key'];
         $excel2007 = true;
         switch ($file_format) {
-            case self::FILE_FORMAT_XLS :
+            case self::FILE_FORMAT_XLS:
                 $excel2007 = false;
                 break;
         }
@@ -80,7 +80,7 @@ class LibXL
 
     /**
      * Return libxl license
-     * 
+     *
      * @return array|null
      */
     function getLicense()
@@ -93,7 +93,7 @@ class LibXL
 
     /**
      * Check whether the format is supported
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string $format
      * @return boolean
@@ -108,7 +108,7 @@ class LibXL
 
     /**
      * Set license
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
@@ -122,7 +122,7 @@ class LibXL
 
     /**
      * Return default license information
-     * 
+     *
      * @return array|null
      */
     static function getDefaultLicense()
@@ -132,7 +132,7 @@ class LibXL
 
     /**
      * Set default license information
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
@@ -147,11 +147,10 @@ class LibXL
 
     /**
      * Unset default license, useful for unit tests only
-     * 
+     *
      */
     static function unsetDefaultLicense()
     {
         self::$default_license = null;
     }
-
 }

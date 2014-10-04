@@ -66,8 +66,8 @@ class Column implements ColumnSettableInterface
 
     /**
      * Get the name of the column
-     * 
-     * @return string 
+     *
+     * @return string
      */
     public function getName()
     {
@@ -84,7 +84,7 @@ class Column implements ColumnSettableInterface
     {
         if (is_string($type)) {
             $type = Type::createType($type);
-        } else if (!$type instanceof AbstractType) {
+        } elseif (!$type instanceof AbstractType) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " setType() accepts only AbstractType or string.");
         }
         $this->properties['type'] = $type;
@@ -92,7 +92,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return AbstractType
      */
     function getType()
@@ -101,7 +101,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $excluded
      * @return Column
      */
@@ -112,7 +112,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isExcluded()
@@ -121,7 +121,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $editable
      * @return Column
      */
@@ -132,7 +132,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isEditable()
@@ -141,7 +141,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $hidden
      * @return Column
      */
@@ -152,7 +152,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isHidden()
@@ -161,7 +161,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $sortable
      * @return Column
      */
@@ -172,7 +172,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isSortable()
@@ -181,7 +181,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $groupable
      * @return Column
      */
@@ -192,7 +192,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isGroupable()
@@ -201,7 +201,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param boolean $filterable
      * @return Column
      */
@@ -212,7 +212,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     function isFilterable()
@@ -222,7 +222,7 @@ class Column implements ColumnSettableInterface
 
     /**
      * Set recommended width for the column
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param float|int|string $width
      * @return Column
@@ -237,7 +237,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return float|int|string
      */
     function getWidth()
@@ -247,7 +247,7 @@ class Column implements ColumnSettableInterface
 
     /**
      * Set table header for this column
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param string|null $header
      * @return Column
@@ -259,7 +259,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return string|null
      */
     function getHeader()
@@ -268,7 +268,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return array
      */
     function getProperties()
@@ -278,7 +278,7 @@ class Column implements ColumnSettableInterface
 
     /**
      * Set properties for the column
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param array $properties associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)
      * @return Column
@@ -297,12 +297,11 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return string
      */
     function __toString()
     {
         return $this->name;
     }
-
 }

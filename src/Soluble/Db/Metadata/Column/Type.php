@@ -1,9 +1,7 @@
 <?php
 namespace Soluble\Db\Metadata\Column;
 
-
 use Soluble\Db\Metadata\Column\Exception;
-
 
 class Type
 {
@@ -57,5 +55,4 @@ class Type
 
         return new $class($name, $tableName, $schemaName);
     }
-
 }

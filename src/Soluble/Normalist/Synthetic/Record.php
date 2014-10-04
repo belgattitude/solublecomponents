@@ -96,7 +96,7 @@ class Record implements ArrayAccess
      *
      * @return Record freshly modified record (from database)
      */
-    public function save($validate_datatype=false)
+    public function save($validate_datatype = false)
     {
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
@@ -112,7 +112,7 @@ class Record implements ArrayAccess
             case self::STATE_DIRTY:
                 // Means update
                 $predicate = $this->getRecordPrimaryKeyPredicate();
-                $this->getTable()->update($this->toArray(), $predicate, $combination=Predicate\PredicateSet::OP_AND, $validate_datatype);
+                $this->getTable()->update($this->toArray(), $predicate, $combination = Predicate\PredicateSet::OP_AND, $validate_datatype);
                 $new_record = $this->getTable()->findOneBy($predicate);
                 break;
                 //@codeCoverageIgnoreStart
@@ -140,7 +140,7 @@ class Record implements ArrayAccess
          */
         $this->setData($new_record->toArray());
         $this->setState(Record::STATE_CLEAN);
-        unset($new_record);        
+        unset($new_record);
         return $this;
     }
 
@@ -361,7 +361,7 @@ class Record implements ArrayAccess
         // Get table primary keys
         $primary_keys = $this->getTable()->getPrimaryKeys();
         $predicate = array();
-        foreach($primary_keys as $column) {
+        foreach ($primary_keys as $column) {
             $pk_value = $this->offsetGet($column);
             if ($pk_value != '') {
                  $predicate[$column] = $pk_value;
@@ -380,6 +380,4 @@ class Record implements ArrayAccess
     {
         return $this->_securedFieldForArrayAccess['table'];
     }
-
-
 }

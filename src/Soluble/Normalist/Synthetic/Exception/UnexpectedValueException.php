@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class UnexpectedValueException extends \UnexpectedValueException
-                                implements SyntheticExceptionInterface
+class UnexpectedValueException extends \UnexpectedValueException implements SyntheticExceptionInterface
 {
 
 }

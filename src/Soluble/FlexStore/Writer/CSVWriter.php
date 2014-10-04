@@ -33,12 +33,12 @@ class CSVWriter extends AbstractSendableWriter
     );
 
     /**
-     * 
+     *
      * @throws Exception\CharsetConversionException
-     * @param Options $options 
+     * @param Options $options
      * @return string csv encoded data
      */
-    public function getData(Options $options=null)
+    public function getData(Options $options = null)
     {
 
 // TODO - TEST database connection charset !!!
@@ -70,14 +70,11 @@ class CSVWriter extends AbstractSendableWriter
             $csv .= $header_line . $this->options['line_separator'];
             
         } else {
-
-
             $header_line = join($this->options['field_separator'], array_keys($data[0]));
             $csv .= $header_line . $this->options['line_separator'];
 
 
             foreach ($data as $row) {
-
                 switch ($this->options['field_separator']) {
                     case self::SEPARATOR_TAB:
                         array_walk($row, array($this, 'escapeTabDelimiter'));
@@ -96,10 +93,9 @@ class CSVWriter extends AbstractSendableWriter
 
 
                 if ($charset != $internal_encoding) {
-
-                    if (!function_exists('iconv')) {
+if (!function_exists('iconv')) {
                         throw new Exception\RuntimeException('CSV writer requires iconv extension');
-                    }
+}
 
                     $l = (string) $line;
                     if ($l != '') {
@@ -169,7 +165,7 @@ class CSVWriter extends AbstractSendableWriter
     }
 
     /**
-     * Return default headers for sending store data via http 
+     * Return default headers for sending store data via http
      * @return SimpleHeaders
      */
     public function getHttpHeaders()
@@ -181,5 +177,4 @@ class CSVWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-
 }

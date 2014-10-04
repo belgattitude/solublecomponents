@@ -86,7 +86,7 @@ class TableSearch
      * @param boolean $prefixColumnsWithTable
      * @return TableSearch
      */
-    public function columns(array $columns, $prefixColumnsWithTable=true)
+    public function columns(array $columns, $prefixColumnsWithTable = true)
     {
         $this->has_modified_columns = true;
         $this->select->columns($columns, $prefixColumnsWithTable);
@@ -156,7 +156,7 @@ class TableSearch
      * @throws Zend\Db\Sql\Exception\InvalidArgumentException
      * @return TableSearch
      */
-    public function where($predicate, $combination=null)
+    public function where($predicate, $combination = null)
     {
         $this->select->where($predicate, $combination);
         return $this;
@@ -282,8 +282,8 @@ class TableSearch
      */
     public function execute()
     {
-       $rs = new ResultSet($this->select, $this->table, !$this->has_modified_columns);
-       return $rs;
+        $rs = new ResultSet($this->select, $this->table, !$this->has_modified_columns);
+        return $rs;
     }
 
 
@@ -355,6 +355,4 @@ class TableSearch
         return $table;
 
     }
-
-
 }

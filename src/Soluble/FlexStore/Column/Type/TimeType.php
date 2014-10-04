@@ -11,5 +11,4 @@ class TimeType extends AbstractType
     {
         return Type::TYPE_TIME;
     }
-
 }

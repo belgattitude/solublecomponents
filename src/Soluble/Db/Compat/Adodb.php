@@ -37,7 +37,7 @@ class Adodb
                 $adapter = PDO::getAdapter($connectionId);
                 break;
             default:
-                 throw new Exception\UnsupportedDriverException(__METHOD__ . ". Driver '$adoConnectionDriver' not supported");
+                throw new Exception\UnsupportedDriverException(__METHOD__ . ". Driver '$adoConnectionDriver' not supported");
         }
         return $adapter;
 
@@ -57,5 +57,4 @@ class Adodb
         }
         return $connectionId;
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Soluble\FlexStore\Source;
+
 use Soluble\FlexStore\Options;
 
 interface SourceInterface

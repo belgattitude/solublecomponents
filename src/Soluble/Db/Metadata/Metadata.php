@@ -48,7 +48,7 @@ class Metadata
      * @param string $schema database schema to use or null to current schema defined by the adapter
      * @return \Soluble\Db\Metadata\Source\MysqlISMetadata
      */
-    protected function createSourceFromAdapter(Adapter $adapter, $schema=null)
+    protected function createSourceFromAdapter(Adapter $adapter, $schema = null)
     {
         $adapter_name = strtolower($adapter->getPlatform()->getName());
         switch ($adapter_name) {
@@ -71,5 +71,4 @@ class Metadata
     {
         return $this->adapter;
     }
-
 }

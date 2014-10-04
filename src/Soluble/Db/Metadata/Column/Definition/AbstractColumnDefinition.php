@@ -2,7 +2,6 @@
 
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
 abstract class AbstractColumnDefinition
 {
 
@@ -139,7 +138,9 @@ abstract class AbstractColumnDefinition
      */
     public function setTableName($tableName)
     {
-        if (trim($tableName) == '') $tableName = null;
+        if (trim($tableName) == '') {
+            $tableName = null;
+        }
         $this->tableName = $tableName;
         return $this;
     }
@@ -153,7 +154,9 @@ abstract class AbstractColumnDefinition
     public function setSchemaName($schemaName)
     {
 
-        if (trim($schemaName) == '') $schemaName = null;
+        if (trim($schemaName) == '') {
+            $schemaName = null;
+        }
         $this->schemaName = $schemaName;
         return $this;
     }
@@ -308,7 +311,9 @@ abstract class AbstractColumnDefinition
      */
     public function setTableAlias($tableAlias)
     {
-        if (trim($tableAlias) == '') $tableAlias = null;
+        if (trim($tableAlias) == '') {
+            $tableAlias = null;
+        }
         $this->tableAlias = $tableAlias;
         return $this;
     }
@@ -427,9 +432,7 @@ abstract class AbstractColumnDefinition
                 $array[$property->getName()] = $property->getValue($this);
                 $property->setAccessible(false);
             }
-        }        
+        }
         return $array;
     }
-
-
 }

@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class MultiplePrimaryKeysFoundException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class MultiplePrimaryKeysFoundException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

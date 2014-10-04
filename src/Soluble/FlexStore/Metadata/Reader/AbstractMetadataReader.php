@@ -20,7 +20,7 @@ abstract class AbstractMetadataReader
      * @param boolean $active
      * @return AbstractMetadataReader
      */
-    public function setStaticCache($active=true)
+    public function setStaticCache($active = true)
     {
         $this->cache_active = $active;
         return $this;
@@ -80,5 +80,4 @@ abstract class AbstractMetadataReader
 
         return $sql;
     }
-
 }

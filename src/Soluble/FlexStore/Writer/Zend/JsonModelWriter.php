@@ -17,7 +17,7 @@ class JsonModelWriter extends AbstractWriter
      * @param Options $options
      * @return \Zend\View\Model\JsonModel
      */
-    public function getData(Options $options=null)
+    public function getData(Options $options = null)
     {
         $data = $this->store->getData($options);
         $d = array(
@@ -38,5 +38,4 @@ class JsonModelWriter extends AbstractWriter
         $json = new ZendJsonModel($d);
         return $json;
     }
-
 }

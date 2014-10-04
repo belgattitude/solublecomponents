@@ -55,9 +55,7 @@ class MysqliMetadataReader extends AbstractMetadataReader
         $type_map = $this->getDatatypeMapping();
 
 
-        foreach($fields as $idx => $field) {
-
-
+        foreach ($fields as $idx => $field) {
             $name = $field->orgname == '' ? $field->name : $field->orgname;
             $tableName = $field->orgtable;
             $schemaName = $field->db;
@@ -143,11 +141,10 @@ class MysqliMetadataReader extends AbstractMetadataReader
             $alias = $column->getAlias();
 
             if ($metadata->offsetExists($alias)) {
-                
                 $prev_column = $metadata->offsetGet($alias);
                 $prev_def = $prev_column->toArray();
                 $curr_def = $column->toArray();
-                if (    $prev_def['dataType'] != $curr_def['dataType']
+                if ($prev_def['dataType'] != $curr_def['dataType']
                     ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']  ) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
@@ -157,7 +154,7 @@ class MysqliMetadataReader extends AbstractMetadataReader
                     $column = $prev_column;
                 }
                 
-            } 
+            }
             
 
             $metadata->offsetSet($alias, $column);
@@ -289,6 +286,4 @@ class MysqliMetadataReader extends AbstractMetadataReader
 
         return $mapping;
     }
-
-
 }

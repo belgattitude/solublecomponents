@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class TableNotFoundException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class TableNotFoundException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

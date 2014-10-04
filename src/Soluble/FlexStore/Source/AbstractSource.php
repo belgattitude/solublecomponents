@@ -99,7 +99,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      * Return column model
-     * 
+     *
      * @return ColumnModel
      */
     public function getColumnModel()
@@ -112,7 +112,7 @@ abstract class AbstractSource implements SourceInterface
     
     /**
      * Set column model associated with the datasource
-     * 
+     *
      * @param ColumnModel $columnModel
      * @return AbstractSource
      */
@@ -148,5 +148,4 @@ abstract class AbstractSource implements SourceInterface
     {
         return $this->metadataReader;
     }
-
 }

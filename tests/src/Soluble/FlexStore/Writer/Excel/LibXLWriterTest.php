@@ -84,7 +84,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        ini_set("error_reporting", E_ALL);
+        ini_set('error_reporting', E_ALL | E_STRICT);
     }
 
     public function testGetDataXlsx()
@@ -185,7 +185,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         //var_dump($a1); 
         $arr = $sheet->toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = true);
         if (strtoupper($reader) == "EXCEL5") {
-            ini_set("error_reporting", E_ALL);
+            ini_set('error_reporting', E_ALL | E_STRICT);
         }
         return $arr;
     }

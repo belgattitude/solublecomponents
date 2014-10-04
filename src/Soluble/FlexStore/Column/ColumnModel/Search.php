@@ -21,7 +21,7 @@ class Search
     }
 
     /**
-     * 
+     *
      * @return Result
      */
     function all()
@@ -30,7 +30,7 @@ class Search
     }
 
     /**
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @return Result
      */
@@ -46,7 +46,7 @@ class Search
     }
 
     /**
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @return Result
      */
@@ -65,7 +65,7 @@ class Search
     }
 
     /**
-     * 
+     *
      * @return Result
      */
     function regexp($regexp)
@@ -81,7 +81,7 @@ class Search
     }
 
     /**
-     * 
+     *
      * @param string $type
      * @return Result
      */
@@ -95,5 +95,4 @@ class Search
         }
         return new Result($results, $this->columns);
     }
-
 }

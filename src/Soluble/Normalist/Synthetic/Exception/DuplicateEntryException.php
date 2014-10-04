@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class DuplicateEntryException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class DuplicateEntryException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

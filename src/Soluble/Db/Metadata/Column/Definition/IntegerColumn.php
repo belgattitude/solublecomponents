@@ -1,7 +1,6 @@
 <?php
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
 class IntegerColumn extends AbstractColumnDefinition implements NumericColumnInterface
 {
     /**
@@ -61,6 +60,4 @@ class IntegerColumn extends AbstractColumnDefinition implements NumericColumnInt
     {
         return $this->isAutoIncrement;
     }
-
-
 }

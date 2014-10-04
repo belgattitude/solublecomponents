@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class UnsupportedFeatureException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class UnsupportedFeatureException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

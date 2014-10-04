@@ -78,7 +78,4 @@ class Transaction
 
         return $this;
     }
-
-
-
 }

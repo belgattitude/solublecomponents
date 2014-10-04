@@ -74,8 +74,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
         $type_map = $this->getDatatypeMapping();
 
 
-        foreach($fields as $idx => $field) {
-
+        foreach ($fields as $idx => $field) {
             $name = $field['name'];
             $tableName = $field['table'];
 
@@ -91,7 +90,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
             $datatype = $type_map->offsetGet($datatype);
 
-            $column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName=null);
+            $column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName = null);
             $alias = $field['name'];
             
             
@@ -136,11 +135,10 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
             }
 
             if ($metadata->offsetExists($alias)) {
-                
                 $prev_column = $metadata->offsetGet($alias);
                 $prev_def = $prev_column->toArray();
                 $curr_def = $column->toArray();
-                if (    $prev_def['dataType'] != $curr_def['dataType']
+                if ($prev_def['dataType'] != $curr_def['dataType']
                     ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']  ) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
@@ -150,7 +148,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                     $column = $prev_column;
                 }
                 
-            } 
+            }
             $metadata->offsetSet($alias, $column);
             
 
@@ -187,7 +185,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
         $stmt->execute();
         $column_count = $stmt->columnCount();
         $metaFields = array();
-        for($i = 0; $i < $column_count; $i++) {
+        for ($i = 0; $i < $column_count; $i++) {
             $meta = $stmt->getColumnMeta($i);
             $metaFields[$i] = $meta;
         }
@@ -258,6 +256,4 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
         return $mapping;
     }
-
-
 }

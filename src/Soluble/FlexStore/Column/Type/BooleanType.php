@@ -11,5 +11,4 @@ class BooleanType extends AbstractType
     {
         return Type::TYPE_BOOLEAN;
     }
-
 }

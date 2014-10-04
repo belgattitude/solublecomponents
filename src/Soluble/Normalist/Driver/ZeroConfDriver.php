@@ -65,7 +65,7 @@ class ZeroConfDriver implements DriverInterface
      * @throws Exception\ModelPathNotFoundException
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct(Adapter $adapter, $params=array())
+    public function __construct(Adapter $adapter, $params = array())
     {
         $this->setDbAdapter($adapter);
 
@@ -101,7 +101,6 @@ class ZeroConfDriver implements DriverInterface
         }
 
         if ($this->params['permissions'] != '') {
-
             if (!is_scalar($this->params['permissions'])) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
             }
@@ -162,7 +161,7 @@ class ZeroConfDriver implements DriverInterface
         //$config = new Config($models_defintion, true);
         $writer = new Writer\PhpArray();
         $models_definition['normalist'] = array('model_version' => Metadata\NormalistModels::VERSION);
-        $writer->toFile($file, $models_definition, $exclusiveLock=true);
+        $writer->toFile($file, $models_definition, $exclusiveLock = true);
         $perms = $this->params['permissions'];
         if ($perms != '') {
             if (decoct(octdec($perms)) == $perms) {
@@ -236,8 +235,7 @@ class ZeroConfDriver implements DriverInterface
         try {
             $model_definition = $this->getModelsDefinition();
         } catch (Exception\ExceptionInterface $e) {
-
-            // means model definition does not exists
+// means model definition does not exists
             // lets load it from the current connection
             if ($this->params['schema'] == '') {
                 $schema = null;
@@ -267,5 +265,4 @@ class ZeroConfDriver implements DriverInterface
         return $this;
 
     }
-
 }

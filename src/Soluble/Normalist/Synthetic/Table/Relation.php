@@ -52,7 +52,7 @@ class Relation
         $tableName = $this->table->getTableName();
         $relations = $this->table->getTableManager()->metadata()->getRelations($tableName);
         //$rels = array();
-        foreach($relations as $column => $parent) {
+        foreach ($relations as $column => $parent) {
             if ($parent['referenced_table'] == $parent_table) {
                 // @todo, check the case when
                 // table has many relations to the same parent
@@ -67,5 +67,4 @@ class Relation
 
 
     }
-
 }

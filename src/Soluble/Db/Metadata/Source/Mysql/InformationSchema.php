@@ -54,7 +54,7 @@ class InformationSchema extends Source\AbstractSource
      * @param string $schema default schema, taken from adapter if not given
      * @throws Exception\InvalidArgumentException if schema parameter not valid
      */
-    public function __construct(Adapter $adapter, $schema=null)
+    public function __construct(Adapter $adapter, $schema = null)
     {
         $this->adapter = $adapter;
         if ($schema === null) {
@@ -77,7 +77,7 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $include_primary=false)
+    public function getUniqueKeys($table, $include_primary = false)
     {
         $this->loadCacheInformation($table);
         $uniques = (array) self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
@@ -220,25 +220,23 @@ class InformationSchema extends Source\AbstractSource
      * @param boolean $include_options include extended information
      * @return array
      */
-    public function getTableConfig($table, $include_options=false)
+    public function getTableConfig($table, $include_options = false)
     {
 
         
         $schema = $this->schema;
         
-        if ( $this->useLocalCaching &&
+        if ($this->useLocalCaching &&
                 (array_key_exists($schema, self::$localCache) &&
                  array_key_exists('tables', self::$localCache[$schema]) &&
-                 array_key_exists($table, self::$localCache[$schema]['tables'])))
-        {
-
+                 array_key_exists($table, self::$localCache[$schema]['tables']))) {
             return self::$localCache[$schema]['tables'][$table];
-        } 
+        }
 
 
         $config = $this->getObjectConfig($table, $include_options);
 
-        if (!array_key_exists($table, $config['tables']) ) {
+        if (!array_key_exists($table, $config['tables'])) {
             throw new Exception\TableNotFoundException(__METHOD__ . ". Table '$table' in database schema '{$schema}' not found.");
         }
 
@@ -262,7 +260,7 @@ class InformationSchema extends Source\AbstractSource
      * @param boolean $include_options include extended information
      * @return array
      */
-    public function getSchemaConfig($include_options=false)
+    public function getSchemaConfig($include_options = false)
     {
 
         $schema = $this->schema;
@@ -270,7 +268,7 @@ class InformationSchema extends Source\AbstractSource
             return self::$localCache[$schema];
         }
 
-        $config = $this->getObjectConfig($table=null, $include_options);
+        $config = $this->getObjectConfig($table = null, $include_options);
         if (count($config['tables']) == 0) {
             throw new Exception\SchemaNotFoundException(__METHOD__ . " Error: schema '{$schema}' not found or without any table or view");
         }
@@ -290,7 +288,7 @@ class InformationSchema extends Source\AbstractSource
      * @param boolean $include_options
      * @return array
      */
-    protected function getObjectConfig($table=null, $include_options=false)
+    protected function getObjectConfig($table = null, $include_options = false)
     {
         $schema = $this->schema;
         $qSchema = $this->adapter->getPlatform()->quoteValue($schema);
@@ -381,11 +379,10 @@ class InformationSchema extends Source\AbstractSource
         $config = new Config(array('tables' => array()), true);
         $tables = $config->offsetGet('tables');
         
-        foreach($results as $r) {
+        foreach ($results as $r) {
             // Setting table information
             $table_name = $r['table_name'];
             if (!$tables->offsetExists($table_name)) {
-
                 $table_def = array(
                     'name'          => $table_name,
                     'columns'       => array(),
@@ -571,7 +568,7 @@ class InformationSchema extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      *
      */
-    protected function loadCacheInformation($table=null)
+    protected function loadCacheInformation($table = null)
     {
         $schema = $this->schema;
         $this->checkTableArgument($table);
@@ -582,16 +579,16 @@ class InformationSchema extends Source\AbstractSource
             } else {
                 $this->getSchemaConfig();
             }
-        } else if ($table !== null) {
+        } elseif ($table !== null) {
             // Just in case to check if table exists
-            $this->getTableConfig($table); 
-        }        
+            $this->getTableConfig($table);
+        }
 
     }
     
     /**
      * Clear local cache information for the current schema
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      */
     public function clearCacheInformation()
@@ -606,7 +603,4 @@ class InformationSchema extends Source\AbstractSource
         }
         
     }
-
-
-
 }

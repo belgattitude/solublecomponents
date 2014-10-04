@@ -9,9 +9,7 @@
 
 namespace Soluble\Normalist\Synthetic\Exception;
 
-
-class TransactionException extends \RuntimeException
-                                implements SyntheticExceptionInterface
+class TransactionException extends \RuntimeException implements SyntheticExceptionInterface
 {
 
 }

@@ -11,5 +11,4 @@ class IntegerType extends AbstractType
     {
         return Type::TYPE_INTEGER;
     }
-
 }

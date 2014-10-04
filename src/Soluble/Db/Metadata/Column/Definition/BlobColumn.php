@@ -1,7 +1,6 @@
 <?php
 namespace Soluble\Db\Metadata\Column\Definition;
 
-
 class BlobColumn extends AbstractColumnDefinition
 {
     /**
@@ -27,6 +26,4 @@ class BlobColumn extends AbstractColumnDefinition
         $this->characterOctetLength = $characterOctetLength;
         return $this;
     }
-
-
 }

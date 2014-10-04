@@ -4,7 +4,6 @@
  */
 namespace Soluble\Normalist\Synthetic\Exception;
 
-class FieldNotFoundException extends InvalidArgumentException
-                    implements SyntheticExceptionInterface
+class FieldNotFoundException extends InvalidArgumentException implements SyntheticExceptionInterface
 {
 }

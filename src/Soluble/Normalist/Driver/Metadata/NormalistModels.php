@@ -4,7 +4,6 @@ namespace Soluble\Normalist\Driver\Metadata;
 use Soluble\Db\Metadata\Source;
 use Soluble\Db\Metadata\Exception;
 
-
 class NormalistModels extends Source\AbstractSource
 {
 
@@ -39,7 +38,7 @@ class NormalistModels extends Source\AbstractSource
      * @throws Exception\TableNotFoundException
      * @return array
      */
-    public function getUniqueKeys($table, $include_primary=false)
+    public function getUniqueKeys($table, $include_primary = false)
     {
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['unique_keys'];
@@ -162,6 +161,4 @@ class NormalistModels extends Source\AbstractSource
     {
         return $this->model_definition['tables'];
     }
-
-
 }

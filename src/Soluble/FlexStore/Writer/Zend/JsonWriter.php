@@ -23,7 +23,7 @@ class JsonWriter extends AbstractSendableWriter
      * @param Options $options
      * @return \Zend\View\Model\JsonModel
      */
-    public function getData(Options $options=null)
+    public function getData(Options $options = null)
     {
         $data = $this->store->getData($options);
         $d = array(
@@ -44,7 +44,7 @@ class JsonWriter extends AbstractSendableWriter
     }
 
     /**
-     * Return default headers for sending store data via http 
+     * Return default headers for sending store data via http
      * @return SimpleHeaders
      */
     public function getHttpHeaders()
@@ -56,5 +56,4 @@ class JsonWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-
 }
