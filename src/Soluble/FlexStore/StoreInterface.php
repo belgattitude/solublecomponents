@@ -6,6 +6,8 @@
 
 namespace Soluble\FlexStore;
 
+use Soluble\FlexStore\Options;
+
 interface StoreInterface
 {
 
@@ -19,13 +21,13 @@ interface StoreInterface
      * Return the underlying store data as a resultset
      * 
      * @param Options $options
-     * @return ResultSet
+     * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null);
 
     /**
      * Return column model associated with datasource
-     * @return ColumnModel
+     * @return \Soluble\FlexStore\Column\ColumnModel
      */
     public function getColumnModel();
 }
