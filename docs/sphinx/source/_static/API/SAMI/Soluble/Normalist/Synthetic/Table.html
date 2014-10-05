@@ -1135,7 +1135,7 @@
     </div>
 
                 <h3 id="method_insertOnDuplicateKey">
-        <div class="location">at line 509</div>
+        <div class="location">at line 510</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>insertOnDuplicateKey</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, array $duplicate_exclude = array(), boolean $validate_datatypes = false)</code>
     </h3>
@@ -1187,6 +1187,11 @@
 </td>
             </tr>
                     <tr>
+                <td><abbr title="Exception\RecordNotFoundException">RecordNotFoundException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
                 <td><abbr title="Exception\ForeignKeyException">ForeignKeyException</abbr></td>
                 <td>when insertion failed because of an invalid foreign key</td>
             </tr>
@@ -1205,7 +1210,7 @@
     </div>
 
                 <h3 id="method_getRelations">
-        <div class="location">at line 623</div>
+        <div class="location">at line 620</div>
         <code>            public            array
     <strong>getRelations</strong>()</code>
     </h3>
@@ -1231,7 +1236,7 @@
     </div>
 
                 <h3 id="method_record">
-        <div class="location">at line 644</div>
+        <div class="location">at line 641</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>record</strong>($data = array(), $ignore_invalid_columns = true)</code>
     </h3>
@@ -1283,7 +1288,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_relation">
-        <div class="location">at line 661</div>
+        <div class="location">at line 658</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Table/Relation.html"><abbr title="Soluble\Normalist\Synthetic\Table\Relation">Relation</abbr></a>
     <strong>relation</strong>()</code>
     </h3>
@@ -1309,7 +1314,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getPrimaryKeys">
-        <div class="location">at line 678</div>
+        <div class="location">at line 675</div>
         <code>            public            array
     <strong>getPrimaryKeys</strong>()</code>
     </h3>
@@ -1348,7 +1353,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getPrimaryKey">
-        <div class="location">at line 703</div>
+        <div class="location">at line 701</div>
         <code>            public            int|string
     <strong>getPrimaryKey</strong>()</code>
     </h3>
@@ -1374,7 +1379,11 @@ an error will be thrown</p>
                     <table>
                     <tr>
                 <td><abbr title="Exception\PrimaryKeyNotFoundException">PrimaryKeyNotFoundException</abbr></td>
-                <td>when no pk or multiple pk found</td>
+                <td>when no pk found</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\MultiplePrimaryKeysFoundException">MultiplePrimaryKeysFoundException</abbr></td>
+                <td>when multiple primary keys found</td>
             </tr>
                     <tr>
                 <td><abbr title="Exception\RuntimeException">RuntimeException</abbr></td>
@@ -1387,7 +1396,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getColumnsInformation">
-        <div class="location">at line 725</div>
+        <div class="location">at line 723</div>
         <code>            public            array
     <strong>getColumnsInformation</strong>()</code>
     </h3>
@@ -1438,7 +1447,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getTableName">
-        <div class="location">at line 740</div>
+        <div class="location">at line 738</div>
         <code>            public            string
     <strong>getTableName</strong>()</code>
     </h3>
@@ -1464,7 +1473,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getPrefixedTableName">
-        <div class="location">at line 750</div>
+        <div class="location">at line 748</div>
         <code>            public            string
     <strong>getPrefixedTableName</strong>()</code>
     </h3>
@@ -1490,7 +1499,7 @@ an error will be thrown</p>
     </div>
 
                 <h3 id="method_getTableManager">
-        <div class="location">at line 761</div>
+        <div class="location">at line 759</div>
         <code>            public            <a href="../../../Soluble/Normalist/Synthetic/TableManager.html"><abbr title="Soluble\Normalist\Synthetic\TableManager">TableManager</abbr></a>
     <strong>getTableManager</strong>()</code>
     </h3>

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>Soluble\FlexStore\Column\Column | Soluble API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../traits.html">Traits</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">Soluble API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../Soluble/FlexStore/Column.html">Soluble\FlexStore\Column</a>\Column</h1>
+    </div>
+        <div class="content">
+                <p>    class
+    <strong>Column</strong>        implements
+        <a href="../../../Soluble/FlexStore/Column/ColumnSettableInterface.html"><abbr title="Soluble\FlexStore\Column\ColumnSettableInterface">ColumnSettableInterface</abbr></a></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(string $name, array $properties = null)
+                    <p>Constructor</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getName">getName</a>()
+                    <p>Get the name of the column</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setType">setType</a>(string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a> $type)
+                    <p>Set column datatype</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getType">getType</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setFormatter">setFormatter</a>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getFormatter">getFormatter</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setExcluded">setExcluded</a>(boolean $excluded = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isExcluded">isExcluded</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setEditable">setEditable</a>(boolean $editable = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isEditable">isEditable</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setHidden">setHidden</a>(boolean $hidden = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isHidden">isHidden</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setSortable">setSortable</a>(boolean $sortable = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isSortable">isSortable</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setGroupable">setGroupable</a>(boolean $groupable = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isGroupable">isGroupable</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setFilterable">setFilterable</a>(boolean $filterable = true)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isFilterable">isFilterable</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setWidth">setWidth</a>(float|int|string $width)
+                    <p>Set recommended width for the column</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    float|int|string
+                </td>
+                <td class="last">
+                    <a href="#method_getWidth">getWidth</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setHeader">setHeader</a>(string|null $header)
+                    <p>Set table header for this column</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getHeader">getHeader</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_getProperties">getProperties</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setProperties">setProperties</a>(array $properties)
+                    <p>Set properties for the column</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method___toString">__toString</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 40</div>
+        <code>            public            
+    <strong>__construct</strong>(string $name, array $properties = null)</code>
+    </h3>
+    <div class="details">
+        <p>Constructor</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td>unique identifier name for the column</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$properties</td>
+                <td>associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getName">
+        <div class="location">at line 74</div>
+        <code>            public            string
+    <strong>getName</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the name of the column</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setType">
+        <div class="location">at line 85</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setType</strong>(string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a> $type)</code>
+    </h3>
+    <div class="details">
+        <p>Set column datatype</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a></td>
+                <td>$type</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when the type is not supported.</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getType">
+        <div class="location">at line 100</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a>
+    <strong>getType</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setFormatter">
+        <div class="location">at line 110</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setFormatter</strong>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a></td>
+                <td>$formatter</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getFormatter">
+        <div class="location">at line 120</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a>
+    <strong>getFormatter</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setExcluded">
+        <div class="location">at line 130</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setExcluded</strong>(boolean $excluded = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$excluded</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isExcluded">
+        <div class="location">at line 140</div>
+        <code>            public            boolean
+    <strong>isExcluded</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setEditable">
+        <div class="location">at line 150</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setEditable</strong>(boolean $editable = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$editable</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isEditable">
+        <div class="location">at line 160</div>
+        <code>            public            boolean
+    <strong>isEditable</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setHidden">
+        <div class="location">at line 170</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setHidden</strong>(boolean $hidden = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$hidden</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isHidden">
+        <div class="location">at line 180</div>
+        <code>            public            boolean
+    <strong>isHidden</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setSortable">
+        <div class="location">at line 190</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setSortable</strong>(boolean $sortable = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$sortable</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isSortable">
+        <div class="location">at line 200</div>
+        <code>            public            boolean
+    <strong>isSortable</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setGroupable">
+        <div class="location">at line 210</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setGroupable</strong>(boolean $groupable = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$groupable</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isGroupable">
+        <div class="location">at line 220</div>
+        <code>            public            boolean
+    <strong>isGroupable</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setFilterable">
+        <div class="location">at line 230</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setFilterable</strong>(boolean $filterable = true)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$filterable</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isFilterable">
+        <div class="location">at line 240</div>
+        <code>            public            boolean
+    <strong>isFilterable</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setWidth">
+        <div class="location">at line 252</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setWidth</strong>(float|int|string $width)</code>
+    </h3>
+    <div class="details">
+        <p>Set recommended width for the column</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>float|int|string</td>
+                <td>$width</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getWidth">
+        <div class="location">at line 265</div>
+        <code>            public            float|int|string
+    <strong>getWidth</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>float|int|string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setHeader">
+        <div class="location">at line 277</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setHeader</strong>(string|null $header)</code>
+    </h3>
+    <div class="details">
+        <p>Set table header for this column</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|null</td>
+                <td>$header</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getHeader">
+        <div class="location">at line 287</div>
+        <code>            public            string|null
+    <strong>getHeader</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string|null</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getProperties">
+        <div class="location">at line 296</div>
+        <code>            public            array
+    <strong>getProperties</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setProperties">
+        <div class="location">at line 308</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setProperties</strong>(array $properties)</code>
+    </h3>
+    <div class="details">
+        <p>Set properties for the column</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$properties</td>
+                <td>associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method___toString">
+        <div class="location">at line 325</div>
+        <code>            public            string
+    <strong>__toString</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

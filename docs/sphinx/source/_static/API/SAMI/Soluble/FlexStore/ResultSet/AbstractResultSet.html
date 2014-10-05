@@ -28,6 +28,29 @@
         <a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>, <a href="../../../Soluble/FlexStore/ResultSet/ResultSetInterface.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSetInterface">ResultSetInterface</abbr></a></p>
 
     
+            <h2>Constants</h2>
+
+            <table>
+                    <tr>
+                <td>TYPE_ARRAYOBJECT</td>
+                <td class="last">
+                    <p><em>
+</em></p>
+                    <p>
+</p>
+                </td>
+            </tr>
+                    <tr>
+                <td>TYPE_ARRAY</td>
+                <td class="last">
+                    <p><em>
+</em></p>
+                    <p>
+</p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -38,9 +61,38 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet)
-                    <p>
-</p>
+                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet, string $returnType = self::TYPE_ARRAYOBJECT, null|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $arrayObjectPrototype = null)
+                    <p>Constructor</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setArrayObjectPrototype">setArrayObjectPrototype</a>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $arrayObjectPrototype)
+                    <p>Set the row object prototype</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getArrayObjectPrototype">getArrayObjectPrototype</a>()
+                    <p>Get the row object prototype</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getReturnType">getReturnType</a>()
+                    <p>Get the return type to use when returning objects from the set</p>
                 </td>
                 <td></td>
             </tr>
@@ -162,13 +214,12 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 19</div>
+        <div class="location">at line 55</div>
         <code>            public            
-    <strong>__construct</strong>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet)</code>
+    <strong>__construct</strong>(<abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr> $resultSet, string $returnType = self::TYPE_ARRAYOBJECT, null|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $arrayObjectPrototype = null)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Constructor</p>
         <p>
 </p>
         <div class="tags">
@@ -181,6 +232,18 @@
                 <td>
 </td>
             </tr>
+                    <tr>
+                <td>string</td>
+                <td>$returnType</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>null|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$arrayObjectPrototype</td>
+                <td>
+</td>
+            </tr>
             </table>
 
             
@@ -189,8 +252,107 @@
                     </div>
     </div>
 
+                <h3 id="method_setArrayObjectPrototype">
+        <div class="location">at line 71</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a>
+    <strong>setArrayObjectPrototype</strong>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $arrayObjectPrototype)</code>
+    </h3>
+    <div class="details">
+        <p>Set the row object prototype</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$arrayObjectPrototype</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getArrayObjectPrototype">
+        <div class="location">at line 82</div>
+        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+    <strong>getArrayObjectPrototype</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the row object prototype</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getReturnType">
+        <div class="location">at line 92</div>
+        <code>            public            string
+    <strong>getReturnType</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the return type to use when returning objects from the set</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_buffer">
-        <div class="location">at line 29</div>
+        <div class="location">at line 102</div>
         <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a>
     <strong>buffer</strong>()</code>
     </h3>
@@ -217,7 +379,7 @@
     </div>
 
                 <h3 id="method_isBuffered">
-        <div class="location">at line 40</div>
+        <div class="location">at line 113</div>
         <code>            public            boolean
     <strong>isBuffered</strong>()</code>
     </h3>
@@ -244,7 +406,7 @@
     </div>
 
                 <h3 id="method_getDataSource">
-        <div class="location">at line 50</div>
+        <div class="location">at line 123</div>
         <code>            public            null|<a href="http://php.net/Iterator"><abbr title="Iterator">Iterator</abbr></a>
     <strong>getDataSource</strong>()</code>
     </h3>
@@ -270,7 +432,7 @@
     </div>
 
                 <h3 id="method_getFieldCount">
-        <div class="location">at line 60</div>
+        <div class="location">at line 133</div>
         <code>            public            int
     <strong>getFieldCount</strong>()</code>
     </h3>
@@ -296,7 +458,7 @@
     </div>
 
                 <h3 id="method_next">
-        <div class="location">at line 70</div>
+        <div class="location">at line 143</div>
         <code>            public            void
     <strong>next</strong>()</code>
     </h3>
@@ -322,7 +484,7 @@
     </div>
 
                 <h3 id="method_key">
-        <div class="location">at line 80</div>
+        <div class="location">at line 153</div>
         <code>            public            mixed
     <strong>key</strong>()</code>
     </h3>
@@ -348,7 +510,7 @@
     </div>
 
                 <h3 id="method_current">
-        <div class="location">at line 90</div>
+        <div class="location">at line 163</div>
         <code>            public            array
     <strong>current</strong>()</code>
     </h3>
@@ -374,7 +536,7 @@
     </div>
 
                 <h3 id="method_valid">
-        <div class="location">at line 101</div>
+        <div class="location">at line 174</div>
         <code>            public            bool
     <strong>valid</strong>()</code>
     </h3>
@@ -400,7 +562,7 @@
     </div>
 
                 <h3 id="method_rewind">
-        <div class="location">at line 111</div>
+        <div class="location">at line 184</div>
         <code>            public            void
     <strong>rewind</strong>()</code>
     </h3>
@@ -426,7 +588,7 @@
     </div>
 
                 <h3 id="method_count">
-        <div class="location">at line 121</div>
+        <div class="location">at line 194</div>
         <code>            public            int
     <strong>count</strong>()</code>
     </h3>
@@ -452,7 +614,7 @@
     </div>
 
                 <h3 id="method_toArray">
-        <div class="location">at line 132</div>
+        <div class="location">at line 205</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>

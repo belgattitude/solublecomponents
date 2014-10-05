@@ -35,28 +35,6 @@
             <table>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_setColumns">setColumns</a>(array $columns)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_unsetColumns">unsetColumns</a>()
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
                     <a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
                 </td>
                 <td class="last">
@@ -68,7 +46,7 @@
             </tr>
                     <tr>
                 <td class="type">
-                    <abbr title="Soluble\FlexStore\Source\Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr>
+                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
                 </td>
                 <td class="last">
                     <a href="#method_getData">getData</a>(<a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a> $options = null)
@@ -99,23 +77,31 @@
             </tr>
                     <tr>
                 <td class="type">
-                    string
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_getQueryString">getQueryString</a>()
-                    <p>
-</p>
+                    <a href="#method_getColumnModel">getColumnModel</a>()
+                    <p>Return column model</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                    <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_getColumnModel">getColumnModel</a>()
-                    <p>
-</p>
+                    <a href="#method_setColumnModel">setColumnModel</a>(<a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a> $columnModel)
+                    <p>Set column model associated with the datasource</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_loadDefaultColumnModel">loadDefaultColumnModel</a>()
+                    <p>Default column model initialization</p>
                 </td>
                 <td></td>
             </tr>
@@ -146,73 +132,8 @@
 
         <h2>Details</h2>
 
-                        <h3 id="method_setColumns">
-        <div class="location">at line 44</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
-    <strong>setColumns</strong>(array $columns)</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>array</td>
-                <td>$columns</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_unsetColumns">
-        <div class="location">at line 55</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
-    <strong>unsetColumns</strong>()</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getOptions">
-        <div class="location">at line 65</div>
+                        <h3 id="method_getOptions">
+        <div class="location">at line 57</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
     <strong>getOptions</strong>()</code>
     </h3>
@@ -239,8 +160,8 @@
     </div>
 
                 <h3 id="method_getData">
-        <div class="location">at line 79</div>
-        <code>    abstract        public            <abbr title="Soluble\FlexStore\Source\Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr>
+        <div class="location">at line 71</div>
+        <code>    abstract        public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
     <strong>getData</strong>(<a href="../../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a> $options = null)</code>
     </h3>
     <div class="details">
@@ -265,7 +186,7 @@
 
                     <table>
         <tr>
-            <td><abbr title="Soluble\FlexStore\Source\Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></td>
+            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
             <td>
 </td>
         </tr>
@@ -277,7 +198,7 @@
     </div>
 
                 <h3 id="method_setIdentifier">
-        <div class="location">at line 91</div>
+        <div class="location">at line 83</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>setIdentifier</strong>(string|integer $identifier)</code>
     </h3>
@@ -313,7 +234,7 @@
     </div>
 
                 <h3 id="method_getIdentifier">
-        <div class="location">at line 102</div>
+        <div class="location">at line 94</div>
         <code>            public            string|integer|null
     <strong>getIdentifier</strong>()</code>
     </h3>
@@ -338,41 +259,13 @@
                     </div>
     </div>
 
-                <h3 id="method_getQueryString">
-        <div class="location">at line 111</div>
-        <code>    abstract        public            string
-    <strong>getQueryString</strong>()</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td>string</td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
                 <h3 id="method_getColumnModel">
-        <div class="location">at line 117</div>
-        <code>    abstract        public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+        <div class="location">at line 105</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
     <strong>getColumnModel</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Return column model</p>
         <p>
 </p>
         <div class="tags">
@@ -392,8 +285,61 @@
                     </div>
     </div>
 
+                <h3 id="method_setColumnModel">
+        <div class="location">at line 119</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
+    <strong>setColumnModel</strong>(<a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a> $columnModel)</code>
+    </h3>
+    <div class="details">
+        <p>Set column model associated with the datasource</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+                <td>$columnModel</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_loadDefaultColumnModel">
+        <div class="location">at line 129</div>
+        <code>    abstract        public            
+    <strong>loadDefaultColumnModel</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Default column model initialization</p>
+        <p>
+</p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_setMetadataReader">
-        <div class="location">at line 125</div>
+        <div class="location">at line 137</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>setMetadataReader</strong>(<a href="../../../Soluble/FlexStore/Metadata/Reader/AbstractMetadataReader.html"><abbr title="Soluble\FlexStore\Metadata\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr></a> $metadataReader)</code>
     </h3>
@@ -431,7 +377,7 @@
     </div>
 
                 <h3 id="method_getMetadataReader">
-        <div class="location">at line 135</div>
+        <div class="location">at line 147</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Metadata/Reader/AbstractMetadataReader.html"><abbr title="Soluble\FlexStore\Metadata\Reader\AbstractMetadataReader">AbstractMetadataReader</abbr></a>
     <strong>getMetadataReader</strong>()</code>
     </h3>

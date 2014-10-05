@@ -48,14 +48,14 @@
                     <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_setLimit">setLimit</a>(int $limit)
+                    <a href="#method_setLimit">setLimit</a>(int $limit, int $offset = null)
                     <p>Set the (maximum) number of results to return</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    integer
+                    integer|null
                 </td>
                 <td class="last">
                     <a href="#method_getLimit">getLimit</a>()
@@ -86,6 +86,16 @@
             </tr>
                     <tr>
                 <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_hasOffset">hasOffset</a>()
+                    <p>Tells whether the option contains an offset</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
                     <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
                 </td>
                 <td class="last">
@@ -96,11 +106,21 @@
             </tr>
                     <tr>
                 <td class="type">
-                    int
+                    int|null
                 </td>
                 <td class="last">
                     <a href="#method_getOffset">getOffset</a>()
                     <p>Return the offset when using limit Offset gives the record number to start reading from when a paging query is in use</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_unsetOffset">unsetOffset</a>()
+                    <p>Unset previously set offset</p>
                 </td>
                 <td></td>
             </tr>
@@ -110,7 +130,7 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 22</div>
+        <div class="location">at line 20</div>
         <code>            public            
     <strong>__construct</strong>()</code>
     </h3>
@@ -127,9 +147,9 @@
     </div>
 
                 <h3 id="method_setLimit">
-        <div class="location">at line 34</div>
+        <div class="location">at line 32</div>
         <code>            public            <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
-    <strong>setLimit</strong>(int $limit)</code>
+    <strong>setLimit</strong>(int $limit, int $offset = null)</code>
     </h3>
     <div class="details">
         <p>Set the (maximum) number of results to return</p>
@@ -142,6 +162,12 @@
                     <tr>
                 <td>int</td>
                 <td>$limit</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$offset</td>
                 <td>
 </td>
             </tr>
@@ -164,8 +190,8 @@
     </div>
 
                 <h3 id="method_getLimit">
-        <div class="location">at line 44</div>
-        <code>            public            integer
+        <div class="location">at line 52</div>
+        <code>            public            integer|null
     <strong>getLimit</strong>()</code>
     </h3>
     <div class="details">
@@ -179,7 +205,7 @@
 
                     <table>
         <tr>
-            <td>integer</td>
+            <td>integer|null</td>
             <td>
 </td>
         </tr>
@@ -191,7 +217,7 @@
     </div>
 
                 <h3 id="method_unsetLimit">
-        <div class="location">at line 55</div>
+        <div class="location">at line 63</div>
         <code>            public            <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
     <strong>unsetLimit</strong>()</code>
     </h3>
@@ -217,7 +243,7 @@
     </div>
 
                 <h3 id="method_hasLimit">
-        <div class="location">at line 65</div>
+        <div class="location">at line 73</div>
         <code>            public            boolean
     <strong>hasLimit</strong>()</code>
     </h3>
@@ -242,8 +268,34 @@
                     </div>
     </div>
 
+                <h3 id="method_hasOffset">
+        <div class="location">at line 82</div>
+        <code>            public            boolean
+    <strong>hasOffset</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Tells whether the option contains an offset</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_setOffset">
-        <div class="location">at line 76</div>
+        <div class="location">at line 92</div>
         <code>            public            <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
     <strong>setOffset</strong>(int $offset)</code>
     </h3>
@@ -280,8 +332,8 @@
     </div>
 
                 <h3 id="method_getOffset">
-        <div class="location">at line 88</div>
-        <code>            public            int
+        <div class="location">at line 111</div>
+        <code>            public            int|null
     <strong>getOffset</strong>()</code>
     </h3>
     <div class="details">
@@ -294,7 +346,33 @@
 
                     <table>
         <tr>
-            <td>int</td>
+            <td>int|null</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_unsetOffset">
+        <div class="location">at line 120</div>
+        <code>            public            <a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a>
+    <strong>unsetOffset</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Unset previously set offset</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../Soluble/FlexStore/Options.html"><abbr title="Soluble\FlexStore\Options">Options</abbr></a></td>
             <td>
 </td>
         </tr>

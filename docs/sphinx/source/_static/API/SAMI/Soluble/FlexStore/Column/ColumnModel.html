@@ -37,7 +37,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $columns)
+                    <a href="#method___construct">__construct</a>()
                     <p>
 </p>
                 </td>
@@ -48,9 +48,8 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_setInputFilter">setInputFilter</a>($column, <abbr title="Zend\InputFilter\InputFilterInterface">InputFilterInterface</abbr> $inputFilter)
-                    <p>
-</p>
+                    <a href="#method_addRowRenderer">addRowRenderer</a>($renderer)
+                    <p>Add a column renderer</p>
                 </td>
                 <td></td>
             </tr>
@@ -59,29 +58,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_setValidator">setValidator</a>($column, <abbr title="Zend\Validator\ValidatorInterface">ValidatorInterface</abbr> $inputFilter)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    
-                </td>
-                <td class="last">
-                    <a href="#method_setMetadataReader">setMetadataReader</a>()
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/Db/Metadata/Column/Definition/AbstractColumnDefinition.html"><abbr title="Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition">AbstractColumnDefinition</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_getColumnDefinition">getColumnDefinition</a>(string $column)
+                    <a href="#method_getRowRenderers">getRowRenderers</a>()
                     <p>
 </p>
                 </td>
@@ -92,8 +69,100 @@
                     <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
                 </td>
                 <td class="last">
+                    <a href="#method_getFormatters">getFormatters</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_add">add</a>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column)
+                    <p>Add a column to the column model</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_exists">exists</a>(string $column)
+                    <p>Tells whether a column exists</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_getExcluded">getExcluded</a>()
+                    <p>Return column that have been excluded in getData() and getColumns()</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_get">get</a>(string $column)
+                    <p>Return column from identifier name</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_sort">sort</a>(array $sorted_columns)
+                    <p>Sort columns in the order specified, columns that exists in the dataset but not in the sorted_columns will be appended to the end</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_exclude">exclude</a>($excluded_columns, $excluded = true)
+                    <p>Set column that must be excluded in getData() and getColumns()</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_includeOnly">includeOnly</a>(array $include_only_columns, bool $sort = true)
+                    <p>Exclude all other columns that the one specified Column sort is preserved in getData()</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+                </td>
+                <td class="last">
                     <a href="#method_getColumns">getColumns</a>()
-                    <p>Return column names</p>
+                    <p>Return columns</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel/Search.html"><abbr title="Soluble\FlexStore\Column\ColumnModel\Search">Search</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_search">search</a>()
+                    <p>
+</p>
                 </td>
                 <td></td>
             </tr>
@@ -103,9 +172,9 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 37</div>
+        <div class="location">at line 30</div>
         <code>            public            
-    <strong>__construct</strong>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $columns)</code>
+    <strong>__construct</strong>()</code>
     </h3>
     <div class="details">
         <p>
@@ -113,31 +182,19 @@
         <p>
 </p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
-                <td>$columns</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
             
             
             
                     </div>
     </div>
 
-                <h3 id="method_setInputFilter">
-        <div class="location">at line 43</div>
+                <h3 id="method_addRowRenderer">
+        <div class="location">at line 44</div>
         <code>            public            
-    <strong>setInputFilter</strong>($column, <abbr title="Zend\InputFilter\InputFilterInterface">InputFilterInterface</abbr> $inputFilter)</code>
+    <strong>addRowRenderer</strong>($renderer)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
+        <p>Add a column renderer</p>
         <p>
 </p>
         <div class="tags">
@@ -146,13 +203,7 @@
                     <table>
                     <tr>
                 <td></td>
-                <td>$column</td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td><abbr title="Zend\InputFilter\InputFilterInterface">InputFilterInterface</abbr></td>
-                <td>$inputFilter</td>
+                <td>$renderer</td>
                 <td>
 </td>
             </tr>
@@ -160,18 +211,71 @@
 
             
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
-                <h3 id="method_setValidator">
-        <div class="location">at line 48</div>
+                <h3 id="method_getRowRenderers">
+        <div class="location">at line 65</div>
         <code>            public            
-    <strong>setValidator</strong>($column, <abbr title="Zend\Validator\ValidatorInterface">ValidatorInterface</abbr> $inputFilter)</code>
+    <strong>getRowRenderers</strong>()</code>
     </h3>
     <div class="details">
         <p>
 </p>
+        <p>
+</p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getFormatters">
+        <div class="location">at line 73</div>
+        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+    <strong>getFormatters</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_add">
+        <div class="location">at line 91</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>add</strong>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column)</code>
+    </h3>
+    <div class="details">
+        <p>Add a column to the column model</p>
         <p>
 </p>
         <div class="tags">
@@ -179,50 +283,36 @@
 
                     <table>
                     <tr>
-                <td></td>
+                <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
                 <td>$column</td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td><abbr title="Zend\Validator\ValidatorInterface">ValidatorInterface</abbr></td>
-                <td>$inputFilter</td>
                 <td>
 </td>
             </tr>
             </table>
 
             
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
             
             
                     </div>
     </div>
 
-                <h3 id="method_setMetadataReader">
-        <div class="location">at line 53</div>
-        <code>            public            
-    <strong>setMetadataReader</strong>()</code>
+                <h3 id="method_exists">
+        <div class="location">at line 104</div>
+        <code>            public            boolean
+    <strong>exists</strong>(string $column)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getColumnDefinition">
-        <div class="location">at line 67</div>
-        <code>            public            <a href="../../../Soluble/Db/Metadata/Column/Definition/AbstractColumnDefinition.html"><abbr title="Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition">AbstractColumnDefinition</abbr></a>
-    <strong>getColumnDefinition</strong>(string $column)</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
+        <p>Tells whether a column exists</p>
         <p>
 </p>
         <div class="tags">
@@ -242,7 +332,225 @@
 
                     <table>
         <tr>
-            <td><a href="../../../Soluble/Db/Metadata/Column/Definition/AbstractColumnDefinition.html"><abbr title="Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition">AbstractColumnDefinition</abbr></a></td>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getExcluded">
+        <div class="location">at line 122</div>
+        <code>            public            array
+    <strong>getExcluded</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return column that have been excluded in getData() and getColumns()</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_get">
+        <div class="location">at line 142</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>get</strong>(string $column)</code>
+    </h3>
+    <div class="details">
+        <p>Return column from identifier name</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$column</td>
+                <td>column name</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when column does not exists in model</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_sort">
+        <div class="location">at line 158</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>sort</strong>(array $sorted_columns)</code>
+    </h3>
+    <div class="details">
+        <p>Sort columns in the order specified, columns that exists in the dataset but not in the sorted_columns will be appended to the end</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$sorted_columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_exclude">
+        <div class="location">at line 186</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>exclude</strong>($excluded_columns, $excluded = true)</code>
+    </h3>
+    <div class="details">
+        <p>Set column that must be excluded in getData() and getColumns()</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$excluded_columns</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$excluded</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_includeOnly">
+        <div class="location">at line 206</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>includeOnly</strong>(array $include_only_columns, bool $sort = true)</code>
+    </h3>
+    <div class="details">
+        <p>Exclude all other columns that the one specified Column sort is preserved in getData()</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$include_only_columns</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$sort</td>
+                <td>automatically apply sortColumns</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
             <td>
 </td>
         </tr>
@@ -254,12 +562,12 @@
     </div>
 
                 <h3 id="method_getColumns">
-        <div class="location">at line 77</div>
+        <div class="location">at line 230</div>
         <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
     <strong>getColumns</strong>()</code>
     </h3>
     <div class="details">
-        <p>Return column names</p>
+        <p>Return columns</p>
         <p>
 </p>
         <div class="tags">
@@ -269,6 +577,33 @@
                     <table>
         <tr>
             <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_search">
+        <div class="location">at line 244</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel/Search.html"><abbr title="Soluble\FlexStore\Column\ColumnModel\Search">Search</abbr></a>
+    <strong>search</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel/Search.html"><abbr title="Soluble\FlexStore\Column\ColumnModel\Search">Search</abbr></a></td>
             <td>
 </td>
         </tr>

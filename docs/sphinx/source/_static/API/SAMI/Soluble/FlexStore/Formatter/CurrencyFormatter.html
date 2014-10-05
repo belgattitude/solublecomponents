@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>Soluble\FlexStore\Formatter\CurrencyFormatter | Soluble API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../traits.html">Traits</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">Soluble API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../Soluble/FlexStore/Formatter.html">Soluble\FlexStore\Formatter</a>\CurrencyFormatter</h1>
+    </div>
+        <div class="content">
+                <p>    class
+    <strong>CurrencyFormatter</strong>        implements
+        <a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a>, <a href="../../../Soluble/FlexStore/I18n/LocalizableInterface.html"><abbr title="Soluble\FlexStore\I18n\LocalizableInterface">LocalizableInterface</abbr></a></p>
+
+            <div class="description">
+            <p>columns  - price:    - formatter:           - money              - currency_code              - locale</p>
+            <p>
+</p>
+        </div>
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(array $params = array())
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_format">format</a>($number, <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $row = null)
+                    <p>Format a number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_setCurrencyCode">setCurrencyCode</a>(string $currencyCode)
+                    <p>The 3-letter ISO 4217 currency code indicating the currency to use</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getCurrencyCode">getCurrencyCode</a>()
+                    <p>Get the 3-letter ISO 4217 currency code indicating the currency to use</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_setCurrencyPattern">setCurrencyPattern</a>(string $currencyPattern)
+                    <p>Set the currency pattern</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getCurrencyPattern">getCurrencyPattern</a>()
+                    <p>Get the currency pattern</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Formatter/CurrencyFormatter.html"><abbr title="Soluble\FlexStore\Formatter\CurrencyFormatter">CurrencyFormatter</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setLocale">setLocale</a>(string $locale)
+                    <p>Set locale to use instead of the default</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getLocale">getLocale</a>()
+                    <p>Get the locale to use</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 45</div>
+        <code>            public            
+    <strong>__construct</strong>(array $params = array())</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ExtensionNotLoadedException">ExtensionNotLoadedException</abbr></td>
+                <td>if ext/intl is not present</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_format">
+        <div class="location">at line 72</div>
+        <code>            public            string
+    <strong>format</strong>($number, <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $row = null)</code>
+    </h3>
+    <div class="details">
+        <p>Format a number</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$number</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$row</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setCurrencyCode">
+        <div class="location">at line 100</div>
+        <code>            public            <abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr>
+    <strong>setCurrencyCode</strong>(string $currencyCode)</code>
+    </h3>
+    <div class="details">
+        <p>The 3-letter ISO 4217 currency code indicating the currency to use</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$currencyCode</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getCurrencyCode">
+        <div class="location">at line 111</div>
+        <code>            public            string
+    <strong>getCurrencyCode</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the 3-letter ISO 4217 currency code indicating the currency to use</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setCurrencyPattern">
+        <div class="location">at line 122</div>
+        <code>            public            <abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr>
+    <strong>setCurrencyPattern</strong>(string $currencyPattern)</code>
+    </h3>
+    <div class="details">
+        <p>Set the currency pattern</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$currencyPattern</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Soluble\FlexStore\Formatter\CurrencyFormat">CurrencyFormat</abbr></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getCurrencyPattern">
+        <div class="location">at line 133</div>
+        <code>            public            string|null
+    <strong>getCurrencyPattern</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the currency pattern</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string|null</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setLocale">
+        <div class="location">at line 144</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Formatter/CurrencyFormatter.html"><abbr title="Soluble\FlexStore\Formatter\CurrencyFormatter">CurrencyFormatter</abbr></a>
+    <strong>setLocale</strong>(string $locale)</code>
+    </h3>
+    <div class="details">
+        <p>Set locale to use instead of the default</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$locale</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Formatter/CurrencyFormatter.html"><abbr title="Soluble\FlexStore\Formatter\CurrencyFormatter">CurrencyFormatter</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getLocale">
+        <div class="location">at line 155</div>
+        <code>            public            string|null
+    <strong>getLocale</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the locale to use</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string|null</td>
+            <td>$locale</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>
