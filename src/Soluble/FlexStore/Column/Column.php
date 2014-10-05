@@ -3,6 +3,7 @@
 namespace Soluble\FlexStore\Column;
 
 use Soluble\FlexStore\Column\Type\AbstractType;
+use Soluble\FlexStore\Formatter\FormatterInterface;
 
 class Column implements ColumnSettableInterface
 {
@@ -19,14 +20,15 @@ class Column implements ColumnSettableInterface
      */
     protected $properties = array(
         'type' => null, // will be defaulted to string
-        'header' => null, // will be defaulted to name
+        'formatter' => null,
+        'excluded' => false,
+        'hidden' => false,
         'width' => null,
+        'header' => null, // will be defaulted to name
         'filterable' => true,
         'groupable' => true,
         'sortable' => true,
-        'hidden' => false,
-        'excluded' => false,
-        'editable' => false
+        'editable' => false,
     );
 
     /**
@@ -49,7 +51,7 @@ class Column implements ColumnSettableInterface
         }
         $this->initDefaults();
     }
-    
+
     /**
      * This method ensure some properties are defaulted.
      * For example header with name and type is string
@@ -98,6 +100,26 @@ class Column implements ColumnSettableInterface
     function getType()
     {
         return $this->properties['type'];
+    }
+
+    /**
+     * 
+     * @param \Soluble\FlexStore\Column\FormatterInterface $formatter
+     * @return \Soluble\FlexStore\Column\Column
+     */
+    function setFormatter(FormatterInterface $formatter)
+    {
+        $this->properties['formatter'] = $formatter;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return FormatterInterface
+     */
+    function getFormatter()
+    {
+        return $this->properties['formatter'];
     }
 
     /**
@@ -304,4 +326,5 @@ class Column implements ColumnSettableInterface
     {
         return $this->name;
     }
+
 }

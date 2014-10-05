@@ -61,13 +61,13 @@ class LibXLWriter extends AbstractSendableWriter
      * @param string $locale
      * @param string $file_format
      * @return ExcelBook
-     * @throws Exception\RuntimeException
+     * @throws Exception\ExtensionNotLoadedException
      * @throws Exception\InvalidArgumentException
      */
     public function getExcelBook($locale = 'UTF-8', $file_format = null)
     {
         if (!extension_loaded('excel')) {
-            throw new Exception\RuntimeException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
+            throw new Exception\ExtensionNotLoadedException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
         }
         
         if ($this->excelBook === null) {

@@ -4,7 +4,7 @@
  */
 namespace Soluble\FlexStore\Exception;
 
-class UnsupportedFeatureException extends \ErrorException
+class UnsupportedFeatureException extends \ErrorException implements ExceptionInterface
 {
 
 }

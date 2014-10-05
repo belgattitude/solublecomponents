@@ -149,14 +149,14 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     /**
      * Return an sql string accordingly to the internat database adapter
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws Exception\InvalidUsageException
      * @return string
      */
     public function getSql()
     {
         if ($this->adapter === null) {
             $msg = __METHOD__ . ": Error, prior to use execute method you must provide a valid database adapter. See Select::setDbAdapter() method.";
-            throw new Exception\InvalidArgumentException($msg);
+            throw new Exception\InvalidUsageException($msg);
         }
         $sql = new Sql($this->adapter);
         return $sql->getSqlStringForSqlObject($this);
@@ -165,18 +165,30 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     /**
      * Execute the query and return a Zend\Db\Resultset\ResultSet object
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws Exception\InvalidUsageException
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function execute()
     {
         if ($this->adapter === null) {
             $msg = __METHOD__ . ": Error, prior to use execute method you must provide a valid database adapter. See Select::setDbAdapter() method.";
-            throw new Exception\InvalidArgumentException($msg);
+            throw new Exception\InvalidUsageException($msg);
         }
         $sql = new Sql($this->adapter);
         $sql_string = $sql->getSqlStringForSqlObject($this);
         //return $this->adapter->createStatement($sql_string)->execute();
         return $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+    }
+
+    
+    /**
+     * Return an sql string accordingly to the internat database adapter
+     *
+     * @throws Exception\InvalidUsageException
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getSql();
     }
 }

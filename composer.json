@@ -57,7 +57,8 @@
     "replace": {
         "soluble/db": "self.version",
         "soluble/normalist": "self.version",
-        "soluble/flexstore": "self.version"
+        "soluble/flexstore": "self.version",
+        "soluble/spreadsheet": "self.version"
     },
     "archive": {
         "exclude": ["tests", "docs", ".travis.yml", ".coveralls.yml", ".scrutinizer.yml", ".php_cs", ".gitignore"]

@@ -161,12 +161,27 @@ EOF;
         $sql = $this->select->getSql();
         $this->assertInternalType('string', $sql);
     }
-    
-    public function testGetSqlThrowsInvalidArgumentException()
+
+    public function testToString()
     {
-        $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
+        $this->select->setDbAdapter($this->adapter)->from('user');
+        $sql = $this->select->__toString();
+        $this->assertInternalType('string', $sql);
+    }    
+    
+    public function testGetSqlThrowsInvalidUsageException()
+    {
+        $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
         $this->select->from('user');
         $sql = $this->select->getSql();
+        
+    }
+
+    public function testToStringThrowsInvalidUsageException()
+    {
+        $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
+        $this->select->from('user')->__toString();
+        
         
     }
     
@@ -177,9 +192,9 @@ EOF;
         $this->assertInstanceOf('Soluble\Db\Sql\Select', $s);
     }
 
-    public function testExecuteThrowsInvalidArgumentException()
+    public function testExecuteThrowsInvalidUsageException()
     {
-        $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
+        $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
         $this->select->execute();
     }
 

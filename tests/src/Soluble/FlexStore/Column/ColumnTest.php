@@ -29,16 +29,18 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     
     public function testGetProperties()
     {
+        $formatter = new \Soluble\FlexStore\Formatter\CurrencyFormatter();
         $properties = array(
-            'type' => 'string',
-            'header' => 'header',
+            'type' => 'string', // will be defaulted to string
+            'formatter' => $formatter,
+            'excluded' => true,
+            'hidden' => true,
             'width' => '100%',
+            'header' => 'cool', // will be defaulted to name
             'filterable' => false,
             'groupable' => false,
             'sortable' => false,
-            'hidden' => true,
-            'excluded' => true,
-            'editable' => true            
+            'editable' => true,            
         );
         
         $column = new Column('cool', $properties);

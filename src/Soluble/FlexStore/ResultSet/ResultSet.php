@@ -33,7 +33,13 @@ class ResultSet extends AbstractResultSet
     
 
     /**
-     * Row renderes
+     * Formatters
+     * @var ArrayObject
+     */
+    protected $formatters;    
+    
+    /**
+     * Row renderers
      * @var array|null
      */
     protected $rowRenderers;
@@ -185,6 +191,25 @@ class ResultSet extends AbstractResultSet
         $this->hydratedColumns = null;
         return $this;
     }
+    
+
+    /**
+     * 
+     * @param ArrayObject $formatters
+     * @return ResultSet
+     */
+    public function setFormatters(ArrayObject $formatters)
+    {
+        $this->formatters = $formatters;
+        return $this;
+    }
+    
+    protected function applyFormatters(ArrayObject $row)
+    {
+        foreach($this->formatters as $column => $formatter) {
+            $row[$column] = $formatter->format($row[$column], $row);
+        }
+    }
 
     /**
      * Return the current row as an array|ArrayObject.
@@ -205,6 +230,11 @@ class ResultSet extends AbstractResultSet
                 $renderer($data);
             }
             
+        }
+        
+        // 2 formatters
+        if ($this->formatters !== null) {
+            $this->applyFormatters($data);
         }
         
         // 2 cases when limited columns are set

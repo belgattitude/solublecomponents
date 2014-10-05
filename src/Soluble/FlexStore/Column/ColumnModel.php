@@ -68,6 +68,21 @@ class ColumnModel
     }
 
     /**
+     * @return ArrayObject
+     */
+    function getFormatters()
+    {
+        $arr = new ArrayObject;
+        foreach ($this->columns as $key => $column) {
+            if (($formatter = $column->getFormatter()) !== null) {
+                
+                $arr->offsetSet($key, $formatter);
+            }
+        }
+        return $arr;        
+    }
+    
+    /**
      * Add a column to the column model
      *
      * @param Column $column

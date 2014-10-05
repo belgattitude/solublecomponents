@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @author Vanvelthem Sébastien
  */
+
 namespace Soluble\FlexStore\Exception;
 
-class EmptyQueryException extends \InvalidArgumentException
+class EmptyQueryException extends \InvalidArgumentException implements ExceptionInterface
 {
-
+    
 }

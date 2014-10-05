@@ -209,9 +209,14 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
             if ($this->columnModel !== null) {
                 $hydrated_columns = $this->columnModel->getColumns();
-
+                
                 $r->setHydratedColumns(array_keys((array) $hydrated_columns));
 
+                $formatters = $this->columnModel->getFormatters();
+                if ($formatters->count() > 0) {
+                    $r->setFormatters($formatters);
+                }                
+                
                 $row_renderers = $this->columnModel->getRowRenderers();
                 if ($row_renderers->count() > 0) {
                     $r->setRowRenderers($row_renderers);
