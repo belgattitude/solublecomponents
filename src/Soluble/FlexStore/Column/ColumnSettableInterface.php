@@ -2,6 +2,8 @@
 
 namespace Soluble\FlexStore\Column;
 
+use Soluble\FlexStore\Formatter\FormatterInterface;
+
 interface ColumnSettableInterface
 {
     
@@ -12,6 +14,13 @@ interface ColumnSettableInterface
      * @throws Exception\InvalidArgumentException when the type is not supported.
      */
     function setType($type);
+    
+    
+    /**
+     * 
+     * @param FormatterInterface $formatter
+     */
+    function setFormatter(FormatterInterface $formatter);
     
     /**
      *

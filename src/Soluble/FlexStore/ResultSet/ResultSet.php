@@ -9,40 +9,11 @@ use ArrayObject;
 class ResultSet extends AbstractResultSet
 {
 
-
     /**
      *
      * @var Paginator
      */
     protected $paginator;
-
-    
-    /**
-     * Columns to be hydrated (limited)
-     * @var array|null
-     */
-    protected $hydratedColumns;
-    
-    
-    /**
-     * Tells whether columns names in $hydratedColumns have been checked
-     * for existence;
-     * @var boolean
-     */
-    protected $hydratedColumnsChecked;
-    
-
-    /**
-     * Formatters
-     * @var ArrayObject
-     */
-    protected $formatters;    
-    
-    /**
-     * Row renderers
-     * @var array|null
-     */
-    protected $rowRenderers;
 
 
     /**
@@ -56,7 +27,44 @@ class ResultSet extends AbstractResultSet
      */
     protected $source;
 
+    /**
+     *
+     * @var boolean
+     */
+    protected $hydrate_options_initialized;
+    
+    /**
+     * @var ArrayObject
+     */
+    protected $hydration_formatters;
 
+
+    /**
+     * @var ArrayObject
+     */
+    protected $hydration_renderers;
+
+    
+    /**
+     * @var ArrayObject
+     */
+    protected $hydrated_columns;
+    
+
+    
+    /**
+     * Return source column model
+     * 
+     * @throws Exception\RuntimeException
+     * @return ColumnModel
+     */
+    public function getColumnModel()
+    {
+        if ($this->source === null) {
+            throw new Exception\RuntimeException(__METHOD__ . " Prior to get column model, a source must be set.");
+        }
+        return $this->source->getColumnModel();
+    }
 
 
     /**
@@ -126,89 +134,44 @@ class ResultSet extends AbstractResultSet
     }
     
     /**
-     * By using setHydratedColumns() on a resultset, you ensure that only
-     * those columns will be available/returned even if they are
-     * more available in the original dataset
-     *
-     * Checks against column name existence can only be done
-     * lazily when current() is called. (in case the resultset does
-     * not contain rows, we don't know about columns)
-     *
-     *
-     * @throws Exception\InvalidArgumentException
-     * @throws Exception\DuplicateColumnException only when $ignore_duplicate_columns is false (default)
-     * @param array $hydrated_columns columns nams in an array
-     * @param array $ignore_duplicate_columns check whether we can ignore duplicate columns
-     * @return ResultSet
-     */
-    public function setHydratedColumns(array $hydrated_columns, $ignore_duplicate_columns = false)
-    {
-        // Test count
-        if (count($hydrated_columns) == 0) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ': $hydrated_columns parameter is empty.');
-        }
-        
-        // Test duplicate
-        if (!$ignore_duplicate_columns) {
-            $values = array_count_values($hydrated_columns);
-            foreach ($values as $column_name => $count) {
-                if ($count > 1) {
-                    throw new Exception\DuplicateColumnException(__METHOD__ . ": Duplicate column detected '$column_name' in column list.");
-                }
-            }
-        } else {
-            $hydrated_columns = array_unique($hydrated_columns);
-        }
-        
-        // clean up with trim
-        foreach ($hydrated_columns as $idx => $column) {
-            $hydrated_columns[$idx] = trim($column);
-        }
-        
-        $this->hydratedColumnsChecked = false;
-        $this->hydratedColumns = $hydrated_columns;
-        return $this;
-    }
-    
-    /**
-     * Return hydrated columns
-     *
-     * @return array|null
-     */
-    public function getHydratedColumns()
-    {
-        return $this->hydratedColumns;
-    }
-
-
-    /**
-     * Reset eventual limited columns set by setHydratedColumns() method
-     * @return ResultSet
-     */
-    public function unsetHydratedColumns()
-    {
-        $this->hydratedColumnsChecked = false;
-        $this->hydratedColumns = null;
-        return $this;
-    }
-    
-
-    /**
      * 
-     * @param ArrayObject $formatters
-     * @return ResultSet
+     * @param ArrayObject $row
+     * @return null
      */
-    public function setFormatters(ArrayObject $formatters)
+    protected function initColumnModelHydration(ArrayObject $row)
     {
-        $this->formatters = $formatters;
-        return $this;
-    }
-    
-    protected function applyFormatters(ArrayObject $row)
-    {
-        foreach($this->formatters as $column => $formatter) {
-            $row[$column] = $formatter->format($row[$column], $row);
-        }
+        
+        $this->hydration_formatters = new ArrayObject();
+        $this->hydration_renderers = new ArrayObject();
+        $this->hydrated_columns = null;
+        
+        
+        if ($this->source->hasColumnModel()) {
+            $cm = $this->getColumnModel();
+            
+            // 1. Initialize columns hydrators
+            $formatters = $cm->getUniqueFormatters();
+            if ($formatters->count() > 0) {
+                $this->hydration_formatters = $formatters;
+            }
+            
+            // 2. Initialize hydrated columns
+            
+            $columns = $cm->getColumns();
+            
+            // Performance:
+            // Only if column model definition differs from originating 
+            // source row definition.
+            $hydrated_columns = array_keys((array) $columns);
+            if($hydrated_columns != array_keys((array) $row)) {
+                $this->hydrated_columns = new ArrayObject($hydrated_columns);
+            }
+            
+            // 3. Initialize row renderers
+            $this->hydration_renderers  = $cm->getRowRenderers();
+        } 
+        $this->hydrate_options_initialized = true;
+        
     }
 
     /**
@@ -221,54 +184,38 @@ class ResultSet extends AbstractResultSet
      */
     public function current()
     {
-        $data = $this->zfResultSet->current();
+        $row = $this->zfResultSet->current();
 
-        // 1 row renderers
-        if ($this->rowRenderers) {
-            // Apply all renderers
-            foreach ($this->rowRenderers as $renderer) {
-                $renderer($data);
-            }
-            
+        if (!$this->hydrate_options_initialized) {
+            $this->initColumnModelHydration($row);
         }
         
-        // 2 formatters
-        if ($this->formatters !== null) {
-            $this->applyFormatters($data);
+        // 1 Row renderers
+        foreach ($this->hydration_renderers as $renderer) {
+            $renderer($row);
         }
         
-        // 2 cases when limited columns are set
-        if ($this->hydratedColumns !== null) {
-// Step 1: check limited columns existence
-            
-            if (!$this->hydratedColumnsChecked) {
-                // check all limited columns
-                // this check is made only for the first row.
-                foreach ($this->hydratedColumns as $column) {
-                    if (!array_key_exists($column, (array) $data)) {
-                        $msg = __METHOD__ . ": Resultset has hydrateColumns option and column '$column' does not exists in it";
-                        throw new Exception\UnknownColumnException($msg);
-                    }
-                }
-                $this->hydratedColumnsChecked = true;
+        // 2. Formatters
+        foreach($this->hydration_formatters as $formatters) {
+            foreach($formatters['columns'] as $column) {
+                $row[$column] = $formatters['formatter']->format($row[$column], $row);
             }
-
+        }            
+        
+        // 3. Process column exclusion
+        if ($this->hydrated_columns !== null) {
             $d = new ArrayObject();
-            //$lc = array_fill_keys($this->limitedColumns, null);
-            //$t = array_intersect_key((array) $data, $lc);
-            //$data->exchangeArray($t);
-            foreach ($this->hydratedColumns as $column) {
-                $d->offsetSet($column, $data[$column]);
+            foreach ($this->hydrated_columns as $column) {
+                $d->offsetSet($column, $row[$column]);
             }
-            
-            if ($this->returnType === self::TYPE_ARRAYOBJECT) {
-                $data = $d;
-                unset($d);
-            } else {
-                $data = (array) $d;
-            }
+            $row->exchangeArray($d);
         }
-        return $data;
+        
+        
+        if ($this->returnType === self::TYPE_ARRAY) {
+            return (array) $row;
+        } 
+        return $row;
     }
 
 

@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\Column;
 
 use Soluble\FlexStore\Renderer\RendererInterface;
 use Soluble\FlexStore\Column\ColumnModel\Search;
+use Soluble\FlexStore\Formatter\FormatterInterface;
 use ArrayObject;
 
 class ColumnModel
@@ -25,13 +26,13 @@ class ColumnModel
      *
      * @var ArrayObject
      */
-    protected $renderers;
+    protected $row_renderers;
 
     public function __construct()
     {
        
         $this->columns = new ArrayObject();
-        $this->renderers = new ArrayObject();
+        $this->row_renderers = new ArrayObject();
     }
 
     /**
@@ -43,43 +44,70 @@ class ColumnModel
      */
     public function addRowRenderer($renderer)
     {
-        $this->renderers->append($renderer);
+        $this->row_renderers->append($renderer);
+   }
 
-        /*
-          try {
-          if (!$this->exists($column)) {
-          throw new Exception\InvalidArgumentException("Column does not exists '$column'");
-          }
-          } catch (Exception\InvalidArgumentException $e) {
-          throw new Exception\InvalidArgumentException(__METHOD__ . ": Cannot add renderer to unexistent column '$column'.");
-          }
-
-          if (!$this->renderers->offsetExists($column)) {
-          $this->renderers->offsetSet($column, new ArrayObject());
-          }
-
-          $this->renderers->offsetGet($column)->append($renderer);
-         */
-    }
-
+    /**
+     * 
+     * @return ArrayObject
+     */
     function getRowRenderers()
     {
-        return $this->renderers;
+        return $this->row_renderers;
     }
 
     /**
+     * Return an array object containing all
+     * columns that have a formatter (FormatterInterface).
+     * [column_name] => [FormatterInterface]
+     * 
+     * @see self::getUniqueFormatters()
      * @return ArrayObject
      */
     function getFormatters()
     {
-        $arr = new ArrayObject;
+        $arr = new ArrayObject();
         foreach ($this->columns as $key => $column) {
             if (($formatter = $column->getFormatter()) !== null) {
-                
                 $arr->offsetSet($key, $formatter);
             }
         }
         return $arr;        
+    }
+    
+    /**
+     * This method returns unique formatters set in the column model
+     * in an ArrayObject
+     * 
+     * 
+     * @param boolean $include_excluded_columns
+     * @see self::getFormatters()
+     * @return ArrayObject
+     */
+    function getUniqueFormatters($include_excluded_columns=false)
+    {
+        $unique = new ArrayObject();
+        $hashes = array();
+        
+        $formatters = $this->getFormatters();
+        foreach($formatters as $column => $formatter) {
+            if ($include_excluded_columns || !$this->get($column)->isExcluded()) {
+                $hash = spl_object_hash($formatter);
+                if (!$unique->offsetExists($hash)) {
+                    $tmp = new ArrayObject(array(
+                                                'formatter' => $formatter, 
+                                                'columns' => new ArrayObject(array($column))
+
+                    ));
+                    $unique->offsetSet($hash, $tmp);
+                } else {
+                    $unique->offsetGet($hash)->offsetGet('columns')->append($column);
+                }
+            }
+        }        
+        
+        return $unique;
+        
     }
     
     /**
@@ -242,6 +270,25 @@ class ColumnModel
             }
         }
         return $arr;
+    }
+    
+    /**
+     * Set formatter to specific columns
+     *  
+     * @throws Exception\InvalidArgumentException
+     * @param FormatterInterface $formatter
+     * @param array|string|ArrayObject $columns
+     * @return ColumnModel
+     */
+    public function setFormatter(FormatterInterface $formatter, $columns)
+    {
+        if (!is_array($columns) 
+                && !is_string($columns) && !$columns instanceof ArrayObject) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $columns param to be array|ArrayObject|string');
+        }
+        $this->search()->in($columns)->setFormatter($formatter);
+        
+        return $this;
     }
 
     /**

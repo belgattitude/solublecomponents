@@ -115,7 +115,7 @@ class Column implements ColumnSettableInterface
 
     /**
      * 
-     * @return FormatterInterface
+     * @return FormatterInterface|null
      */
     function getFormatter()
     {

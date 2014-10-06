@@ -71,51 +71,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
 
 
     
-    public function testGetSetHydratedColumns()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-
-        $store = $this->getStore($select);
-
-        $columns = array('legacy_mapping', 'brand_id');
-        $resultset = $this->store->getData();
-        $resultset->setHydratedColumns($columns);
-        
-        $this->assertEquals($columns, $resultset->getHydratedColumns());
-        $arr = $resultset->toArray();
-        $this->assertInternalType('array', $arr);
-
-        $first = $arr[0];
-        foreach($columns as $column) {
-            $this->assertArrayHasKey($column, $first);
-        }
-        // test number of returned columns
-        $test = array_keys($first);
-        $this->assertEquals(count($columns), count($test));
-
-        // test order / sort
-
-        $this->assertEquals(array_shift($columns), array_shift($test));
-        $this->assertEquals(array_shift($columns), array_shift($test));
-    }
-
-    
-    public function testUnsetHydratedColumns()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-        $store = $this->getStore($select);
-
-        $columns = array('legacy_mapping', 'brand_id');
-        $resultset = $this->store->getData();
-        $resultset->setHydratedColumns($columns);
-        $this->assertEquals($columns, $resultset->getHydratedColumns());
-        
-        $resultset->unsetHydratedColumns();
-        $this->assertNull($resultset->getHydratedColumns());
-        
-    }
     
     public function testGetSource()
     {
@@ -188,88 +143,8 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         
     }    
     
+
     
-    public function testLimitColumnsWithSpaces()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
- 
-        $store = $this->getStore($select);
-
-        $columns = array('legacy_mapping ', ' brand_id');
-        $resultset = $store->getData();
-        $resultset->setHydratedColumns($columns);
-        $arr = $resultset->toArray();
-        $this->assertInternalType('array', $arr);
-
-        $first = $arr[0];
-        foreach($columns as $column) {
-            $this->assertArrayHasKey(trim($column), $first);
-        }
-    }    
-
-    public function testLimitColumnsThrowsInvalidArgumentException()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-
-        $store = $this->getStore($select);
-        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\InvalidArgumentException');
-        // Empty array
-        $columns = array();
-        $resultset = $store->getData();
-        $resultset->setHydratedColumns($columns);
-
-    }
-
-    public function testSetHydratedColumnsThrowsDuplicateColumnException()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-   
-        $store = $this->getStore($select);
-        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\DuplicateColumnException');
-        // Empty array
-        $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
-        $resultset = $store->getData();
-        $resultset->setHydratedColumns($columns);
-    }    
-
-    public function testLimitColumnsDoesNotThrowsDuplicateColumnException()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-
-        $store = $this->getStore($select);
-        
-        // Empty array
-        $columns = array('legacy_mapping', 'brand_id', 'legacy_mapping');
-        $resultset = $store->getData();
-        $resultset->setHydratedColumns($columns, $ignore_duplicate_columns=true);
-        $arr = $resultset->toArray();
-        $this->assertInternalType('array', $arr);
-
-        $first = $arr[0];
-        foreach(array_unique($columns) as $column) {
-            $this->assertArrayHasKey(trim($column), $first);
-        }
-        
-    }       
-    
-    public function testCurrentThrowsUnknownColumnException()
-    {
-        $select = new \Zend\Db\Sql\Select();
-        $select->from('product_brand');
-
-        $store = $this->getStore($select);
-        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\UnknownColumnException');
-        // Empty array
-        $columns = array('legacy_mapping', 'columns_that_soes_not_exists');
-        $resultset = $store->getData();
-        $resultset->setHydratedColumns($columns);
-        $row = $resultset->current();
-
-    }    
     
     
 

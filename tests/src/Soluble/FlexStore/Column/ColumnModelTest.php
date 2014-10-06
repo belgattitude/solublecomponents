@@ -76,6 +76,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $formatter = new CurrencyFormatter();
         $formatter->setLocale('fr_FR');
         $formatter->setCurrencyCode('EUR');
+        
         $cm->get('price')->setFormatter($formatter);
         $data = $store->getData()->toArray();
         $this->assertEquals('10,20 €', $data[0]['price']);
@@ -90,6 +91,19 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         // Null will be transformed in 0,00 €
         $this->assertEquals('$0.00', $data[3]['price']);
 
+        // store 2
+        $store = new Store($source);        
+        
+        $formatter = new CurrencyFormatter();
+        $formatter->setLocale('fr_FR');
+        $formatter->setCurrencyCode('EUR');
+        $cm = $store->getColumnModel();
+        $cm->setFormatter($formatter, array('price', 'list_price'));
+        $data = $store->getData()->toArray();
+        $this->assertEquals('10,20 €', $data[0]['price']);
+        $this->assertEquals('15,30 €', $data[0]['list_price']);
+        
+        
         
     }
     

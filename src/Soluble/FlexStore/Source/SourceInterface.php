@@ -8,7 +8,7 @@ interface SourceInterface
 {
     /**
      *
-     * @param \Soluble\FlexStore\Options $options
+     * @param Options $options
      * @return \Soluble\FlexStore\ResultSet\ResultSet
      */
     public function getData(Options $options = null);

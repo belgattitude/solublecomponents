@@ -62,7 +62,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
     /**
      *
-     * @var Zend\Db\Adapter\Driver\ResultInterface
+     * @var \Zend\Db\Adapter\Driver\ResultInterface
      */
     protected static $cache_result_prototype;
 
@@ -206,23 +206,6 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
             $r = new ResultSet($results);
             $r->setSource($this);
-
-            if ($this->columnModel !== null) {
-                $hydrated_columns = $this->columnModel->getColumns();
-                
-                $r->setHydratedColumns(array_keys((array) $hydrated_columns));
-
-                $formatters = $this->columnModel->getFormatters();
-                if ($formatters->count() > 0) {
-                    $r->setFormatters($formatters);
-                }                
-                
-                $row_renderers = $this->columnModel->getRowRenderers();
-                if ($row_renderers->count() > 0) {
-                    $r->setRowRenderers($row_renderers);
-                }
-            }
-
 
             if ($options->hasLimit()) {
                 //$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();

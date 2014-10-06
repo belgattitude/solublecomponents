@@ -98,6 +98,16 @@ abstract class AbstractSource implements SourceInterface
 
 
     /**
+     * Whether a column model exists
+     * 
+     * @return boolean
+     */
+    public function hasColumnModel()
+    {
+        return ($this->columnModel !== null);
+    }
+    
+    /**
      * Return column model
      *
      * @return ColumnModel
