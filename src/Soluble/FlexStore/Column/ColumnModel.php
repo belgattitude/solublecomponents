@@ -188,8 +188,11 @@ class ColumnModel
         if (!is_array($excluded_columns) && !is_string($excluded_columns) && !$excluded_columns instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $excluded_columns param to be array|ArrayObject|string');
         }
-        $result = $this->search()->in((array) $excluded_columns);
-        $result->setExcluded($excluded);
+        // trim column
+        $excluded_columns = array_map('trim', $excluded_columns);
+        
+        $this->search()->in($excluded_columns)->setExcluded($excluded);
+        
         
         return $this;
     }
@@ -199,22 +202,25 @@ class ColumnModel
      * Exclude all other columns that the one specified
      * Column sort is preserved in getData()
      *
-     * @param array $include_only_columns
+     * @throws Exception\InvalidArgumentException
+     * @param array|string|ArrayObject $include_only_columns
      * @param bool $sort automatically apply sortColumns
      * @return ColumnModel
      */
     public function includeOnly(array $include_only_columns, $sort = true)
     {
-        // trim column
-        $include_only_columns = array_map('trim', $include_only_columns);
-
-        foreach ($this->columns as $name => $column) {
-            if (in_array($name, $include_only_columns)) {
-                $this->exclude($name, false);
-            } else {
-                $this->exclude($name, true);
-            }
+        
+        if (!is_array($include_only_columns) 
+                && !is_string($include_only_columns) && !$include_only_columns instanceof ArrayObject) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $include_only_columns param to be array|ArrayObject|string');
         }
+        
+        // trim column
+        $include_only_columns = array_map('trim', (array) $include_only_columns);
+
+        $this->search()->all()->setExcluded(true);
+        $this->search()->in($include_only_columns)->setExcluded(false);
+
         if ($sort) {
             $this->sort($include_only_columns);
         }
