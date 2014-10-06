@@ -74,11 +74,11 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             'promo_start_at' => new Expression('ppl.promo_start_at'),
             'promo_end_at' => new Expression('cast(NOW() as date)'),
             'title_fr' => new Expression('p18.title'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price'),
         ));
 
-
         $source = new SqlSource($this->adapter, $select);
-
         return $source;
     }
 

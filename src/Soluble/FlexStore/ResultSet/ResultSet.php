@@ -211,7 +211,6 @@ class ResultSet extends AbstractResultSet
             $row->exchangeArray($d);
         }
         
-        
         if ($this->returnType === self::TYPE_ARRAY) {
             return (array) $row;
         } 

@@ -41,7 +41,7 @@ class Type
         if (!self::isSupported($type_name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Type '$type_name' is not supported.");
         }
-        $class = __NAMESPACE__ . '\\' . self::$typesMap[$type_name];
+        $class = __NAMESPACE__ . '\\' . self::$typesMap[strtolower($type_name)];
         return new $class();
     }
     
@@ -53,7 +53,7 @@ class Type
      */
     public static function isSupported($type_name)
     {
-        return array_key_exists($type_name, self::$typesMap);
+        return array_key_exists(strtolower($type_name), self::$typesMap);
     }
     
     /**

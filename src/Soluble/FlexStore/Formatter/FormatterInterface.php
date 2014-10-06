@@ -8,6 +8,12 @@ interface FormatterInterface
 {
 
     /**
+     * @param array $params
+     */
+    public function __construct(array $params = array());
+    
+    
+    /**
      * Format 
      * 
      * @param mixed $value
