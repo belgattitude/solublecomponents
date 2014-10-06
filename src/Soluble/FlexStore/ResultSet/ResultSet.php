@@ -128,11 +128,6 @@ class ResultSet extends AbstractResultSet
     }
 
     
-    public function setRowRenderers($renderers)
-    {
-        $this->rowRenderers = $renderers;
-    }
-    
     /**
      * 
      * @param ArrayObject $row

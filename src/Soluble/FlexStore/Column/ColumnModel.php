@@ -87,7 +87,6 @@ class ColumnModel
     function getUniqueFormatters($include_excluded_columns=false)
     {
         $unique = new ArrayObject();
-        $hashes = array();
         
         $formatters = $this->getFormatters();
         foreach($formatters as $column => $formatter) {
