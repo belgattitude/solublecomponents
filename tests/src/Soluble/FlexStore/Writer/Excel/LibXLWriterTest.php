@@ -77,7 +77,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             'title_fr' => new Expression('p18.title'),
             'list_price' => new Expression('ppl.list_price'),
             'public_price' => new Expression('ppl.public_price'),
-            'currency_reference' => new Expression("'CNY'"),
+            'currency_reference' => new Expression("if (p.product_id = 10, 'CNY', 'EUR')"),
             'test_float' => new Expression("1.212")
             
         ));
@@ -101,17 +101,28 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         
         $store = new Store($this->getTestSource());
         $cm = $store->getColumnModel();
-        
+        $cm->search()->in(array('test_chars', 'brand_id', 'reference', 'description'))->setExcluded();
+        $cm->sort(array('product_id', 'price', 'list_price', 'public_price', 'currency_reference'));
         $locale = 'en_US';
-        $formatter = Formatter::createFormatter('currency', array(
+        $formatterDb = Formatter::createFormatter('currency', array(
             'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
             'locale' => $locale
         ));
+        $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());
         
-        $cm->search()->regexp('/price/')->setFormatter($formatter);
+        $formatterEur = Formatter::createFormatter('currency', array(
+            'currency_code' => 'EUR',
+            'locale' => $locale
+        ));        
+        $this->assertNotInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterEur->getCurrencyCode());
+        
+        $cm->search()->regexp('/price/')->setFormatter($formatterDb);
+        $cm->get('public_price')->setFormatter($formatterEur);
+        
         
         $formatted_data = $store->getData()->toArray();
         $this->assertEquals('CN¥15.30', $formatted_data[0]['list_price']);
+        $this->assertEquals('€18.20', $formatted_data[0]['public_price']);
 
         $xlsWriter = new LibXLWriter();
         $xlsWriter->setStore($store);
@@ -126,13 +137,28 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 
         $arr = $this->excelToArray($output_file);
         
-        //$this->assertEquals(113, $arr[5]['B']);
-        $this->assertTrue(is_float($arr[2]['O']));
-        $this->assertEquals(number_format(15.3,1), number_format($arr[2]['O'], 1));
-        $this->assertEquals(number_format(18.2,1), number_format($arr[2]['P'],1));
-        $this->assertEquals('CNY', $arr[2]['Q']);
-        $this->assertEquals("", $arr[4]['O']);
-        $this->assertEquals("", $arr[4]['P']);
+        
+        
+        $this->assertEquals('price', $arr[1]['B']);
+        $this->assertTrue(is_float($arr[2]['B']));
+        $this->assertEquals(number_format(15.3,1), number_format($arr[2]['C'], 1));
+        $this->assertEquals(number_format(18.2,1), number_format($arr[2]['D'],1));
+        $this->assertEquals('CNY', $arr[2]['E']);
+        $this->assertEquals('EUR', $arr[3]['E']);
+        $this->assertEquals("", $arr[4]['C']);
+        $this->assertEquals("", $arr[4]['B']);
+        
+        $excel = $this->getExcelReader($output_file);
+        $sheet = $excel->getActiveSheet();
+        //$c2 = $sheet->getCellByColumnAndRow('B', 4);
+        $c2 = $sheet->getCell('C2');
+
+        $this->assertEquals('n', $c2->getDataType());
+        $this->assertEquals('15.30 CN¥', $c2->getFormattedValue());
+        
+        $d2 = $sheet->getCell('D2');
+        $this->assertEquals('n', $d2->getDataType());
+        $this->assertEquals('18.20 €', $d2->getFormattedValue());
         
     }
 
@@ -221,6 +247,20 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     
+    /**
+     * 
+     * @param string $file
+     * @param string $reader
+     * @return \PHPExcel
+     */
+    protected function getExcelReader($file, $reader="Excel2007")
+    {
+        $excelReader = PHPExcel_IOFactory::createReader($reader);
+        $excelReader = $excelReader->load($file);
+        $excelReader->setActiveSheetIndex(0);
+        return $excelReader;
+    }
+    
     
     protected function excelToArray($file, $reader="Excel2007")
     {
@@ -228,10 +268,8 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         if (strtoupper($reader) == "EXCEL5") {
             ini_set("error_reporting", E_ALL ^ E_NOTICE);
         }
-        $excelReader = PHPExcel_IOFactory::createReader($reader);
-        $excelFile = $excelReader->load($file);
-        $excelFile->setActiveSheetIndex(0);
-        $sheet = $excelFile->getActiveSheet();
+        $excelReader = $this->getExcelReader($file, $reader);
+        $sheet = $excelReader->getActiveSheet();
         
         $arr = $sheet->toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = true);
         if (strtoupper($reader) == "EXCEL5") {

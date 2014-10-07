@@ -27,6 +27,12 @@ class ColumnModel
      * @var ArrayObject
      */
     protected $row_renderers;
+    
+    /**
+     *
+     * @var ArrayObject
+     */
+    protected $metadata;
 
     public function __construct()
     {
@@ -300,4 +306,26 @@ class ColumnModel
         }
         return $this->search;
     }
+    
+    
+    /**
+     * 
+     * @param ArrayObject $metadata
+     * @return Column
+     */
+    function setMetatadata(ArrayObject $metadata)
+    {
+        $this->metadata = $metadata;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return ArrayObject|null
+     */
+    function getMetadata()
+    {
+        return $this->metadata;
+    }
+    
 }

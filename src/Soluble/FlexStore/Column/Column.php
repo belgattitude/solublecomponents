@@ -30,6 +30,7 @@ class Column implements ColumnSettableInterface
         'sortable' => true,
         'editable' => false,
     );
+    
 
     /**
      * Constructor
@@ -92,6 +93,7 @@ class Column implements ColumnSettableInterface
         $this->properties['type'] = $type;
         return $this;
     }
+    
 
     /**
      *

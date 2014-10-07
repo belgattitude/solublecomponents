@@ -48,9 +48,11 @@ class MetadataMapper
     public static function getColumnModelFromMetadata(ArrayObject $metadata_columns)
     {
         $cm = new ColumnModel();
+        $cm->setMetatadata($metadata_columns);
         foreach ($metadata_columns as $name => $meta) {
             $column = new Column($name);
             $column->setType(self::getColumnTypeByMetadataType($meta->getDataType()));
+            
             $cm->add($column);
         }
         return $cm;

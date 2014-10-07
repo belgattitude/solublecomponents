@@ -53,6 +53,54 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         
     }
     
+    
+    public function testSearch()
+    {
+
+        $source = new SqlSource($this->adapter);
+        $select = $source->select();
+        $select->from(array('p' => 'product'), array())
+                ->join(array('ppl' => 'product_pricelist'), new Expression('ppl.product_id = p.product_id and ppl.pricelist_id = 1'), array(), $select::JOIN_LEFT);
+
+        $select->columns(array(
+            'product_id' => new Expression('p.product_id'),
+            'reference' => new Expression('p.reference'),
+            'price' => new Expression('ppl.price'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price'),
+            'currency_reference' => new Expression("'CNY'")
+        ));
+
+        $store = new Store($source);        
+        $cm = $store->getColumnModel();
+        
+        
+        $results = $cm->search()->regexp('/price/');
+        $this->assertEquals(array('price', 'list_price', 'public_price'), $results->toArray());
+        $formatterDb = \Soluble\FlexStore\Formatter::createFormatter('currency', array(
+            'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference')
+            
+        ));
+        $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());        
+        $results->setFormatter($formatterDb);
+        foreach($results as $name) {
+            $f = $cm->get($name)->getFormatter();
+            $this->assertEquals($formatterDb, $f);
+            $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $f->getCurrencyCode());        
+        }
+
+        $formatterEur = \Soluble\FlexStore\Formatter::createFormatter('currency', array(
+            'currency_code' => 'EUR'
+        ));
+        
+        $this->assertEquals('EUR', $formatterEur->getCurrencyCode());
+        
+        $cm->get('price')->setFormatter($formatterEur);
+        $this->assertEquals($formatterEur, $cm->get('price')->getFormatter());
+        $this->assertEquals($formatterDb, $cm->get('list_price')->getFormatter());
+    }        
+     
+    
     public function testSetFormatter()
     {
 

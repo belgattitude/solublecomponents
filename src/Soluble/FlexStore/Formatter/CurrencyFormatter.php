@@ -20,7 +20,7 @@ use \NumberFormatter as IntlNumberFormatter;
  */
 class CurrencyFormatter extends NumberFormatter
 {
-    
+
     /**
      *
      * @var string|null
@@ -46,6 +46,17 @@ class CurrencyFormatter extends NumberFormatter
         parent::__construct($params);
     }
 
+    protected function loadFormatterId($formatterId)
+    {
+        $locale = $this->params['locale'];
+        $this->formatters[$formatterId] = new IntlNumberFormatter(
+                $locale, IntlNumberFormatter::CURRENCY
+        );
+        $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
+        if ($this->params['pattern'] !== null) {
+            $this->formatters[$formatterId]->setPattern($this->params['pattern']);
+        }
+    }
 
     /**
      * Currency format a number
@@ -62,33 +73,47 @@ class CurrencyFormatter extends NumberFormatter
         $formatterId = $locale;
 
         if (!array_key_exists($formatterId, $this->formatters)) {
-            $this->formatters[$formatterId] = new IntlNumberFormatter(
-                    $locale, IntlNumberFormatter::CURRENCY
-            );
-            $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
-            if ($this->params['pattern'] !== null) {
-                $this->formatters[$formatterId]->setPattern($this->params['pattern']);
-            }
+            $this->loadFormatterId($formatterId);
         }
-        
+
         if ($this->currency_column !== null) {
-            $this->params['currency_code'] = $row[$this->currency_column];
             if (!isset($row[$this->currency_column])) {
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine currency code based on column '{$this->currency_column}'.");
             }
             return $this->formatters[$formatterId]->formatCurrency(
                             $number, $row[$this->currency_column]
-                   );
-        } 
+            );
+        }
+
         if ($this->params['currency_code'] == '') {
             throw new Exception\RuntimeException(__METHOD__ . " Currency code must be set prior to use the currency formatter");
         }
 
         return $this->formatters[$formatterId]->formatCurrency(
                         $number, $this->params['currency_code']
-               );
-            
+        );
+    }
 
+    /**
+     * Parse a 
+     * @param string $value
+     * @return array|null
+     */
+    public function parse($value)
+    {
+        $locale = $this->params['locale'];
+        //$formatterId = md5($locale);
+        $formatterId = $locale;
+        if (!array_key_exists($formatterId, $this->formatters)) {
+            $this->loadFormatterId($formatterId);
+        }
+        $result = $this->formatters[$formatterId]->parseCurrency($value, $currency);
+        
+        if ($value === false) {
+            return null;
+        }
+        return array('value' => $result, 'currency' => $currency);
+        
     }
 
     /**
@@ -106,6 +131,7 @@ class CurrencyFormatter extends NumberFormatter
             throw new Exception\InvalidArgumentException(__METHOD__ . " Currency code must be an non empty string (or a RowColumn object)");
         }
         $this->params['currency_code'] = $currencyCode;
+
         return $this;
     }
 
