@@ -206,6 +206,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
             $r = new ResultSet($results);
             $r->setSource($this);
+            $r->setHydrationOptions($options->getHydrationOptions());
 
             if ($options->hasLimit()) {
                 //$row = $this->adapter->query('select FOUND_ROWS() as total_count')->execute()->current();

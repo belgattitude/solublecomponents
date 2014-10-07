@@ -61,6 +61,12 @@ class CSVWriter extends AbstractSendableWriter
         $charset = strtoupper($this->options['charset']);
 
         $csv = '';
+        
+        if ($options === null) {
+            $options = new Options();
+        }
+        // Get unformatted data when using csv writer
+        $options->getHydrationOptions()->disableFormatters();        
         $data = $this->store->getData($options)->toArray();
 //echo "éééééààà";
 //	var_dump($data); die();
@@ -93,14 +99,15 @@ class CSVWriter extends AbstractSendableWriter
 
 
                 if ($charset != $internal_encoding) {
-if (!function_exists('iconv')) {
+                    if (!function_exists('iconv')) {
                         throw new Exception\RuntimeException('CSV writer requires iconv extension');
-}
+                    }
 
                     $l = (string) $line;
                     if ($l != '') {
-                        $l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
-
+                        $l = @iconv($internal_encoding, $this->options['charset'] , $l);
+                        //$l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
+                        
                         if ($l === false) {
                             throw new Exception\CharsetConversionException("Cannot convert the charset to '" . $this->options['charset'] . "' from charset '$internal_encoding', value: '$line'.");
                         } else {

@@ -8,7 +8,7 @@ use ArrayObject;
 use Locale;
 use \NumberFormatter as IntlNumberFormatter;
 
-class NumberFormatter implements FormatterInterface, LocalizableInterface
+class NumberFormatter implements FormatterInterface, LocalizableInterface, FormatterNumberInterface
 {
 
     /**
@@ -96,7 +96,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface
      * Set locale to use instead of the default
      *
      * @param  string $locale
-     * @return CurrencyFormatter
+     * @return NumberFormatter
      */
     public function setLocale($locale)
     {
@@ -112,6 +112,27 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface
     public function getLocale()
     {
         return $this->params['locale'];
+    }
+    
+    /**
+     * Set decimals
+     * 
+     * @param int $decimals
+     * @return NumberFormatter
+     */
+    public function setDecimals($decimals)
+    {
+        $this->params['decimals'] = (int) $decimals;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getDecimals()
+    {
+        return $this->params['decimals'];
     }
 
 }

@@ -119,8 +119,7 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         
         
         $options = new Options();
-        $options->setLimit(10);
-        $options->setOffset(0);
+        $options->setLimit(10, 0);
         
         $data2 = $source2->getData($options);
         $d2 = $data2->toArray();

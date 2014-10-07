@@ -4,13 +4,13 @@ namespace Soluble\FlexStore\Writer\Excel;
 
 use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\FlexStore\Writer\Exception;
-;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\Type as ColumnType;
 use Soluble\FlexStore\Options;
 use ExcelBook;
 use ExcelFormat;
+use ArrayObject;
 
 class LibXLWriter extends AbstractSendableWriter
 {
@@ -39,7 +39,7 @@ class LibXLWriter extends AbstractSendableWriter
      * @var string
      */
     protected $file_format = LibXL::FILE_FORMAT_XLSX;
-    
+
     /**
      * Set file format (xls, xlsx), default is xlsx
      *
@@ -55,7 +55,7 @@ class LibXLWriter extends AbstractSendableWriter
         $this->file_format = $file_format;
         return $this;
     }
-    
+
     /**
      *
      * @param string $locale
@@ -69,7 +69,7 @@ class LibXLWriter extends AbstractSendableWriter
         if (!extension_loaded('excel')) {
             throw new Exception\ExtensionNotLoadedException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
         }
-        
+
         if ($this->excelBook === null) {
             $libXL = new LibXL();
             if (is_array(self::$default_license)) {
@@ -80,7 +80,7 @@ class LibXLWriter extends AbstractSendableWriter
             } elseif (!LibXL::isSupportedFormat($file_format)) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Unsupported format given '$file_format'");
             }
-            
+
             $this->excelBook = $libXL->getExcelBook($file_format, $locale);
         }
         return $this->excelBook;
@@ -92,7 +92,13 @@ class LibXLWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
-        
+
+        if ($options === null) {
+            $options = new Options();
+        }
+        // Get unformatted data when using excel writer
+        $options->getHydrationOptions()->disableFormatters();
+
         $book = $this->getExcelBook();
         $this->generateExcel($book, $options);
         //$book->setLocale($locale);
@@ -106,6 +112,66 @@ class LibXLWriter extends AbstractSendableWriter
     }
 
     /**
+     * 
+     */
+    protected function getMetadataSpecs(ExcelBook $book)
+    {
+
+        $typeMap = array(
+            ColumnType::TYPE_BIT => 'number',
+            ColumnType::TYPE_BLOB => 'text',
+            ColumnType::TYPE_BOOLEAN => 'number',
+            ColumnType::TYPE_DATE => 'date',
+            ColumnType::TYPE_DATETIME => 'datetime',
+            ColumnType::TYPE_DECIMAL => 'number',
+            ColumnType::TYPE_INTEGER => 'number',
+            ColumnType::TYPE_STRING => 'text',
+            ColumnType::TYPE_TIME => 'text',
+        );
+
+        $specs = new ArrayObject();
+        $cm = $this->store->getColumnModel();
+        $meta = $this->store->getSource()->getMetadataReader();
+
+        $columns = $cm->getColumns();
+        foreach ($columns as $name => $column) {
+
+            $spec = new ArrayObject();
+            $spec['name'] = $name;
+            $spec['header'] = $column->getHeader();
+
+            $decimals = null;
+            $formatter = $column->getFormatter();
+            if ($formatter instanceof \Soluble\FlexStore\Formatter\FormatterNumberInterface) {
+                $type = 'number';
+                $decimals = $formatter->getDecimals();
+                if ($formatter instanceof \Soluble\FlexStore\Formatter\CurrencyFormatter) {
+                    $unit = $formatter->getCurrencyCode();
+                }
+            } else {
+                $model_type = $column->getType()->getName();
+                var_dump($model_type);
+                if ($model_type == ColumnType::TYPE_INTEGER) {
+                    $decimals = 0;
+                }
+                if (array_key_exists($model_type, $typeMap)) {
+                    $type = $model_type;
+                } else {
+                    $type = "text";
+                }
+            }
+            // We now have the type
+            if ($type == "number" && $decimals === null) {
+                // try to guess from metadata
+                //$meta->get();
+                //die();
+                
+            }
+           // die('cool');
+        }
+    }
+
+    /**
      *
      * @param ExcelBook $book
      * @param Options $options
@@ -113,6 +179,8 @@ class LibXLWriter extends AbstractSendableWriter
      */
     protected function generateExcel(ExcelBook $book, Options $options = null)
     {
+        $specs = $this->getMetadataSpecs($book);
+
         $sheet = $book->addSheet("Sheet");
 
 
@@ -138,7 +206,7 @@ class LibXLWriter extends AbstractSendableWriter
         $col_idx = 0;
         $cm = $this->store->getColumnModel();
         $columns = $cm->getColumns();
-        
+
 
         $formats = array();
         $types = array();
@@ -151,7 +219,7 @@ class LibXLWriter extends AbstractSendableWriter
             $column_max_widths[$name] = max(strlen($header) * $this->column_width_multiplier, $column_max_widths[$name]);
 
             switch ($column->getType()) {
-                case Type::TYPE_DATE:
+                case ColumnType::TYPE_DATE:
                     $mask = 'd/mm/yyyy';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
@@ -159,7 +227,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'date';
                     break;
-                case Type::TYPE_DATETIME:
+                case ColumnType::TYPE_DATETIME:
                     $mask = 'd/mm/yyyy h:mm';
                     $cfid = $book->addCustomFormat($mask);
                     $format = $book->addFormat();
@@ -167,8 +235,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'datetime';
                     break;
-                case Type::TYPE_INTEGER:
-
+                case ColumnType::TYPE_INTEGER:
                     $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
                         $formatString = '0';
@@ -181,20 +248,21 @@ class LibXLWriter extends AbstractSendableWriter
                     $formats[$name] = $format;
                     $types[$name] = 'number';
                     break;
-                case Type::TYPE_DECIMAL:
+                case ColumnType::TYPE_DECIMAL:
                     //$precision = $definition->getNumericPrecision();
+                    $precision = 2;
                     $hide_thousands_separator = true;
                     if ($hide_thousands_separator) {
-                        $formatString = '0.';
+                        $formatString = '0';
                     } else {
-                        $formatString = '#,##0.';
+                        $formatString = '#,##0';
                     }
-                    /*
+
                     if ($precision > 0) {
                         $zeros = str_repeat("0", $precision);
                         $formatString = $formatString . '.' . $zeros;
-                    }*/
-                    
+                    }
+
                     $cfid = $book->addCustomFormat($formatString);
                     $format = $book->addFormat();
                     $format->numberFormat($cfid);
@@ -260,7 +328,6 @@ class LibXLWriter extends AbstractSendableWriter
         return $book;
     }
 
-
     /**
      *
      * @param string $license_name
@@ -285,4 +352,5 @@ class LibXLWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
+
 }

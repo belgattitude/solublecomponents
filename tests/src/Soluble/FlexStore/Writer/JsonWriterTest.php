@@ -111,7 +111,8 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
         $writer = new JsonWriter($store);
         $json_data = json_decode($writer->getData(), $assoc=true);
 
-       // $this->assertEquals('15.30', $json_data['data'][0]['list_price']);
+        $this->assertNotEquals('CN¥15.30', $json_data['data'][0]['list_price']);        
+        $this->assertEquals('15.30', $json_data['data'][0]['list_price']);
     }
 
    /**

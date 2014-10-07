@@ -22,6 +22,13 @@ class JsonWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
+        if ($options === null) {
+            $options = new Options();
+        }
+
+        // Get unformatted data when using json
+        $options->getHydrationOptions()->disableFormatters();
+
         $data = $this->store->getData($options);
         $now = new DateTime();
 
@@ -57,4 +64,5 @@ class JsonWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
+
 }

@@ -42,9 +42,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         
         $this->assertNull($this->options->getOffset());
         $this->assertFalse($this->options->hasOffset());
-        $this->options->setOffset(20);
-        $this->assertEquals(20, $this->options->getOffset());
-        $this->assertTrue($this->options->hasOffset());
         
         $this->options->setLimit(40,50);
         $this->assertEquals(50, $this->options->getOffset());
@@ -79,20 +76,16 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     
-    public function testSetOffsetThrowsInvalidException()
+    public function testSetLimitThrowsInvalidException4()
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
-        $this->options->setOffset(array('cool'));
+        $this->options->setLimit(10, array('cool'));
     }
 
-    public function testSetOffsetThrowsInvalidException2()
+    public function testSetLimitThrowsInvalidException5()
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
-        $this->options->setOffset(2.12);
+        $this->options->setLimit(10, 2.12);
     }    
-    public function testSetOffsetThrowsInvalidException3()
-    {
-        $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
-        $this->options->setOffset(null);
-    }        
+
 }

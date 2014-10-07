@@ -2,9 +2,17 @@
 
 namespace Soluble\FlexStore;
 
+use Soluble\FlexStore\Options\HydrationOptions;
+
 class Options
 {
 
+    /**
+     *
+     * @var HydrationOptions
+     */
+    protected $hydrationOptions;
+    
     /**
      *
      * @var integer|null
@@ -17,10 +25,14 @@ class Options
      */
     protected $offset;
 
-    public function __construct()
+    
+    public function disableFormatters()
     {
-        
+        $this->enable_formatters = false;
+        return $this;
     }
+    
+    
 
     /**
      * Set the (maximum) number of results to return
@@ -58,11 +70,15 @@ class Options
      * Unset limit of results
      * Provides fluent interface
      *
+     * @param boolean $unset_offset whether to unset offset as well
      * @return Options
      */
-    public function unsetLimit()
+    public function unsetLimit($unset_offset=true)
     {
         $this->limit = null;
+        if ($unset_offset) {
+            $this->offset = null;
+        }
         return $this;
     }
 
@@ -86,10 +102,12 @@ class Options
     
     /**
      * Set the offset (the record to start reading when using limit)
+     * 
+     * @throws Exception\InvalidArgumentException
      * @param int $offset
      * @return Options
      */
-    public function setOffset($offset)
+    protected function setOffset($offset)
     {
         if ($offset === null) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": offset parameter cannot be null, use unsetOffset instead.");
@@ -115,11 +133,23 @@ class Options
     
     /**
      * Unset previously set offset
-     * @return \Soluble\FlexStore\Options
+     * @return Options
      */
     public function unsetOffset()
     {
         $this->offset = null;
         return $this;
+    }
+    
+    /**
+     * 
+     * @return HydrationOptions
+     */
+    public function getHydrationOptions()
+    {
+        if ($this->hydrationOptions === null) {
+            $this->hydrationOptions = new HydrationOptions();
+        }
+        return $this->hydrationOptions;
     }
 }

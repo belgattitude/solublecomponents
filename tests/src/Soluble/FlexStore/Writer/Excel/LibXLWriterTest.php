@@ -8,6 +8,7 @@ use Soluble\FlexStore\Store;
 use Zend\Db\Sql\Expression;
 use PHPExcel_IOFactory;
 use Soluble\Spreadsheet\Library\LibXL;
+use Soluble\FlexStore\Formatter;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -76,6 +77,9 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             'title_fr' => new Expression('p18.title'),
             'list_price' => new Expression('ppl.list_price'),
             'public_price' => new Expression('ppl.public_price'),
+            'currency_reference' => new Expression("'CNY'"),
+            'test_float' => new Expression("1.212")
+            
         ));
 
         $source = new SqlSource($this->adapter, $select);
@@ -86,6 +90,54 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     {
         ini_set('error_reporting', E_ALL | E_STRICT);
     }
+    
+   /**
+     * 
+     */
+    public function testColumnModel()
+    { 
+        
+        $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test4.xlsx';        
+        
+        $store = new Store($this->getTestSource());
+        $cm = $store->getColumnModel();
+        
+        $locale = 'en_US';
+        $formatter = Formatter::createFormatter('currency', array(
+            'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
+            'locale' => $locale
+        ));
+        
+        $cm->search()->regexp('/price/')->setFormatter($formatter);
+        
+        $formatted_data = $store->getData()->toArray();
+        $this->assertEquals('CN¥15.30', $formatted_data[0]['list_price']);
+
+        $xlsWriter = new LibXLWriter();
+        $xlsWriter->setStore($store);
+        
+        $xlsWriter->save($output_file);
+
+        $this->assertFileExists($output_file);
+        $filesize = filesize($output_file);
+        $this->assertGreaterThan(0, $filesize);
+
+        // test Output
+
+        $arr = $this->excelToArray($output_file);
+        
+        //$this->assertEquals(113, $arr[5]['B']);
+        $this->assertTrue(is_float($arr[2]['O']));
+        $this->assertEquals(number_format(15.3,1), number_format($arr[2]['O'], 1));
+        $this->assertEquals(number_format(18.2,1), number_format($arr[2]['P'],1));
+        $this->assertEquals('CNY', $arr[2]['Q']);
+        $this->assertEquals("", $arr[4]['O']);
+        $this->assertEquals("", $arr[4]['P']);
+        
+    }
+
+     
+    
 
     public function testGetDataXlsx()
     {
@@ -180,9 +232,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $excelFile = $excelReader->load($file);
         $excelFile->setActiveSheetIndex(0);
         $sheet = $excelFile->getActiveSheet();
-        $a1 = $sheet->getCellByColumnAndRow('A', '1')->getFormattedValue();
-
-        //var_dump($a1); 
+        
         $arr = $sheet->toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = true);
         if (strtoupper($reader) == "EXCEL5") {
             ini_set('error_reporting', E_ALL | E_STRICT);

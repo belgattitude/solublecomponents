@@ -4,6 +4,7 @@ namespace Soluble\FlexStore\ResultSet;
 
 use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Helper\Paginator;
+use Soluble\FlexStore\Options\HydrationOptions;
 use ArrayObject;
 
 class ResultSet extends AbstractResultSet
@@ -14,7 +15,6 @@ class ResultSet extends AbstractResultSet
      * @var Paginator
      */
     protected $paginator;
-
 
     /**
      *
@@ -29,29 +29,31 @@ class ResultSet extends AbstractResultSet
 
     /**
      *
+     * @var HydrationOptions
+     */
+    protected $hydrationOptions;
+    
+    /**
+     *
      * @var boolean
      */
     protected $hydrate_options_initialized;
-    
+
     /**
      * @var ArrayObject
      */
     protected $hydration_formatters;
-
 
     /**
      * @var ArrayObject
      */
     protected $hydration_renderers;
 
-    
     /**
      * @var ArrayObject
      */
     protected $hydrated_columns;
-    
 
-    
     /**
      * Return source column model
      * 
@@ -65,7 +67,6 @@ class ResultSet extends AbstractResultSet
         }
         return $this->source->getColumnModel();
     }
-
 
     /**
      *
@@ -87,7 +88,27 @@ class ResultSet extends AbstractResultSet
         return $this->source;
     }
 
+    /**
+     *
+     * @param HydrationOptions $hydrationOptions
+     * @return ResultSet
+     */
+    public function setHydrationOptions(HydrationOptions $hydrationOptions)
+    {
+        $this->hydrationOptions = $hydrationOptions;
+        return $this;
+    }
 
+    /**
+     *
+     * @return HydrationOptions
+     */
+    public function getHydrationOptions()
+    {
+        return $this->hydrationOptions;
+    }
+    
+    
     /**
      *
      * @return Paginator
@@ -96,16 +117,11 @@ class ResultSet extends AbstractResultSet
     {
         if ($this->paginator === null) {
             $this->paginator = new Paginator(
-                $this->getTotalRows(),
-                $this->getSource()->getOptions()->getLimit(),
-                $this->getSource()->getOptions()->getOffset()
+                    $this->getTotalRows(), $this->getSource()->getOptions()->getLimit(), $this->getSource()->getOptions()->getOffset()
             );
         }
         return $this->paginator;
     }
-
-
-
 
     /**
      * Set the total rows
@@ -118,7 +134,6 @@ class ResultSet extends AbstractResultSet
         return $this;
     }
 
-
     /**
      * @return int
      */
@@ -127,7 +142,6 @@ class ResultSet extends AbstractResultSet
         return $this->totalRows;
     }
 
-    
     /**
      * 
      * @param ArrayObject $row
@@ -135,38 +149,39 @@ class ResultSet extends AbstractResultSet
      */
     protected function initColumnModelHydration(ArrayObject $row)
     {
-        
+
         $this->hydration_formatters = new ArrayObject();
         $this->hydration_renderers = new ArrayObject();
         $this->hydrated_columns = null;
-        
-        
+
+
         if ($this->source->hasColumnModel()) {
             $cm = $this->getColumnModel();
-            
+
             // 1. Initialize columns hydrators
-            $formatters = $cm->getUniqueFormatters();
-            if ($formatters->count() > 0) {
-                $this->hydration_formatters = $formatters;
+            if ($this->getHydrationOptions()->isFormattersEnabled()) {
+                $formatters = $cm->getUniqueFormatters();
+                if ($formatters->count() > 0) {
+                    $this->hydration_formatters = $formatters;
+                }
             }
-            
+
             // 2. Initialize hydrated columns
-            
+
             $columns = $cm->getColumns();
-            
+
             // Performance:
             // Only if column model definition differs from originating 
             // source row definition.
             $hydrated_columns = array_keys((array) $columns);
-            if($hydrated_columns != array_keys((array) $row)) {
+            if ($hydrated_columns != array_keys((array) $row)) {
                 $this->hydrated_columns = new ArrayObject($hydrated_columns);
             }
-            
+
             // 3. Initialize row renderers
-            $this->hydration_renderers  = $cm->getRowRenderers();
-        } 
+            $this->hydration_renderers = $cm->getRowRenderers();
+        }
         $this->hydrate_options_initialized = true;
-        
     }
 
     /**
@@ -184,19 +199,19 @@ class ResultSet extends AbstractResultSet
         if (!$this->hydrate_options_initialized) {
             $this->initColumnModelHydration($row);
         }
-        
+
         // 1 Row renderers
         foreach ($this->hydration_renderers as $renderer) {
             $renderer($row);
         }
-        
+
         // 2. Formatters
-        foreach($this->hydration_formatters as $formatters) {
-            foreach($formatters['columns'] as $column) {
+        foreach ($this->hydration_formatters as $formatters) {
+            foreach ($formatters['columns'] as $column) {
                 $row[$column] = $formatters['formatter']->format($row[$column], $row);
             }
-        }            
-        
+        }
+
         // 3. Process column exclusion
         if ($this->hydrated_columns !== null) {
             $d = new ArrayObject();
@@ -205,13 +220,12 @@ class ResultSet extends AbstractResultSet
             }
             $row->exchangeArray($d);
         }
-        
+
         if ($this->returnType === self::TYPE_ARRAY) {
             return (array) $row;
-        } 
+        }
         return $row;
     }
-
 
     /**
      * Cast result set to array of arrays
@@ -231,10 +245,11 @@ class ResultSet extends AbstractResultSet
                 $return[] = $row->getArrayCopy();
             } else {
                 throw new Exception\RuntimeException(
-                    __METHOD__ . ': Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
+                __METHOD__ . ': Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
                 );
             }
         }
         return $return;
     }
+
 }
