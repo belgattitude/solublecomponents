@@ -8,9 +8,11 @@ use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 use Soluble\FlexStore\Column\Type as ColumnType;
 use Soluble\FlexStore\Options;
+use Soluble\FlexStore\StoreInterface;
 use ExcelBook;
 use ExcelFormat;
 use ArrayObject;
+
 
 class LibXLWriter extends AbstractSendableWriter
 {
