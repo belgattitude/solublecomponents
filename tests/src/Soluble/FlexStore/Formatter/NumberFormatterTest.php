@@ -101,4 +101,27 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
         $f = new NumberFormatter($params);
     }
+    
+    public function testFormatThrowsRuntimeException2()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3
+        );
+        $f = new NumberFormatter($params);
+        $f->format(array('cool'));
+    }    
+
+    public function testFormatThrowsRuntimeException3()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3
+        );
+        $f = new NumberFormatter($params);
+        $a = $f->format('not a number');
+    }
+    
 }

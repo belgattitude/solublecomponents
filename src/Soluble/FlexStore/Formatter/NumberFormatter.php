@@ -93,6 +93,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
      */
     public function format($number, ArrayObject $row = null)
     {
+        
         $locale = $this->params['locale'];
         //$formatterId = md5($locale);
         $formatterId = $locale . (string) $this->params['pattern'];
@@ -100,14 +101,23 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
         if (!array_key_exists($formatterId, $this->formatters)) {
             $this->loadFormatterId($formatterId);
         }
-        $value = $this->formatters[$formatterId]->format($number);
-        if(intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
+        
+        if($number !== null && !is_numeric($number)) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
         }       
+        
+        
+        $value = $this->formatters[$formatterId]->format($number);
         return $value;
         
     }
 
+    /**
+     * Throws an Exception when number cannot be formatted
+     * @param IntlNumberFormatter $intlFormatter
+     * @param type $number
+     * @throws Exception\RuntimeException
+     */
     protected function throwNumberFormatterException(IntlNumberFormatter $intlFormatter, $number) {
         $error_code = $intlFormatter->getErrorCode();
         if (is_scalar($number)) {
@@ -116,8 +126,6 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
             $val = 'type: ' . gettype($number);
         }
         throw new Exception\RuntimeException(__METHOD__ . " Cannot format value '$val', Intl/NumberFormatter error code: $error_code.");
-        
-        
     }
     
 

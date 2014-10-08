@@ -50,6 +50,7 @@ class UnitFormatter extends NumberFormatter
      */
     protected function loadFormatterId($formatterId)
     {
+        
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
                 $locale, IntlNumberFormatter::DECIMAL
@@ -57,7 +58,7 @@ class UnitFormatter extends NumberFormatter
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {
             $this->formatters[$formatterId]->setPattern($this->params['pattern']);
-        }
+        }        
     }
 
     /**
@@ -69,6 +70,7 @@ class UnitFormatter extends NumberFormatter
      */
     public function format($number, ArrayObject $row = null)
     {
+        
         $locale = $this->params['locale'];
 
         //$formatterId = md5($locale);
@@ -78,21 +80,26 @@ class UnitFormatter extends NumberFormatter
             $this->loadFormatterId($formatterId);
         }
 
+        if($number !== null && !is_numeric($number)) {
+            $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
+        }       
+        
+        
         if ($this->unit_column !== null) {
             if (!isset($row[$this->unit_column])) {
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine unit code based on column '{$this->unit_column}'.");
             }
-            return $this->formatters[$formatterId]->format($number) . ' ' . $row[$this->unit_column];
+            $value = $this->formatters[$formatterId]->format($number) . ' ' . $row[$this->unit_column];
         } else if ($this->params['unit'] != '') {
             $value = $this->formatters[$formatterId]->format($number) . ' ' . $this->params['unit'];
         } else {
             throw new Exception\RuntimeException(__METHOD__ . " Unit code must be set prior to use the UnitFormatter");
         }
-
+        
         if (intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
         }
-
+        
         return $value;
     }
 

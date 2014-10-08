@@ -118,4 +118,26 @@ class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
         $f->format(1123.4567);
     }
 
+    public function testFormatThrowsRuntimeException2()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3
+        );
+        $f = new CurrencyFormatter($params);
+        $f->format(array('cool'));
+    }    
+
+    public function testFormatThrowsRuntimeException3()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3
+        );
+        $f = new CurrencyFormatter($params);
+        $f->format('not a number');
+    }        
+    
 }

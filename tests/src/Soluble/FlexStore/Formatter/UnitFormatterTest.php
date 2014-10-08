@@ -111,4 +111,29 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         $f = new UnitFormatter($params);
     }    
     
+    public function testFormatThrowsRuntimeException2()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3,
+            'unit' => 'ltr'
+        );
+        $f = new UnitFormatter($params);
+        $f->format(array('cool'));
+    }    
+
+    public function testFormatThrowsRuntimeException3()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Exception\RuntimeException');
+        $params = array(
+            'locale' => 'fr_FR',
+            'decimals' => 3,
+            'unit' => 'ltr'
+        );
+        
+        $f = new UnitFormatter($params);
+        $f->format('not a number');
+    }          
+    
 }
