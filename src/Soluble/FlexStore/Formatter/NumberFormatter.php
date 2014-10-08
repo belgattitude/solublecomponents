@@ -29,13 +29,15 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
      * @var array
      */
     protected $default_params = array(
-        'decimals' => 2,
-        'locale' => null,
+        'decimals'  => 2,
+        'locale'    => null,
+        'pattern'   => null
     );
 
     /**
      * @param array $params
      * @throws Exception\ExtensionNotLoadedException if ext/intl is not present
+     * @throws Exception\InvalidArgumentException
      */
     public function __construct(array $params = array())
     {
@@ -50,19 +52,39 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     }
 
     /**
-     * 
+     * @throws Exception\InvalidArgumentException
      * @param array $params
+     * @return void
      */
     protected function setParams($params)
     {
         $this->params = $this->default_params;
         foreach($params as $name => $value) {
             $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($name))));
+            if (!method_exists($this, $method)) {
+                throw new Exception\InvalidArgumentException(__METHOD__ . " Parameter '$name' does not exists.");
+            }
             $this->$method($value);
         }
-        
     }
 
+    /**
+     * 
+     * @param string $formatterId
+     */
+    protected function loadFormatterId($formatterId)
+    {
+        $locale = $this->params['locale'];
+        $this->formatters[$formatterId] = new IntlNumberFormatter(
+                $locale, IntlNumberFormatter::DECIMAL
+        );
+        $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
+        if ($this->params['pattern'] !== null) {
+            $this->formatters[$formatterId]->setPattern($this->params['pattern']);
+        }
+    }
+    
+    
     /**
      * Format a number
      *
@@ -72,23 +94,32 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     public function format($number, ArrayObject $row = null)
     {
         $locale = $this->params['locale'];
-
         //$formatterId = md5($locale);
-        $formatterId = $locale;
-
+        $formatterId = $locale . (string) $this->params['pattern'];
+        
         if (!array_key_exists($formatterId, $this->formatters)) {
-            $this->formatters[$formatterId] = new IntlNumberFormatter(
-                    $locale, IntlNumberFormatter::DECIMAL
-            );
-            $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
-            if ($this->params['pattern'] !== null) {
-                $this->formatters[$formatterId]->setPattern($this->params['pattern']);
-            }
+            $this->loadFormatterId($formatterId);
         }
-
-        return $this->formatters[$formatterId]->format($number);
+        $value = $this->formatters[$formatterId]->format($number);
+        if(intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
+            $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
+        }       
+        return $value;
+        
     }
 
+    protected function throwNumberFormatterException(IntlNumberFormatter $intlFormatter, $number) {
+        $error_code = $intlFormatter->getErrorCode();
+        if (is_scalar($number)) {
+            $val = (string) $number;
+        } else {
+            $val = 'type: ' . gettype($number);
+        }
+        throw new Exception\RuntimeException(__METHOD__ . " Cannot format value '$val', Intl/NumberFormatter error code: $error_code.");
+        
+        
+    }
+    
 
 
 
@@ -135,4 +166,28 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
         return $this->params['decimals'];
     }
 
+    /**
+     * Set the number pattern, (#,##0.###, ....)
+     *
+     * @see http://php.net/manual/en/numberformatter.setpattern.php
+     * @param  string $pattern
+     * @return NumberFormatter
+     */
+    public function setPattern($pattern)
+    {
+        $this->params['pattern'] = $pattern;
+        return $this;
+    }
+
+    /**
+     * Get the number pattern
+     *
+     * @return string|null
+     */
+    public function getPattern()
+    {
+        return $this->params['pattern'];
+    }
+    
+    
 }

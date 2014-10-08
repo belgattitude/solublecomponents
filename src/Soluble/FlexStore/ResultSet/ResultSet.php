@@ -168,18 +168,22 @@ class ResultSet extends AbstractResultSet
 
             // 2. Initialize hydrated columns
 
-            $columns = $cm->getColumns();
+            if ($this->getHydrationOptions()->isColumnExclusionEnabled()) {                        
+                $columns = $cm->getColumns();
 
-            // Performance:
-            // Only if column model definition differs from originating 
-            // source row definition.
-            $hydrated_columns = array_keys((array) $columns);
-            if ($hydrated_columns != array_keys((array) $row)) {
-                $this->hydrated_columns = new ArrayObject($hydrated_columns);
-            }
+                // Performance:
+                // Only if column model definition differs from originating 
+                // source row definition.
+                $hydrated_columns = array_keys((array) $columns);
+                if ($hydrated_columns != array_keys((array) $row)) {
+                    $this->hydrated_columns = new ArrayObject($hydrated_columns);
+                }
+            } 
 
             // 3. Initialize row renderers
-            $this->hydration_renderers = $cm->getRowRenderers();
+            if ($this->getHydrationOptions()->isRenderersEnabled()) {            
+                $this->hydration_renderers = $cm->getRowRenderers();
+            }
         }
         $this->hydrate_options_initialized = true;
     }

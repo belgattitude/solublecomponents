@@ -78,7 +78,10 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             'list_price' => new Expression('ppl.list_price'),
             'public_price' => new Expression('ppl.public_price'),
             'currency_reference' => new Expression("if (p.product_id = 10, 'CNY', 'EUR')"),
-            'test_float' => new Expression("1.212")
+            'test_float' => new Expression("1.212"),
+            'test_date' => new Expression("cast('2012-12-31 15:10:59' as date)"),
+            'test_datetime' => new Expression("cast('2012-12-31 15:10:59' as datetime)"),
+            'test_time' => new Expression("cast('2012-12-31 15:10:59' as time)"),
             
         ));
 
@@ -90,6 +93,96 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     {
         ini_set('error_reporting', E_ALL | E_STRICT);
     }
+
+    
+   /**
+     * 
+     */
+    public function testColumnModelWithColumnExclusion()
+    { 
+        
+        $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test5.xlsx';        
+        
+        $store = new Store($this->getTestSource());
+        $cm = $store->getColumnModel();
+        $cm->search()->in(array('test_chars', 'brand_id', 'reference', 'description'))->setExcluded();
+        $cm->sort(array('product_id', 'price', 'list_price', 'public_price', 'currency_reference'));
+        $locale = 'en_US';
+        $formatterDb = Formatter::createFormatter('currency', array(
+            'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
+            'locale' => $locale
+        ));
+        $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());
+        
+        $formatterEur = Formatter::createFormatter('currency', array(
+            'currency_code' => 'EUR',
+            'locale' => $locale
+        ));        
+        $this->assertNotInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterEur->getCurrencyCode());
+        
+        $cm->search()->regexp('/price/')->setFormatter($formatterDb);
+        $cm->get('currency_reference')->setExcluded();
+        $cm->get('public_price')->setFormatter($formatterEur);
+        
+        
+        $formatted_data = $store->getData()->toArray();
+        $this->assertEquals('CN¥15.30', $formatted_data[0]['list_price']);
+        $this->assertEquals('€18.20', $formatted_data[0]['public_price']);
+        $this->assertEquals('2012-12-31', $formatted_data[0]['test_date']);
+        $this->assertEquals('2012-12-31 15:10:59', $formatted_data[0]['test_datetime']);
+        $this->assertEquals('15:10:59', $formatted_data[0]['test_time']);
+
+        $xlsWriter = new LibXLWriter();
+        $xlsWriter->setStore($store);
+        
+        $xlsWriter->save($output_file);
+
+        $this->assertFileExists($output_file);
+        $filesize = filesize($output_file);
+        $this->assertGreaterThan(0, $filesize);
+
+        // test Output
+
+        $arr = $this->excelToArray($output_file);
+        
+        
+        
+        $this->assertEquals('price', $arr[1]['B']);
+        $this->assertTrue(is_float($arr[2]['B']));
+        $this->assertEquals(number_format(15.3,1), number_format($arr[2]['C'], 1));
+        $this->assertEquals(number_format(18.2,1), number_format($arr[2]['D'],1));
+        $this->assertEquals("", $arr[4]['C']);
+        $this->assertEquals("", $arr[4]['B']);
+        
+        $excel = $this->getExcelReader($output_file);
+        $sheet = $excel->getActiveSheet();
+        //$c2 = $sheet->getCellByColumnAndRow('B', 4);
+        $c2 = $sheet->getCell('C2');
+
+        $this->assertEquals('n', $c2->getDataType());
+        $this->assertEquals('15.30 CN¥', $c2->getFormattedValue());
+        
+        $d2 = $sheet->getCell('D2');
+        $this->assertEquals('n', $d2->getDataType());
+        $this->assertEquals('18.20 €', $d2->getFormattedValue());
+
+        $n2 = $sheet->getCell('N2');
+        
+        $this->assertEquals('31/12/2012', $n2->getFormattedValue());
+        $this->assertEquals('n', $n2->getDataType());
+        
+        $o2 = $sheet->getCell('O2');
+        
+        // Why PHPExcel does not return seconds as well ?
+        $this->assertEquals('31/12/2012 15:10', $o2->getFormattedValue());
+        $this->assertEquals('n', $o2->getDataType());
+        $p2 = $sheet->getCell('P2');
+        
+        $this->assertEquals('15:10:59', $p2->getFormattedValue());
+        $this->assertEquals('s', $p2->getDataType());
+        
+    }
+    
     
    /**
      * 
@@ -123,6 +216,9 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $formatted_data = $store->getData()->toArray();
         $this->assertEquals('CN¥15.30', $formatted_data[0]['list_price']);
         $this->assertEquals('€18.20', $formatted_data[0]['public_price']);
+        $this->assertEquals('2012-12-31', $formatted_data[0]['test_date']);
+        $this->assertEquals('2012-12-31 15:10:59', $formatted_data[0]['test_datetime']);
+        $this->assertEquals('15:10:59', $formatted_data[0]['test_time']);
 
         $xlsWriter = new LibXLWriter();
         $xlsWriter->setStore($store);
@@ -147,6 +243,10 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('EUR', $arr[3]['E']);
         $this->assertEquals("", $arr[4]['C']);
         $this->assertEquals("", $arr[4]['B']);
+        //$this->assertEquals('2012-12-31', $arr[2]['O']);
+        //$this->assertEquals('2012-12-31 15:10:00', $arr[2]['P']);
+        //$this->assertEquals('15:10:00', $arr[2]['Q']);
+        
         
         $excel = $this->getExcelReader($output_file);
         $sheet = $excel->getActiveSheet();
@@ -159,6 +259,20 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $d2 = $sheet->getCell('D2');
         $this->assertEquals('n', $d2->getDataType());
         $this->assertEquals('18.20 €', $d2->getFormattedValue());
+
+        $o2 = $sheet->getCell('O2');
+        $this->assertEquals('n', $o2->getDataType());
+        $this->assertEquals('31/12/2012', $o2->getFormattedValue());
+        
+        $p2 = $sheet->getCell('P2');
+        
+        // Why PHPExcel does not return seconds as well ?
+        $this->assertEquals('31/12/2012 15:10', $p2->getFormattedValue());
+        $this->assertEquals('n', $p2->getDataType());
+        $q2 = $sheet->getCell('Q2');
+        
+        $this->assertEquals('15:10:59', $q2->getFormattedValue());
+        $this->assertEquals('s', $q2->getDataType());
         
     }
 

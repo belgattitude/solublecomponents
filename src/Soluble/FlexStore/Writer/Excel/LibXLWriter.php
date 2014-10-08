@@ -178,6 +178,9 @@ class LibXLWriter extends AbstractSendableWriter
         }
         // Get unformatted data when using excel writer
         $options->getHydrationOptions()->disableFormatters();
+        
+        // Some colu
+        $options->getHydrationOptions()->disableColumnExclusion();
 
         $book = $this->getExcelBook();
         $this->generateExcel($book, $options);
@@ -285,7 +288,7 @@ class LibXLWriter extends AbstractSendableWriter
             }
 
             // Save the spec
-            $spec = array();
+            $spec = new ArrayObject();
             $spec['name'] = $name;
             $spec['header'] = $column->getHeader();
             $spec['type'] = $type;
@@ -349,6 +352,7 @@ class LibXLWriter extends AbstractSendableWriter
         $sheet->splitSheet(1, 0);
 
         // Fill document content
+        
         $data = $this->store->getData($options);
 
         foreach ($data as $idx => $row) {

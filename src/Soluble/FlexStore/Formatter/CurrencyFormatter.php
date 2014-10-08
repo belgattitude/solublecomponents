@@ -3,10 +3,8 @@
 namespace Soluble\FlexStore\Formatter;
 
 use Soluble\FlexStore\Exception;
-use Soluble\FlexStore\I18n\LocalizableInterface;
 use Soluble\FlexStore\Formatter\RowColumn;
 use ArrayObject;
-use Locale;
 use \NumberFormatter as IntlNumberFormatter;
 
 /**
@@ -46,6 +44,10 @@ class CurrencyFormatter extends NumberFormatter
         parent::__construct($params);
     }
 
+    /**
+     * 
+     * @param string $formatterId
+     */
     protected function loadFormatterId($formatterId)
     {
         $locale = $this->params['locale'];
@@ -70,7 +72,7 @@ class CurrencyFormatter extends NumberFormatter
         $locale = $this->params['locale'];
 
         //$formatterId = md5($locale);
-        $formatterId = $locale;
+        $formatterId = $locale . (string) $this->params['pattern'];
 
         if (!array_key_exists($formatterId, $this->formatters)) {
             $this->loadFormatterId($formatterId);
@@ -80,18 +82,26 @@ class CurrencyFormatter extends NumberFormatter
             if (!isset($row[$this->currency_column])) {
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine currency code based on column '{$this->currency_column}'.");
             }
-            return $this->formatters[$formatterId]->formatCurrency(
+            $value = $this->formatters[$formatterId]->formatCurrency(
                             $number, $row[$this->currency_column]
             );
-        }
+        } else {
 
-        if ($this->params['currency_code'] == '') {
-            throw new Exception\RuntimeException(__METHOD__ . " Currency code must be set prior to use the currency formatter");
-        }
+            if ($this->params['currency_code'] == '') {
+                throw new Exception\RuntimeException(__METHOD__ . " Currency code must be set prior to use the currency formatter");
+            }
 
-        return $this->formatters[$formatterId]->formatCurrency(
-                        $number, $this->params['currency_code']
-        );
+            $value = $this->formatters[$formatterId]->formatCurrency(
+                            $number, $this->params['currency_code']
+            );
+        }
+        
+        if(intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
+            $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
+        }       
+        
+        return $value;
+        
     }
 
     /**
@@ -107,6 +117,9 @@ class CurrencyFormatter extends NumberFormatter
         if (!array_key_exists($formatterId, $this->formatters)) {
             $this->loadFormatterId($formatterId);
         }
+        // Currency will be passed as reference
+        // setting it to null prevent eventual warning
+        $currency = null;
         $result = $this->formatters[$formatterId]->parseCurrency($value, $currency);
         
         if ($value === false) {
@@ -145,26 +158,5 @@ class CurrencyFormatter extends NumberFormatter
         return $this->params['currency_code'];
     }
 
-    /**
-     * Set the currency pattern
-     *
-     * @param  string $currencyPattern
-     * @return CurrencyFormat
-     */
-    public function setCurrencyPattern($currencyPattern)
-    {
-        $this->params['pattern'] = $currencyPattern;
-        return $this;
-    }
-
-    /**
-     * Get the currency pattern
-     *
-     * @return string|null
-     */
-    public function getCurrencyPattern()
-    {
-        return $this->params['pattern'];
-    }
 
 }

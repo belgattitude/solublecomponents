@@ -10,9 +10,15 @@ class HydrationOptions
      * @var array
      */
     protected $params = array();
+    
+    /**
+     *
+     * @var array
+     */
     protected $default_params = array(
         'disable_formatters' => false,
-        'disable_renderers' => false
+        'disable_renderers' => false,
+        'disable_column_exclusion' => false
     );
 
     /**
@@ -78,7 +84,7 @@ class HydrationOptions
     }
 
     /**
-     * Test chether renderers should be called when getting data
+     * Test whether renderers should be called when getting data
      * 
      * @return bool
      */
@@ -87,4 +93,38 @@ class HydrationOptions
         return ($this->params['disable_renderers'] == false);
     }
 
+
+    /**
+     * Disable column exclusion when getting data
+     * 
+     * @return HydrationOptions
+     */
+    function disableColumnExclusion()
+    {
+        $this->params['disable_column_exclusion'] = true;
+        return $this;
+    }
+
+    /**
+     * Enable column exclusion when getting data
+     * 
+     * @return HydrationOptions
+     */
+    function enableColumnExclusion()
+    {
+        $this->params['disable_column_exclusion'] = false;
+        return $this;
+    }
+
+    /**
+     * Test whether column model exclusions are enabled
+     * 
+     * @return bool
+     */
+    function isColumnExclusionEnabled()
+    {
+        return ($this->params['disable_column_exclusion'] == false);
+    }    
+    
+    
 }
