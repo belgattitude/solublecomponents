@@ -108,13 +108,13 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $cm->search()->in(array('test_chars', 'brand_id', 'reference', 'description'))->setExcluded();
         $cm->sort(array('product_id', 'price', 'list_price', 'public_price', 'currency_reference'));
         $locale = 'en_US';
-        $formatterDb = Formatter::createFormatter('currency', array(
+        $formatterDb = Formatter::create('currency', array(
             'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
             'locale' => $locale
         ));
         $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());
         
-        $formatterEur = Formatter::createFormatter('currency', array(
+        $formatterEur = Formatter::create('currency', array(
             'currency_code' => 'EUR',
             'locale' => $locale
         ));        
@@ -197,13 +197,13 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $cm->search()->in(array('test_chars', 'brand_id', 'reference', 'description'))->setExcluded();
         $cm->sort(array('product_id', 'price', 'list_price', 'public_price', 'currency_reference'));
         $locale = 'en_US';
-        $formatterDb = Formatter::createFormatter('currency', array(
+        $formatterDb = Formatter::create('currency', array(
             'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
             'locale' => $locale
         ));
         $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());
         
-        $formatterEur = Formatter::createFormatter('currency', array(
+        $formatterEur = Formatter::create('currency', array(
             'currency_code' => 'EUR',
             'locale' => $locale
         ));        

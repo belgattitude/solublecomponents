@@ -7,15 +7,6 @@ use Soluble\FlexStore\Formatter\RowColumn;
 use ArrayObject;
 use \NumberFormatter as IntlNumberFormatter;
 
-/**
- * columns
- *  - price:
- *    - formatter: 
- *          - money
- *              - currency_code
- *              - locale
- * 
- */
 class UnitFormatter extends NumberFormatter
 {
 
@@ -113,7 +104,7 @@ class UnitFormatter extends NumberFormatter
     public function setUnit($unit)
     {
         if ($unit instanceof RowColumn) {
-            $this->unit_column = $currencyCode->getColumnName();
+            $this->unit_column = $unit->getColumnName();
         } elseif (!is_string($unit) || trim($unit) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Unit must be an non empty string (or a RowColumn object)");
         }
@@ -122,7 +113,6 @@ class UnitFormatter extends NumberFormatter
     }
 
     /**
-     * Get the 3-letter ISO 4217 currency code indicating the currency to use
      *
      * @return string
      */

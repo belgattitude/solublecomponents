@@ -99,7 +99,7 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
         $cm = $store->getColumnModel();
         
         $locale = 'en_US';
-        $formatter = Formatter::createFormatter('currency', array(
+        $formatter = Formatter::create('currency', array(
             'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference'),
             'locale' => $locale
         ));

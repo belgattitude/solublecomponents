@@ -23,15 +23,15 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
      * @var array
      */
     protected $params = array();
-    
+
     /**
      *
      * @var array
      */
     protected $default_params = array(
-        'decimals'  => 2,
-        'locale'    => null,
-        'pattern'   => null
+        'decimals' => 2,
+        'locale' => null,
+        'pattern' => null
     );
 
     /**
@@ -59,7 +59,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     protected function setParams($params)
     {
         $this->params = $this->default_params;
-        foreach($params as $name => $value) {
+        foreach ($params as $name => $value) {
             $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', strtolower($name))));
             if (!method_exists($this, $method)) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Parameter '$name' does not exists.");
@@ -83,8 +83,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
             $this->formatters[$formatterId]->setPattern($this->params['pattern']);
         }
     }
-    
-    
+
     /**
      * Format a number
      *
@@ -93,32 +92,32 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
      */
     public function format($number, ArrayObject $row = null)
     {
-        
+
         $locale = $this->params['locale'];
         //$formatterId = md5($locale);
         $formatterId = $locale . (string) $this->params['pattern'];
-        
+
         if (!array_key_exists($formatterId, $this->formatters)) {
             $this->loadFormatterId($formatterId);
         }
-        
-        if($number !== null && !is_numeric($number)) {
+
+        if ($number !== null && !is_numeric($number)) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
-        }       
-        
-        
+        }
+
+
         $value = $this->formatters[$formatterId]->format($number);
         return $value;
-        
     }
 
     /**
      * Throws an Exception when number cannot be formatted
      * @param IntlNumberFormatter $intlFormatter
-     * @param type $number
+     * @param int|string|float $number
      * @throws Exception\RuntimeException
      */
-    protected function throwNumberFormatterException(IntlNumberFormatter $intlFormatter, $number) {
+    protected function throwNumberFormatterException(IntlNumberFormatter $intlFormatter, $number)
+    {
         $error_code = $intlFormatter->getErrorCode();
         if (is_scalar($number)) {
             $val = (string) $number;
@@ -127,9 +126,6 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
         }
         throw new Exception\RuntimeException(__METHOD__ . " Cannot format value '$val', Intl/NumberFormatter error code: $error_code.");
     }
-    
-
-
 
     /**
      * Set locale to use instead of the default
@@ -152,7 +148,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         return $this->params['locale'];
     }
-    
+
     /**
      * Set decimals
      * 
@@ -164,7 +160,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
         $this->params['decimals'] = (int) $decimals;
         return $this;
     }
-    
+
     /**
      * 
      * @return int
@@ -196,6 +192,5 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         return $this->params['pattern'];
     }
-    
-    
+
 }

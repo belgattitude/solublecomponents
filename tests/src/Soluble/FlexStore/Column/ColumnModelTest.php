@@ -77,7 +77,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         
         $results = $cm->search()->regexp('/price/');
         $this->assertEquals(array('price', 'list_price', 'public_price'), $results->toArray());
-        $formatterDb = \Soluble\FlexStore\Formatter::createFormatter('currency', array(
+        $formatterDb = \Soluble\FlexStore\Formatter::create('currency', array(
             'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference')
             
         ));
@@ -89,7 +89,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $f->getCurrencyCode());        
         }
 
-        $formatterEur = \Soluble\FlexStore\Formatter::createFormatter('currency', array(
+        $formatterEur = \Soluble\FlexStore\Formatter::create('currency', array(
             'currency_code' => 'EUR'
         ));
         

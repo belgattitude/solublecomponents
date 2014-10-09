@@ -7,10 +7,16 @@ class Formatter
     
     const FORMATTER_CURRENCY  = 'currency';
     const FORMATTER_NUMBER    = 'number';
+    const FORMATTER_UNIT    = 'unit';
 
+    /**
+     *
+     * @var array
+     */
     protected static $formattersMap = array(
         self::FORMATTER_CURRENCY  => 'Formatter\CurrencyFormatter',
         self::FORMATTER_NUMBER    => 'Formatter\NumberFormatter',
+        self::FORMATTER_UNIT    => 'Formatter\UnitFormatter',
     );
     
     
@@ -22,7 +28,7 @@ class Formatter
      * @throws Exception\InvalidArgumentException
      * @return \Soluble\FlexStore\Formatter\FormatterInterface
      */
-    public static function createFormatter($formatter_name, array $params=array())
+    public static function create($formatter_name, array $params=array())
     {
         if (!self::isSupported($formatter_name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Formatter '$formatter_name' is not supported.");
