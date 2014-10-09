@@ -135,16 +135,19 @@ class LibXLWriter extends AbstractSendableWriter
         }
         return $this->currency_formats->offsetGet($id);
     }
+    
+    
 
     /**
-     *
-     * @param string $locale
+     * 
      * @param string $file_format
+     * @param string $locale default to en_US.UTF-8
+     *
      * @return ExcelBook
      * @throws Exception\ExtensionNotLoadedException
      * @throws Exception\InvalidArgumentException
      */
-    public function getExcelBook($locale = 'UTF-8', $file_format = null)
+    public function getExcelBook($file_format = null, $locale = 'en_US.UTF-8')
     {
         if (!extension_loaded('excel')) {
             throw new Exception\ExtensionNotLoadedException(__METHOD__ . ' LibXLWriter requires excel (php_exccel) extension to be loaded');
@@ -185,7 +188,17 @@ class LibXLWriter extends AbstractSendableWriter
         $book = $this->getExcelBook();
         $this->generateExcel($book, $options);
         //$book->setLocale($locale);
-        $filename = tempnam('/tmp', 'libxl');
+       
+        $temp_dir = sys_get_temp_dir();
+        if (!is_dir($temp_dir)) {
+            throw new \Exception(__METHOD__ . " System temporary directory '$temp_dir' does not exists.");
+        }
+
+        if (!is_writable($temp_dir)) {
+            throw new \Exception(__METHOD__ . " System temporary directory '$temp_dir' is not writable.");
+        }
+        
+        $filename = tempnam($temp_dir, 'libxl');
 
         $book->save($filename);
 
