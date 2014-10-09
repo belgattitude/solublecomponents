@@ -163,25 +163,33 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     public function testGetDataLatin1CharsetThrowsCharsetException()
     {
         
-        $this->setExpectedException('Soluble\FlexStore\Writer\Exception\CharsetConversionException');
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
+            
+            $this->setExpectedException('Soluble\FlexStore\Writer\Exception\CharsetConversionException');
+
+            $source = new SqlSource($this->adapter);
+            $select = $source->select();
+
+
+            $select->from('user', array())->columns(array(
+                'user_id' => new Expression('user_id'),
+                'test' => new Expression('"french accents éàùêûçâµè and chinese 请收藏我们的网址"'))
+             );
+            $store = new Store($source);
+
+            $writer = new CSVWriter($store);
+            $writer->setOptions(
+                    array(
+                        'charset' => 'ISO-8859-1'
+                        )
+                    );        
+            $data = $writer->getData();
+            
+            
+        } else {
+            $this->markTestSkipped('Only valid for PHP 5.4+ version');
+        }
         
-        $source = new SqlSource($this->adapter);
-        $select = $source->select();
-        
-        
-        $select->from('user', array())->columns(array(
-            'user_id' => new Expression('user_id'),
-            'test' => new Expression('"french accents éàùêûçâµè and chinese 请收藏我们的网址"'))
-         );
-        $store = new Store($source);
-        
-        $writer = new CSVWriter($store);
-        $writer->setOptions(
-                array(
-                    'charset' => 'ISO-8859-1'
-                    )
-                );        
-        $data = $writer->getData();
         
         
     }

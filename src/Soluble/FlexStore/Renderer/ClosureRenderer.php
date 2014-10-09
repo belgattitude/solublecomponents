@@ -5,6 +5,10 @@ namespace Soluble\FlexStore\Renderer;
 use ArrayObject;
 use Closure;
 
+/**
+ * 
+ * @method void closure(ArrayObject $row)
+ */
 class ClosureRenderer implements RowRendererInterface
 {
     /**
@@ -12,11 +16,20 @@ class ClosureRenderer implements RowRendererInterface
      */
     protected $closure;
     
+    /**
+     * 
+     * @param Closure $closure
+     */
     public function __construct(Closure $closure) {
         $this->closure = $closure;
     }
     
     
+    /**
+     * Magic callable
+     * @param string $method
+     * @param array $args
+     */
     public function __call($method, $args)
     {
         if(is_callable(array($this, $method))) {
