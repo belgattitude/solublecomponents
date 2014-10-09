@@ -186,6 +186,50 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         
         
     }
+
+    public function testCustomColumn()
+    {
+        $select = new Select();
+        $select->from(array('p' => 'product'), array())
+                ->join(array('ppl' => 'product_pricelist'), new Expression('ppl.product_id = p.product_id and ppl.pricelist_id = 1'), array(), $select::JOIN_LEFT);
+
+        $select->columns(array(
+            'product_id' => new Expression('p.product_id'),
+            'reference' => new Expression('p.reference'),
+            'price' => new Expression('ppl.price'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price')
+        ));
+
+        $source = new SqlSource($this->adapter, $select);
+        $cm = $source->getColumnModel();
+        
+        $cc = new \Soluble\FlexStore\Column\Column('picture_url');
+        $cc->setType('string');
+        
+        $cm->add($cc);
+        
+        $cm->sort(array('picture_url', 'price', 'list_price'));
+        $cm->exclude(array('reference'));
+        
+        
+
+        $fct = function(\ArrayObject $row) {
+            $row['picture_url'] = "http://" . $row['reference'];
+        };
+        $cm->addRowRenderer(new \Soluble\FlexStore\Renderer\ClosureRenderer($fct));
+
+        $data = $source->getData()->toArray();
+        $expected = array(
+            'picture_url' => "http://TESTREF10",
+            'price' => "10.200000",
+            'list_price' => "15.300000",
+            'product_id' => "10",
+            'public_price' => "18.200000",
+        );
+        $this->assertEquals($expected, $data[0]);
+    }
+    
     
 
     public function testAddRowRenderer()
@@ -205,14 +249,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
-        /*
-          $cm->setRenderer(array('column', 'column2'), $my_renderer);
-          $cm->setRenderer('column3', $my_renderer2);
-
-          $renderer->apply($column, $data) {
-          $data
-          } */
-
         $fct = function(\ArrayObject $row) {
             $row['price'] = 200;
         };
@@ -222,11 +258,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
                 $row['reference'] = 'MyNEWREF';
             }
         };
-
-
-        // $resultset = $source->getData();
-        //$resultset->setHydratedColumns($columns);
-        //$resultset
 
         $cm->addRowRenderer(new \Soluble\FlexStore\Renderer\ClosureRenderer($fct));
         $cm->addRowRenderer(new \Soluble\FlexStore\Renderer\ClosureRenderer($fct2));
@@ -240,7 +271,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
                 $this->assertNotEquals('MyNEWREF', $row['reference']);
             }
         }
-        //die();
     }
 
     public function testGetColumns()
