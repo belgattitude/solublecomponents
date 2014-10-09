@@ -24,6 +24,12 @@ class LibXLWriter extends AbstractSendableWriter
     protected $currency_formats;
 
     /**
+     * Cache for unit formats
+     * @var ArrayObject
+     */
+    protected $unit_formats;    
+    
+    /**
      *
      * @var SimpleHeaders
      */
@@ -84,6 +90,7 @@ class LibXLWriter extends AbstractSendableWriter
     public function __construct(StoreInterface $store = null, $options = null)
     {
         $this->currency_formats = new ArrayObject();
+        $this->unit_formats = new ArrayObject();
         parent::__construct($store, $options);
     }
 
@@ -103,8 +110,13 @@ class LibXLWriter extends AbstractSendableWriter
         return $this;
     }
 
+
     /**
      * 
+     * @param ExcelBook $book
+     * @param string $currency
+     * @param int $decimals
+     * @return ExcelFormat
      */
     protected function getCurrencyFormat(ExcelBook $book, $currency, $decimals)
     {
@@ -136,16 +148,49 @@ class LibXLWriter extends AbstractSendableWriter
         return $this->currency_formats->offsetGet($id);
     }
     
+
+
+    /**
+     * 
+     * @param ExcelBook $book
+     * @param string $unit
+     * @param int $decimals
+     * @return ExcelFormat
+     */
+    protected function getUnitFormat(ExcelBook $book, $unit, $decimals)
+    {
+        $id = "$unit/$decimals";
+        if (!$this->unit_formats->offsetExists($id)) {
+
+            $symbol = $unit;
+            
+            $formatString = '#,##0';
+
+            if ($decimals > 0) {
+                $zeros = str_repeat("0", $decimals);
+                $formatString = $formatString . '.' . $zeros;
+            }
+            $formatString = $formatString . ' "' . $symbol . '"_-';
+
+            $cfid = $book->addCustomFormat($formatString);
+            $format = $book->addFormat();
+            $format->numberFormat($cfid);
+            $this->unit_formats->offsetSet($id, $format);
+        }
+        return $this->unit_formats->offsetGet($id);
+    }
+    
     
 
     /**
      * 
+     * @throws Exception\ExtensionNotLoadedException
+     * @throws Exception\InvalidArgumentException
+     *
      * @param string $file_format
      * @param string $locale default to en_US.UTF-8
      *
      * @return ExcelBook
-     * @throws Exception\ExtensionNotLoadedException
-     * @throws Exception\InvalidArgumentException
      */
     public function getExcelBook($file_format = null, $locale = 'en_US.UTF-8')
     {
@@ -241,6 +286,19 @@ class LibXLWriter extends AbstractSendableWriter
                     } else {
                         $format = $this->getCurrencyFormat($book, $currency, $decimals);
                     }
+                } elseif ($formatter instanceof \Soluble\FlexStore\Formatter\UnitFormatter) {
+                    $unit = $formatter->getUnit();
+                    if ($unit instanceof \Soluble\FlexStore\Formatter\RowColumn) {
+                        // TODO better handling of callbacks
+                        $format = function(ExcelBook $book, $unit, $decimals) {
+                            return $this->getUnitFormat($book, $unit, $decimals);
+                        };
+                        $custom_column = $unit->getColumnName();
+                    } else {
+                        $format = $this->getUnitFormat($book, $unit, $decimals);
+                    }
+                    
+                    
                 }
             } else {
                 $model_type = $column->getType()->getName();

@@ -82,7 +82,8 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
             'test_date' => new Expression("cast('2012-12-31 15:10:59' as date)"),
             'test_datetime' => new Expression("cast('2012-12-31 15:10:59' as datetime)"),
             'test_time' => new Expression("cast('2012-12-31 15:10:59' as time)"),
-            
+            'unit' => new Expression("'Kg'"),
+            'length' => new Expression("1.36666666")
         ));
 
         $source = new SqlSource($this->adapter, $select);
@@ -120,9 +121,30 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         ));        
         $this->assertNotInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterEur->getCurrencyCode());
         
+        $unitFormatter = Formatter::create('unit', array(
+            'unit' => '%',
+            'decimals' => 2,
+            'locale' => $locale
+        ));
+
+        $intFormatter = Formatter::create('number', array(
+            'decimals' => 0,
+            'locale' => $locale
+        ));        
+
+        $volumeFormatter = Formatter::create('number', array(
+            'decimals' => 3,
+            'locale' => $locale
+        ));        
+        
+        
         $cm->search()->regexp('/price/')->setFormatter($formatterDb);
         $cm->get('currency_reference')->setExcluded();
         $cm->get('public_price')->setFormatter($formatterEur);
+        $cm->get('volume')->setFormatter($volumeFormatter);
+        $cm->get('length')->setFormatter($intFormatter);
+        
+        $cm->search()->regexp('/discount\_[1-4]$/')->setFormatter($unitFormatter);
         
         
         $formatted_data = $store->getData()->toArray();
@@ -142,10 +164,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, $filesize);
 
         // test Output
-
         $arr = $this->excelToArray($output_file);
-        
-        
         
         $this->assertEquals('price', $arr[1]['B']);
         $this->assertTrue(is_float($arr[2]['B']));
@@ -180,6 +199,28 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals('15:10:59', $p2->getFormattedValue());
         $this->assertEquals('s', $p2->getDataType());
+        
+        // Length must have no decimals
+        $r2 = $sheet->getCell('R2');
+        $this->assertEquals('1', $r2->getFormattedValue());
+        $this->assertEquals(number_format(1.366666, 2), number_format($r2->getValue(), 2));
+        $this->assertEquals('n', $r2->getDataType());
+        
+        // Volume mus have 3 decimals
+        $e2 = $sheet->getCell("E2");
+
+        $this->assertTrue("0.300" === $e2->getFormattedValue());
+        $this->assertEquals(number_format(0.3, 2), number_format($e2->getValue(), 2));
+        $this->assertEquals('n', $r2->getDataType());
+        
+        // Discount_1 2 decimals and % symbol
+        
+        $i2 = $sheet->getCell("I2");
+        $this->assertEquals(number_format(22.00, 2), number_format($i2->getValue(), 2));
+        $this->assertTrue("22.00 %" === $i2->getFormattedValue());
+        $this->assertEquals('n', $i2->getDataType());
+        
+        
         
     }
     
