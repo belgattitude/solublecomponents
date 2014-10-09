@@ -225,7 +225,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'price' => "10.200000",
             'list_price' => "15.300000",
             'product_id' => "10",
-            'public_price' => "18.200000",
+            'public_price' => "18.200000",  
         );
         $this->assertEquals($expected, $data[0]);
     }

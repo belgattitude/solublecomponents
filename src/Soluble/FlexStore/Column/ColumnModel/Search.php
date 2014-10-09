@@ -47,7 +47,6 @@ class Search
 
     /**
      *
-     * @throws Exception\InvalidArgumentException
      * @return Result
      */
     function in(array $columns)
@@ -57,9 +56,7 @@ class Search
             $column = trim($column);
             if ($this->columns->offsetExists($column)) {
                 $results[] = $column;
-            } else {
-                throw new Exception\InvalidArgumentException(__METHOD__ . " Column '$column' does not exists in column model.");
-            }
+            } 
         }
         return new Result($results, $this->columns);
     }
