@@ -83,21 +83,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $keys = join(',', array_keys($data[0]));
         $this->assertEquals('test_char_10,test_varbinary_10', $keys);
         
-        //var_dump($data);
-        //die();
-        /*
-        $cm->all()->setExcluded(true);
-        $cm->with(array())
-        $cm->has('col1');
-        $cm->with(array('col1', 'ol2'))->setExcluded(false);
-        $cm->get('col1')->setRenderer();
-        $cm->regexp('/price/')->setRenderer($currencyRenderer);
-        //$cm->includeOnly(array('col1', 'col2'));
-        
-        //$columns = $cm->getColumns();
-        
-        $data = $store->getData();
-        */
+
         
     }
     

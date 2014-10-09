@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Column;
 
-use Soluble\FlexStore\Renderer\RendererInterface;
+use Soluble\FlexStore\Renderer\RowRendererInterface;
 use Soluble\FlexStore\Column\ColumnModel\Search;
 use Soluble\FlexStore\Formatter\FormatterInterface;
 use ArrayObject;
@@ -42,13 +42,12 @@ class ColumnModel
     }
 
     /**
-     * Add a column renderer
+     * Add a row renderer
      *
      * @throws Exception\InvalidArgumentException
-     * @param string $column
-     * @param type $renderer
+     * @param RowRendererInterface $renderer
      */
-    public function addRowRenderer($renderer)
+    public function addRowRenderer(RowRendererInterface $renderer)
     {
         $this->row_renderers->append($renderer);
    }

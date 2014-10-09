@@ -206,7 +206,7 @@ class ResultSet extends AbstractResultSet
 
         // 1 Row renderers
         foreach ($this->hydration_renderers as $renderer) {
-            $renderer($row);
+            $renderer->apply($row);
         }
 
         // 2. Formatters

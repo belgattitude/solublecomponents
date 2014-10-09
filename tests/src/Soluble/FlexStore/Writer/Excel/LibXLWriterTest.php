@@ -96,7 +96,7 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     
-   /**
+    /**
      * 
      */
     public function testColumnModelWithColumnExclusion()
@@ -219,8 +219,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(number_format(22.00, 2), number_format($i2->getValue(), 2));
         $this->assertTrue("22.00 %" === $i2->getFormattedValue());
         $this->assertEquals('n', $i2->getDataType());
-        
-        
         
     }
     
