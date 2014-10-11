@@ -9,9 +9,18 @@
 [![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
 
-Soluble is a set of high quality PHP 5.3+ components designed to be easily 
+Soluble components.
 
 ## Components
+
+
+| Component     | Description            | Status |
+| :------------ |:---------------------- | :-----:|
+| `Normalist`   | Normalist              | alpha  |
+| `FlexStore`   | FlexStore              | beta   |
+| `Db`          | Core database utils    | beta   |
+| `Spreadsheet` | Core spreadsheet       | alpha  |
+| `Japha`       | Japha                  | n/a    |
 
 Soluble\Normalist
 -----------------
@@ -27,7 +36,7 @@ Soluble\FlexStore
 Soluble\Imediate
 ----------------
 
-Soluble\Jaintelart2010
+Soluble\Japha
 
 -------------
 
@@ -60,9 +69,10 @@ Documentation is hosted on [Read the docs](http://soluble.readthedocs.org)
 
 Please follow the following guides and code standards:
 
+* [PSR 4 Autoloader](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * [PSR 2 Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 * [PSR 1 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
-* [PSR 0 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
+* [PSR 0 Autoloading standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
 
 
 
