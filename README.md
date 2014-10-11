@@ -1,4 +1,4 @@
-# Soluble
+# sol·u·ble
 
 [![Build Status](https://travis-ci.org/belgattitude/solublecomponents.png?branch=master)](https://travis-ci.org/belgattitude/solublecomponents)
 [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/)
@@ -8,19 +8,27 @@
 [![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
+`sol·u·ble` provide high-quality, well-tested, standards-compliant libraries that can be dissolved in any project. 
 
-Soluble components.
+The idea behind `sol·u·ble` is to provide a set of independent libraries to speed up, modernize and enrich PHP projects development.
+
+By independant, sol·u·ble components try to avoid being linked to a particular framework, meaning that you may use it in different code bases or frameworks. 
+Every components can be installed separately through composer or download.
+ 
+This repository contains all sol·u·ble components. 
+
+
 
 ## Components
 
-
-| Component     | Description            | Status |
-| :------------ |:---------------------- | :-----:|
-| `Normalist`   | Normalist              | alpha  |
-| `FlexStore`   | FlexStore              | beta   |
-| `Db`          | Core database utils    | beta   |
-| `Spreadsheet` | Core spreadsheet       | alpha  |
-| `Japha`       | Japha                  | n/a    |
+| Component     | Description            | Status     |
+| :------------ |:---------------------- | :---------:|
+| `FlexStore`   | Versatile data provider                     | beta       |
+| `Normalist`   | Normalize database access                       | alpha      |
+| `Db`          | Core database library    | beta       |
+| `Spreadsheet` | Core Expre library       | alpha      |
+| `Japha`       | Japha                  | progress   |
+| `Media`       | Japha                  | deprecated |
 
 Soluble\Normalist
 -----------------
