@@ -8,12 +8,15 @@
 [![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
-`sol·u·ble` provide high-quality, well-tested, standards-compliant libraries that can be dissolved in any project. 
+**Sol·u·ble** provide high-quality, well-tested, standards-compliant libraries that *dissolve smoothly* in any PHP project. 
 
-The idea behind `sol·u·ble` is to provide a set of independent libraries to speed up, modernize and enrich PHP projects development.
+The idea behind `sol·u·ble` is to provide a set of libraries to speed up, modernize and enrich PHP project development. 
+ 
+- Sol·u·ble components may rely on well-proven external libraries such as Zend Framework. 
+- Each component can installed individually through composer.
+- Quality is ensured through a large unit tests and continuous integration builds on Travis
+- Tested on PHP 5.3*, 5.4, 5.5 and 5.6. 
 
-By independant, sol·u·ble components try to avoid being linked to a particular framework, meaning that you may use it in different code bases or frameworks. 
-Every components can be installed separately through composer or download.
  
 This repository contains all sol·u·ble components. 
 
@@ -26,9 +29,9 @@ This repository contains all sol·u·ble components.
 | `FlexStore`   | Versatile data provider, SQL query to JSON/XML/Excel/Datatables.......                      | beta       |
 | `Normalist`   | Normalize database access                       | alpha      |
 | `Db`          | Core database library    | beta       |
-| `Spreadsheet` | Core Expre library       | alpha      |
+| `Spreadsheet` | Core Excel library       | alpha      |
 | `Japha`       | Japha                  | progress   |
-| `Media`       | Japha                  | deprecated |
+| `Media`       | Media conversi              | deprecated |
 
 Soluble\Normalist
 -----------------
