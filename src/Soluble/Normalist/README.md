@@ -1,12 +1,11 @@
-# Soluble\Normalist
+# Soluble/Normalist
 
 [![Build Status](https://travis-ci.org/belgattitude/solublecomponents.png?branch=master)](https://travis-ci.org/belgattitude/solublecomponents)
 [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/badges/quality-score.png?s=6f3ab91f916bf642f248e82c29857f94cb50bb33)](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/)
-[![Total Downloads](https://poser.pugx.org/soluble/solublecomponents/downloads.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![Dependency Status](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3/badge.png)](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3)
-[![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
-[![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
+[![Latest Stable Version](https://poser.pugx.org/soluble/normalist/v/stable.svg)](https://packagist.org/packages/soluble/normalist)
+[![License](https://poser.pugx.org/soluble/soluble/normalist/license.png)](https://packagist.org/packages/soluble/normalist)
 
 ## Introduction
 
@@ -56,3 +55,6 @@ Documentation is hosted on [Read the docs](http://soluble.readthedocs.org)
 
 
 ## Contributing
+
+
+[![Total Downloads](https://poser.pugx.org/soluble/soluble/normalist/downloads.png)](https://packagist.org/packages/soluble/normalist)

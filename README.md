@@ -3,35 +3,24 @@
 [![Build Status](https://travis-ci.org/belgattitude/solublecomponents.png?branch=master)](https://travis-ci.org/belgattitude/solublecomponents)
 [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/badges/quality-score.png?s=6f3ab91f916bf642f248e82c29857f94cb50bb33)](https://scrutinizer-ci.com/g/belgattitude/solublecomponents/)
-[![Total Downloads](https://poser.pugx.org/soluble/solublecomponents/downloads.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![Dependency Status](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3/badge.png)](https://www.versioneye.com/user/projects/52cc2674ec137549700001f3)
 [![Latest Stable Version](https://poser.pugx.org/soluble/solublecomponents/v/stable.png)](https://packagist.org/packages/soluble/solublecomponents)
 [![License](https://poser.pugx.org/soluble/solublecomponents/license.png)](https://packagist.org/packages/soluble/solublecomponents)
 
-**Sol·u·ble** provide high-quality, well-tested, standards-compliant libraries that *dissolve smoothly* in any PHP project. 
+**Sol·u·ble** provide high-quality, well-tested, standards-compliant libraries that *dissolve smoothly* in any PHP 5.3+ project. 
 
-The idea behind `sol·u·ble` is to provide a set of libraries to speed up, modernize and enrich PHP project development. 
+This is the main repository for soluble components. Please refer to indivual components for more information 
  
-- Sol·u·ble components may rely on well-proven external libraries such as Zend Framework. 
-- Each component can installed individually through composer.
-- Quality is ensured through a large unit tests and continuous integration builds on Travis
-- Tested on PHP 5.3*, 5.4, 5.5 and 5.6. 
-
- 
-This repository contains all sol·u·ble components. 
-
-
-
 ## Components
 
-| Component     | Description            | Status     |
+| Component     | Description            | Packagist     |
 | :------------ |:---------------------- | :---------:|
-| `FlexStore`   | Versatile data provider, SQL query to JSON/XML/Excel/Datatables.......                      | beta       |
-| `Normalist`   | Normalize database access                       | alpha      |
-| `Db`          | Core database library    | beta       |
-| `Spreadsheet` | Core Excel library       | alpha      |
-| `Japha`       | Japha                  | progress   |
-| `Media`       | Media conversi              | deprecated |
+| `FlexStore`   | Versatile data provider, SQL query to JSON/XML/Excel/Datatables.......          | [![Latest Stable Version](https://poser.pugx.org/soluble/flexstore/v/stable.svg)](https://packagist.org/packages/soluble/flexstore)    |
+| `Normalist`   | Normalize database access across projects                   |  [![Latest Stable Version](https://poser.pugx.org/soluble/normalist/v/stable.svg)](https://packagist.org/packages/soluble/normalist)   |
+| `Db`          | Database access core libraries and metadata schema readers.  | [![Latest Stable Version](https://poser.pugx.org/soluble/db/v/stable.svg)](https://packagist.org/packages/soluble/db)       |
+| `Spreadsheet` | Core Excel library       | [![Latest Stable Version](https://poser.pugx.org/soluble/spreadsheet/v/stable.svg)](https://packagist.org/packages/soluble/spreadsheet)      |
+| `Japha`       | Japha                  | [![Latest Stable Version](https://poser.pugx.org/soluble/japha/v/stable.svg)](https://packagist.org/packages/soluble/japha)   |
+
 
 Soluble\Normalist
 -----------------
@@ -88,3 +77,4 @@ Please follow the following guides and code standards:
 
 
 
+[![Total Downloads](https://poser.pugx.org/soluble/solublecomponents/downloads.png)](https://packagist.org/packages/soluble/solublecomponents)
