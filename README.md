@@ -23,7 +23,7 @@ This repository contains all sol·u·ble components.
 
 | Component     | Description            | Status     |
 | :------------ |:---------------------- | :---------:|
-| `FlexStore`   | Versatile data provider                     | beta       |
+| `FlexStore`   | Versatile data provider, SQL query to JSON/XML/Excel/Datatables.......                      | beta       |
 | `Normalist`   | Normalize database access                       | alpha      |
 | `Db`          | Core database library    | beta       |
 | `Spreadsheet` | Core Expre library       | alpha      |
