@@ -13,6 +13,8 @@
 >
 
     <php>
+        <ini name="date.timezone" value="UTC"/>
+        
         <!-- Configuration for the database 
 		
         <server name="MYSQL_DRIVER" value="Mysqli" />

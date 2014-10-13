@@ -301,13 +301,20 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
     /**
      * Return the query string
-     * See getQueryString()
      *
      * @throws Exception\InvalidUsageException
      * @return string
      */
     public function __toString()
     {
-        return $this->getQueryString();
+        if ($this->query_string != '') {
+            $sql = str_replace("\n", ' ', $this->query_string);
+        } else if ($this->select !== null) {
+            $sql = $this->sql->getSqlStringForSqlObject($this->select);
+        } else {
+            throw new Exception\InvalidUsageException(__METHOD__ . ": No select given.");
+        }
+        return $sql;
     }
+
 }
