@@ -13,7 +13,10 @@
 >
 
     <php>
+        <!--
         <ini name="date.timezone" value="UTC"/>
+        -->
+        <ini name="date.timezone" value="Europe/Brussels"/>
         
         <!-- Configuration for the database 
 		

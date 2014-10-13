@@ -51,9 +51,6 @@
 	"autoload": {
 		"psr-4": {"Soluble\\": "src/Soluble/"}
 	},
-	"config": {
-		"bin-dir": "bin"
-	},
     "replace": {
         "soluble/db": "self.version",
         "soluble/normalist": "self.version",
