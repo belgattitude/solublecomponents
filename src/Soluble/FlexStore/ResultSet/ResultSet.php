@@ -37,7 +37,7 @@ class ResultSet extends AbstractResultSet
      *
      * @var boolean
      */
-    protected $hydrate_options_initialized;
+    protected $hydrate_options_initialized = false;
 
     /**
      * @var ArrayObject
@@ -50,10 +50,16 @@ class ResultSet extends AbstractResultSet
     protected $hydration_renderers;
 
     /**
-     * @var ArrayObject
+     * @var ArrayObject|null
      */
     protected $hydrated_columns;
 
+    /**
+     * @var array|null
+     */
+    protected $hydration_virtual_columns;
+    
+    
     /**
      * Return source column model
      * 
@@ -65,6 +71,7 @@ class ResultSet extends AbstractResultSet
         if ($this->source === null) {
             throw new Exception\RuntimeException(__METHOD__ . " Prior to get column model, a source must be set.");
         }
+        $this->hydrate_options_initialized = false;
         return $this->source->getColumnModel();
     }
 
@@ -153,6 +160,7 @@ class ResultSet extends AbstractResultSet
         $this->hydration_formatters = new ArrayObject();
         $this->hydration_renderers = new ArrayObject();
         $this->hydrated_columns = null;
+        $this->hydration_virtual_columns = null;
 
 
         if ($this->source->hasColumnModel()) {
@@ -175,8 +183,18 @@ class ResultSet extends AbstractResultSet
                 // Only if column model definition differs from originating 
                 // source row definition.
                 $hydrated_columns = array_keys((array) $columns);
-                if ($hydrated_columns != array_keys((array) $row)) {
+                $row_columns = array_keys((array) $row);
+                if ($hydrated_columns != $row_columns) {
                     $this->hydrated_columns = new ArrayObject($hydrated_columns);
+                    
+                    // Check virtual_colums
+                    // Columns that does not exists in the underlying source
+                    // but have been added later to the column model.
+                    $all_columns = array_keys((array) $cm->getColumns(true));
+                    $virtual_cols = array_diff($all_columns, $row_columns);
+                    if (count($virtual_cols) > 0) {
+                        $this->hydration_virtual_columns = $virtual_cols;
+                    } 
                 }
             } 
 
@@ -204,10 +222,16 @@ class ResultSet extends AbstractResultSet
             $this->initColumnModelHydration($row);
         }
 
-        // 1 Row renderers
+        // 1. Row renderers
         foreach ($this->hydration_renderers as $renderer) {
+            if ($this->hydration_virtual_columns !== null) {
+                foreach($this->hydration_virtual_columns as $virtual) {
+                    // initialize virtual columns
+                    $row->offsetSet($virtual, null);
+                }
+            }
             $renderer->apply($row);
-        }
+        }        
 
         // 2. Formatters
         foreach ($this->hydration_formatters as $formatters) {
@@ -216,11 +240,11 @@ class ResultSet extends AbstractResultSet
             }
         }
 
-        // 3. Process column exclusion
+        // 3. Process column hydration
         if ($this->hydrated_columns !== null) {
             $d = new ArrayObject();
             foreach ($this->hydrated_columns as $column) {
-                $d->offsetSet($column, $row[$column]);
+                $d->offsetSet($column, isset($row[$column]) ? $row[$column] : null);
             }
             $row->exchangeArray($d);
         }
@@ -256,4 +280,29 @@ class ResultSet extends AbstractResultSet
         return $return;
     }
 
+    /**
+     * Iterator: is pointer valid?
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        $valid =  $this->zfResultSet->valid();
+        if (!$valid) {
+            $this->hydrate_options_initialized = false;
+        }
+        return $valid;
+    }
+
+    /**
+     * Iterator: rewind
+     *
+     * @return void
+     */
+    public function rewind()
+    {
+        $this->hydrate_options_initialized = false;
+        $this->zfResultSet->rewind();
+    }    
+    
 }

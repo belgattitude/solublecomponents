@@ -263,13 +263,14 @@ class ColumnModel
     /**
      * Return columns
      *
+     * @param boolean $include_excluded_columns 
      * @return ArrayObject
      */
-    public function getColumns()
+    public function getColumns($include_excluded_columns=false)
     {
         $arr = new ArrayObject;
         foreach ($this->columns as $key => $column) {
-            if (!$column->isExcluded()) {
+            if ($include_excluded_columns || !$column->isExcluded()) {
                 $arr->offsetSet($key, $column);
             }
         }
