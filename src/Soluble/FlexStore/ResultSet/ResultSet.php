@@ -55,7 +55,7 @@ class ResultSet extends AbstractResultSet
     protected $hydrated_columns;
 
     /**
-     * @var array|null
+     * @var ArrayObject
      */
     protected $hydration_virtual_columns;
     
@@ -160,7 +160,7 @@ class ResultSet extends AbstractResultSet
         $this->hydration_formatters = new ArrayObject();
         $this->hydration_renderers = new ArrayObject();
         $this->hydrated_columns = null;
-        $this->hydration_virtual_columns = null;
+        $this->hydration_virtual_columns = new ArrayObject();
 
 
         if ($this->source->hasColumnModel()) {
@@ -186,20 +186,19 @@ class ResultSet extends AbstractResultSet
                 $row_columns = array_keys((array) $row);
                 if ($hydrated_columns != $row_columns) {
                     $this->hydrated_columns = new ArrayObject($hydrated_columns);
-                    
-                    // Check virtual_colums
-                    // Columns that does not exists in the underlying source
-                    // but have been added later to the column model.
-                    $all_columns = array_keys((array) $cm->getColumns(true));
-                    $virtual_cols = array_diff($all_columns, $row_columns);
-                    if (count($virtual_cols) > 0) {
-                        $this->hydration_virtual_columns = $virtual_cols;
-                    } 
                 }
             } 
 
             // 3. Initialize row renderers
             if ($this->getHydrationOptions()->isRenderersEnabled()) {            
+
+                // If renderers enabled, always populate virtual columns
+                // in the original data row in order for renderers to
+                // check if columns exists
+
+                $virtual_columns = $cm->search()->findVirtual()->toArray();
+                $this->hydration_virtual_columns = new ArrayObject($virtual_columns);
+                
                 $this->hydration_renderers = $cm->getRowRenderers();
             }
         }
@@ -221,26 +220,27 @@ class ResultSet extends AbstractResultSet
         if (!$this->hydrate_options_initialized) {
             $this->initColumnModelHydration($row);
         }
+        
+        // 1. If virtual columns are in use, let's add them to the row
+        //    definition
+        foreach($this->hydration_virtual_columns as $virtual) {
+                // initialize virtual columns
+                $row->offsetSet($virtual, null);
+        }
 
-        // 1. Row renderers
+        // 2. Row renderers
         foreach ($this->hydration_renderers as $renderer) {
-            if ($this->hydration_virtual_columns !== null) {
-                foreach($this->hydration_virtual_columns as $virtual) {
-                    // initialize virtual columns
-                    $row->offsetSet($virtual, null);
-                }
-            }
             $renderer->apply($row);
         }        
 
-        // 2. Formatters
+        // 3. Formatters
         foreach ($this->hydration_formatters as $formatters) {
             foreach ($formatters['columns'] as $column) {
                 $row[$column] = $formatters['formatter']->format($row[$column], $row);
             }
         }
 
-        // 3. Process column hydration
+        // 4. Process column hydration
         if ($this->hydrated_columns !== null) {
             $d = new ArrayObject();
             foreach ($this->hydrated_columns as $column) {

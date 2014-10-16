@@ -30,6 +30,12 @@ interface ColumnSettableInterface
 
     /**
      *
+     * @param boolean $virtual
+     */
+    function setVirtual($virtual = true);    
+    
+    /**
+     *
      * @param boolean $editable
      */
     function setEditable($editable = true);

@@ -106,6 +106,9 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $column = new Column('cool', array('type' => Type::TYPE_STRING));
         $cm->add($column);
         
+        $this->assertTrue($column->isVirtual());
+        
+        
         $f = function(\ArrayObject $row) {
             if (!$row->offsetExists('cool')) {
                 throw new \Exception("No cool column in row");
@@ -366,6 +369,23 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($excluded, $cm->getExcluded());
     }
 
+    public function testFindVirtual()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product');
+        $source = new SqlSource($this->adapter, $select);
+        $cm = $source->getColumnModel();
+
+        $excluded = array('product_id', 'legacy_mapping');
+        $cm->exclude($excluded);
+        $cm->add(new Column('cool', $params=array('type' => 'string')));
+        
+        $virtual = $cm->search()->findVirtual()->toArray();
+        $this->assertEquals(array('cool'), $virtual);
+        
+    }
+    
+    
     public function testSortColumns()
     {
         $select = new \Zend\Db\Sql\Select();

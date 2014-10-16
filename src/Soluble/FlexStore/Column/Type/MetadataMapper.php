@@ -52,7 +52,7 @@ class MetadataMapper
         foreach ($metadata_columns as $name => $meta) {
             $column = new Column($name);
             $column->setType(self::getColumnTypeByMetadataType($meta->getDataType()));
-            
+            $column->setVirtual(false);
             $cm->add($column);
         }
         return $cm;

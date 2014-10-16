@@ -29,6 +29,7 @@ class Column implements ColumnSettableInterface
         'groupable' => true,
         'sortable' => true,
         'editable' => false,
+        'virtual' => true
     );
     
 
@@ -124,6 +125,27 @@ class Column implements ColumnSettableInterface
         return $this->properties['formatter'];
     }
 
+    /**
+     *
+     * @param boolean $virtual
+     * @return Column
+     */
+    function setVirtual($virtual = true)
+    {
+        $this->properties['virtual'] = (bool) $virtual;
+        return $this;
+    }    
+
+    /**
+     *
+     * @return boolean
+     */
+    function isVirtual()
+    {
+        return $this->properties['virtual'];
+    }
+    
+    
     /**
      *
      * @param boolean $excluded

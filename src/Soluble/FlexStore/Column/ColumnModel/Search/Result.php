@@ -59,6 +59,19 @@ class Result implements ColumnSettableInterface
         return $this;
     }
     
+
+    /**
+     *
+     * @param boolean $virtual
+     * @return Result
+     */
+    function setVirtual($virtual = true)
+    {
+        foreach ($this->results as $name) {
+            $this->columns->offsetGet($name)->setVirtual($virtual);
+        }
+        return $this;
+    }    
     
     /**
      *

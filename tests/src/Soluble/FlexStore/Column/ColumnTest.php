@@ -41,6 +41,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'groupable' => false,
             'sortable' => false,
             'editable' => true,            
+            'virtual' => true,            
         );
         
         $column = new Column('cool', $properties);

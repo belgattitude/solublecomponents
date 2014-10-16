@@ -61,6 +61,9 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
         $this->assertInstanceOf('ArrayObject', $columns);
+        foreach($columns as $column) {
+            $this->assertFalse($column->isVirtual());
+        }
         
         
     }

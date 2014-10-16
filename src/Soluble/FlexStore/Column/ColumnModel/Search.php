@@ -92,4 +92,19 @@ class Search
         }
         return new Result($results, $this->columns);
     }
+    
+    /**
+     * Return virtual column (not materialized by the underlying datasource)
+     * @return Result
+     */
+    function findVirtual()
+    {
+        $results = array();
+        foreach ($this->columns as $name => $column) {
+            if ($column->isVirtual()) {
+                $results[] = $name;
+            }
+        }
+        return new Result($results, $this->columns);
+    }
 }
