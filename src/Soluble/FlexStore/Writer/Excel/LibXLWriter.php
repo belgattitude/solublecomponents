@@ -314,7 +314,7 @@ class LibXLWriter extends AbstractSendableWriter
             }
 
             // We now have the type
-            if ($type == "number" && $decimals === null && $metadata !== null) {
+            if ($type == "number" && $decimals === null && $metadata !== null && $metadata->offsetExists($name)) {
                 // try to guess from metadata
                 $decimals = $metadata->offsetGet($name)->getNumericPrecision();
                 if (!$decimals) {
