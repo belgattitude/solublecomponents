@@ -14,7 +14,8 @@
 
     <php>
 
-
+        <ini name="date.timezone" value="Europe/Brussels"/>
+        
         <server name="MYSQL_DRIVER" value="PDO_Mysql" />
         <server name="MYSQL_HOSTNAME" value="localhost" />
         <server name="MYSQL_USERNAME" value="root" />
