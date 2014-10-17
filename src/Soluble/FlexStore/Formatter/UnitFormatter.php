@@ -36,7 +36,7 @@ class UnitFormatter extends NumberFormatter
     }
 
     /**
-     * 
+     *
      * @param string $formatterId
      */
     protected function loadFormatterId($formatterId)
@@ -44,12 +44,12 @@ class UnitFormatter extends NumberFormatter
         
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
-                $locale, IntlNumberFormatter::DECIMAL
+            $locale, IntlNumberFormatter::DECIMAL
         );
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {
             $this->formatters[$formatterId]->setPattern($this->params['pattern']);
-        }        
+        }
     }
 
     /**
@@ -71,9 +71,9 @@ class UnitFormatter extends NumberFormatter
             $this->loadFormatterId($formatterId);
         }
 
-        if($number !== null && !is_numeric($number)) {
+        if ($number !== null && !is_numeric($number)) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
-        }       
+        }
         
         
         if ($this->unit_column !== null) {
@@ -81,7 +81,7 @@ class UnitFormatter extends NumberFormatter
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine unit code based on column '{$this->unit_column}'.");
             }
             $value = $this->formatters[$formatterId]->format($number) . ' ' . $row[$this->unit_column];
-        } else if ($this->params['unit'] != '') {
+        } elseif ($this->params['unit'] != '') {
             $value = $this->formatters[$formatterId]->format($number) . ' ' . $this->params['unit'];
         } else {
             throw new Exception\RuntimeException(__METHOD__ . " Unit code must be set prior to use the UnitFormatter");
@@ -95,7 +95,7 @@ class UnitFormatter extends NumberFormatter
     }
 
     /**
-     * 
+     *
      *
      * @throws Exception\InvalidArgumentException
      * @param  string|RowColumn $unit
@@ -120,5 +120,4 @@ class UnitFormatter extends NumberFormatter
     {
         return $this->params['unit'];
     }
-
 }

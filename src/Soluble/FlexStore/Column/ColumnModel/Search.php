@@ -56,7 +56,7 @@ class Search
             $column = trim($column);
             if ($this->columns->offsetExists($column)) {
                 $results[] = $column;
-            } 
+            }
         }
         return new Result($results, $this->columns);
     }

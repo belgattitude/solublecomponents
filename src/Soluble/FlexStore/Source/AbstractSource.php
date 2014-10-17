@@ -99,7 +99,7 @@ abstract class AbstractSource implements SourceInterface
 
     /**
      * Whether a column model exists
-     * 
+     *
      * @return boolean
      */
     public function hasColumnModel()

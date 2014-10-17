@@ -58,7 +58,7 @@ class Type
     
     /**
      * Return all supported types
-     * 
+     *
      * @return array
      */
     public static function getSupportedTypes()

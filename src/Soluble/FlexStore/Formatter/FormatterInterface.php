@@ -14,8 +14,8 @@ interface FormatterInterface
     
     
     /**
-     * Format 
-     * 
+     * Format
+     *
      * @param mixed $value
      * @param ArrayObject $row
      * @return void
@@ -24,7 +24,7 @@ interface FormatterInterface
     
     /**
      * Return formatted value
-     * 
+     *
      * @param type $value
      * @param ArrayObject $row
      * @return mixed

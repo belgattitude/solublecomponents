@@ -22,7 +22,7 @@ class HydrationOptions
     );
 
     /**
-     * 
+     *
      */
     function __construct()
     {
@@ -31,7 +31,7 @@ class HydrationOptions
 
     /**
      * Disable formatters processing when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function disableFormatters()
@@ -42,7 +42,7 @@ class HydrationOptions
 
     /**
      * Enable formatters processing when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function enableFormatters()
@@ -53,7 +53,7 @@ class HydrationOptions
 
     /**
      * Test chether formatters should be called when getting data
-     * 
+     *
      * @return bool
      */
     function isFormattersEnabled()
@@ -63,7 +63,7 @@ class HydrationOptions
 
     /**
      * Disable renderers processing when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function disableRenderers()
@@ -74,7 +74,7 @@ class HydrationOptions
 
     /**
      * Enable renderers processing when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function enableRenderers()
@@ -85,7 +85,7 @@ class HydrationOptions
 
     /**
      * Test whether renderers should be called when getting data
-     * 
+     *
      * @return bool
      */
     function isRenderersEnabled()
@@ -96,7 +96,7 @@ class HydrationOptions
 
     /**
      * Disable column exclusion when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function disableColumnExclusion()
@@ -107,7 +107,7 @@ class HydrationOptions
 
     /**
      * Enable column exclusion when getting data
-     * 
+     *
      * @return HydrationOptions
      */
     function enableColumnExclusion()
@@ -118,13 +118,11 @@ class HydrationOptions
 
     /**
      * Test whether column model exclusions are enabled
-     * 
+     *
      * @return bool
      */
     function isColumnExclusionEnabled()
     {
         return ($this->params['disable_column_exclusion'] == false);
-    }    
-    
-    
+    }
 }

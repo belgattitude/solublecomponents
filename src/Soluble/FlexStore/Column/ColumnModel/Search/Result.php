@@ -32,13 +32,13 @@ class Result implements ColumnSettableInterface
     }
     
     /**
-     * 
+     *
      * @param FormatterInterface $formatter
      * @return Result
      */
     function setFormatter(FormatterInterface $formatter)
     {
-        foreach($this->results as $name) {
+        foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setFormatter($formatter);
         }
         return $this;
@@ -71,7 +71,7 @@ class Result implements ColumnSettableInterface
             $this->columns->offsetGet($name)->setVirtual($virtual);
         }
         return $this;
-    }    
+    }
     
     /**
      *

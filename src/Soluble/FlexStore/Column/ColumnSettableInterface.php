@@ -17,7 +17,7 @@ interface ColumnSettableInterface
     
     
     /**
-     * 
+     *
      * @param FormatterInterface $formatter
      */
     function setFormatter(FormatterInterface $formatter);
@@ -32,7 +32,7 @@ interface ColumnSettableInterface
      *
      * @param boolean $virtual
      */
-    function setVirtual($virtual = true);    
+    function setVirtual($virtual = true);
     
     /**
      *

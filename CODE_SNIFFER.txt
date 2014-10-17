@@ -1,0 +1,8 @@
+Running code sniffer :
+
+
+./vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 ./src/
+
+Auto fix : 
+
+./vendor/squizlabs/php_codesniffer/scripts/phpcbf --standard=PSR2 ./src/

@@ -4,7 +4,7 @@
  */
 namespace Soluble\FlexStore\Exception;
 
-class ErrorException extends \ErrorException  implements ExceptionInterface
+class ErrorException extends \ErrorException implements ExceptionInterface
 {
 
 }

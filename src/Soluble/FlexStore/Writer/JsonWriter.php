@@ -64,5 +64,4 @@ class JsonWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-
 }

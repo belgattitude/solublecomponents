@@ -6,7 +6,7 @@ use ArrayObject;
 use Closure;
 
 /**
- * 
+ *
  * @method void closure(ArrayObject $row)
  */
 class ClosureRenderer implements RowRendererInterface
@@ -17,10 +17,11 @@ class ClosureRenderer implements RowRendererInterface
     protected $closure;
     
     /**
-     * 
+     *
      * @param Closure $closure
      */
-    public function __construct(Closure $closure) {
+    public function __construct(Closure $closure)
+    {
         $this->closure = $closure;
     }
     
@@ -32,10 +33,10 @@ class ClosureRenderer implements RowRendererInterface
      */
     public function __call($method, $args)
     {
-        if(is_callable(array($this, $method))) {
+        if (is_callable(array($this, $method))) {
             return call_user_func_array($this->$method, $args);
         }
-    }    
+    }
     
     /**
      * @param ArrayObject
@@ -45,5 +46,4 @@ class ClosureRenderer implements RowRendererInterface
     {
         $this->closure($row);
     }
-    
 }

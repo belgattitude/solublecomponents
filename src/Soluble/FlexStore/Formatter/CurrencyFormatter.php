@@ -10,11 +10,11 @@ use \NumberFormatter as IntlNumberFormatter;
 /**
  * columns
  *  - price:
- *    - formatter: 
+ *    - formatter:
  *          - money
  *              - currency_code
  *              - locale
- * 
+ *
  */
 class CurrencyFormatter extends NumberFormatter
 {
@@ -45,14 +45,14 @@ class CurrencyFormatter extends NumberFormatter
     }
 
     /**
-     * 
+     *
      * @param string $formatterId
      */
     protected function loadFormatterId($formatterId)
     {
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
-                $locale, IntlNumberFormatter::CURRENCY
+            $locale, IntlNumberFormatter::CURRENCY
         );
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {
@@ -83,29 +83,28 @@ class CurrencyFormatter extends NumberFormatter
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine currency code based on column '{$this->currency_column}'.");
             }
             $value = $this->formatters[$formatterId]->formatCurrency(
-                            $number, $row[$this->currency_column]
+                $number, $row[$this->currency_column]
             );
         } else {
-
             if ($this->params['currency_code'] == '') {
                 throw new Exception\RuntimeException(__METHOD__ . " Currency code must be set prior to use the currency formatter");
             }
 
             $value = $this->formatters[$formatterId]->formatCurrency(
-                            $number, $this->params['currency_code']
+                $number, $this->params['currency_code']
             );
         }
         
-        if(intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
+        if (intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
-        }       
+        }
         
         return $value;
         
     }
 
     /**
-     * Parse a 
+     * Parse a
      * @param string $value
      * @return array|null
      */
@@ -157,6 +156,4 @@ class CurrencyFormatter extends NumberFormatter
     {
         return $this->params['currency_code'];
     }
-
-
 }

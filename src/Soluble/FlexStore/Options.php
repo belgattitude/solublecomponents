@@ -73,7 +73,7 @@ class Options
      * @param boolean $unset_offset whether to unset offset as well
      * @return Options
      */
-    public function unsetLimit($unset_offset=true)
+    public function unsetLimit($unset_offset = true)
     {
         $this->limit = null;
         if ($unset_offset) {
@@ -102,7 +102,7 @@ class Options
     
     /**
      * Set the offset (the record to start reading when using limit)
-     * 
+     *
      * @throws Exception\InvalidArgumentException
      * @param int $offset
      * @return Options
@@ -142,7 +142,7 @@ class Options
     }
     
     /**
-     * 
+     *
      * @return HydrationOptions
      */
     public function getHydrationOptions()

@@ -14,7 +14,7 @@ class Paginator extends ZendPaginator
 
 
     /**
-     * 
+     *
      * @param integer $totalRows
      * @param integer $limit
      * @param integer $offset
@@ -28,13 +28,13 @@ class Paginator extends ZendPaginator
 
         if (!is_int($limit) || $limit < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects limit to be an integer greater than 0');
-        }        
+        }
         if (!is_int($totalRows) || $totalRows < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . " expects total rows to be an integer greater than 0");
         }
         if (!is_int($offset) || $offset < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects offset to be an integer greater than 0');
-        }        
+        }
         
 
 

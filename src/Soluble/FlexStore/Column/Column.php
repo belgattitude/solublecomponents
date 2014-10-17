@@ -106,7 +106,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @param \Soluble\FlexStore\Column\FormatterInterface $formatter
      * @return \Soluble\FlexStore\Column\Column
      */
@@ -117,7 +117,7 @@ class Column implements ColumnSettableInterface
     }
 
     /**
-     * 
+     *
      * @return FormatterInterface|null
      */
     function getFormatter()
@@ -134,7 +134,7 @@ class Column implements ColumnSettableInterface
     {
         $this->properties['virtual'] = (bool) $virtual;
         return $this;
-    }    
+    }
 
     /**
      *
@@ -350,5 +350,4 @@ class Column implements ColumnSettableInterface
     {
         return $this->name;
     }
-
 }

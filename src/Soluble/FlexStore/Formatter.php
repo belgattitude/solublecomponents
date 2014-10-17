@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore;
 
-class Formatter 
+class Formatter
 {
     
     const FORMATTER_CURRENCY  = 'currency';
@@ -28,7 +28,7 @@ class Formatter
      * @throws Exception\InvalidArgumentException
      * @return \Soluble\FlexStore\Formatter\FormatterInterface
      */
-    public static function create($formatter_name, array $params=array())
+    public static function create($formatter_name, array $params = array())
     {
         if (!self::isSupported($formatter_name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Formatter '$formatter_name' is not supported.");
@@ -57,5 +57,4 @@ class Formatter
     {
         return array_keys(self::$formattersMap);
     }
-    
 }

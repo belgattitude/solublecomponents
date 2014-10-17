@@ -79,7 +79,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
     {
         if ($options === null) {
             $options = new Options();
-        }        
+        }
         // Get unformatted data when using xml writer
         $options->getHydrationOptions()->disableFormatters();
                 
@@ -125,10 +125,10 @@ class SimpleXmlWriter extends AbstractSendableWriter
                     $this->createXmlNode($v, $xml);
                 }
             } else {
-if ($this->php_54_compatibility) {
+                if ($this->php_54_compatibility) {
                     // assuming php 5.4+
                     $encoded = htmlspecialchars($value, ENT_XML1, $this->options['encoding']);
-} else {
+                } else {
                         $encoded = '';
 
                     foreach (str_split(utf8_decode(htmlspecialchars($value))) as $char) {
@@ -139,7 +139,7 @@ if ($this->php_54_compatibility) {
                             $encoded .= $char;
                         }
                     }
-}
+                }
                     $xml->addChild($key, $encoded);
             }
         }

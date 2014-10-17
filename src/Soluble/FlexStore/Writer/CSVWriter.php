@@ -66,7 +66,7 @@ class CSVWriter extends AbstractSendableWriter
             $options = new Options();
         }
         // Get unformatted data when using csv writer
-        $options->getHydrationOptions()->disableFormatters();        
+        $options->getHydrationOptions()->disableFormatters();
         $data = $this->store->getData($options)->toArray();
 //echo "éééééààà";
 //	var_dump($data); die();
@@ -105,7 +105,7 @@ class CSVWriter extends AbstractSendableWriter
 
                     $l = (string) $line;
                     if ($l != '') {
-                        $l = @iconv($internal_encoding, $this->options['charset'] , $l);
+                        $l = @iconv($internal_encoding, $this->options['charset'], $l);
                         //$l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
                         
                         if ($l === false) {

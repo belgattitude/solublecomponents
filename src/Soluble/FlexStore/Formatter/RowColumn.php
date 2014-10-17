@@ -12,7 +12,7 @@ class RowColumn
     protected $column_name;
 
     /**
-     * 
+     *
      * @param string $column_name
      */
     function __construct($column_name)
@@ -21,12 +21,11 @@ class RowColumn
     }
 
     /**
-     * 
+     *
      * @return string
      */
     function getColumnName()
     {
         return $this->column_name;
     }
-
 }

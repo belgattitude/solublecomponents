@@ -13,7 +13,6 @@ use ExcelBook;
 use ExcelFormat;
 use ArrayObject;
 
-
 class LibXLWriter extends AbstractSendableWriter
 {
 
@@ -27,7 +26,7 @@ class LibXLWriter extends AbstractSendableWriter
      * Cache for unit formats
      * @var ArrayObject
      */
-    protected $unit_formats;    
+    protected $unit_formats;
     
     /**
      *
@@ -112,7 +111,7 @@ class LibXLWriter extends AbstractSendableWriter
 
 
     /**
-     * 
+     *
      * @param ExcelBook $book
      * @param string $currency
      * @param int $decimals
@@ -122,7 +121,6 @@ class LibXLWriter extends AbstractSendableWriter
     {
         $id = "$currency/$decimals";
         if (!$this->currency_formats->offsetExists($id)) {
-
             if (array_key_exists($currency, $this->currencyMap)) {
                 $symbol = $this->currencyMap[$currency];
             } else {
@@ -151,7 +149,7 @@ class LibXLWriter extends AbstractSendableWriter
 
 
     /**
-     * 
+     *
      * @param ExcelBook $book
      * @param string $unit
      * @param int $decimals
@@ -161,7 +159,6 @@ class LibXLWriter extends AbstractSendableWriter
     {
         $id = "$unit/$decimals";
         if (!$this->unit_formats->offsetExists($id)) {
-
             $symbol = $unit;
             
             $formatString = '#,##0';
@@ -183,7 +180,7 @@ class LibXLWriter extends AbstractSendableWriter
     
 
     /**
-     * 
+     *
      * @throws Exception\ExtensionNotLoadedException
      * @throws Exception\InvalidArgumentException
      *
@@ -266,7 +263,6 @@ class LibXLWriter extends AbstractSendableWriter
 
         $columns = $cm->getColumns();
         foreach ($columns as $name => $column) {
-
             $decimals = null;
             $format = null;
             $custom_column = null;
@@ -326,7 +322,7 @@ class LibXLWriter extends AbstractSendableWriter
 
             if ($format === null) {
                 switch ($type) {
-                    case 'date' :
+                    case 'date':
                         $mask = 'd/mm/yyyy';
                         $cfid = $book->addCustomFormat($mask);
                         $format = $book->addFormat();
@@ -411,7 +407,6 @@ class LibXLWriter extends AbstractSendableWriter
         $column_max_widths = array_fill_keys(array_keys((array) $specs), 0);
         $col_idx = 0;
         foreach ($specs as $name => $spec) {
-
             $sheet->write($row = 0, $col_idx, $spec['header'], $headerFormat);
             $column_max_widths[$name] = max(strlen($spec['header']) * $this->column_width_multiplier, $column_max_widths[$name]);
             $col_idx++;
@@ -430,7 +425,6 @@ class LibXLWriter extends AbstractSendableWriter
             $col_idx = 0;
             $row_idx = $idx + 1;
             foreach ($specs as $name => $spec) {
-
                 $value = $row[$name];
 
                 if ($spec['format'] !== null) {
@@ -500,5 +494,4 @@ class LibXLWriter extends AbstractSendableWriter
         }
         return $this->headers;
     }
-
 }

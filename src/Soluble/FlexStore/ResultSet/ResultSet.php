@@ -62,7 +62,7 @@ class ResultSet extends AbstractResultSet
     
     /**
      * Return source column model
-     * 
+     *
      * @throws Exception\RuntimeException
      * @return ColumnModel
      */
@@ -124,7 +124,7 @@ class ResultSet extends AbstractResultSet
     {
         if ($this->paginator === null) {
             $this->paginator = new Paginator(
-                    $this->getTotalRows(), $this->getSource()->getOptions()->getLimit(), $this->getSource()->getOptions()->getOffset()
+                $this->getTotalRows(), $this->getSource()->getOptions()->getLimit(), $this->getSource()->getOptions()->getOffset()
             );
         }
         return $this->paginator;
@@ -150,7 +150,7 @@ class ResultSet extends AbstractResultSet
     }
 
     /**
-     * 
+     *
      * @param ArrayObject $row
      * @return null
      */
@@ -176,23 +176,22 @@ class ResultSet extends AbstractResultSet
 
             // 2. Initialize hydrated columns
 
-            if ($this->getHydrationOptions()->isColumnExclusionEnabled()) {                        
+            if ($this->getHydrationOptions()->isColumnExclusionEnabled()) {
                 $columns = $cm->getColumns();
 
                 // Performance:
-                // Only if column model definition differs from originating 
+                // Only if column model definition differs from originating
                 // source row definition.
                 $hydrated_columns = array_keys((array) $columns);
                 $row_columns = array_keys((array) $row);
                 if ($hydrated_columns != $row_columns) {
                     $this->hydrated_columns = new ArrayObject($hydrated_columns);
                 }
-            } 
+            }
 
             // 3. Initialize row renderers
-            if ($this->getHydrationOptions()->isRenderersEnabled()) {            
-
-                // If renderers enabled, always populate virtual columns
+            if ($this->getHydrationOptions()->isRenderersEnabled()) {
+// If renderers enabled, always populate virtual columns
                 // in the original data row in order for renderers to
                 // check if columns exists
 
@@ -223,7 +222,7 @@ class ResultSet extends AbstractResultSet
         
         // 1. If virtual columns are in use, let's add them to the row
         //    definition
-        foreach($this->hydration_virtual_columns as $virtual) {
+        foreach ($this->hydration_virtual_columns as $virtual) {
                 // initialize virtual columns
                 $row->offsetSet($virtual, null);
         }
@@ -231,7 +230,7 @@ class ResultSet extends AbstractResultSet
         // 2. Row renderers
         foreach ($this->hydration_renderers as $renderer) {
             $renderer->apply($row);
-        }        
+        }
 
         // 3. Formatters
         foreach ($this->hydration_formatters as $formatters) {
@@ -273,7 +272,7 @@ class ResultSet extends AbstractResultSet
                 $return[] = $row->getArrayCopy();
             } else {
                 throw new Exception\RuntimeException(
-                __METHOD__ . ': Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
+                    __METHOD__ . ': Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
                 );
             }
         }
@@ -303,6 +302,5 @@ class ResultSet extends AbstractResultSet
     {
         $this->hydrate_options_initialized = false;
         $this->zfResultSet->rewind();
-    }    
-    
+    }
 }

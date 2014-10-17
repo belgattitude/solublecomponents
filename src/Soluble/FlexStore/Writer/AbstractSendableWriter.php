@@ -40,5 +40,4 @@ abstract class AbstractSendableWriter extends AbstractWriter implements HttpSend
             die();
         }
     }
-
 }

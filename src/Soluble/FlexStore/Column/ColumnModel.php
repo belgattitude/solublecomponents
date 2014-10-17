@@ -54,10 +54,10 @@ class ColumnModel
     public function addRowRenderer(RowRendererInterface $renderer)
     {
         $this->row_renderers->append($renderer);
-   }
+    }
 
     /**
-     * 
+     *
      * @return ArrayObject
      */
     function getRowRenderers()
@@ -69,7 +69,7 @@ class ColumnModel
      * Return an array object containing all
      * columns that have a formatter (FormatterInterface).
      * [column_name] => [FormatterInterface]
-     * 
+     *
      * @see self::getUniqueFormatters()
      * @return ArrayObject
      */
@@ -81,29 +81,29 @@ class ColumnModel
                 $arr->offsetSet($key, $formatter);
             }
         }
-        return $arr;        
+        return $arr;
     }
     
     /**
      * This method returns unique formatters set in the column model
      * in an ArrayObject
-     * 
-     * 
+     *
+     *
      * @param boolean $include_excluded_columns
      * @see self::getFormatters()
      * @return ArrayObject
      */
-    function getUniqueFormatters($include_excluded_columns=false)
+    function getUniqueFormatters($include_excluded_columns = false)
     {
         $unique = new ArrayObject();
         
         $formatters = $this->getFormatters();
-        foreach($formatters as $column => $formatter) {
+        foreach ($formatters as $column => $formatter) {
             if ($include_excluded_columns || !$this->get($column)->isExcluded()) {
                 $hash = spl_object_hash($formatter);
                 if (!$unique->offsetExists($hash)) {
                     $tmp = new ArrayObject(array(
-                                                'formatter' => $formatter, 
+                                                'formatter' => $formatter,
                                                 'columns' => new ArrayObject(array($column))
 
                     ));
@@ -112,7 +112,7 @@ class ColumnModel
                     $unique->offsetGet($hash)->offsetGet('columns')->append($column);
                 }
             }
-        }        
+        }
         
         return $unique;
         
@@ -129,7 +129,7 @@ class ColumnModel
      * @param string $mode change after to before (see self::ADD_COLUMN_AFTER, self::ADD_COLUMN_BEFORE)
      * @return ColumnModel
      */
-    public function add(Column $column, $after_column=null, $mode=self::ADD_COLUMN_AFTER)
+    public function add(Column $column, $after_column = null, $mode = self::ADD_COLUMN_AFTER)
     {
         $name = $column->getName();
         if ($this->exists($name)) {
@@ -150,7 +150,7 @@ class ColumnModel
             }
             
             $new_columns = new ArrayObject();
-            foreach($this->columns as $key => $col) {
+            foreach ($this->columns as $key => $col) {
                 if ($mode == self::ADD_COLUMN_BEFORE && $key == $after_column) {
                     $new_columns->offsetSet($name, $column);
                 }
@@ -284,7 +284,7 @@ class ColumnModel
     public function includeOnly($include_only_columns, $sort = true)
     {
         
-        if (!is_array($include_only_columns) 
+        if (!is_array($include_only_columns)
                 && !is_string($include_only_columns) && !$include_only_columns instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $include_only_columns param to be array|ArrayObject|string');
         }
@@ -305,10 +305,10 @@ class ColumnModel
     /**
      * Return columns
      *
-     * @param boolean $include_excluded_columns 
+     * @param boolean $include_excluded_columns
      * @return ArrayObject
      */
-    public function getColumns($include_excluded_columns=false)
+    public function getColumns($include_excluded_columns = false)
     {
         $arr = new ArrayObject;
         foreach ($this->columns as $key => $column) {
@@ -321,7 +321,7 @@ class ColumnModel
     
     /**
      * Set formatter to specific columns
-     *  
+     *
      * @throws Exception\InvalidArgumentException
      * @param FormatterInterface $formatter
      * @param array|string|ArrayObject $columns
@@ -329,7 +329,7 @@ class ColumnModel
      */
     public function setFormatter(FormatterInterface $formatter, $columns)
     {
-        if (!is_array($columns) 
+        if (!is_array($columns)
                 && !is_string($columns) && !$columns instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $columns param to be array|ArrayObject|string');
         }
@@ -351,7 +351,7 @@ class ColumnModel
     
     
     /**
-     * 
+     *
      * @param ArrayObject $metadata
      * @return Column
      */
@@ -362,12 +362,11 @@ class ColumnModel
     }
     
     /**
-     * 
+     *
      * @return ArrayObject|null
      */
     function getMetadata()
     {
         return $this->metadata;
     }
-    
 }

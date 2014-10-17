@@ -43,7 +43,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         if (!extension_loaded('intl')) {
             throw new Exception\ExtensionNotLoadedException(sprintf(
-                    '%s component requires the intl PHP extension', __NAMESPACE__
+                '%s component requires the intl PHP extension', __NAMESPACE__
             ));
         }
         
@@ -76,14 +76,14 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     }
 
     /**
-     * 
+     *
      * @param string $formatterId
      */
     protected function loadFormatterId($formatterId)
     {
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
-                $locale, IntlNumberFormatter::DECIMAL
+            $locale, IntlNumberFormatter::DECIMAL
         );
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {
@@ -158,7 +158,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
 
     /**
      * Set decimals
-     * 
+     *
      * @param int $decimals
      * @return NumberFormatter
      */
@@ -169,7 +169,7 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function getDecimals()
@@ -199,5 +199,4 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         return $this->params['pattern'];
     }
-
 }

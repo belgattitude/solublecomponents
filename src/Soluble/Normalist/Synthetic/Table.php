@@ -534,10 +534,10 @@ class Table
         $excluded_columns = array_merge($duplicate_exclude, array($primary));
 
         foreach ($d as $column => $value) {
-if (!in_array($column, $excluded_columns)) {
+            if (!in_array($column, $excluded_columns)) {
                 $v = ($value === null) ? 'NULL' : $v = $platform->quoteValue($value);
                 $extras[] = $platform->quoteIdentifier($column) . ' = ' . $v;
-        }
+            }
         }
         $sql_string .= ' on duplicate key update ' . join(',', $extras);
 
