@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class BooleanType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_BOOLEAN;
+        return ColumnType::TYPE_BOOLEAN;
     }
 }

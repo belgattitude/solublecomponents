@@ -5,10 +5,11 @@ namespace Soluble\FlexStore\Column;
 use Soluble\FlexStore\Source\Zend\SqlSource;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
-
 use Soluble\FlexStore\Formatter\CurrencyFormatter;
 use Soluble\FlexStore\Store;
-
+use Soluble\FlexStore\Column\Column;
+use Soluble\FlexStore\Column\ColumnModel;
+use Soluble\FlexStore\Column\ColumnType;
 use Soluble\FlexStore\Renderer\ClosureRenderer;
 
 /**
@@ -40,7 +41,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $select->from('user');
 
 
-        
+
         $this->source = new SqlSource($this->adapter, $select);
 
         $this->columnModel = $this->source->getColumnModel();
@@ -54,7 +55,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     {
         
     }
-    
+
     public function testRenderer()
     {
         $source = new SqlSource($this->adapter);
@@ -71,20 +72,19 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'currency_reference' => new Expression("'CNY'")
         ));
 
-        $store = new Store($source);        
+        $store = new Store($source);
         $cm = $store->getColumnModel();
-        
+
         $f = function(\ArrayObject $row) {
             $row['product_id'] = "My product id:" . $row['product_id'];
         };
         $clo = new ClosureRenderer($f);
         $cm->addRowRenderer($clo);
-        
+
         $data = $store->getData();
         $this->assertEquals('My product id:10', $data->current()->offsetGet('product_id'));
-        
     }
-    
+
     public function testRenderer2()
     {
         $source = new SqlSource($this->adapter);
@@ -101,14 +101,14 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'currency_reference' => new Expression("'CNY'")
         ));
 
-        $store = new Store($source);        
+        $store = new Store($source);
         $cm = $store->getColumnModel();
-        $column = new Column('cool', array('type' => Type::TYPE_STRING));
+        $column = new Column('cool', array('type' => ColumnType::TYPE_STRING));
         $cm->add($column);
-        
+
         $this->assertTrue($column->isVirtual());
-        
-        
+
+
         $f = function(\ArrayObject $row) {
             if (!$row->offsetExists('cool')) {
                 throw new \Exception("No cool column in row");
@@ -117,13 +117,11 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         };
         $clo = new ClosureRenderer($f);
         $cm->addRowRenderer($clo);
-        
+
         $data = $store->getData();
         $this->assertEquals('My cool value is :10', $data->current()->offsetGet('cool'));
-        
     }
 
-    
     public function testRenderer3ThrowsException()
     {
         $this->setExpectedException('Exception');
@@ -141,11 +139,11 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'currency_reference' => new Expression("'CNY'")
         ));
 
-        $store = new Store($source);        
+        $store = new Store($source);
         $cm = $store->getColumnModel();
-        $column = new Column('cool', array('type' => Type::TYPE_STRING));
+        $column = new Column('cool', array('type' => ColumnType::TYPE_STRING));
         $cm->add($column);
-        
+
         $f2 = function(\ArrayObject $row) {
             if (!$row->offsetExists('pas_cool')) {
                 throw new \Exception("pascool column in row");
@@ -154,10 +152,10 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         };
         $clo = new ClosureRenderer($f2);
         $cm->addRowRenderer($clo);
-        
+
         $data = $store->getData()->toArray();
-    }    
-    
+    }
+
     public function testSearch()
     {
 
@@ -175,36 +173,34 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'currency_reference' => new Expression("'CNY'")
         ));
 
-        $store = new Store($source);        
+        $store = new Store($source);
         $cm = $store->getColumnModel();
-        
-        
+
+
         $results = $cm->search()->regexp('/price/');
         $this->assertEquals(array('price', 'list_price', 'public_price'), $results->toArray());
         $formatterDb = \Soluble\FlexStore\Formatter::create('currency', array(
-            'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference')
-            
+                    'currency_code' => new \Soluble\FlexStore\Formatter\RowColumn('currency_reference')
         ));
-        $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());        
+        $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $formatterDb->getCurrencyCode());
         $results->setFormatter($formatterDb);
-        foreach($results as $name) {
+        foreach ($results as $name) {
             $f = $cm->get($name)->getFormatter();
             $this->assertEquals($formatterDb, $f);
-            $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $f->getCurrencyCode());        
+            $this->assertInstanceOf('Soluble\FlexStore\Formatter\RowColumn', $f->getCurrencyCode());
         }
 
         $formatterEur = \Soluble\FlexStore\Formatter::create('currency', array(
-            'currency_code' => 'EUR'
+                    'currency_code' => 'EUR'
         ));
-        
+
         $this->assertEquals('EUR', $formatterEur->getCurrencyCode());
-        
+
         $cm->get('price')->setFormatter($formatterEur);
         $this->assertEquals($formatterEur, $cm->get('price')->getFormatter());
         $this->assertEquals($formatterDb, $cm->get('list_price')->getFormatter());
-    }        
-     
-    
+    }
+
     public function testSetFormatter()
     {
 
@@ -222,13 +218,13 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'currency_reference' => new Expression("'CNY'")
         ));
 
-        $store = new Store($source);        
+        $store = new Store($source);
         $cm = $store->getColumnModel();
 
         $formatter = new CurrencyFormatter();
         $formatter->setLocale('fr_FR');
         $formatter->setCurrencyCode('EUR');
-        
+
         $cm->get('price')->setFormatter($formatter);
         $data = $store->getData()->toArray();
         $this->assertEquals('10,20 €', $data[0]['price']);
@@ -244,8 +240,8 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('$0.00', $data[3]['price']);
 
         // store 2
-        $store = new Store($source);        
-        
+        $store = new Store($source);
+
         $formatter = new CurrencyFormatter();
         $formatter->setLocale('fr_FR');
         $formatter->setCurrencyCode('EUR');
@@ -254,9 +250,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $data = $store->getData()->toArray();
         $this->assertEquals('10,20 €', $data[0]['price']);
         $this->assertEquals('15,30 €', $data[0]['list_price']);
-        
-        
-        
     }
 
     public function testCustomColumn()
@@ -275,16 +268,14 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
-        
-        $cc = new \Soluble\FlexStore\Column\Column('picture_url');
+
+        $cc = new Column('picture_url');
         $cc->setType('string');
-        
+
         $cm->add($cc);
-        
+        $this->assertTrue($cm->get($cc->getName())->isVirtual());
         $cm->sort(array('picture_url', 'price', 'list_price'));
         $cm->exclude(array('reference'));
-        
-        
 
         $fct = function(\ArrayObject $row) {
             $row['picture_url'] = "http://" . $row['reference'];
@@ -297,12 +288,138 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             'price' => "10.200000",
             'list_price' => "15.300000",
             'product_id' => "10",
-            'public_price' => "18.200000",  
+            'public_price' => "18.200000",
         );
         $this->assertEquals($expected, $data[0]);
     }
+
+    public function testAddBeforeAndAfter()
+    {
+        $select = new Select();
+        $select->from(array('p' => 'product'), array())
+                ->join(array('ppl' => 'product_pricelist'), new Expression('ppl.product_id = p.product_id and ppl.pricelist_id = 1'), array(), $select::JOIN_LEFT);
+
+        $select->columns(array(
+            'product_id' => new Expression('p.product_id'),
+            'reference' => new Expression('p.reference'),
+            'price' => new Expression('ppl.price'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price')
+        ));
+
+        $source = new SqlSource($this->adapter, $select);
+        $cm = $source->getColumnModel();
+
+        $cc = new Column('test');
+        $cc->setType(ColumnType::TYPE_STRING);
+
+        $cm->add($cc);
+        try {
+            $cm->add($cc);
+            $this->assertFalse(true, " should throw DuplicateColumnException");
+        } catch (\Soluble\FlexStore\Column\Exception\DuplicateColumnException $ex) {
+            $this->assertTrue(true);
+        }
+        
+        // column must appear at the end
+        $arr = array_keys((array) $cm->getColumns());
+        $this->assertEquals('test', $arr[count($arr)-1]);
+        
+        
+        // TEST INSERT AFTER
+        $cc2 = new Column('insert_after');
+        
+        try {
+            $cm->add($cc2, 'not_existentcolumn');
+            $this->assertFalse(true, " should throw ColumnNotFoundException");
+        } catch (\Soluble\FlexStore\Column\Exception\ColumnNotFoundException $ex) {
+            $this->assertTrue(true);
+        }
+        
+        $cm->add($cc2, 'product_id');
+
+        // column must appear at the end
+        $arr = array_keys((array) $cm->getColumns());
+        $this->assertEquals('insert_after', $arr[1]);
+        
+        
+         $cc2 = new Column('insert_after_end');
+         $cm->add($cc2, 'test', ColumnModel::ADD_COLUMN_AFTER);
+         $arr = array_keys((array) $cm->getColumns());
+         $this->assertEquals('insert_after_end', $arr[count($arr)-1]);
+         
+         // TEST INSERT BEFORE
+         $cc = new Column('insert_before');
+         $cm->add($cc, 'product_id', ColumnModel::ADD_COLUMN_BEFORE);
+         $arr = array_keys((array) $cm->getColumns());
+         $this->assertEquals('insert_before', $arr[0]);
+         
+         
+         // TEST MODE EXCEPTION
+         $cc = new Column('invalid_mode');
+         try {
+            $cm->add($cc, 'product_id', 'invalid_mode');
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }
+         
+    }
     
-    
+    public function testSomeInvalidArgumentException()
+    {
+        $select = new Select();
+        $select->from(array('p' => 'product'), array())
+                ->join(array('ppl' => 'product_pricelist'), new Expression('ppl.product_id = p.product_id and ppl.pricelist_id = 1'), array(), $select::JOIN_LEFT);
+
+        $select->columns(array(
+            'product_id' => new Expression('p.product_id'),
+            'reference' => new Expression('p.reference'),
+            'price' => new Expression('ppl.price'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price')
+        ));
+
+        $source = new SqlSource($this->adapter, $select);
+        $cm = $source->getColumnModel();
+
+        try {
+            $cm->exists("");
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }
+
+        try {
+            $cm->sort(array('product_id', 'undefined_col'));
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }
+
+        try {
+            $cm->exclude(new \stdClass());
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }        
+
+        try {
+            $cm->includeOnly(new \stdClass());
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }                
+
+        try {
+            $formatter = new \Soluble\FlexStore\Formatter\NumberFormatter();
+            $cm->setFormatter($formatter, new \stdClass());
+            $this->assertFalse(true, " should throw InvalidArgumentException");
+        } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }                
+        
+    }
 
     public function testAddRowRenderer()
     {
@@ -378,14 +495,12 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
         $excluded = array('product_id', 'legacy_mapping');
         $cm->exclude($excluded);
-        $cm->add(new Column('cool', $params=array('type' => 'string')));
-        
+        $cm->add(new Column('cool', $params = array('type' => 'string')));
+
         $virtual = $cm->search()->findVirtual()->toArray();
         $this->assertEquals(array('cool'), $virtual);
-        
     }
-    
-    
+
     public function testSortColumns()
     {
         $select = new \Zend\Db\Sql\Select();
@@ -445,7 +560,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\ColumnNotFoundException');
         $select = new \Zend\Db\Sql\Select();
         $select->from('user')->columns(array('user_id', 'password', 'username'));
-        
+
         $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
         $cm->get('this_column_not_exists');
@@ -506,6 +621,5 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('displayname', array_shift($first));
         $this->assertEquals('username', array_shift($first));
     }
-
 
 }

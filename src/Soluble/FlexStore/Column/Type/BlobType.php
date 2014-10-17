@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class BlobType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_BLOB;
+        return ColumnType::TYPE_BLOB;
     }
 }

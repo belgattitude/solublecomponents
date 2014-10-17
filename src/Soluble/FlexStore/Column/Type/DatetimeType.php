@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class DatetimeType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_DATETIME;
+        return ColumnType::TYPE_DATETIME;
     }
 }

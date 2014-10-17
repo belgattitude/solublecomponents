@@ -2,7 +2,7 @@
 
 namespace Soluble\FlexStore\Column;
 
-class Type
+class ColumnType
 {
 
     const TYPE_INTEGER  = 'integer';

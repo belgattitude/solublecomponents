@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class BitType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_BIT;
+        return ColumnType::TYPE_BIT;
     }
 }

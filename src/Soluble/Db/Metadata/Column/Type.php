@@ -55,4 +55,14 @@ class Type
 
         return new $class($name, $tableName, $schemaName);
     }
+    
+    /**
+     * Return all supported types
+     * 
+     * @return array
+     */
+    public static function getSupportedTypes()
+    {
+        return array_keys(self::$typesMap);
+    }
 }

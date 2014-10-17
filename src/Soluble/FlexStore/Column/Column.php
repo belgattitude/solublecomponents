@@ -64,7 +64,7 @@ class Column implements ColumnSettableInterface
             $this->setHeader($this->name);
         }
         if ($this->properties['type'] == '') {
-            $this->setType(Type::createType(Type::TYPE_STRING));
+            $this->setType(ColumnType::createType(ColumnType::TYPE_STRING));
         }
     }
 
@@ -87,7 +87,7 @@ class Column implements ColumnSettableInterface
     function setType($type)
     {
         if (is_string($type)) {
-            $type = Type::createType($type);
+            $type = ColumnType::createType($type);
         } elseif (!$type instanceof AbstractType) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " setType() accepts only AbstractType or string.");
         }

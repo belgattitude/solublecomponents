@@ -51,7 +51,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testWithProperties()
     {
         $properties = array(
-            'type' => Type::TYPE_DATE,
+            'type' => ColumnType::TYPE_DATE,
             'header' => 'header',
             'width' => '100%',
             'filterable' => false,
@@ -70,7 +70,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($column->isExcluded());
         $this->assertTrue($column->isEditable());
         $this->assertEquals('header', $column->getHeader());
-        $this->assertEquals(Type::TYPE_DATE, $column->getType());
+        $this->assertEquals(ColumnType::TYPE_DATE, $column->getType());
         $this->assertEquals('100%', $column->getWidth());
 
         $properties = array(
@@ -90,6 +90,15 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         );
         
         $column = new Column('cool', $properties);
+        
+    }
+    
+    public function setTypeThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
+        $type = new \stdClass();
+        $column = new Column('cool');
+        $column->setType($type);
         
     }
 

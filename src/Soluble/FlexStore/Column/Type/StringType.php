@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class StringType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_STRING;
+        return ColumnType::TYPE_STRING;
     }
 }

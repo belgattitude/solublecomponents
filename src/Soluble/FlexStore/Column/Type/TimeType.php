@@ -2,13 +2,13 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-use Soluble\FlexStore\Column\Type;
+use Soluble\FlexStore\Column\ColumnType;
 
 class TimeType extends AbstractType
 {
 
     public function getName()
     {
-        return Type::TYPE_TIME;
+        return ColumnType::TYPE_TIME;
     }
 }

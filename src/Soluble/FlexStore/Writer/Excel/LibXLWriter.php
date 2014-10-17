@@ -6,7 +6,7 @@ use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\FlexStore\Writer\Exception;
 use Soluble\Spreadsheet\Library\LibXL;
 use Soluble\FlexStore\Writer\Http\SimpleHeaders;
-use Soluble\FlexStore\Column\Type as ColumnType;
+use Soluble\FlexStore\Column\ColumnType;
 use Soluble\FlexStore\Options;
 use Soluble\FlexStore\StoreInterface;
 use ExcelBook;

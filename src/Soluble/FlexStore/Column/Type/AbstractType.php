@@ -2,16 +2,10 @@
 
 namespace Soluble\FlexStore\Column\Type;
 
-//use Soluble\FlexStore\Column\Type;
 
 abstract class AbstractType
 {
 
-    /**
-     *
-     * @var string
-     */
-    protected $name = null;
 
     /**
      * @return string

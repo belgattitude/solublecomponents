@@ -9,6 +9,10 @@ use ArrayObject;
 
 class ColumnModel
 {
+    
+    const ADD_COLUMN_AFTER = 'after';
+    const ADD_COLUMN_BEFORE = 'before';
+    
 
     /**
      *
@@ -115,14 +119,52 @@ class ColumnModel
     }
     
     /**
-     * Add a column to the column model
+     * Add a new column to the column model
      *
+     * @throws Exception\InvalidArgumentException when mode is not supported
+     * @throws Exception\DuplicateColumnException when column name already exists
+     * @throws Exception\ColumnNotFoundException when after_column does not exists
      * @param Column $column
+     * @param string $after_column add the new column after this existing one
+     * @param string $mode change after to before (see self::ADD_COLUMN_AFTER, self::ADD_COLUMN_BEFORE)
      * @return ColumnModel
      */
-    public function add(Column $column)
+    public function add(Column $column, $after_column=null, $mode=self::ADD_COLUMN_AFTER)
     {
-        $this->columns->offsetSet($column->getName(), $column);
+        $name = $column->getName();
+        if ($this->exists($name)) {
+            $msg = "Cannot add column '$name', it's already present in column model";
+            throw new Exception\DuplicateColumnException(__METHOD__ . ': ' . $msg);
+        }
+        
+        if ($after_column !== null) {
+            // Test existence of column
+            if (!$this->exists($after_column)) {
+                $msg = "Cannot add column '$name' after '$after_column', column does not exists.";
+                throw new Exception\ColumnNotFoundException(__METHOD__ . ': ' . $msg);
+            }
+            
+            if (!in_array($mode, array(self::ADD_COLUMN_BEFORE, self::ADD_COLUMN_AFTER))) {
+                $msg = "Cannot add column '$name', invalid mode specified '$mode'";
+                throw new Exception\InvalidArgumentException(__METHOD__ . ': ' . $msg);
+            }
+            
+            $new_columns = new ArrayObject();
+            foreach($this->columns as $key => $col) {
+                if ($mode == self::ADD_COLUMN_BEFORE && $key == $after_column) {
+                    $new_columns->offsetSet($name, $column);
+                }
+                $new_columns->offsetSet($key, $col);
+                if ($mode == self::ADD_COLUMN_AFTER && $key == $after_column) {
+                    $new_columns->offsetSet($name, $column);
+                }
+            }
+            $this->columns = $new_columns;
+            
+        } else {
+            // Simply append
+            $this->columns->offsetSet($name, $column);
+        }
         return $this;
     }
 
@@ -239,7 +281,7 @@ class ColumnModel
      * @param bool $sort automatically apply sortColumns
      * @return ColumnModel
      */
-    public function includeOnly(array $include_only_columns, $sort = true)
+    public function includeOnly($include_only_columns, $sort = true)
     {
         
         if (!is_array($include_only_columns) 
