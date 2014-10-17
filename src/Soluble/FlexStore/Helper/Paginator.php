@@ -13,15 +13,29 @@ class Paginator extends ZendPaginator
 {
 
 
+    /**
+     * 
+     * @param integer $totalRows
+     * @param integer $limit
+     * @param integer $offset
+     * @throws Exception\InvalidUsageException
+     */
     public function __construct($totalRows, $limit, $offset = 0)
     {
+        $totalRows = filter_var($totalRows, FILTER_VALIDATE_INT);
+        $limit = filter_var($limit, FILTER_VALIDATE_INT);
+        $offset = filter_var($offset, FILTER_VALIDATE_INT);
 
-        if (!is_integer($limit)) {
-            throw new Exception\InvalidUsageException(__FUNCTION__ . ' expects limit to be an integer');
+        if (!is_int($limit) || $limit < 0) {
+            throw new Exception\InvalidUsageException(__METHOD__ . ' expects limit to be an integer greater than 0');
+        }        
+        if (!is_int($totalRows) || $totalRows < 0) {
+            throw new Exception\InvalidUsageException(__METHOD__ . " expects total rows to be an integer greater than 0");
         }
-        if ($limit < 1) {
-            throw new Exception\InvalidUsageException(__FUNCTION__ . ' expects limit to be an integer greater than 0');
-        }
+        if (!is_int($offset) || $offset < 0) {
+            throw new Exception\InvalidUsageException(__METHOD__ . ' expects offset to be an integer greater than 0');
+        }        
+        
 
 
         $adapter = new \Zend\Paginator\Adapter\Null($totalRows);

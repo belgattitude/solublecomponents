@@ -227,9 +227,7 @@ class InformationSchema extends Source\AbstractSource
         $schema = $this->schema;
         
         if ($this->useLocalCaching &&
-                (array_key_exists($schema, self::$localCache) &&
-                 array_key_exists('tables', self::$localCache[$schema]) &&
-                 array_key_exists($table, self::$localCache[$schema]['tables']))) {
+                isset(self::$localCache[$schema]['tables'][$table])) {
             return self::$localCache[$schema]['tables'][$table];
         }
 

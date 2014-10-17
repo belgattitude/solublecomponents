@@ -13,10 +13,7 @@ use Soluble\FlexStore\Formatter;
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @var LibXLWriter
-     */
-    protected $xlsWriter;
+   
 
     /**
      * @var SqlSource
@@ -430,6 +427,28 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         }
         return $arr;
     }
+    
+    public function testSetFormatThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Writer\Exception\InvalidArgumentException');
+        $xlsWriter = new LibXLWriter();        
+        $xlsWriter->setFormat('cool');
+    }
 
+    
+    public function testExcelBookThrowsInvalidArgumentException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Writer\Exception\InvalidArgumentException');
+        $xlsWriter = new LibXLWriter();        
+        $xlsWriter->getExcelBook('coo:');
+    }    
+    
+    public function testGetHTTPHeaders()
+    {
+        $xlsWriter = new LibXLWriter();        
+        $headers = $xlsWriter->getHttpHeaders();
+        $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
+        $this->assertEquals('application/excel', $headers->getContentType());
+    }    
 
 }

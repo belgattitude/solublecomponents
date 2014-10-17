@@ -39,7 +39,7 @@
 		"sami/sami": "2.*",
         "phpunit/phpunit": "~4.0",
         "phpoffice/phpexcel": "1.8.*",
-        "squizlabs/php_codesniffer": "2.0.0RC2"
+        "squizlabs/php_codesniffer": "2.0.0RC3"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",

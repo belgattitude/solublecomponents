@@ -68,6 +68,21 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $arr = $resultset->toArray();
         $this->assertInternalType('array', $arr);
     }
+    
+    public function testResultSetThrowsRuntimeException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\ResultSet\Exception\RuntimeException');
+        $adapter = \SolubleTestFactories::getDbAdapter();
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product_brand')->limit(10);
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+        $sql_string = $sql->getSqlStringForSqlObject($select);
+        $r = $adapter->query($sql_string, \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+        
+
+        $rs = new ResultSet($r);
+        $rs->getColumnModel();
+    }
 
 
     
