@@ -65,10 +65,10 @@ class ClosureRenderer implements RowRendererInterface
     }
     
     /**
-     * 
+     *
      * @param array $required_columns
      */
-    function setRequiredColumns(array $required_columns) 
+    function setRequiredColumns(array $required_columns)
     {
         $this->required_columns = $required_columns;
     }

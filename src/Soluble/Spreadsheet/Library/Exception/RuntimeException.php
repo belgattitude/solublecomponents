@@ -1,7 +1,10 @@
 <?php
+
 namespace Soluble\Spreadsheet\Library\Exception;
 
-class RuntimeException extends \RuntimeException
+use RuntimeException as RE;
+
+class RuntimeException extends RE
 {
     
-};
+}

@@ -10,7 +10,6 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 
-
 class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 {
 

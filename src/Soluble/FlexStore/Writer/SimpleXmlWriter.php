@@ -72,7 +72,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
     }
 
     /**
-     * 
+     *
      * @throws Exception\RuntimeException
      * @param Options $options
      * @return string xml encoded data

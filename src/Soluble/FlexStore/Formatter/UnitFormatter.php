@@ -6,7 +6,6 @@ use Soluble\FlexStore\Exception;
 use Soluble\FlexStore\Formatter\RowColumn;
 use ArrayObject;
 
-
 class UnitFormatter extends NumberFormatter
 {
 

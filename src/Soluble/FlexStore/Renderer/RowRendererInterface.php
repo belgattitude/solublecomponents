@@ -20,5 +20,4 @@ interface RowRendererInterface
      * @return array
      */
     function getRequiredColumns();
-    
 };

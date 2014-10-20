@@ -56,7 +56,7 @@ class ColumnModel
         // Test if all required columns are present in column model
         $required_columns = $renderer->getRequiredColumns();
 
-        foreach($required_columns as $column) {
+        foreach ($required_columns as $column) {
             if (!$this->exists($column)) {
                 $cls = get_class($renderer);
                 $msg = "Renderer '$cls' requires column '$column' to be present in column model.";

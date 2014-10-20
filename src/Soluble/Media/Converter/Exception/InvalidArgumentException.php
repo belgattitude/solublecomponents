@@ -1,6 +1,10 @@
 <?php
+
 namespace Soluble\Media\Converter\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException
+use InvalidArgumentException as IAE;
+
+class InvalidArgumentException extends IAE
 {
-};
+    
+}

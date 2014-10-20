@@ -15,13 +15,18 @@ class LibXL
      *
      * @var array|null
      */
-    static $default_license;
+    static protected $default_license;
 
+    /**
+     *
+     * @var array|null
+     */
+    protected $license;
+    
     /**
      *
      * @var array
      */
-    protected $license;
     protected static $supportedFormats = array(
         self::FILE_FORMAT_XLS,
         self::FILE_FORMAT_XLSX
@@ -32,7 +37,7 @@ class LibXL
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
-    function __construct(array $license = null)
+    public function __construct(array $license = null)
     {
 
         if ($license !== null) {
@@ -50,7 +55,7 @@ class LibXL
      * @param string $locale by default utf-8
      * @return ExcelBook
      */
-    function getExcelBook($file_format = self::FILE_FORMAT_XLSX, $locale = 'UTF-8')
+    public function getExcelBook($file_format = self::FILE_FORMAT_XLSX, $locale = 'UTF-8')
     {
         //@codeCoverageIgnoreStart
         if (!extension_loaded('excel')) {
@@ -83,7 +88,7 @@ class LibXL
      *
      * @return array|null
      */
-    function getLicense()
+    public function getLicense()
     {
         if ($this->license === null) {
             return self::getDefaultLicense();
@@ -98,7 +103,7 @@ class LibXL
      * @param string $format
      * @return boolean
      */
-    static function isSupportedFormat($format)
+    public static function isSupportedFormat($format)
     {
         if (!is_string($format)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " file_format must be a string");
@@ -112,7 +117,7 @@ class LibXL
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
-    function setLicense(array $license)
+    public function setLicense(array $license)
     {
         if (!array_key_exists('name', $license) || !array_key_exists('key', $license)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " In order to set a libxl license you must provide an associative array with 'name' and 'key' set.");
@@ -125,7 +130,7 @@ class LibXL
      *
      * @return array|null
      */
-    static function getDefaultLicense()
+    public static function getDefaultLicense()
     {
         return self::$default_license;
     }
@@ -136,7 +141,7 @@ class LibXL
      * @throws Exception\InvalidArgumentException
      * @param array $license associative array with 'name' and 'key'
      */
-    static function setDefaultLicense(array $license)
+    public static function setDefaultLicense(array $license)
     {
         if (!array_key_exists('name', $license) || !array_key_exists('key', $license)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " In order to set a default libxl license you must provide an associative array with 'name' and 'key' set.");
@@ -149,7 +154,7 @@ class LibXL
      * Unset default license, useful for unit tests only
      *
      */
-    static function unsetDefaultLicense()
+    public static function unsetDefaultLicense()
     {
         self::$default_license = null;
     }

@@ -21,5 +21,4 @@ interface FormatterInterface
      * @return void
      */
     public function format($value, ArrayObject $row);
-    
 }
