@@ -72,6 +72,8 @@ class SimpleXmlWriter extends AbstractSendableWriter
     }
 
     /**
+     * 
+     * @throws Exception\RuntimeException
      * @param Options $options
      * @return string xml encoded data
      */
@@ -104,8 +106,11 @@ class SimpleXmlWriter extends AbstractSendableWriter
         }
         $this->createXmlNode($d, $xml);
 
-
-        return $xml->asXML();
+        $string = $xml->asXML();
+        if ($string === false) {
+            throw new Exception\RuntimeException(__METHOD__ . " XML creation failed.");
+        }
+        return (string) $string;
     }
 
     /**

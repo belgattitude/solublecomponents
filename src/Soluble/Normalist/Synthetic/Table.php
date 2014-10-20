@@ -505,7 +505,7 @@ class Table
      * @throws Exception\DuplicateEntryException when insertion failed because of an invalid foreign key
      * @throws Exception\NotNullException when insertion failed because a column cannot be null
      *
-     * @return Record
+     * @return Record|false
      */
     public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes = false)
     {
