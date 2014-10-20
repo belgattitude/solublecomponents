@@ -107,15 +107,15 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $cm->add($column);
 
         $this->assertTrue($column->isVirtual());
+        $this->assertFalse($cm->get('product_id')->isVirtual());
+        
 
 
         $f = function(\ArrayObject $row) {
-            if (!$row->offsetExists('cool')) {
-                throw new \Exception("No cool column in row");
-            }
             $row['cool'] = "My cool value is :" . $row['product_id'];
         };
         $clo = new ClosureRenderer($f);
+        $clo->setRequiredColumns(array('product_id', 'reference'));
         $cm->addRowRenderer($clo);
 
         $data = $store->getData();
@@ -156,6 +156,40 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $data = $store->getData()->toArray();
     }
 
+    
+    public function testRendererThrowsMissingColumnException()
+    {
+        $this->setExpectedException('Soluble\FlexStore\Column\Exception\MissingColumnException');
+        $source = new SqlSource($this->adapter);
+        $select = $source->select();
+        $select->from(array('p' => 'product'), array())
+                ->join(array('ppl' => 'product_pricelist'), new Expression('ppl.product_id = p.product_id and ppl.pricelist_id = 1'), array(), $select::JOIN_LEFT);
+
+        $select->columns(array(
+            'product_id' => new Expression('p.product_id'),
+            'reference' => new Expression('p.reference'),
+            'price' => new Expression('ppl.price'),
+            'list_price' => new Expression('ppl.list_price'),
+            'public_price' => new Expression('ppl.public_price'),
+            'currency_reference' => new Expression("'CNY'")
+        ));
+
+        $store = new Store($source);
+        $cm = $store->getColumnModel();
+        $column = new Column('cool', array('type' => ColumnType::TYPE_STRING));
+        $cm->add($column);
+
+        $f2 = function(\ArrayObject $row) {
+            $row['cool'] = "My cool value is :" . $row['product_id'];
+        };
+        $clo = new ClosureRenderer($f2);
+        $clo->setRequiredColumns(array('notexists'));
+        $cm->addRowRenderer($clo);
+
+        $data = $store->getData()->toArray();
+    }
+    
+    
     public function testSearch()
     {
 

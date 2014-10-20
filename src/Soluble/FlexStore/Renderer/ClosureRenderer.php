@@ -16,12 +16,20 @@ class ClosureRenderer implements RowRendererInterface
      */
     protected $closure;
     
+    
+    /**
+     *
+     * @var array
+     */
+    protected $required_columns;
+    
     /**
      *
      * @param Closure $closure
      */
     public function __construct(Closure $closure)
     {
+        $this->required_columns = array();
         $this->closure = $closure;
     }
     
@@ -45,5 +53,23 @@ class ClosureRenderer implements RowRendererInterface
     function apply(\ArrayObject $row)
     {
         $this->closure($row);
+    }
+    
+    /**
+     * Return the list of columns required in order to use this renderer
+     * @return array
+     */
+    function getRequiredColumns()
+    {
+        return $this->required_columns;
+    }
+    
+    /**
+     * 
+     * @param array $required_columns
+     */
+    function setRequiredColumns(array $required_columns) 
+    {
+        $this->required_columns = $required_columns;
     }
 }

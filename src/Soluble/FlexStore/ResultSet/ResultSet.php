@@ -54,10 +54,6 @@ class ResultSet extends AbstractResultSet
      */
     protected $hydrated_columns;
 
-    /**
-     * @var ArrayObject
-     */
-    protected $hydration_virtual_columns;
     
     
     /**
@@ -160,8 +156,6 @@ class ResultSet extends AbstractResultSet
         $this->hydration_formatters = new ArrayObject();
         $this->hydration_renderers = new ArrayObject();
         $this->hydrated_columns = null;
-        $this->hydration_virtual_columns = new ArrayObject();
-
 
         if ($this->source->hasColumnModel()) {
             $cm = $this->getColumnModel();
@@ -191,13 +185,6 @@ class ResultSet extends AbstractResultSet
 
             // 3. Initialize row renderers
             if ($this->getHydrationOptions()->isRenderersEnabled()) {
-// If renderers enabled, always populate virtual columns
-                // in the original data row in order for renderers to
-                // check if columns exists
-
-                $virtual_columns = $cm->search()->findVirtual()->toArray();
-                $this->hydration_virtual_columns = new ArrayObject($virtual_columns);
-                
                 $this->hydration_renderers = $cm->getRowRenderers();
             }
         }
@@ -220,26 +207,20 @@ class ResultSet extends AbstractResultSet
             $this->initColumnModelHydration($row);
         }
         
-        // 1. If virtual columns are in use, let's add them to the row
-        //    definition
-        foreach ($this->hydration_virtual_columns as $virtual) {
-                // initialize virtual columns
-                $row->offsetSet($virtual, null);
-        }
 
-        // 2. Row renderers
+        // 1. Row renderers
         foreach ($this->hydration_renderers as $renderer) {
             $renderer->apply($row);
         }
 
-        // 3. Formatters
+        // 2. Formatters
         foreach ($this->hydration_formatters as $formatters) {
             foreach ($formatters['columns'] as $column) {
                 $row[$column] = $formatters['formatter']->format($row[$column], $row);
             }
         }
 
-        // 4. Process column hydration
+        // 3. Process column hydration
         if ($this->hydrated_columns !== null) {
             $d = new ArrayObject();
             foreach ($this->hydrated_columns as $column) {
