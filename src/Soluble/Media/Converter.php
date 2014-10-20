@@ -14,7 +14,7 @@ class Converter
 
     /**
      *
-     * @var Zend\Cache\Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $cacheStorage;
 

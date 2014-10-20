@@ -26,13 +26,6 @@ class Options
     protected $offset;
 
     
-    public function disableFormatters()
-    {
-        $this->enable_formatters = false;
-        return $this;
-    }
-    
-    
 
     /**
      * Set the (maximum) number of results to return
