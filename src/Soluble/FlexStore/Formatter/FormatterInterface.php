@@ -22,12 +22,4 @@ interface FormatterInterface
      */
     public function format($value, ArrayObject $row);
     
-    /**
-     * Return formatted value
-     *
-     * @param type $value
-     * @param ArrayObject $row
-     * @return mixed
-     */
-    //public function getFormatted($value, ArrayObject $row);
 }

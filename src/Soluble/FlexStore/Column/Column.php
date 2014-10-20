@@ -107,8 +107,8 @@ class Column implements ColumnSettableInterface
 
     /**
      *
-     * @param \Soluble\FlexStore\Column\FormatterInterface $formatter
-     * @return \Soluble\FlexStore\Column\Column
+     * @param FormatterInterface $formatter
+     * @return Column
      */
     function setFormatter(FormatterInterface $formatter)
     {

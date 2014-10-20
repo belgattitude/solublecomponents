@@ -236,7 +236,7 @@ class Record implements ArrayAccess
      * @param string $field
      * @param mixed $value
      * @throws Exception\LogicException when the record has been deleted
-     * @return \Soluble\Normalist\Record
+     * @return Record
      */
     public function offsetSet($field, $value)
     {
@@ -258,7 +258,7 @@ class Record implements ArrayAccess
      *
      * @param string $field
      * @throws Exception\LogicException when the record has been deleted
-     * @return \Soluble\Normalist\Record
+     * @return Record
      */
     public function offsetUnset($field)
     {

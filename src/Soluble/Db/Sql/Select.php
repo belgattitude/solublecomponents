@@ -38,7 +38,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     /**
      * Create an where clause with 'OR'
      *
-     * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
+     * @param  \Zend\Db\Sql\Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @throws Zend\Db\Sql\Exception\InvalidArgumentException
      * @return Select
      */

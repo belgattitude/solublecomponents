@@ -38,7 +38,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
     /**
      *
      * @param Store|null $store
-     * @param array|Traversable|null $options
+     * @param array|\Traversable|null $options
      */
     public function __construct(Store $store = null, $options = null)
     {

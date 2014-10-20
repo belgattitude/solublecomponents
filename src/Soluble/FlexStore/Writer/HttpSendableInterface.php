@@ -17,7 +17,7 @@ interface HttpSendableInterface
      * Send the store data via http
      *
      * @param SimpleHeaders $headers
-     * @param type $die_after
+     * @param boolean $die_after
      */
     public function send(SimpleHeaders $headers = null, $die_after = true);
 }

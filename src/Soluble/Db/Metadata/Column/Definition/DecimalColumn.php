@@ -84,7 +84,7 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
      * with five digits and two decimals, so values that can be stored in
      * the salary column range from -999.99 to 999.99.
      *
-     * @return int the $numericScale
+     * @return integer the $numericScale
      */
     public function getNumericScale()
     {
@@ -92,8 +92,8 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
     }
 
     /**
-     * @param int $numericScale the $numericScale to set
-     * @return \Soluble\Db\Metadata\Column\DecimalColumn
+     * @param integer $numericScale the $numericScale to set
+     * @return DecimalColumn
      */
     public function setNumericScale($numericScale)
     {

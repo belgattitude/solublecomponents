@@ -771,7 +771,7 @@ class Table
      * @throws Exception\RuntimeException when insertion failed for another reason
      *
      * @param string|PreparableSqlInterface $sqlObject
-     * @return Zend\Db\Adapter\Driver\ResultInterface
+     * @return \Zend\Db\Adapter\Driver\ResultInterface
      */
     protected function executeStatement($sqlObject)
     {

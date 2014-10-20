@@ -5,7 +5,7 @@ namespace Soluble\FlexStore\Formatter;
 use Soluble\FlexStore\Exception;
 use Soluble\FlexStore\Formatter\RowColumn;
 use ArrayObject;
-use \NumberFormatter as IntlNumberFormatter;
+
 
 class UnitFormatter extends NumberFormatter
 {
@@ -35,22 +35,7 @@ class UnitFormatter extends NumberFormatter
         parent::__construct($params);
     }
 
-    /**
-     *
-     * @param string $formatterId
-     */
-    protected function loadFormatterId($formatterId)
-    {
-        
-        $locale = $this->params['locale'];
-        $this->formatters[$formatterId] = new IntlNumberFormatter(
-            $locale, IntlNumberFormatter::DECIMAL
-        );
-        $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
-        if ($this->params['pattern'] !== null) {
-            $this->formatters[$formatterId]->setPattern($this->params['pattern']);
-        }
-    }
+
 
     /**
      * Currency format a number
@@ -99,7 +84,7 @@ class UnitFormatter extends NumberFormatter
      *
      * @throws Exception\InvalidArgumentException
      * @param  string|RowColumn $unit
-     * @return UnitFormat
+     * @return UnitFormatter
      */
     public function setUnit($unit)
     {

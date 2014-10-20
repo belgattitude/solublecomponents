@@ -19,7 +19,7 @@ class BlobColumn extends AbstractColumnDefinition
 
     /**
      * @param int $characterOctetLength the $characterOctetLength to set
-     * @return \Soluble\Db\Metadata\Column\BlobColumn
+     * @return BlobColumn
      */
     public function setCharacterOctetLength($characterOctetLength)
     {

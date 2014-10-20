@@ -21,7 +21,7 @@ class StringColumn extends AbstractColumnDefinition implements TextColumnInterfa
 
     /**
      * @param int $characterMaximumLength the $characterMaximumLength to set
-     * @return \Soluble\Db\Metadata\Column\StringColumn
+     * @return StringColumn
      */
     public function setCharacterMaximumLength($characterMaximumLength)
     {

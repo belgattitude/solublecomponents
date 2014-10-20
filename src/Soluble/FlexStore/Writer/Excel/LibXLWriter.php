@@ -84,7 +84,7 @@ class LibXLWriter extends AbstractSendableWriter
     /**
      *
      * @param StoreInterface|null $store
-     * @param array|Traversable|null $options
+     * @param array|\Traversable|null $options
      */
     public function __construct(StoreInterface $store = null, $options = null)
     {

@@ -8,6 +8,7 @@ use Soluble\FlexStore\Writer\AbstractSendableWriter;
 use Soluble\FlexStore\Writer\SendHeaders;
 use Soluble\FlexStore\Source\QueryableSourceInterface;
 use Soluble\FlexStore\Options;
+use Soluble\FlexStore\Writer\AbstractWriter;
 
 class JsonModelWriter extends AbstractWriter
 {

@@ -48,7 +48,7 @@ class Result implements ColumnSettableInterface
     /**
      *
      * @throws Exception\InvalidArgumentException
-     * @param string|AbstractType $type
+     * @param string|\Soluble\FlexStore\Column\Type\AbstractType $type
      * @return Result
      */
     function setType($type)

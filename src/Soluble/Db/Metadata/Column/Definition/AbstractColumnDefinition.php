@@ -60,7 +60,7 @@ abstract class AbstractColumnDefinition
     protected $alias;
 
     /**
-     * @var string;
+     * @var string
      */
     protected $tableAlias;
 
@@ -102,7 +102,7 @@ abstract class AbstractColumnDefinition
      * Set name
      *
      * @param string $name
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setName($name)
     {
@@ -134,7 +134,7 @@ abstract class AbstractColumnDefinition
      * Set table name
      *
      * @param string $tableName
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setTableName($tableName)
     {
@@ -149,7 +149,7 @@ abstract class AbstractColumnDefinition
      * Set schema name
      *
      * @param string $schemaName
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setSchemaName($schemaName)
     {
@@ -181,7 +181,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param int $ordinalPosition to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setOrdinalPosition($ordinalPosition)
     {
@@ -199,7 +199,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param string $columnDefault to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setColumnDefault($columnDefault)
     {
@@ -210,7 +210,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param bool $isNullable to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setIsNullable($isNullable)
     {
@@ -229,7 +229,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param bool $isPrimary to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setIsPrimary($isPrimary)
     {
@@ -255,7 +255,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param string $dataType the $dataType to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setDataType($dataType)
     {
@@ -276,7 +276,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param string $nativeDataType the $dataType to set
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setNativeDataType($nativeDataType)
     {
@@ -288,7 +288,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $alias column alias name
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setAlias($alias)
     {
@@ -307,7 +307,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $tableAlias table alias name
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setTableAlias($tableAlias)
     {
@@ -331,7 +331,7 @@ abstract class AbstractColumnDefinition
     /**
      *
      * @param string $catalog db catalog
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setCatalog($catalog)
     {
@@ -352,7 +352,7 @@ abstract class AbstractColumnDefinition
 
     /**
      * @param bool $isGroup when the column is grouped
-     * @return AbstractColumn
+     * @return AbstractColumnDefinition
      */
     public function setIsGroup($isGroup)
     {

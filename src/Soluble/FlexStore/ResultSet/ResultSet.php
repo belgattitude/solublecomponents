@@ -5,6 +5,7 @@ namespace Soluble\FlexStore\ResultSet;
 use Soluble\FlexStore\Source\AbstractSource;
 use Soluble\FlexStore\Helper\Paginator;
 use Soluble\FlexStore\Options\HydrationOptions;
+use Soluble\FlexStore\Column\ColumnModel;
 use ArrayObject;
 
 class ResultSet extends AbstractResultSet

@@ -46,7 +46,7 @@ class Metadata
      * @throws Exception\UnsupportedDriverException
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @param string $schema database schema to use or null to current schema defined by the adapter
-     * @return \Soluble\Db\Metadata\Source\MysqlISMetadata
+     * @return \Soluble\Db\Metadata\Source\AbstractSource
      */
     protected function createSourceFromAdapter(Adapter $adapter, $schema = null)
     {

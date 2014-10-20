@@ -42,9 +42,9 @@ class Type
      * @param string $datatype
      * @param string $name
      * @param string $tableName
-     * @param tring $schemaName
+     * @param string $schemaName
      * @throws Exception\UnsupportedDatatypeException
-     * @return \Soluble\Db\Metadata\Column\Definition\AbstractColumn
+     * @return \Soluble\Db\Metadata\Column\Definition\AbstractColumnDefinition
      */
     public static function createColumnDefinition($datatype, $name, $tableName = null, $schemaName = null)
     {

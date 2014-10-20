@@ -133,7 +133,7 @@ class CurrencyFormatter extends NumberFormatter
      *
      * @throws Exception\InvalidArgumentException
      * @param  string|RowColumn $currencyCode
-     * @return CurrencyFormat
+     * @return CurrencyFormatter
      */
     public function setCurrencyCode($currencyCode)
     {
