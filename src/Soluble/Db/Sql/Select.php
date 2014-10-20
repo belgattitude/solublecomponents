@@ -10,6 +10,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 
+
 class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 {
 
@@ -23,11 +24,10 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      * Constructor
      *
      * @param Adapter $adapter
-     * @param  null|string|array|TableIdentifier $table
+     * @param  null|string|array|\Zend\Db\Sql\TableIdentifier $table
      */
     public function __construct(Adapter $adapter = null, $table = null)
     {
-
         if ($adapter) {
             $this->setDbAdapter($adapter);
         }
@@ -176,8 +176,14 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         }
         $sql = new Sql($this->adapter);
         $sql_string = $sql->getSqlStringForSqlObject($this);
+        
         //return $this->adapter->createStatement($sql_string)->execute();
-        return $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+        //return $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
+        $result = $this->adapter->getDriver()->getConnection()->execute($sql_string);
+        $resultset = new ResultSet();
+        $resultset->initialize($result);
+        return $resultset;
+        
     }
 
     

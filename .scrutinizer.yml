@@ -7,7 +7,7 @@ before_commands:
     - 'composer install --dev --prefer-source'    
 tools:
     external_code_coverage: 
-        timeout: 600
+        timeout: 1200
     php_cpd:
         excluded_dirs: [vendor, tests, bin, docs]    
     php_pdepend:

@@ -16,7 +16,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
     /**
      * Return type to use when returning an object from the set
      *
-     * @var ResultSet::TYPE_ARRAYOBJECT|ResultSet::TYPE_ARRAY
+     * @var ZFResultSet::TYPE_ARRAYOBJECT|ZFResultSet::TYPE_ARRAY
      */
     protected $returnType = self::TYPE_ARRAYOBJECT;
 

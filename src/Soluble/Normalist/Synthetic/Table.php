@@ -491,7 +491,6 @@ class Table
     }
 
 
-
     /**
      * Insert on duplicate key
      *
