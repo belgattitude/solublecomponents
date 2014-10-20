@@ -231,6 +231,31 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('EUR', $formatterEur->getCurrencyCode());
 
         $cm->get('price')->setFormatter($formatterEur);
+        
+        $test = $cm->search()->in(array('price'))->toArray();
+        $this->assertEquals(array('price'), $test);
+        
+        $cool = new Column('cool');
+        $cm->add($cool);
+        $test = $cm->search()->in(array('cool'))->toArray();
+        $this->assertEquals(array('cool'), $test);
+
+        
+        $cool2 = new Column('cool2');
+        $cm->add($cool2, 'cool');
+        $test = $cm->search()->in(array('cool2'))->toArray();
+        $this->assertEquals(array('cool2'), $test);
+        
+        $cm->sort(array('cool', 'cool2'));
+
+        $cool3 = new Column('cool3');
+        $cm->add($cool3);
+        
+        
+        $test = $cm->search()->in(array('cool3'))->toArray();
+        $this->assertEquals(array('cool3'), $test);
+        
+        
         $this->assertEquals($formatterEur, $cm->get('price')->getFormatter());
         $this->assertEquals($formatterDb, $cm->get('list_price')->getFormatter());
     }

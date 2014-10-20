@@ -170,7 +170,7 @@ class ColumnModel
                     $new_columns->offsetSet($name, $column);
                 }
             }
-            $this->columns = $new_columns;
+            $this->columns->exchangeArray($new_columns);
             
         } else {
             // Simply append
@@ -257,7 +257,7 @@ class ColumnModel
         }
         // Appending eventual non sorted columns at the end
         $columns = array_merge($columns, (array) $this->columns);
-        $this->columns = new ArrayObject($columns);
+        $this->columns->exchangeArray($columns);
         return $this;
     }
 
