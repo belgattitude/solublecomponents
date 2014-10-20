@@ -29,7 +29,7 @@ class ImageConverter implements ConverterInterface
 
     /**
      *
-     * @var Zend\Cache\Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $cacheStorage;
 
