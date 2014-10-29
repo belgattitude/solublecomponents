@@ -83,6 +83,26 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
 
     }
     
+    public function testGetDataWithGlobalLimit()
+    {
+        $select = new \Zend\Db\Sql\Select();
+        $select->from('product');
+
+        $source = new SqlSource($this->adapter, $select);
+        $store =  new Store($source);
+        
+        $limit = 2;
+        
+        $store->getOptions()->setLimit($limit);
+        $jsonWriter = new JsonWriter($store);
+        
+        $data = json_decode($jsonWriter->getData(), true);
+        $this->assertEquals($limit, $data['limit']);
+        $this->assertGreaterThan($limit, $data['total']);
+        $this->assertEquals($limit, count($data['data']));
+        
+    }
+    
 
     public function testGetDataWithRequestId()
     {

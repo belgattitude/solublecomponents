@@ -41,6 +41,12 @@ class CSVWriter extends AbstractSendableWriter
     public function getData(Options $options = null)
     {
 
+        if ($options === null) {
+            // Take store global/default options
+            $options = $this->store->getOptions();
+        }
+        
+        
 // TODO - TEST database connection charset !!!
 //
 
@@ -62,9 +68,7 @@ class CSVWriter extends AbstractSendableWriter
 
         $csv = '';
         
-        if ($options === null) {
-            $options = new Options();
-        }
+
         // Get unformatted data when using csv writer
         $options->getHydrationOptions()->disableFormatters();
         $data = $this->store->getData($options)->toArray();

@@ -219,8 +219,10 @@ class LibXLWriter extends AbstractSendableWriter
     {
 
         if ($options === null) {
-            $options = new Options();
+            // Take store global/default options
+            $options = $this->store->getOptions();
         }
+
         // Get unformatted data when using excel writer
         $options->getHydrationOptions()->disableFormatters();
         
