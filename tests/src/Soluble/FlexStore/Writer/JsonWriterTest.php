@@ -60,6 +60,8 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
+
+    
     public function testGetData()
     {
         $data = $this->jsonWriter->getData();
@@ -68,9 +70,11 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('total', $d);
         $this->assertArrayHasKey('start', $d);
         $this->assertArrayHasKey('limit', $d);
+        $this->assertArrayHasKey('request_id', $d);
         $this->assertArrayHasKey('data', $d);
         $this->assertTrue($d['success']);
         $this->assertArrayHasKey('timestamp', $d);
+        $this->assertNull($d['request_id']);
         $timestamp = DateTime::createFromFormat(DateTime::W3C, $d['timestamp']);
         
         $this->assertEquals($timestamp->format(DateTime::W3C), $d['timestamp']);
@@ -78,7 +82,19 @@ class JsonWritterTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('query', $d);
 
     }
+    
 
+    public function testGetDataWithRequestId()
+    {
+        $this->jsonWriter->setRequestId(12321321321);
+        $data = $this->jsonWriter->getData();
+        $this->assertJson($data);
+        $d = json_decode($data, $assoc=true);
+        $this->assertEquals(12321321321, $d['request_id']);
+
+    }
+    
+    
     public function testGetDataWithDebug()
     {
         $this->jsonWriter->setDebug($debug=true);

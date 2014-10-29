@@ -15,10 +15,32 @@ class JsonWriter extends AbstractSendableWriter
      * @var SimpleHeaders
      */
     protected $headers;
+    
+    
+    /**
+     *
+     * @var int|string|null
+     */
+    protected $request_id;
 
+    
+    /**
+     * Set origin request id
+     * 
+     * Value of request id will be returned in json encoded data
+     * useful for autocompletion usage when synchronous requests
+     * will return asynchronous responses.
+     * 
+     * @param int|string $request_id
+     */
+    public function setRequestId($request_id)
+    {
+        $this->request_id = $request_id;
+    }
+    
     /**
      * @param Options $options
-     * @return \Zend\View\Model\JsonModel
+     * @return string
      */
     public function getData(Options $options = null)
     {
@@ -36,6 +58,7 @@ class JsonWriter extends AbstractSendableWriter
             'success' => true,
             'timestamp' => $now->format(DateTime::W3C),
             'total' => $data->getTotalRows(),
+            'request_id' => $this->request_id,
             'start' => $data->getSource()->getOptions()->getOffset(),
             'limit' => $data->getSource()->getOptions()->getLimit(),
             'data' => $data->toArray()
