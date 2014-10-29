@@ -55,7 +55,6 @@ abstract class AbstractWriter
     /**
      * Return data
      * @param Options $options
-     * @return string
      */
     abstract public function getData(Options $options = null);
 
