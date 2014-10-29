@@ -86,6 +86,18 @@ class StoreTest extends \PHPUnit_Framework_TestCase
 
         
     }
+
+    public function testGetOptions()
+    {
+        $this->source->select()->from('product');
+        $store = new Store($this->source);
+        $options = $store->getOptions();
+        $this->assertInstanceOf('Soluble\FlexStore\Options', $options);
+        $options->setLimit(2);
+        $data = $store->getData()->toArray();
+        $this->assertEquals(2, count($data));
+        
+    }    
     
 
     public function testGetSource()
