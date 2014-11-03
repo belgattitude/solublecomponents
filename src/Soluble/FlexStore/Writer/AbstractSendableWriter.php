@@ -34,7 +34,7 @@ abstract class AbstractSendableWriter extends AbstractWriter implements HttpSend
         } catch (\Exception $e) {
             throw $e;
         }
-        $headers->outputHeaders($die_after);
+        $headers->outputHeaders($replace = true);
         echo $data;
         if ($die_after) {
             die();

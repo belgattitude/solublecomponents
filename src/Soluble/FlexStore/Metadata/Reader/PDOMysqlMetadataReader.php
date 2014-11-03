@@ -78,7 +78,6 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
             $name = $field['name'];
             $tableName = $field['table'];
 
-
             $datatype = strtoupper($field['native_type']);
             
             

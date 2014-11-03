@@ -376,8 +376,9 @@ class InformationSchema extends Source\AbstractSource
         $references = array();
         $config = new Config(array('tables' => array()), true);
         $tables = $config->offsetGet('tables');
-        
+
         foreach ($results as $r) {
+            
             // Setting table information
             $table_name = $r['table_name'];
             if (!$tables->offsetExists($table_name)) {
@@ -514,6 +515,7 @@ class InformationSchema extends Source\AbstractSource
                 $references[$referenced_table_name] = $refs;
             }
         }
+        
         $array = $config->toArray();
         unset($config);
         return $array;
