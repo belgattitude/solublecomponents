@@ -57,4 +57,4 @@ Documentation is hosted on [Read the docs](http://soluble.readthedocs.org)
 ## Contributing
 
 
-[![Total Downloads](https://poser.pugx.org/soluble/soluble/normalist/downloads.png)](https://packagist.org/packages/soluble/normalist)
+[![Total Downloads](https://poser.pugx.org/soluble/normalist/downloads.png)](https://packagist.org/packages/normalist)

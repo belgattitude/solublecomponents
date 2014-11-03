@@ -35,7 +35,7 @@ php composer.phar require soluble/db:0.*
 Documentation is hosted on [Read the docs](http://soluble.readthedocs.org)
 
 
-[![Total Downloads](https://poser.pugx.org/soluble/soluble/db/downloads.png)](https://packagist.org/packages/soluble/soluble/db)
+[![Total Downloads](https://poser.pugx.org/soluble/db/downloads.png)](https://packagist.org/packages/soluble/db)
 
 
 

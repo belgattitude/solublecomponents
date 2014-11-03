@@ -23,7 +23,7 @@ Soluble/Spreadsheet can be installed via composer. For composer documentation, p
 
 
 The recommended way to install Soluble\Spreadsheet is through `Composer <https://getcomposer.org/>`_.
-Just add soluble/db in your composer.json file as described below
+Just add soluble/spreadsheet in your composer.json file as described below
 
 ```sh
 php composer.phar require soluble/spreadsheet:0.*
@@ -32,6 +32,6 @@ php composer.phar require soluble/spreadsheet:0.*
 
 
 
-[![Total Downloads](https://poser.pugx.org/soluble/soluble/spreadsheet/downloads.png)](https://packagist.org/packages/soluble/soluble/spreadsheet)
+[![Total Downloads](https://poser.pugx.org/soluble/spreadsheet/downloads.png)](https://packagist.org/packages/soluble/spreadsheet)
 
 
