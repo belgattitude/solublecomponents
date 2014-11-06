@@ -61,7 +61,12 @@ class SolubleTestFactories
             passthru($command);
 
             // let time for server to start
-            sleep(3);
+            
+            if (preg_match('/travis/', dirname(__FILE__))) {  
+                sleep(5);
+            } else {
+                sleep(1);
+            }
         }
         self::$javaBridgeServerStarted = true;
     }
