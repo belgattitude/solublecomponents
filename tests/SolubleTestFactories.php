@@ -54,7 +54,7 @@ class SolubleTestFactories
 
             $jar_dir = dirname($jar_file);
             
-            $command = "java -jar $jar_file SERVLET:$port > $test_dir/logs/pbj-error.log 2>&1 &";
+            $command = "java -jar $jar_file SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
             echo "\nRunning pjb server: $command\n";
             echo "See logs in : $test_dir/logs/pbj-error.log\n\n";
             

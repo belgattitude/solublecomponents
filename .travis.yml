@@ -75,6 +75,7 @@ script:
 after_script:
   - if [[ $HHVM == false ]] ; then php -r 'echo readfile(ini_get("error_log")) . "\n";'; fi
   - cat log.txt
+  - cat tests/logs/pjb-error.log
   #- cat $TRAVIS_BUILD_DIR/config/config.ini.php  
   - ls build/logs  
   - if [[ $EXTERNAL == true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
