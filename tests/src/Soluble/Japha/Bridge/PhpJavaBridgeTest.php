@@ -67,6 +67,8 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
      
         $i1 = new Pjb621\Java("java.math.BigInteger",  1);
         $i2 = new Pjb621\Java("java.math.BigInteger",  2);
+        $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\Java', $i2);
+        
         $i3 = $i1->add($i2);
         $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\InternalJava', $i3);
         $this->assertTrue(Pjb621\java_instanceof($i1, PhpJavaBridge::java('java.math.BigInteger')));
@@ -74,11 +76,8 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
         
         
         $util = PhpJavaBridge::java("php.java.bridge.Util");
-//        var_dump($util);
-//die();        
         
         $ctx = Pjb621\java_context();
-        
         /* get the current instance of the JavaBridge, ServletConfig and Context */
         $bridge = $ctx->getAttribute( "php.java.bridge.JavaBridge",      100);
         $config = $ctx->getAttribute ("php.java.servlet.ServletConfig",  100);
@@ -87,6 +86,7 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
 
         $inspected = Pjb621\java_inspect($bridge);
         $this->assertInternalType('string', $inspected);
+        $this->assertContains('php.java.bridge.JavaBridge.getCachedString', $inspected);
         
     }
 

@@ -60,6 +60,8 @@ class SolubleTestFactories
             
             passthru($command);
 
+            // let time for server to start
+            sleep(2);
         }
         self::$javaBridgeServerStarted = true;
     }
