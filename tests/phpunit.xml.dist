@@ -36,16 +36,40 @@
         <server name="LIBXL_LICENSE_KEY" value="" />
         <server name="LIBXL_LICENSE_NAME" value="" />
         
+        <server name="PJB_HOST" value="127.0.0.1" />
+        <server name="PJB_PORT" value="8083" />
+        
+        
     </php>
 
     <testsuites>
-        <testsuite name="Soluble Framework test suite">
-            <directory>./</directory>
+        <testsuite name="soluble/components">
+            <directory>./src</directory>
         </testsuite>
+        <testsuite name="soluble/japha">
+          <directory>./src/Soluble/Japha</directory>
+        </testsuite>
+        <testsuite name="soluble/db">
+          <directory>./src/Soluble/Db</directory>
+        </testsuite>
+        <testsuite name="soluble/normalist">
+          <directory>./src/Soluble/Normalist</directory>
+        </testsuite>
+        <testsuite name="soluble/flexstore">
+          <directory>./src/Soluble/FlexStore</directory>
+        </testsuite>
+        <testsuite name="soluble/spreadsheet">
+          <directory>./src/Soluble/Spreadsheet</directory>
+        </testsuite>
+        
+        
     </testsuites>
     <filter>
         <whitelist>
             <directory>./src</directory>
+			<exclude>
+			  <directory>./src/Soluble/Japha/Bridge/Pjb621</directory>
+			</exclude>		            
         </whitelist>
     </filter>
     <logging>

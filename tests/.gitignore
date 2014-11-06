@@ -1,1 +1,3 @@
 phpunit.xml
+logs/
+tools/pjb621

@@ -37,19 +37,9 @@
     <filter>
         <whitelist>
             <directory>../../src</directory>
-			<exclude>
-			  <directory suffix=".php">./../src/Soluble/Normalist/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/Normalist/Synthetic/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/Media/Converter/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/FlexStore/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/FlexStore/ResultSet/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/FlexStore/Writer/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/FlexStore/Metadata/Exception</directory>
-			  <directory suffix=".php">./../src/Soluble/Db/Metadata/Exception</directory>
-			  <file>./../src/Soluble/Normalist/SyntheticTable.php</file>
-			  <file>./../src/Soluble/Normalist/SyntheticRecord.php</file>
-			</exclude>		
-			
+            <exclude>
+              <directory>../../src/Soluble/Japha/Bridge/Pjb621</directory>
+            </exclude>		            
         </whitelist>
     </filter>
     <logging>

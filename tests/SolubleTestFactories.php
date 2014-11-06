@@ -3,6 +3,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Cache\StorageFactory;
 use Soluble\Normalist\Synthetic\TableManager;
 use Soluble\Normalist\Driver;
+use Symfony\Component\Process\Process;
 
 class SolubleTestFactories
 {
@@ -16,6 +17,64 @@ class SolubleTestFactories
      */
     protected static $_cache_instances = array();
 
+    /**
+     *
+     * @var boolean
+     */
+    protected static $javaBridgeServerStarted = false;
+    
+    /**
+     *
+     * @var int
+     */
+   // protected static $javaBridgeServerPid;
+    
+    
+    /**
+     * Start (and eventually install) the standalone
+     * java bridge server
+     */
+    public static function startJavaBridgeServer()
+    {
+
+        if (!self::$javaBridgeServerStarted) {
+            // First ensure php java bridge is installed
+            $test_dir = dirname(__FILE__);
+            passthru("/bin/bash $test_dir/tools/install_pjb621.sh");
+            
+            $jar_file = "$test_dir/tools/pjb621/WEB-INF/lib/JavaBridge.jar";
+
+            if (!file_exists($jar_file)) {
+                throw new \Exception(__METHOD__ . " Standalone javabridge install failed, see tests/tools/install_pjb621.sh script ($jar_file)");
+            }
+            
+            
+            $info = self::getJavaBridgeServerAddress();
+            $port = $info['port'];
+
+            $jar_dir = dirname($jar_file);
+            
+            $command = "java -jar $jar_file SERVLET:$port > $test_dir/logs/pbj-error.log 2>&1 &";
+            echo "\nRunning pjb server: $command\n";
+            echo "See logs in : $test_dir/logs/pbj-error.log\n\n";
+            
+            passthru($command);
+
+        }
+        self::$javaBridgeServerStarted = true;
+    }
+
+    /**
+     * 
+     * @return array
+     */
+    public static function getJavaBridgeServerAddress()
+    {
+        return array(
+                    'host' => $_SERVER['PJB_HOST'],
+                    'port'  => $_SERVER['PJB_PORT']
+            );
+    }
     
     /**
      * 
