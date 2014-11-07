@@ -36,16 +36,32 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncludeBridge()
     {
+        Pjb::setConfiguration(['host' => 1, 'port' => 2]);
+        
+        $cfg = new Pbj\Configuration();
+        $cfg->setHost($host, $port);
+        $cfg->setWrapper('Pjb621');
+        
+        
+        $pjb = Pjb::getInstance($configuration);
+        
+        $client = $pjb->getClient();
+        
+        
+        
         $bridge_address = "localhost:8083";
         PhpJavaBridge::includeBridge($bridge_address);
         
         $system = PhpJavaBridge::java('java.lang.System');
         $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\JavaClass', $system);
+        $this->assertEquals('java.lang.System', $system->get__signature());
         
         /* @var $properties \Soluble\Japha\Bridge\Pjb621\InternalJava */
         $properties = $system->getProperties();
+        
         $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\InternalJava', $properties);
-
+        $this->assertEquals("java.util.Properties", $properties->get__signature());
+        
         $this->assertInternalType('string', $properties->__cast('string'));
         $this->assertInternalType('string', $properties->__toString());
         
@@ -73,6 +89,11 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\InternalJava', $i3);
         $this->assertTrue(Pjb621\java_instanceof($i1, PhpJavaBridge::java('java.math.BigInteger')));
         $this->assertEquals('3', $i3->toString());
+        
+        
+        $params = new Pjb621\Java("java.util.HashMap");
+        $this->assertInstanceOf('Soluble\Japha\Bridge\Pjb621\Java', $params);
+        $this->assertEquals('java.util.HashMap', $params->get__signature());
         
         
         $util = PhpJavaBridge::java("php.java.bridge.Util");
