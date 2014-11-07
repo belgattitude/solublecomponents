@@ -25,8 +25,8 @@
 		<!-- if you don't start with a /, it will be relative to unit tests  -->
 		<server name="PHPUNIT_CACHE_DIR" value="tmp/cache" />
         
-        <server name="PJB_HOST" value="127.0.0.1" />
-        <server name="PJB_PORT" value="8083" />        
+        <server name="PJB_URL" value="127.0.0.1:8083" />
+   
         
         <server name="LIBXL_LICENSE_KEY" value="" />
         <server name="LIBXL_LICENSE_NAME" value="" />        

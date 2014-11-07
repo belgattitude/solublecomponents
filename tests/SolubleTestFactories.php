@@ -49,8 +49,10 @@ class SolubleTestFactories
             }
             
             
-            $info = self::getJavaBridgeServerAddress();
-            $port = $info['port'];
+            $url = self::getJavaBridgeServerAddress();
+            $tmp = explode(':', $url);
+            $port = $tmp[1];
+            
 
             $jar_dir = dirname($jar_file);
             
@@ -73,14 +75,11 @@ class SolubleTestFactories
 
     /**
      * 
-     * @return array
+     * @return string
      */
     public static function getJavaBridgeServerAddress()
     {
-        return array(
-                    'host' => $_SERVER['PJB_HOST'],
-                    'port'  => $_SERVER['PJB_PORT']
-            );
+        return $_SERVER['PJB_URL'];
     }
     
     /**
