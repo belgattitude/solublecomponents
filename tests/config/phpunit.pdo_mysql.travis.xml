@@ -39,7 +39,7 @@
         <whitelist>
             <directory>../../src</directory>
             <exclude>
-              <directory>../../src/Soluble/Japha/Bridge/Pjb621</directory>
+              <directory>../../src/Soluble/Japha/Bridge/Driver/Pjb621</directory>
             </exclude>		            
         </whitelist>
     </filter>
