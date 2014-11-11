@@ -14,3 +14,6 @@ tmp/
 vendor/
 bin/
 build/
+/tests/tools/pbj_warbundle_install/dist/
+/tests/tools/pbj_warbundle_install/downloads/
+/tests/tools/pjb_standalone_install/pjb621/
