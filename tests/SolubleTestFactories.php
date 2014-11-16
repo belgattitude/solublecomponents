@@ -56,7 +56,10 @@ class SolubleTestFactories
 
             $jar_dir = dirname($jar_file);
             
-            $command = "java -jar $jar_file SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
+            //java -cp /web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/mysql-connector-java-5.1.34-bin.jar:/web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/JavaBridge.jar php.java.bridge.Standalone SERVLET:8083            
+            
+            //$command = "java  -jar $jar_file SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
+            $command = "java -cp $jar_dir/mysql-connector-java-5.1.34-bin.jar:$jar_file php.java.bridge.Standalone SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
             echo "\nRunning pjb server: $command\n";
             echo "See logs in : $test_dir/logs/pbj-error.log\n\n";
             
