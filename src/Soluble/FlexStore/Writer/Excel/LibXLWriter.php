@@ -34,6 +34,7 @@ class LibXLWriter extends AbstractSendableWriter
      */
     protected $headers;
     protected $column_width_multiplier = 1.7;
+    protected $column_max_width = 75;
 
     /**
      *
@@ -88,6 +89,7 @@ class LibXLWriter extends AbstractSendableWriter
      */
     public function __construct(StoreInterface $store = null, $options = null)
     {
+        
         $this->currency_formats = new ArrayObject();
         $this->unit_formats = new ArrayObject();
         parent::__construct($store, $options);
@@ -355,6 +357,15 @@ class LibXLWriter extends AbstractSendableWriter
                         $format = null;
                 }
             }
+            
+            if ($format === null) {
+                
+                $format = $this->getDefaultTextFormat($book);
+            } else {
+                    
+                $format->horizontalAlign($this->getFormatStyle('horizontalFormat'));
+                $format->verticalAlign($this->getFormatStyle('verticalFormat'));
+            }
 
             // Save the spec
             $spec = new ArrayObject();
@@ -369,6 +380,13 @@ class LibXLWriter extends AbstractSendableWriter
 
         //var_dump((array) $specs);
         return $specs;
+    }
+    
+    protected function getDefaultTextFormat(ExcelBook $book) {
+        $format = $book->addFormat();
+        $format->horizontalAlign($this->getFormatStyle('horizontalFormat'));
+        $format->verticalAlign($this->getFormatStyle('verticalFormat'));
+        return $format;
     }
 
     protected function getHeaderFormat(ExcelBook $book)
@@ -421,11 +439,16 @@ class LibXLWriter extends AbstractSendableWriter
 
         // Fill document content
         
+        
+        
         $data = $this->store->getData($options);
 
         foreach ($data as $idx => $row) {
+            
             $col_idx = 0;
             $row_idx = $idx + 1;
+            $rowHeight = $sheet->rowHeight($row_idx);
+            
             foreach ($specs as $name => $spec) {
                 $value = $row[$name];
 
@@ -449,11 +472,19 @@ class LibXLWriter extends AbstractSendableWriter
                                 $sheet->write($row_idx, $col_idx, $time, $spec['format'], ExcelFormat::AS_DATE);
                                 break;
                             default:
-                                $sheet->write($row_idx, $col_idx, $value);
+                                if (preg_match('/(\n)/', $value)) {
+                                    // More height when one cell contains multiple lines
+                                    $sheet->setRowHeight($row_idx, ceil($rowHeight * 1.9));
+                                }
+                                
+                                $sheet->write($row_idx, $col_idx, $value, $format);
                         }
                     }
                 } else {
-                    $sheet->write($row_idx, $col_idx, $value);
+                    
+                        $sheet->write($row_idx, $col_idx, $value);
+                    
+                    
                 }
                 $column_max_widths[$name] = max(strlen((string) $value) * $this->column_width_multiplier, $column_max_widths[$name]);
                 $col_idx++;
@@ -461,7 +492,7 @@ class LibXLWriter extends AbstractSendableWriter
         }
 
         foreach (array_values($column_max_widths) as $idx => $width) {
-            $sheet->setColWidth($idx, ceil($idx), $width);
+            $sheet->setColWidth($idx, ceil($idx), min($width, $this->column_max_width));
         }
 
         $sheet->setPrintGridlines(true);
@@ -472,6 +503,7 @@ class LibXLWriter extends AbstractSendableWriter
         return $book;
     }
 
+    
     /**
      *
      * @param string $license_name
@@ -479,8 +511,23 @@ class LibXLWriter extends AbstractSendableWriter
      */
     public static function setDefaultLicense($license_name, $license_key)
     {
-
         self::$default_license = array('name' => $license_name, 'key' => $license_key);
+    }
+    
+    
+    public function getFormatStyle($style) {
+        $styles = $this->getFormatStyles();
+        return $styles[$style];
+    }
+    
+    public function getFormatStyles()
+    {
+        $styles = array(
+                'horizontalAlign' => ExcelFormat::ALIGNH_LEFT,
+                'verticalAlign' => ExcelFormat::ALIGNV_TOP
+        );
+        return $styles;
+        
     }
 
     /**
