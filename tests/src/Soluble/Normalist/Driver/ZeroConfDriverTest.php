@@ -47,7 +47,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     {
         
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema); 
+        $options = array('schema' => $schema);
         $driver = new ZeroConfDriver($this->adapter, $options);
         $md = $driver->getMetadata();
         $driver->clearMetadataCache();
@@ -59,12 +59,12 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     public function testSaveModelDefinition()
     {
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema); 
+        $options = array('schema' => $schema);
         $driver = new ZeroConfDriver($this->adapter, $options);
         // remove eventual config file
-        $file = $driver->getModelsConfigFile();        
-        unlink($file);        
-        $md = $driver->getMetadata();        
+        $file = $driver->getModelsConfigFile();
+        unlink($file);
+        $md = $driver->getMetadata();
         $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
          
         
@@ -86,12 +86,12 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     public function testSaveModelDefinitionWithOctDec()
     {
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema, 'permissions' => 666); 
+        $options = array('schema' => $schema, 'permissions' => 666);
         $driver = new ZeroConfDriver($this->adapter, $options);
-        $file = $driver->getModelsConfigFile();        
+        $file = $driver->getModelsConfigFile();
         unlink($file);
         
-        $md = $driver->getMetadata();        
+        $md = $driver->getMetadata();
         $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
 
         $driver->clearMetadataCache();
@@ -105,14 +105,14 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
             
         }
         $this->assertTrue($catched);
-    }    
+    }
     
     
     public function testConstructWithException()
     {
         $catched=false;
         try {
-            $options = new \stdClass(); 
+            $options = new \stdClass();
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
@@ -121,58 +121,58 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         
         $catched=false;
         try {
-            $options = array('alias' => 1); 
+            $options = array('alias' => 1);
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
         $catched=false;
         try {
-            $options = array('version' => array()); 
+            $options = array('version' => array());
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
         $catched=false;
         try {
-            $options = array('path' => 1); 
+            $options = array('path' => 1);
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
         
         $catched=false;
         try {
-            $options = array('path' => '/usr/qdlkjfkjfkd'); 
+            $options = array('path' => '/usr/qdlkjfkjfkd');
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\ModelPathNotFoundException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
         $catched=false;
         try {
-            $options = array('permissions' => array()); 
+            $options = array('permissions' => array());
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
         $catched=false;
         try {
-            $options = array('schema' => array()); 
+            $options = array('schema' => array());
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched);        
+        $this->assertTrue($catched);
         
     }
     
@@ -257,5 +257,4 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         
         
     }
-
 }

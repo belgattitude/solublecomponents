@@ -1,6 +1,7 @@
 <?php
 
 namespace Soluble\FlexStore;
+
 use Soluble\FlexStore\Source\Zend\SqlSource;
 use Soluble\FlexStore\Store;
 use Soluble\FlexStore\Column\Column;
@@ -77,7 +78,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('id,test_char_10', $keys);
 
         $search->all()->setExcluded(true);
-        $search->regexp('/\_10$/')->setExcluded($excluded=false);
+        $search->regexp('/\_10$/')->setExcluded($excluded = false);
         
         $data = $store->getData()->toArray();
         $keys = join(',', array_keys($data[0]));
@@ -97,7 +98,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $data = $store->getData()->toArray();
         $this->assertEquals(2, count($data));
         
-    }    
+    }
     
 
     public function testGetSource()
@@ -113,7 +114,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $source = $this->source;
         $source->setSelect($this->select);
         $store = new Store($source);
-        $resultset = $store->getData();        
+        $resultset = $store->getData();
         $this->assertInstanceOf('Soluble\FlexStore\ResultSet\ResultSet', $resultset);
     }
 
@@ -121,7 +122,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\EmptyQueryException');
         $store = new Store($this->source);
-        $resultset = $store->getData();        
+        $resultset = $store->getData();
         $this->assertInstanceOf('Soluble\FlexStore\ResultSet\ResultSet', $resultset);
         
     }
@@ -133,5 +134,4 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $cm = $store->getColumnModel();
         $this->assertInstanceOf('Soluble\FlexStore\Column\ColumnModel', $cm);
     }
-
 }

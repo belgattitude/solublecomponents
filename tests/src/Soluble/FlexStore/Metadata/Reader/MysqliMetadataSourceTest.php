@@ -74,7 +74,7 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         $sql = "select id, test_char_10 as id from test_table_types";
         $md = $this->metadata->getColumnsMetadata($sql);
 
-    }    
+    }
 
     public function testGetColumnsMetadata()
     {
@@ -372,7 +372,7 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
 
         $mysqli = $this->adapter->getDriver()->getConnection()->getResource();
 
-        foreach($queries as $query) {
+        foreach ($queries as $query) {
             $sql = $this->invokeMethod($this->metadata, 'makeQueryEmpty', array($query));
 
 

@@ -60,8 +60,5 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
     {
         $su = Formatter::getSupported();
         $this->assertInternalType('array', $su);
-    }        
-         
-
-
+    }
 }

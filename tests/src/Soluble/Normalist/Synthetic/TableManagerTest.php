@@ -2,10 +2,8 @@
 
 namespace Soluble\Normalist\Synthetic;
 
-
 use Soluble\Db\Metadata\Source;
 use Zend\Db\Adapter\Adapter;
-
 
 class TableManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +31,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->adapter = $this->tableManager->getDbAdapter();
         
         //$this->tableManager = new TableManager($this->adapter);
-        $this->table = $this->tableManager->table('product_category');        
+        $this->table = $this->tableManager->table('product_category');
     }
 
     /**
@@ -44,7 +42,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         unset($this->adapter);
         unset($this->tableManager);
-        unset($this->table);        
+        unset($this->table);
     }
 
     public function testGetDefaultMetadata()
@@ -159,7 +157,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($catched);
            
         }
-    }    
+    }
     
 
     public function testCommitThrowsTransactionException()
@@ -171,7 +169,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             // on invalid commit, rollback, start...
             $driver = 'PDO_Mysql';
             $adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
-            $tm = \SolubleTestFactories::getTableManager($adapter);         
+            $tm = \SolubleTestFactories::getTableManager($adapter);
             
             // test than Mysqli does not throw exception
             $catched = false;
@@ -215,7 +213,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($catched, "Double begin transaction should fail");
         
         
-    }    
+    }
     
     public function testRollbackThrowsTransactionException()
     {
@@ -223,7 +221,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
             $this->assertTrue(true);
         } else {
-        
             $catched = false;
             $tm = $this->tableManager;
 
@@ -234,7 +231,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             }
             $this->assertTrue($catched);
         }
-    }    
+    }
 
     
     public function testGetDbAdapter()
@@ -289,20 +286,20 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         
         $adapter = new Adapter(array(
             'driver' => 'Pdo_Sqlite',
-            'database' => 'path/to/sqlite.db'            
+            'database' => 'path/to/sqlite.db'
         ));
         
         
-        $tm = \SolubleTestFactories::getTableManager($adapter);       
+        $tm = \SolubleTestFactories::getTableManager($adapter);
         $metadata = $tm->metadata();
         
         
-    }    
+    }
 
 
     public function testSetMetadata()
     {
-        $metadata = new Source\Mysql\InformationSchema($this->adapter);        
+        $metadata = new Source\Mysql\InformationSchema($this->adapter);
         //$metadata = new Source\MysqlISMetadata($this->adapter);
         $tableManager = \SolubleTestFactories::getTableManager();
         $ret = $tableManager->setMetadata($metadata);
@@ -313,7 +310,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
      * Return a media record suitable for database insertion
      * @return array
      */
-    protected function createMediaRecordData($legacy_mapping=null)
+    protected function createMediaRecordData($legacy_mapping = null)
     {
         $tm = $this->tableManager;
         $container = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'));
@@ -326,7 +323,5 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             'legacy_mapping' => $legacy_mapping
         );
         return $data;
-    }    
-    
-
+    }
 }

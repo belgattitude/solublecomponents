@@ -47,20 +47,20 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         
         $metadata = new InformationSchema($this->adapter, array('schema_not_valid'));
-    }        
+    }
 
     public function testConstructThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $adapter = \SolubleTestFactories::getDbAdapter();
-        $metadata = new InformationSchema($this->adapter, $schema="   ");
-    }            
+        $metadata = new InformationSchema($this->adapter, $schema = "   ");
+    }
     
     public function testGetSchemaConfigThrowsSchemaNotFoundException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\SchemaNotFoundException');
         
-        $metadata = new InformationSchema($this->adapter, $schema="fdgdfgdfgppooaze");
+        $metadata = new InformationSchema($this->adapter, $schema = "fdgdfgdfgppooaze");
         $metadata->getSchemaConfig();
         
     }
@@ -166,13 +166,13 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
         $primary = $this->metadata->getPrimaryKey('table_not_found_899');
-    } 
+    }
       
     public function testGetPrimaryKeyThrowsMultiplePrimaryKeyException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\MultiplePrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
-    }    
+    }
     
     public function testGetColumns()
     {
@@ -196,7 +196,8 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     }
     
     
-    public function testInnoDbStat() {
+    public function testInnoDbStat()
+    {
         
         
         $adapter = $this->adapter;
@@ -214,7 +215,7 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
             
             
             $this->metadata->getPrimaryKey('user');
-            $adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);        
+            $adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);
             
         }
     }
@@ -240,7 +241,7 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_without_pk');
-    }    
+    }
     
     public function testGetPrimaryKeys()
     {
@@ -255,6 +256,5 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKeys('test_table_without_pk');
-    } 
-    
+    }
 }

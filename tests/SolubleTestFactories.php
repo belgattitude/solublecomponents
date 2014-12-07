@@ -56,7 +56,7 @@ class SolubleTestFactories
 
             $jar_dir = dirname($jar_file);
             
-            //java -cp /web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/mysql-connector-java-5.1.34-bin.jar:/web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/JavaBridge.jar php.java.bridge.Standalone SERVLET:8083            
+            //java -cp /web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/mysql-connector-java-5.1.34-bin.jar:/web/www/solublecomponents/tests/tools/pjb_standalone_install/pjb621/WEB-INF/lib/JavaBridge.jar php.java.bridge.Standalone SERVLET:8083
             
             //$command = "java  -jar $jar_file SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
             $command = "java -cp $jar_dir/mysql-connector-java-5.1.34-bin.jar:$jar_file php.java.bridge.Standalone SERVLET:$port > $test_dir/logs/pjb-error.log 2>&1 &";
@@ -67,7 +67,7 @@ class SolubleTestFactories
 
             // let time for server to start
             
-            if (preg_match('/travis/', dirname(__FILE__))) {  
+            if (preg_match('/travis/', dirname(__FILE__))) {
                 sleep(5);
             } else {
                 sleep(1);
@@ -77,7 +77,7 @@ class SolubleTestFactories
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public static function getJavaBridgeServerAddress()
@@ -86,7 +86,7 @@ class SolubleTestFactories
     }
     
     /**
-     * 
+     *
      * @return array
      */
     public static function getLibXLLicense()
@@ -98,12 +98,12 @@ class SolubleTestFactories
     }
     
     /**
-     * 
+     *
      * @param Adapter $adapter
      * @param Driver\DriverInterface
      * @return TableManager
      */
-    public static function getTableManager(Adapter $adapter=null, Driver\DriverInterface $driver=null)
+    public static function getTableManager(Adapter $adapter = null, Driver\DriverInterface $driver = null)
     {
         if ($adapter === null) {
             $adapter = self::getDbAdapter();
@@ -125,10 +125,9 @@ class SolubleTestFactories
      * @param string $driver force driver to be Pdo_Mysql, Mysqli
      * @return \Zend\Db\Adapter\Adapter
      */
-    public static function getDbAdapter(array $mysql_config=null, $driver=null)
+    public static function getDbAdapter(array $mysql_config = null, $driver = null)
     {
         if ($mysql_config === null) {
-            
             if ($mysql_config === null) {
                 /**
                  * Those values must be defined in phpunit.xml configuration file
@@ -170,30 +169,29 @@ class SolubleTestFactories
     /**
      * @return \Zend\Cache\StorageInterface
      */
-    public static function getCacheStorage(array $storageFactoryOptions=null)
+    public static function getCacheStorage(array $storageFactoryOptions = null)
     {
-            if ($storageFactoryOptions == null) {
-                
-                $cache_dir = self::getCachePath();
+        if ($storageFactoryOptions == null) {
+            $cache_dir = self::getCachePath();
 
-                $cache_config = array();
-                $cache_config['adapter'] = 'filesystem';
-                $cache_config['options'] = array(
-                        'cache_dir' => $cache_dir,
-                        'ttl' => 0,
-                        'dir_level' => 1,
-                        'dir_permission' => 0777,
-                        'file_permission' => 0666
+            $cache_config = array();
+            $cache_config['adapter'] = 'filesystem';
+            $cache_config['options'] = array(
+                    'cache_dir' => $cache_dir,
+                    'ttl' => 0,
+                    'dir_level' => 1,
+                    'dir_permission' => 0777,
+                    'file_permission' => 0666
 
-                    );
-                $cache_config['plugins'] = array(
-                    'exception_handler' => array('throw_exceptions' => true)
                 );
-            }
+            $cache_config['plugins'] = array(
+                'exception_handler' => array('throw_exceptions' => true)
+            );
+        }
             $key = md5(serialize($cache_config));
-            if (!array_key_exists($key, self::$_cache_instances)) {
-                self::$_cache_instances[$key] = StorageFactory::factory($cache_config);
-            }
+        if (!array_key_exists($key, self::$_cache_instances)) {
+            self::$_cache_instances[$key] = StorageFactory::factory($cache_config);
+        }
             return self::$_cache_instances[$key];
 
     }
@@ -202,7 +200,7 @@ class SolubleTestFactories
      * @return string
      */
     
-    static public function getCachePath()
+    public static function getCachePath()
     {
         
         $cache_dir = $_SERVER['PHPUNIT_CACHE_DIR'];
@@ -211,5 +209,4 @@ class SolubleTestFactories
         }
         return $cache_dir;
     }
-
 }

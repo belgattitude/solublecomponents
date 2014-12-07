@@ -29,7 +29,7 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     *
      */
     public function testIncludeBridge()
     {
@@ -108,5 +108,4 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $inspected);
         $this->assertContains('php.java.bridge.JavaBridge.getCachedString', $inspected);
     }
-
 }

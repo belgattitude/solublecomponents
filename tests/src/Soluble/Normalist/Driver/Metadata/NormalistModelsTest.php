@@ -88,7 +88,7 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         
     }
     
-  */  
+  */
     public function testGetUniqueKeys()
     {
         $unique = $this->metadata->getUniqueKeys('test_table_with_unique_key');
@@ -123,7 +123,7 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\MultiplePrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
-    } 
+    }
       
         
 
@@ -147,7 +147,7 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_without_pk');
-    }    
+    }
     
     public function testGetPrimaryKeys()
     {
@@ -171,6 +171,5 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKeys('test_table_without_pk');
-    } 
-
+    }
 }

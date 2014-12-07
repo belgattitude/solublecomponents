@@ -127,7 +127,7 @@ class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
         );
         $f = new CurrencyFormatter($params);
         $f->format(array('cool'));
-    }    
+    }
 
     public function testFormatThrowsRuntimeException3()
     {
@@ -138,6 +138,5 @@ class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
         );
         $f = new CurrencyFormatter($params);
         $f->format('not a number');
-    }        
-    
+    }
 }

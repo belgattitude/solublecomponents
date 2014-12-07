@@ -54,7 +54,7 @@ class ColumnTypeTest extends \PHPUnit_Framework_TestCase
     public function testAll()
     {
         $supported = ColumnType::getSupported();
-        foreach($supported as $type_name) {
+        foreach ($supported as $type_name) {
             $type = ColumnType::createType($type_name);
             $this->assertInstanceOf('Soluble\FlexStore\Column\Type\AbstractType', $type);
             $this->assertEquals($type_name, $type->getName());
@@ -68,5 +68,4 @@ class ColumnTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(ColumnType::isSupported('cool'));
         
     }
-
 }

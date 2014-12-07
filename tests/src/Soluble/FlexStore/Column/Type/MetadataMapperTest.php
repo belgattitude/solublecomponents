@@ -31,7 +31,7 @@ class MetadataMapperTest extends \PHPUnit_Framework_TestCase
     {
         $supported = \Soluble\Db\Metadata\Column\Type::getSupportedTypes();
         $mapper = new MetadataMapper();
-        foreach($supported as $md_type) {
+        foreach ($supported as $md_type) {
             $type = $mapper->getColumnTypeByMetadataType($md_type);
             $this->assertInstanceOf('Soluble\FlexStore\Column\Type\AbstractType', $type);
             $this->assertInternalType('string', $type->getName());
@@ -47,6 +47,4 @@ class MetadataMapperTest extends \PHPUnit_Framework_TestCase
         $mapper = new MetadataMapper();
         $mapper->getColumnTypeByMetadataType('invalid_type');
     }
-
-
 }

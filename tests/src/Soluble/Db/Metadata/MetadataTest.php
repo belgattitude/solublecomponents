@@ -64,5 +64,4 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         
         $metadata = new Metadata($adapter);
     }
-    
 }

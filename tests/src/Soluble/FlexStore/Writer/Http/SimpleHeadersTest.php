@@ -99,7 +99,7 @@ class SimpleHeadersTest extends \PHPUnit_Framework_TestCase
         $lines = $headers->getHeaderLines();
         $this->assertEquals('Content-Type: application/pdf; charset=utf-8', $lines[0]);
         $this->assertEquals('Content-Disposition: attachement', $lines[1]);
-        $this->assertEquals('Content-Length: 10', $lines[2]);        
+        $this->assertEquals('Content-Length: 10', $lines[2]);
         
     }
     

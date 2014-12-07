@@ -36,5 +36,4 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException');
         $type = Type::createColumnDefinition('NOTAVAILDTYPE', 'cool');
     }
-
 }

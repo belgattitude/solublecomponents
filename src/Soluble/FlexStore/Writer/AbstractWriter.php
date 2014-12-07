@@ -139,7 +139,9 @@ abstract class AbstractWriter
             } else {
                 throw new Exception\InvalidArgumentException(sprintf(
                     'The option "%s" does not have a matching %s setter method or options[%s] array key',
-                    $key, $setter, $key
+                    $key,
+                    $setter,
+                    $key
                 ));
             }
         }

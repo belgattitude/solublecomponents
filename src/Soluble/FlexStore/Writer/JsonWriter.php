@@ -26,11 +26,11 @@ class JsonWriter extends AbstractSendableWriter
     
     /**
      * Set origin request id
-     * 
+     *
      * Value of request id will be returned in json encoded data
      * useful for autocompletion usage when synchronous requests
      * will return asynchronous responses.
-     * 
+     *
      * @param int|string $request_id
      */
     public function setRequestId($request_id)

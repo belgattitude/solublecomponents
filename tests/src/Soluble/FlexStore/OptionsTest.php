@@ -43,7 +43,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->options->getOffset());
         $this->assertFalse($this->options->hasOffset());
         
-        $this->options->setLimit(40,50);
+        $this->options->setLimit(40, 50);
         $this->assertEquals(50, $this->options->getOffset());
         $this->options->setLimit(10);
         $this->assertEquals(50, $this->options->getOffset());
@@ -86,6 +86,5 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
         $this->options->setLimit(10, 2.12);
-    }    
-
+    }
 }

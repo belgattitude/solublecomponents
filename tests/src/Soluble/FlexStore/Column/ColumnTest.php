@@ -40,8 +40,8 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'filterable' => false,
             'groupable' => false,
             'sortable' => false,
-            'editable' => true,            
-            'virtual' => true,            
+            'editable' => true,
+            'virtual' => true,
         );
         
         $column = new Column('cool', $properties);
@@ -59,7 +59,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'sortable' => false,
             'hidden' => true,
             'excluded' => true,
-            'editable' => true            
+            'editable' => true
         );
         
         $column = new Column('cool', $properties);
@@ -135,9 +135,9 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
 
         // Groupable
         $this->assertTrue($column->isGroupable());
-        $column->setGroupable($groupable=true);
+        $column->setGroupable($groupable = true);
         $this->assertTrue($column->isGroupable());
-        $column->setGroupable($groupable=false);
+        $column->setGroupable($groupable = false);
         $this->assertFalse($column->isGroupable());
         
 
@@ -153,28 +153,28 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $column->setFilterable();
         $this->assertTrue($column->isFilterable());
         $column->setFilterable(false);
-        $this->assertFalse($column->isFilterable());        
+        $this->assertFalse($column->isFilterable());
         
         // Excluded
         $this->assertFalse($column->isExcluded());
         $column->setExcluded();
         $this->assertTrue($column->isExcluded());
         $column->setExcluded(false);
-        $this->assertFalse($column->isExcluded());                
+        $this->assertFalse($column->isExcluded());
         
         // Sortable
         $this->assertTrue($column->isSortable());
         $column->setSortable();
         $this->assertTrue($column->isSortable());
         $column->setSortable(false);
-        $this->assertFalse($column->isSortable());                
+        $this->assertFalse($column->isSortable());
         
         // Editable
         $this->assertFalse($column->isEditable());
         $column->setEditable();
         $this->assertTrue($column->isEditable());
         $column->setEditable(false);
-        $this->assertFalse($column->isEditable()); 
+        $this->assertFalse($column->isEditable());
         
         
         
@@ -186,14 +186,14 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $column = new Column(array('cool'));
         
-    }    
+    }
 
     public function testConstructThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $column = new Column(" ");
         
-    }    
+    }
     
     
     public function testSetWidthThrowsInvalidArgumentException()
@@ -212,5 +212,4 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $column = new Column('hello');
         $this->assertEquals('hello', (string) $column);
     }
-
 }

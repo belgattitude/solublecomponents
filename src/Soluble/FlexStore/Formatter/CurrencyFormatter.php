@@ -52,7 +52,8 @@ class CurrencyFormatter extends NumberFormatter
     {
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
-            $locale, IntlNumberFormatter::CURRENCY
+            $locale,
+            IntlNumberFormatter::CURRENCY
         );
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {
@@ -83,7 +84,8 @@ class CurrencyFormatter extends NumberFormatter
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine currency code based on column '{$this->currency_column}'.");
             }
             $value = $this->formatters[$formatterId]->formatCurrency(
-                $number, $row[$this->currency_column]
+                $number,
+                $row[$this->currency_column]
             );
         } else {
             if ($this->params['currency_code'] == '') {
@@ -91,7 +93,8 @@ class CurrencyFormatter extends NumberFormatter
             }
 
             $value = $this->formatters[$formatterId]->formatCurrency(
-                $number, $this->params['currency_code']
+                $number,
+                $this->params['currency_code']
             );
         }
         

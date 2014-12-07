@@ -56,7 +56,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     {
         
         unset($this->tableManager);
-        unset($this->table);        
+        unset($this->table);
     }
     
 
@@ -65,7 +65,8 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $results = $this->table->search()->limit(10)->toArray();
         $this->assertEquals(10, count($results));
     }
-    public function testExecute() {
+    public function testExecute()
+    {
         $rs = $this->table->search()->limit(10)->execute();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
     }
@@ -108,8 +109,8 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $rs = $this->table->search()->columns(array('reference'))->limit(1)->execute();
         
         
-        foreach($rs as $record) {
-           $this->assertFalse(true, "This part of the code should never be reached");
+        foreach ($rs as $record) {
+            $this->assertFalse(true, "This part of the code should never be reached");
         }
     }
     
@@ -178,7 +179,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $results = $this->table->search()
                         ->where(array(
                                  'category_id' => 12,
-                                 new Predicate\IsNotNull('root') 
+                                 new Predicate\IsNotNull('root')
                                 ))
                         ->toArray();
         
@@ -188,9 +189,9 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
         $results = $this->table->search()
                         ->where(array(
-                                 new Predicate\In('category_id', array(12, 10)) 
+                                 new Predicate\In('category_id', array(12, 10))
                                 ))
-                        ->order('category_id DESC')            
+                        ->order('category_id DESC')
                         ->toArray();
         $this->assertEquals(2, count($results));
         $this->assertEquals(12, $results[0]['category_id']);
@@ -202,7 +203,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
                 ->where('category_id < 10')
                 ->toArray();
         $test_min = true;
-        foreach($results as $row) {
+        foreach ($results as $row) {
             if ($row['category_id'] > 9) {
                 $test_min = false;
             }
@@ -216,7 +217,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
                 ->toArray();
         $test_min = true;
         $test_max = true;
-        foreach($results as $row) {
+        foreach ($results as $row) {
             if ($row['category_id'] > 9) {
                 $test_min = false;
             }
@@ -229,12 +230,13 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
         // Advanced OR
         $results = $this->table->search()
-                 ->where(array(
+                 ->where(
+                     array(
                             'reference' => 'AC',
                             'legacy_mapping' =>  'GT'
                           ),
-                          Predicate\PredicateSet::OP_OR
-                        )
+                     Predicate\PredicateSet::OP_OR
+                 )
                  ->order('reference ASC')
                 ->toArray();
         $this->assertEquals(2, count($results));
@@ -243,12 +245,13 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
 
         // Advanced OR version 2
         $results = $this->table->search()
-                 ->where(array(
+                 ->where(
+                     array(
                             "reference =   'AC'",
                             "reference = 'GT'"
                           ),
-                          Predicate\PredicateSet::OP_OR
-                        )
+                     Predicate\PredicateSet::OP_OR
+                 )
                  ->order('reference ASC')
                 ->toArray();
         
@@ -260,12 +263,12 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $results = $this->table->search()
                         ->where(function (Where $where) {
                                    $where->like('reference', 'AC%');
-                                })
+                        })
                          ->columns(array('reference'))
-                         ->limit(100)               
+                         ->limit(100)
                         ->toArray();
                                 
-        $test_start = true;                        
+        $test_start = true;
         foreach ($results as $row) {
             if (!preg_match('/^AC/', $row['reference'])) {
                 $test_start = false;
@@ -275,14 +278,16 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         
     }
     
-    public function testOrWhere() {
+    public function testOrWhere()
+    {
         
         $results = $this->table->search()
-                 ->orWhere(array(
+                 ->orWhere(
+                     array(
                             'reference' => 'AC',
                             'legacy_mapping' =>  'GT'
                           )
-                        )
+                 )
                  ->order('reference ASC')
                 ->toArray();
         $this->assertEquals(2, count($results));
@@ -293,7 +298,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     
     public function testWhereWithClosure()
     {
-        $search = $this->tableManager->table('user')->search();        
+        $search = $this->tableManager->table('user')->search();
         
         $results = $search->where(function (Where $where) {
 
@@ -327,7 +332,7 @@ EOF;
     {
         
         $tm = $this->tableManager;
-        $search = $tm->table('user')->search('u');        
+        $search = $tm->table('user')->search('u');
         
         $results = $search
             ->join(array('c' => 'country'), 'u.country_id = c.country_id')
@@ -346,14 +351,14 @@ EOF;
         $this->assertEquals(trim($expected), trim($sql));
         
         
-    }        
+    }
     
 
     public function testJoinRight()
     {
         
         $tm = $this->tableManager;
-        $search = $tm->table('user')->search('u');        
+        $search = $tm->table('user')->search('u');
         
         $results = $search
             ->joinRight(array('c' => 'country'), 'u.country_id = c.country_id')
@@ -372,12 +377,12 @@ EOF;
         $this->assertEquals(trim($expected), trim($sql));
         
         
-    }        
+    }
     
     public function testJoinLeftWithoutAlias()
     {
         $tm = $this->tableManager;
-        $search = $tm->table('product_category')->search();        
+        $search = $tm->table('product_category')->search();
         
         
         $search
@@ -387,10 +392,10 @@ EOF;
             })
             ->prefixedColumns(array(
                     'product_category.category_id',
-                    'title' => 'product_category.title', 
-                    'translated_title' => 'product_category_translation.title', 
+                    'title' => 'product_category.title',
+                    'translated_title' => 'product_category_translation.title',
                     'auto_title' => new Expression('COALESCE(product_category_translation.title, product_category.title)')
-                ))->limit(10);                    
+                ))->limit(10);
                 
         
         
@@ -406,7 +411,7 @@ EOF;
     public function testJoinLeft()
     {
         $tm = $this->tableManager;
-        $search = $tm->table('product_category')->search('pc');        
+        $search = $tm->table('product_category')->search('pc');
         
         
         $search
@@ -416,10 +421,10 @@ EOF;
             })
             ->prefixedColumns(array(
                     'pc.category_id',
-                    'title' => 'pc.title', 
-                    'translated_title' => 'pc18.title', 
+                    'title' => 'pc.title',
+                    'translated_title' => 'pc18.title',
                     'auto_title' => new Expression('COALESCE(pc18.title, pc.title)')
-                ))->limit(10);                    
+                ))->limit(10);
                 
         
         
@@ -435,35 +440,38 @@ EOF;
     {
         $prefix = 'wp_';
         $tm = $this->tableManager;
-        $search = $tm->table("{$prefix}posts")->search('p');        
+        $search = $tm->table("{$prefix}posts")->search('p');
         
         
         $search
             ->joinLeft(
-                    array('c' => "{$prefix}comments"), "c.comment_post_ID = p.ID")
+                array('c' => "{$prefix}comments"),
+                "c.comment_post_ID = p.ID"
+            )
             ->group(array('post_id', 'post_title'))
             ->where(function (Where $where) {
                 $where->equalTo('post_status', 'publish');
-            })                
+            })
             ->having(function(Having $having) {
                 $having->greaterThanOrEqualTo('count_comment', 1);
-             })
-            ->order(array(
+            })
+            ->order(
+                array(
                 'count_comment DESC',
                 'p.post_date DESC')
-            ) 
+            )
             ->prefixedColumns(array(
                     'post_id'       => 'p.ID',
                     'post_title'    => 'p.post_title',
-                    'count_comment' => new Expression('COUNT(c.comment_ID)') 
+                    'count_comment' => new Expression('COUNT(c.comment_ID)')
                 ));
              
-        $results = $search->execute();
-        $array = $results->toArray();
-        $this->assertEquals(1, $array[0]['post_id']);
+            $results = $search->execute();
+            $array = $results->toArray();
+            $this->assertEquals(1, $array[0]['post_id']);
 
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
-        $results->current();
+            $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
+            $results->current();
         
         
     }
@@ -486,7 +494,7 @@ EOF;
     {
         $results = $this->table->search()->limit(10)->toJson();
         $this->assertInternalType('string', $results);
-        $decoded = json_decode($results, $assoc=true);
+        $decoded = json_decode($results, $assoc = true);
         
         $results = $this->table->search()->limit(10)->toArray();
         $this->assertEquals($results, $decoded);
@@ -507,7 +515,6 @@ EOF;
                         ->toArrayColumn('category_id', 'reference');
         $this->assertInternalType('string', $results['AC']);
         $this->assertArrayHasKey('AC', $results);
-        $this->assertEquals(12, $results['AC']);        
+        $this->assertEquals(12, $results['AC']);
     }
-    
 }

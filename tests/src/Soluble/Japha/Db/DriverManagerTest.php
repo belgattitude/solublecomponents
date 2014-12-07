@@ -57,6 +57,4 @@ class DriverManagerTest extends \PHPUnit_Framework_TestCase
         $className = Pjb::getDriver()->getClassName($conn);
         $this->assertEquals('com.mysql.jdbc.JDBC4Connection', $className);
     }
-
-
 }

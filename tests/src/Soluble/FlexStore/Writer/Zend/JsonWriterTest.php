@@ -58,7 +58,7 @@ class JsonWriterTest extends \PHPUnit_Framework_TestCase
     {
         $data = $this->jsonWriter->getData();
         $this->assertJson($data);
-        $d = json_decode($data, $assoc=true);
+        $d = json_decode($data, $assoc = true);
         $this->assertArrayHasKey('total', $d);
         $this->assertArrayHasKey('start', $d);
         $this->assertArrayHasKey('limit', $d);
@@ -71,13 +71,12 @@ class JsonWriterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataWithDebug()
     {
-        $this->jsonWriter->setDebug($debug=true);
+        $this->jsonWriter->setDebug($debug = true);
         $data = $this->jsonWriter->getData();
         $this->assertJson($data);
-        $d = json_decode($data, $assoc=true);
+        $d = json_decode($data, $assoc = true);
 
         $this->assertArrayHasKey('query', $d);
 
     }
-
 }

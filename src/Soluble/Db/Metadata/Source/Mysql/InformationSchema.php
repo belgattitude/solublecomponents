@@ -378,7 +378,6 @@ class InformationSchema extends Source\AbstractSource
         $tables = $config->offsetGet('tables');
 
         foreach ($results as $r) {
-            
             // Setting table information
             $table_name = $r['table_name'];
             if (!$tables->offsetExists($table_name)) {

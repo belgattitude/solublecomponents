@@ -41,7 +41,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         $f = new UnitFormatter($params);
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
-        $this->assertEquals(3, $f->getDecimals());        
+        $this->assertEquals(3, $f->getDecimals());
     }
     
     public function testGetSet()
@@ -61,7 +61,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Kg', $f->getUnit());
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
-        $this->assertEquals(3, $f->getDecimals());        
+        $this->assertEquals(3, $f->getDecimals());
 
     }
     
@@ -73,7 +73,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
             'pattern' => '#,##0.###',
             'decimals' => 3,
             'unit' => 'Kg'
-        );        
+        );
         $f = new UnitFormatter($params);
         $this->assertEquals('1 123,457 Kg', $f->format(1123.4567));
         $this->assertEquals('-1 123,457 Kg', $f->format(-1123.4567));
@@ -85,16 +85,16 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         $params = array(
             'locale' => 'fr_BE',
             'unit' => 'm³'
-        );        
+        );
         
-        $f = new UnitFormatter($params);        
+        $f = new UnitFormatter($params);
       
         $this->assertEquals('1.128,46 m³', $f->format(1128.4567));
         $params = array(
             'locale' => 'en_GB',
             'unit' => 'm²'
-        );        
-        $f = new UnitFormatter($params);        
+        );
+        $f = new UnitFormatter($params);
         $this->assertEquals('1,123.46 m²', $f->format(1123.4567));
         
         // Null values
@@ -109,7 +109,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
             'cool' => 0
         );
         $f = new UnitFormatter($params);
-    }    
+    }
     
     public function testFormatThrowsRuntimeException2()
     {
@@ -121,7 +121,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         );
         $f = new UnitFormatter($params);
         $f->format(array('cool'));
-    }    
+    }
 
     public function testFormatThrowsRuntimeException3()
     {
@@ -134,6 +134,5 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         
         $f = new UnitFormatter($params);
         $f->format('not a number');
-    }          
-    
+    }
 }

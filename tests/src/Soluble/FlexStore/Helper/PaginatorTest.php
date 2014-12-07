@@ -66,7 +66,4 @@ class PaginatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $p->getCurrentPageNumber());
         $this->assertEquals(150, $p->getTotalItemCount());
     }
-    
-    
-
 }

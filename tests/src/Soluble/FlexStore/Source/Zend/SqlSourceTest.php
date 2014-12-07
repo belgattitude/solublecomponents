@@ -1,6 +1,7 @@
 <?php
 
 namespace Soluble\FlexStore\Source\Zend;
+
 use Soluble\FlexStore\Options;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
@@ -61,7 +62,7 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\FlexStore\Column\ColumnModel', $columnModel);
         $columns = $columnModel->getColumns();
         $this->assertInstanceOf('ArrayObject', $columns);
-        foreach($columns as $column) {
+        foreach ($columns as $column) {
             $this->assertFalse($column->isVirtual());
         }
         
@@ -140,7 +141,7 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('Soluble\FlexStore\Exception\EmptyQueryException');
         
-        $source = new SqlSource($this->adapter, $select=new Select());
+        $source = new SqlSource($this->adapter, $select = new Select());
 
         $data = $source->getData();
     }
@@ -164,7 +165,7 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
 
     
     /**
-     * 
+     *
      * @return \Soluble\FlexStore\Source\Zend\SqlSource
      */
     protected function getNewSource()
@@ -175,5 +176,4 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         return new SqlSource($this->adapter, $select);
         
     }
-
 }

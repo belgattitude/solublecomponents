@@ -43,7 +43,8 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         if (!extension_loaded('intl')) {
             throw new Exception\ExtensionNotLoadedException(sprintf(
-                '%s component requires the intl PHP extension', __NAMESPACE__
+                '%s component requires the intl PHP extension',
+                __NAMESPACE__
             ));
         }
         
@@ -83,7 +84,8 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
     {
         $locale = $this->params['locale'];
         $this->formatters[$formatterId] = new IntlNumberFormatter(
-            $locale, IntlNumberFormatter::DECIMAL
+            $locale,
+            IntlNumberFormatter::DECIMAL
         );
         $this->formatters[$formatterId]->setAttribute(IntlNumberFormatter::FRACTION_DIGITS, $this->params['decimals']);
         if ($this->params['pattern'] !== null) {

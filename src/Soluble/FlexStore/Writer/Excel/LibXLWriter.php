@@ -359,12 +359,13 @@ class LibXLWriter extends AbstractSendableWriter
             }
             
             if ($format === null) {
-                
                 $format = $this->getDefaultTextFormat($book);
             } else {
-                    
-                $format->horizontalAlign($this->getFormatStyle('horizontalFormat'));
-                $format->verticalAlign($this->getFormatStyle('verticalFormat'));
+/* Not yet supported, waiting php_excel 1.1                
+                $format->horizontalAlign($this->getFormatStyle('horizontalAlign'));
+                $format->verticalAlign($this->getFormatStyle('verticalAlign'));
+ 
+ */
             }
 
             // Save the spec
@@ -382,10 +383,14 @@ class LibXLWriter extends AbstractSendableWriter
         return $specs;
     }
     
-    protected function getDefaultTextFormat(ExcelBook $book) {
+    protected function getDefaultTextFormat(ExcelBook $book)
+    {
         $format = $book->addFormat();
+/* Not yet supported, waiting php_excel 1.1                        
         $format->horizontalAlign($this->getFormatStyle('horizontalFormat'));
         $format->verticalAlign($this->getFormatStyle('verticalFormat'));
+ * 
+ */
         return $format;
     }
 
@@ -444,7 +449,6 @@ class LibXLWriter extends AbstractSendableWriter
         $data = $this->store->getData($options);
 
         foreach ($data as $idx => $row) {
-            
             $col_idx = 0;
             $row_idx = $idx + 1;
             $rowHeight = $sheet->rowHeight($row_idx);
@@ -481,7 +485,6 @@ class LibXLWriter extends AbstractSendableWriter
                         }
                     }
                 } else {
-                    
                         $sheet->write($row_idx, $col_idx, $value);
                     
                     
@@ -515,7 +518,8 @@ class LibXLWriter extends AbstractSendableWriter
     }
     
     
-    public function getFormatStyle($style) {
+    public function getFormatStyle($style)
+    {
         $styles = $this->getFormatStyles();
         return $styles[$style];
     }

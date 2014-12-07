@@ -41,7 +41,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         $f = new NumberFormatter($params);
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
-        $this->assertEquals(3, $f->getDecimals());        
+        $this->assertEquals(3, $f->getDecimals());
     }
     
     public function testGetSet()
@@ -58,7 +58,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
-        $this->assertEquals(3, $f->getDecimals());        
+        $this->assertEquals(3, $f->getDecimals());
 
     }
     
@@ -69,7 +69,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
             'locale' => 'fr_FR',
             'pattern' => '#,##0.###',
             'decimals' => 3
-        );        
+        );
         $f = new NumberFormatter($params);
         $this->assertEquals('1 123,457', $f->format(1123.4567));
         $this->assertEquals('-1 123,457', $f->format(-1123.4567));
@@ -80,14 +80,14 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         
         $params = array(
             'locale' => 'fr_BE'
-        );        
-        $f = new NumberFormatter($params);        
+        );
+        $f = new NumberFormatter($params);
         $this->assertEquals('1.123,46', $f->format(1123.4567));
 
         $params = array(
             'locale' => 'en_GB'
-        );        
-        $f = new NumberFormatter($params);        
+        );
+        $f = new NumberFormatter($params);
         $this->assertEquals('1,123.46', $f->format(1123.4567));
         
         
@@ -111,7 +111,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
         $f = new NumberFormatter($params);
         $f->format(array('cool'));
-    }    
+    }
 
     public function testFormatThrowsRuntimeException3()
     {
@@ -123,5 +123,4 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         $f = new NumberFormatter($params);
         $a = $f->format('not a number');
     }
-    
 }

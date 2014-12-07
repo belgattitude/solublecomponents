@@ -6,7 +6,7 @@ use Soluble\Db\Metadata\Column;
 use Zend\Db\Adapter\Adapter;
 
 /**
- * PDO_MySQL in PHP 5.3 does not return column names 
+ * PDO_MySQL in PHP 5.3 does not return column names
  */
 class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,7 +34,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * 
+     *
      * @return \Soluble\FlexStore\Metadata\Reader\PDOMysqlMetadataReader
      */
     public function getReader($conn)
@@ -42,14 +42,14 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
         
         return new PDOMysqlMetadataReader($conn);
         
-    }        
+    }
     
 
 
     public function testConstructThrowsUnsupportedFeatureException()
     {
         
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {                
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $metadata = $this->getReader($conn);
@@ -57,12 +57,11 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(true);
         }
         
-    }    
+    }
     
     public function testConstructThrowsUnsupportedDriverException()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '<')) {                
-
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $metadata = $this->getReader($conn);
@@ -74,14 +73,14 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $metadata = $this->getReader($conn);
         }
         
-    }    
+    }
     
     
     
     public function testGetColumnsMetadata()
     {
 
-        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                        
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $sql = "select * from test_table_types";
             
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
@@ -115,7 +114,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             //  Divide by 3
             // Sould be $this->assertEquals(10, $md['test_char_10']->getCharacterMaximumLength());
             // But returned
-            $this->assertEquals(30, $md['test_char_10']->getCharacterMaximumLength());        
+            $this->assertEquals(30, $md['test_char_10']->getCharacterMaximumLength());
 
             $this->assertEquals(Column\Type::TYPE_BLOB, $md['test_text_2000']->getDatatype());
             $this->assertEquals('BLOB', $md['test_text_2000']->getNativeDatatype());
@@ -231,7 +230,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(null, $md['test_multilinestring']->getNativeDatatype());
 
             $this->assertEquals($md['test_geometrycollection']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
-            $this->assertEquals(null, $md['test_geometrycollection']->getNativeDatatype());            
+            $this->assertEquals(null, $md['test_geometrycollection']->getNativeDatatype());
             
 
         } else {
@@ -243,7 +242,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetColumnsMetadataThrowsAmbiguousColumnException()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
             $sql = "select id, test_char_10 as id from test_table_types";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
@@ -257,7 +256,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     
     public function testGetColumnsMetadataThrowsEmptyQueryException()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\EmptyQueryException');
             $sql = "";
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
@@ -272,7 +271,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     
     public function testGetColumsMetadataMultipleTableFunctions()
     {
-        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $sql = "
                     SELECT 'cool' as test_string,
                             1.1 as test_float,
@@ -389,7 +388,7 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
-    }    
+    }
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -398,5 +397,4 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
-
 }

@@ -416,7 +416,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
          
          // TEST MODE EXCEPTION
          $cc = new Column('invalid_mode');
-         try {
+        try {
             $cm->add($cc, 'product_id', 'invalid_mode');
             $this->assertFalse(true, " should throw InvalidArgumentException");
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
@@ -461,14 +461,14 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             $this->assertFalse(true, " should throw InvalidArgumentException");
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
             $this->assertTrue(true);
-        }        
+        }
 
         try {
             $cm->includeOnly(new \stdClass());
             $this->assertFalse(true, " should throw InvalidArgumentException");
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
             $this->assertTrue(true);
-        }                
+        }
 
         try {
             $formatter = new \Soluble\FlexStore\Formatter\NumberFormatter();
@@ -476,7 +476,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
             $this->assertFalse(true, " should throw InvalidArgumentException");
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
             $this->assertTrue(true);
-        }                
+        }
         
     }
 
@@ -680,5 +680,4 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('displayname', array_shift($first));
         $this->assertEquals('username', array_shift($first));
     }
-
 }

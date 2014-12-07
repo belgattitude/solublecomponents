@@ -79,11 +79,11 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
     public function testGetDataWithOptions()
     {
         $this->xmlWriter->setOptions(
-                array(
+            array(
                     'row_tag' => 'line',
                     'body_tag' => 'result'
                     )
-                );
+        );
 
         $data = $this->xmlWriter->getData();
         $this->assertInternalType('string', $data);
@@ -102,11 +102,11 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
         $this->xmlWriter->setOptions(
-                array(
+            array(
                     'rossssss' => 'line',
                     'body_tag' => 'result'
                     )
-                );
+        );
 
 
         $data = $this->xmlWriter->getData();
@@ -122,5 +122,4 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('attachement', $headers->getContentDispositionType());
         
     }
-
 }

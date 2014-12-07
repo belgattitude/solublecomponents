@@ -55,20 +55,22 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     *
      * @param Select $select
      * @return SqlSource
      */
-    protected function getSource(Select $select=null) {
+    protected function getSource(Select $select = null)
+    {
         return new SqlSource($this->adapter, $select);
     }
     
     /**
-     * 
+     *
      * @param SqlSource $sqlSource
      * @return Store
      */
-    protected function getStore(SqlSource $sqlSource=null) {
+    protected function getStore(SqlSource $sqlSource = null)
+    {
         return new Store($sqlSource);
     }
 
@@ -84,13 +86,13 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     {
         $enclosure = '"';
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'field_separator' => CSVWriter::SEPARATOR_TAB,
                     'line_separator' => CSVWriter::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     'charset' => 'UTF-8'
                     )
-                );
+        );
         
         
         $options = new \Soluble\FlexStore\Options();
@@ -99,10 +101,10 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $data);
         
         $data = explode(CSVWriter::SEPARATOR_NEWLINE_UNIX, $data);
-        $header = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $header = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $columns = array_keys((array) $this->source->getColumnModel()->getColumns());
         $this->assertEquals($columns, $header);
-    }        
+    }
     
     public function testGetData()
     {
@@ -117,18 +119,18 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         
         $enclosure = '"';
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'field_separator' => CSVWriter::SEPARATOR_TAB,
                     'line_separator' => CSVWriter::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     'charset' => 'ISO-8859-1'
                     )
-                );
+        );
 
         $data = $this->csvWriter->getData();
         $this->assertInternalType('string', $data);
         $data = explode(CSVWriter::SEPARATOR_NEWLINE_UNIX, $data);
-        $line0 = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $line0 = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $this->assertInternalType('array', $line0);
         $this->assertEquals($line0[1], 'category_id');
 
@@ -139,11 +141,11 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $this->csvWriter->setStore(new Store($this->getSource($select)));
         $data = $this->csvWriter->getData();
         $data = explode(CSVWriter::SEPARATOR_NEWLINE_UNIX, $data);
-        $line1 = str_getcsv($data[1], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $line1 = str_getcsv($data[1], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $this->assertInternalType('array', $line1);
         $title = $line1[4];
         
-        $header = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $header = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $columns = array_keys((array) $this->source->getColumnModel()->getColumns());
         $this->assertEquals($columns, $header);
         
@@ -156,33 +158,33 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $headers = $this->csvWriter->getHttpHeaders();
         $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
         $this->assertEquals('text/csv', $headers->getContentType());
-        $this->assertEquals('ISO-8859-1', strtoupper($headers->getCharset()));        
+        $this->assertEquals('ISO-8859-1', strtoupper($headers->getCharset()));
     }
 
     
     public function testGetDataLatin1CharsetThrowsCharsetException()
     {
         
-        if (version_compare(PHP_VERSION, '5.4.0', '>')) {                                
-            
+        if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $this->setExpectedException('Soluble\FlexStore\Writer\Exception\CharsetConversionException');
 
             $source = new SqlSource($this->adapter);
             $select = $source->select();
 
 
-            $select->from('user', array())->columns(array(
+            $select->from('user', array())->columns(
+                array(
                 'user_id' => new Expression('user_id'),
                 'test' => new Expression('"french accents éàùêûçâµè and chinese 请收藏我们的网址"'))
-             );
+            );
             $store = new Store($source);
 
             $writer = new CSVWriter($store);
             $writer->setOptions(
-                    array(
+                array(
                         'charset' => 'ISO-8859-1'
                         )
-                    );        
+            );
             $data = $writer->getData();
             
             
@@ -200,18 +202,18 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         //die();
         $enclosure = '"';
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'field_separator' => CSVWriter::SEPARATOR_TAB,
                     'line_separator' => CSVWriter::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     //'charset' => 'ISO-8859-1'
                     )
-                );
+        );
 
         $data = $this->csvWriter->getData();
         $this->assertInternalType('string', $data);
         $data = explode(CSVWriter::SEPARATOR_NEWLINE_UNIX, $data);
-        $line0 = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $line0 = str_getcsv($data[0], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $this->assertInternalType('array', $line0);
         $this->assertEquals($line0[1], 'category_id');
 
@@ -223,7 +225,7 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $data = $this->csvWriter->getData();
         
         $data = explode(CSVWriter::SEPARATOR_NEWLINE_UNIX, $data);
-        $line1 = str_getcsv($data[1], CSVWriter::SEPARATOR_TAB, $enclosure, $escape=null);
+        $line1 = str_getcsv($data[1], CSVWriter::SEPARATOR_TAB, $enclosure, $escape = null);
         $this->assertInternalType('array', $line1);
         $title = $line1[4];
 
@@ -236,7 +238,7 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $headers = $this->csvWriter->getHttpHeaders();
         $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
         $this->assertEquals('text/csv', $headers->getContentType());
-        $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));        
+        $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));
     }
 
 
@@ -244,10 +246,10 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\FlexStore\Exception\InvalidArgumentException');
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'rossssss' => 'line',
                     )
-                );
+        );
 
 
         $data = $this->csvWriter->getData();
@@ -259,14 +261,14 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     {
         $enclosure = '"';
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'field_separator' => CSVWriter::SEPARATOR_SEMICOLON,
                     'line_separator' => CSVWriter::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     'charset' => 'ISO-8859-1',
                     'escape' => '\\'
                     )
-                );
+        );
 
 
         $select = new \Zend\Db\Sql\Select();
@@ -288,14 +290,14 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     {
         $enclosure = '"';
         $this->csvWriter->setOptions(
-                array(
+            array(
                     'field_separator' => CSVWriter::SEPARATOR_SEMICOLON,
                     'line_separator' => CSVWriter::SEPARATOR_NEWLINE_UNIX,
                     'enclosure' => $enclosure,
                     'charset' => 'ISO-8859-1',
                     'escape' => ''
                     )
-                );
+        );
 
 
         $select = new \Zend\Db\Sql\Select();
@@ -324,6 +326,4 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         
         
     }
-    
-
 }

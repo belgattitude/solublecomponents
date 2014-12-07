@@ -61,6 +61,4 @@ class BoxDimensionTest extends \PHPUnit_Framework_TestCase
         $this->box->setHeight($height);
         $this->assertEquals($height, $this->box->getHeight());
     }
-    
-    
 }
