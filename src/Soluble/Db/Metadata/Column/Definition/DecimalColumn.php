@@ -68,7 +68,7 @@ class DecimalColumn extends AbstractColumnDefinition implements NumericColumnInt
 
     /**
      * @param int $numericPrecision the $numericPrevision to set
-     * @return \Soluble\Db\Metadata\Column\DecimalColumn
+     * @return DecimalColumn
      */
     public function setNumericPrecision($numericPrecision)
     {
