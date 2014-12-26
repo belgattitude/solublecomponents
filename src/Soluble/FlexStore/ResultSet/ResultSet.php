@@ -205,7 +205,10 @@ class ResultSet extends AbstractResultSet
     public function current()
     {
         $row = $this->zfResultSet->current();
-
+        if ($row === null) {
+            return null;
+        }
+        
         if (!$this->hydrate_options_initialized) {
             $this->initColumnModelHydration($row);
         }
