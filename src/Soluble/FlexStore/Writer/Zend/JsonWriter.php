@@ -29,6 +29,8 @@ class JsonWriter extends AbstractSendableWriter
         if ($options === null) {
             // Take store global/default options
             $options = $this->store->getOptions();
+            // By default formatters are disabled in JSON
+            $options->getHydrationOptions()->disableFormatters();    
         }
         
         
