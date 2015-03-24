@@ -23,7 +23,7 @@
         "php": ">=5.3.3",
         "soluble/db": "self.version",
         "soluble/spreadsheet": "self.version",
-        "rhumsaa/array_column": "~1.1",
+        "ramsey/array_column": "~1.1",
 		"zendframework/zend-stdlib": "2.*",
 		"zendframework/zend-cache": "2.*",
 		"zendframework/zend-json": "2.*",

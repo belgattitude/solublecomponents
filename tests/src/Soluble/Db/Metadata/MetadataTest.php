@@ -25,7 +25,9 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
+        
         $this->metadata = new Metadata($adapter);
+        
         
     }
 
