@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>Soluble\FlexStore\Formatter\NumberFormatter | Soluble API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../traits.html">Traits</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">Soluble API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../Soluble/FlexStore/Formatter.html">Soluble\FlexStore\Formatter</a>\NumberFormatter</h1>
+    </div>
+        <div class="content">
+                <p>    class
+    <strong>NumberFormatter</strong>        implements
+        <a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a>, <a href="../../../Soluble/FlexStore/I18n/LocalizableInterface.html"><abbr title="Soluble\FlexStore\I18n\LocalizableInterface">LocalizableInterface</abbr></a>, <a href="../../../Soluble/FlexStore/Formatter/FormatterNumberInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterNumberInterface">FormatterNumberInterface</abbr></a></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(array $params = array())
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_format">format</a>($number, <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $row = null)
+                    <p>Format a number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setLocale">setLocale</a>(string $locale)
+                    <p>Set locale to use instead of the default</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getLocale">getLocale</a>()
+                    <p>Get the locale to use</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setDecimals">setDecimals</a>(int $decimals)
+                    <p>Set decimals</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_getDecimals">getDecimals</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setPattern">setPattern</a>(string $pattern)
+                    <p>Set the number pattern, (#,##0.###, ....)</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string|null
+                </td>
+                <td class="last">
+                    <a href="#method_getPattern">getPattern</a>()
+                    <p>Get the number pattern</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 42</div>
+        <code>            public            
+    <strong>__construct</strong>(array $params = array())</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\ExtensionNotLoadedException">ExtensionNotLoadedException</abbr></td>
+                <td>if ext/intl is not present</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+                <h3 id="method_format">
+        <div class="location">at line 102</div>
+        <code>            public            string
+    <strong>format</strong>($number, <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $row = null)</code>
+    </h3>
+    <div class="details">
+        <p>Format a number</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$number</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$row</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setLocale">
+        <div class="location">at line 145</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+    <strong>setLocale</strong>(string $locale)</code>
+    </h3>
+    <div class="details">
+        <p>Set locale to use instead of the default</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$locale</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getLocale">
+        <div class="location">at line 156</div>
+        <code>            public            string|null
+    <strong>getLocale</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the locale to use</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string|null</td>
+            <td>$locale</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setDecimals">
+        <div class="location">at line 167</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+    <strong>setDecimals</strong>(int $decimals)</code>
+    </h3>
+    <div class="details">
+        <p>Set decimals</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$decimals</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getDecimals">
+        <div class="location">at line 177</div>
+        <code>            public            int
+    <strong>getDecimals</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setPattern">
+        <div class="location">at line 189</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a>
+    <strong>setPattern</strong>(string $pattern)</code>
+    </h3>
+    <div class="details">
+        <p>Set the number pattern, (#,##0.###, ....)</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$pattern</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Formatter/NumberFormatter.html"><abbr title="Soluble\FlexStore\Formatter\NumberFormatter">NumberFormatter</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table>
+                    <tr>
+                <td>http://php.net/manual/en/numberformatter.setpattern.php</td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+                <h3 id="method_getPattern">
+        <div class="location">at line 200</div>
+        <code>            public            string|null
+    <strong>getPattern</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the number pattern</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string|null</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

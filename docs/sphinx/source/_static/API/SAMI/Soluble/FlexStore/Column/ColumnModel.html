@@ -27,6 +27,29 @@
     <strong>ColumnModel</strong></p>
 
     
+            <h2>Constants</h2>
+
+            <table>
+                    <tr>
+                <td>ADD_COLUMN_AFTER</td>
+                <td class="last">
+                    <p><em>
+</em></p>
+                    <p>
+</p>
+                </td>
+            </tr>
+                    <tr>
+                <td>ADD_COLUMN_BEFORE</td>
+                <td class="last">
+                    <p><em>
+</em></p>
+                    <p>
+</p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -48,14 +71,14 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_addRowRenderer">addRowRenderer</a>($renderer)
-                    <p>Add a column renderer</p>
+                    <a href="#method_addRowRenderer">addRowRenderer</a>(<a href="../../../Soluble/FlexStore/Renderer/RowRendererInterface.html"><abbr title="Soluble\FlexStore\Renderer\RowRendererInterface">RowRendererInterface</abbr></a> $renderer)
+                    <p>Add a row renderer</p>
                 </td>
                 <td></td>
             </tr>
                     <tr>
                 <td class="type">
-                    
+                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
                 </td>
                 <td class="last">
                     <a href="#method_getRowRenderers">getRowRenderers</a>()
@@ -70,8 +93,17 @@
                 </td>
                 <td class="last">
                     <a href="#method_getFormatters">getFormatters</a>()
-                    <p>
-</p>
+                    <p>Return an array object containing all columns that have a formatter (FormatterInterface).</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getUniqueFormatters">getUniqueFormatters</a>(boolean $include_excluded_columns = false)
+                    <p>This method returns unique formatters set in the column model in an ArrayObject</p>
                 </td>
                 <td></td>
             </tr>
@@ -80,8 +112,8 @@
                     <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_add">add</a>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column)
-                    <p>Add a column to the column model</p>
+                    <a href="#method_add">add</a>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column, string $after_column = null, string $mode = self::ADD_COLUMN_AFTER)
+                    <p>Add a new column to the column model</p>
                 </td>
                 <td></td>
             </tr>
@@ -140,7 +172,7 @@
                     <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_includeOnly">includeOnly</a>(array $include_only_columns, bool $sort = true)
+                    <a href="#method_includeOnly">includeOnly</a>(array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $include_only_columns, bool $sort = true)
                     <p>Exclude all other columns that the one specified Column sort is preserved in getData()</p>
                 </td>
                 <td></td>
@@ -150,8 +182,18 @@
                     <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_getColumns">getColumns</a>()
+                    <a href="#method_getColumns">getColumns</a>(boolean $include_excluded_columns = false)
                     <p>Return columns</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setFormatter">setFormatter</a>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter, array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $columns)
+                    <p>Set formatter to specific columns</p>
                 </td>
                 <td></td>
             </tr>
@@ -166,13 +208,35 @@
                 </td>
                 <td></td>
             </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setMetatadata">setMetatadata</a>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $metadata)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>|null
+                </td>
+                <td class="last">
+                    <a href="#method_getMetadata">getMetadata</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
             </table>
 
 
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 30</div>
+        <div class="location">at line 41</div>
         <code>            public            
     <strong>__construct</strong>()</code>
     </h3>
@@ -189,12 +253,12 @@
     </div>
 
                 <h3 id="method_addRowRenderer">
-        <div class="location">at line 44</div>
+        <div class="location">at line 54</div>
         <code>            public            
-    <strong>addRowRenderer</strong>($renderer)</code>
+    <strong>addRowRenderer</strong>(<a href="../../../Soluble/FlexStore/Renderer/RowRendererInterface.html"><abbr title="Soluble\FlexStore\Renderer\RowRendererInterface">RowRendererInterface</abbr></a> $renderer)</code>
     </h3>
     <div class="details">
-        <p>Add a column renderer</p>
+        <p>Add a row renderer</p>
         <p>
 </p>
         <div class="tags">
@@ -202,7 +266,7 @@
 
                     <table>
                     <tr>
-                <td></td>
+                <td><a href="../../../Soluble/FlexStore/Renderer/RowRendererInterface.html"><abbr title="Soluble\FlexStore\Renderer\RowRendererInterface">RowRendererInterface</abbr></a></td>
                 <td>$renderer</td>
                 <td>
 </td>
@@ -226,26 +290,9 @@
     </div>
 
                 <h3 id="method_getRowRenderers">
-        <div class="location">at line 65</div>
-        <code>            public            
-    <strong>getRowRenderers</strong>()</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-            
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getFormatters">
-        <div class="location">at line 73</div>
+        <div class="location">at line 74</div>
         <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
-    <strong>getFormatters</strong>()</code>
+    <strong>getRowRenderers</strong>()</code>
     </h3>
     <div class="details">
         <p>
@@ -269,13 +316,93 @@
                     </div>
     </div>
 
-                <h3 id="method_add">
-        <div class="location">at line 91</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
-    <strong>add</strong>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column)</code>
+                <h3 id="method_getFormatters">
+        <div class="location">at line 87</div>
+        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+    <strong>getFormatters</strong>()</code>
     </h3>
     <div class="details">
-        <p>Add a column to the column model</p>
+        <p>Return an array object containing all columns that have a formatter (FormatterInterface).</p>
+        <p>[column_name] => [FormatterInterface]</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table>
+                    <tr>
+                <td>self::getUniqueFormatters()</td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+                <h3 id="method_getUniqueFormatters">
+        <div class="location">at line 107</div>
+        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
+    <strong>getUniqueFormatters</strong>(boolean $include_excluded_columns = false)</code>
+    </h3>
+    <div class="details">
+        <p>This method returns unique formatters set in the column model in an ArrayObject</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$include_excluded_columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table>
+                    <tr>
+                <td>self::getFormatters()</td>
+                <td></td>
+            </tr>
+            </table>
+
+                    </div>
+    </div>
+
+                <h3 id="method_add">
+        <div class="location">at line 143</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>add</strong>(<a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a> $column, string $after_column = null, string $mode = self::ADD_COLUMN_AFTER)</code>
+    </h3>
+    <div class="details">
+        <p>Add a new column to the column model</p>
         <p>
 </p>
         <div class="tags">
@@ -287,6 +414,16 @@
                 <td>$column</td>
                 <td>
 </td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$after_column</td>
+                <td>add the new column after this existing one</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$mode</td>
+                <td>change after to before (see self::ADD<em>COLUMN</em>AFTER, self::ADD<em>COLUMN</em>BEFORE)</td>
             </tr>
             </table>
 
@@ -302,12 +439,29 @@
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>when mode is not supported</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\DuplicateColumnException">DuplicateColumnException</abbr></td>
+                <td>when column name already exists</td>
+            </tr>
+                    <tr>
+                <td><abbr title="Exception\ColumnNotFoundException">ColumnNotFoundException</abbr></td>
+                <td>when after_column does not exists</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
                 <h3 id="method_exists">
-        <div class="location">at line 104</div>
+        <div class="location">at line 189</div>
         <code>            public            boolean
     <strong>exists</strong>(string $column)</code>
     </h3>
@@ -354,7 +508,7 @@
     </div>
 
                 <h3 id="method_getExcluded">
-        <div class="location">at line 122</div>
+        <div class="location">at line 207</div>
         <code>            public            array
     <strong>getExcluded</strong>()</code>
     </h3>
@@ -380,7 +534,7 @@
     </div>
 
                 <h3 id="method_get">
-        <div class="location">at line 142</div>
+        <div class="location">at line 227</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
     <strong>get</strong>(string $column)</code>
     </h3>
@@ -430,7 +584,7 @@
     </div>
 
                 <h3 id="method_sort">
-        <div class="location">at line 158</div>
+        <div class="location">at line 243</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
     <strong>sort</strong>(array $sorted_columns)</code>
     </h3>
@@ -467,7 +621,7 @@
     </div>
 
                 <h3 id="method_exclude">
-        <div class="location">at line 186</div>
+        <div class="location">at line 271</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
     <strong>exclude</strong>($excluded_columns, $excluded = true)</code>
     </h3>
@@ -520,9 +674,9 @@
     </div>
 
                 <h3 id="method_includeOnly">
-        <div class="location">at line 206</div>
+        <div class="location">at line 295</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
-    <strong>includeOnly</strong>(array $include_only_columns, bool $sort = true)</code>
+    <strong>includeOnly</strong>(array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $include_only_columns, bool $sort = true)</code>
     </h3>
     <div class="details">
         <p>Exclude all other columns that the one specified Column sort is preserved in getData()</p>
@@ -533,7 +687,7 @@
 
                     <table>
                     <tr>
-                <td>array</td>
+                <td>array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
                 <td>$include_only_columns</td>
                 <td>
 </td>
@@ -557,20 +711,41 @@
     </table>
 
             
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
             
                     </div>
     </div>
 
                 <h3 id="method_getColumns">
-        <div class="location">at line 230</div>
+        <div class="location">at line 322</div>
         <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>
-    <strong>getColumns</strong>()</code>
+    <strong>getColumns</strong>(boolean $include_excluded_columns = false)</code>
     </h3>
     <div class="details">
         <p>Return columns</p>
         <p>
 </p>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>boolean</td>
+                <td>$include_excluded_columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
@@ -587,8 +762,61 @@
                     </div>
     </div>
 
+                <h3 id="method_setFormatter">
+        <div class="location">at line 341</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>setFormatter</strong>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter, array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $columns)</code>
+    </h3>
+    <div class="details">
+        <p>Set formatter to specific columns</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a></td>
+                <td>$formatter</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>array|string|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$columns</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
                 <h3 id="method_search">
-        <div class="location">at line 244</div>
+        <div class="location">at line 355</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel/Search.html"><abbr title="Soluble\FlexStore\Column\ColumnModel\Search">Search</abbr></a>
     <strong>search</strong>()</code>
     </h3>
@@ -604,6 +832,71 @@
                     <table>
         <tr>
             <td><a href="../../../Soluble/FlexStore/Column/ColumnModel/Search.html"><abbr title="Soluble\FlexStore\Column\ColumnModel\Search">Search</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setMetatadata">
+        <div class="location">at line 369</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a>
+    <strong>setMetatadata</strong>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $metadata)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
+                <td>$metadata</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/Column.html"><abbr title="Soluble\FlexStore\Column\Column">Column</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getMetadata">
+        <div class="location">at line 379</div>
+        <code>            public            <a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>|null
+    <strong>getMetadata</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>|null</td>
             <td>
 </td>
         </tr>

@@ -175,7 +175,7 @@
                     <a href="#method_valid">valid</a>()
                     <p>Iterator: is pointer valid?</p>
                 </td>
-                <td><small>from&nbsp;<a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html#method_valid"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type">
@@ -185,7 +185,7 @@
                     <a href="#method_rewind">rewind</a>()
                     <p>Iterator: rewind</p>
                 </td>
-                <td><small>from&nbsp;<a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html#method_rewind"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a></small></td>
+                <td></td>
             </tr>
                     <tr>
                 <td class="type">
@@ -209,6 +209,16 @@
             </tr>
                     <tr>
                 <td class="type">
+                    <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getColumnModel">getColumnModel</a>()
+                    <p>Return source column model</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
                     <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
                 </td>
                 <td class="last">
@@ -224,6 +234,28 @@
                 </td>
                 <td class="last">
                     <a href="#method_getSource">getSource</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setHydrationOptions">setHydrationOptions</a>(<a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a> $hydrationOptions)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getHydrationOptions">getHydrationOptions</a>()
                     <p>
 </p>
                 </td>
@@ -256,58 +288,6 @@
                 </td>
                 <td class="last">
                     <a href="#method_getTotalRows">getTotalRows</a>()
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    
-                </td>
-                <td class="last">
-                    <a href="#method_setRowRenderers">setRowRenderers</a>($renderers)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_setHydratedColumns">setHydratedColumns</a>(array $hydrated_columns, array $ignore_duplicate_columns = false)
-                    <p>By using setHydratedColumns() on a resultset, you ensure that only those columns will be available/returned even if they are more available in the original dataset</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    array|null
-                </td>
-                <td class="last">
-                    <a href="#method_getHydratedColumns">getHydratedColumns</a>()
-                    <p>Return hydrated columns</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_unsetHydratedColumns">unsetHydratedColumns</a>()
-                    <p>Reset eventual limited columns set by setHydratedColumns() method</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-                </td>
-                <td class="last">
-                    <a href="#method_setFormatters">setFormatters</a>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $formatters)
                     <p>
 </p>
                 </td>
@@ -615,7 +595,7 @@
     </div>
 
                 <h3 id="method_current">
-        <div class="location">at line 222</div>
+        <div class="location">at line 205</div>
         <code>            public            array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a>|null
     <strong>current</strong>()</code>
     </h3>
@@ -651,7 +631,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_valid">
-        <div class="location">in <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html#method_valid"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a> at line 174</div>
+        <div class="location">at line 274</div>
         <code>            public            bool
     <strong>valid</strong>()</code>
     </h3>
@@ -677,7 +657,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_rewind">
-        <div class="location">in <a href="../../../Soluble/FlexStore/ResultSet/AbstractResultSet.html#method_rewind"><abbr title="Soluble\FlexStore\ResultSet\AbstractResultSet">AbstractResultSet</abbr></a> at line 184</div>
+        <div class="location">at line 288</div>
         <code>            public            void
     <strong>rewind</strong>()</code>
     </h3>
@@ -729,7 +709,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_toArray">
-        <div class="location">at line 281</div>
+        <div class="location">at line 250</div>
         <code>            public            array
     <strong>toArray</strong>()</code>
     </h3>
@@ -763,8 +743,44 @@ the limited columns.</p>
                     </div>
     </div>
 
+                <h3 id="method_getColumnModel">
+        <div class="location">at line 66</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a>
+    <strong>getColumnModel</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Return source column model</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Column/ColumnModel.html"><abbr title="Soluble\FlexStore\Column\ColumnModel">ColumnModel</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Exception\RuntimeException">RuntimeException</abbr></td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
                 <h3 id="method_setSource">
-        <div class="location">at line 67</div>
+        <div class="location">at line 80</div>
         <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
     <strong>setSource</strong>(<a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a> $source)</code>
     </h3>
@@ -802,7 +818,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_getSource">
-        <div class="location">at line 77</div>
+        <div class="location">at line 90</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Source/AbstractSource.html"><abbr title="Soluble\FlexStore\Source\AbstractSource">AbstractSource</abbr></a>
     <strong>getSource</strong>()</code>
     </h3>
@@ -828,8 +844,73 @@ the limited columns.</p>
                     </div>
     </div>
 
+                <h3 id="method_setHydrationOptions">
+        <div class="location">at line 100</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
+    <strong>setHydrationOptions</strong>(<a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a> $hydrationOptions)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a></td>
+                <td>$hydrationOptions</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getHydrationOptions">
+        <div class="location">at line 110</div>
+        <code>            public            <a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a>
+    <strong>getHydrationOptions</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../Soluble/FlexStore/Options/HydrationOptions.html"><abbr title="Soluble\FlexStore\Options\HydrationOptions">HydrationOptions</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_getPaginator">
-        <div class="location">at line 87</div>
+        <div class="location">at line 120</div>
         <code>            public            <a href="../../../Soluble/FlexStore/Helper/Paginator.html"><abbr title="Soluble\FlexStore\Helper\Paginator">Paginator</abbr></a>
     <strong>getPaginator</strong>()</code>
     </h3>
@@ -856,7 +937,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_setTotalRows">
-        <div class="location">at line 107</div>
+        <div class="location">at line 137</div>
         <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
     <strong>setTotalRows</strong>(int $totalRows)</code>
     </h3>
@@ -893,7 +974,7 @@ the limited columns.</p>
     </div>
 
                 <h3 id="method_getTotalRows">
-        <div class="location">at line 117</div>
+        <div class="location">at line 146</div>
         <code>            public            int
     <strong>getTotalRows</strong>()</code>
     </h3>
@@ -909,180 +990,6 @@ the limited columns.</p>
                     <table>
         <tr>
             <td>int</td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_setRowRenderers">
-        <div class="location">at line 123</div>
-        <code>            public            
-    <strong>setRowRenderers</strong>($renderers)</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td></td>
-                <td>$renderers</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_setHydratedColumns">
-        <div class="location">at line 144</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-    <strong>setHydratedColumns</strong>(array $hydrated_columns, array $ignore_duplicate_columns = false)</code>
-    </h3>
-    <div class="details">
-        <p>By using setHydratedColumns() on a resultset, you ensure that only those columns will be available/returned even if they are more available in the original dataset</p>
-        <p>Checks against column name existence can only be done
-lazily when current() is called. (in case the resultset does
-not contain rows, we don't know about columns)</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>array</td>
-                <td>$hydrated_columns</td>
-                <td>columns nams in an array</td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$ignore_duplicate_columns</td>
-                <td>check whether we can ignore duplicate columns</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table>
-                    <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
-                <td>
-</td>
-            </tr>
-                    <tr>
-                <td><abbr title="Exception\DuplicateColumnException">DuplicateColumnException</abbr></td>
-                <td>only when $ignore<em>duplicate</em>columns is false (default)</td>
-            </tr>
-            </table>
-
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getHydratedColumns">
-        <div class="location">at line 178</div>
-        <code>            public            array|null
-    <strong>getHydratedColumns</strong>()</code>
-    </h3>
-    <div class="details">
-        <p>Return hydrated columns</p>
-        <p>
-</p>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td>array|null</td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_unsetHydratedColumns">
-        <div class="location">at line 188</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-    <strong>unsetHydratedColumns</strong>()</code>
-    </h3>
-    <div class="details">
-        <p>Reset eventual limited columns set by setHydratedColumns() method</p>
-        <p>
-</p>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
-            <td>
-</td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_setFormatters">
-        <div class="location">at line 201</div>
-        <code>            public            <a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a>
-    <strong>setFormatters</strong>(<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $formatters)</code>
-    </h3>
-    <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td><a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
-                <td>$formatters</td>
-                <td>
-</td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table>
-        <tr>
-            <td><a href="../../../Soluble/FlexStore/ResultSet/ResultSet.html"><abbr title="Soluble\FlexStore\ResultSet\ResultSet">ResultSet</abbr></a></td>
             <td>
 </td>
         </tr>

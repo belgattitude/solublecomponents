@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>Soluble\Japha\Bridge\Driver\Pjb621\AbstractJava | Soluble API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../../../classes.html">Classes</a></li>
+                            <li><a href="../../../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../../../traits.html">Traits</a></li>
+            <li><a href="../../../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">Soluble API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621.html">Soluble\Japha\Bridge\Driver\Pjb621</a>\AbstractJava</h1>
+    </div>
+        <div class="content">
+                <p>abstract     class
+    <strong>AbstractJava</strong>        implements
+        <a href="http://php.net/IteratorAggregate"><abbr title="IteratorAggregate">IteratorAggregate</abbr></a>, <a href="http://php.net/ArrayAccess"><abbr title="ArrayAccess">ArrayAccess</abbr></a>, <a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/JavaType.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\JavaType">JavaType</abbr></a>, <a href="../../../../../Soluble/Japha/Bridge/JavaObjectInterface.html"><abbr title="Soluble\Japha\Bridge\JavaObjectInterface">JavaObjectInterface</abbr></a></p>
+
+    
+    
+            <h2>Properties</h2>
+
+            <table>
+                    <tr>
+                <td class="type" id="property___client">
+                                                            <a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/Client.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\Client">Client</abbr></a>
+                </td>
+                <td>$__client</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___delegate">
+                                                            <a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/AbstractJava.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\AbstractJava">AbstractJava</abbr></a>
+                </td>
+                <td>$__delegate</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___serialID">
+                                                            
+                </td>
+                <td>$__serialID</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___factory">
+                                                            
+                </td>
+                <td>$__factory</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___java">
+                                                            int
+                </td>
+                <td>$__java</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___signature">
+                                                            
+                </td>
+                <td>$__signature</td>
+                <td class="last">
+</td>
+            </tr>
+                    <tr>
+                <td class="type" id="property___cancelProxyCreationTag">
+                                                            
+                </td>
+                <td>$__cancelProxyCreationTag</td>
+                <td class="last">
+</td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___createDelegate">__createDelegate</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___cast">__cast</a>($type)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___sleep">__sleep</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___wakeup">__wakeup</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    mixed
+                </td>
+                <td class="last">
+                    <a href="#method___get">__get</a>(mixed $key)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___set">__set</a>(mixed $key, mixed $val)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___call">__call</a>(string $method, array $args)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method___toString">__toString</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/ObjectIterator.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\ObjectIterator">ObjectIterator</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getIterator">getIterator</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_offsetExists">offsetExists</a>(string|integer $idx)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    mixed
+                </td>
+                <td class="last">
+                    <a href="#method_offsetGet">offsetGet</a>(string|integer $idx)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    mixed
+                </td>
+                <td class="last">
+                    <a href="#method_offsetSet">offsetSet</a>(string|integer $idx, mixed $val)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_offsetUnset">offsetUnset</a>($idx)
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_get__java">get__java</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_get__signature">get__signature</a>()
+                    <p>
+</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___createDelegate">
+        <div class="location">at line 66</div>
+        <code>            public            
+    <strong>__createDelegate</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___cast">
+        <div class="location">at line 73</div>
+        <code>            public            
+    <strong>__cast</strong>($type)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$type</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___sleep">
+        <div class="location">at line 81</div>
+        <code>            public            
+    <strong>__sleep</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___wakeup">
+        <div class="location">at line 90</div>
+        <code>            public            
+    <strong>__wakeup</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___get">
+        <div class="location">at line 100</div>
+        <code>            public            mixed
+    <strong>__get</strong>(mixed $key)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>mixed</td>
+                <td>$key</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>mixed</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___set">
+        <div class="location">at line 108</div>
+        <code>            public            
+    <strong>__set</strong>(mixed $key, mixed $val)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>mixed</td>
+                <td>$key</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$val</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___call">
+        <div class="location">at line 116</div>
+        <code>            public            
+    <strong>__call</strong>(string $method, array $args)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$method</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$args</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method___toString">
+        <div class="location">at line 128</div>
+        <code>            public            string
+    <strong>__toString</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getIterator">
+        <div class="location">at line 140</div>
+        <code>            public            <a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/ObjectIterator.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\ObjectIterator">ObjectIterator</abbr></a>
+    <strong>getIterator</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../../../Soluble/Japha/Bridge/Driver/Pjb621/ObjectIterator.html"><abbr title="Soluble\Japha\Bridge\Driver\Pjb621\ObjectIterator">ObjectIterator</abbr></a></td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_offsetExists">
+        <div class="location">at line 157</div>
+        <code>            public            boolean
+    <strong>offsetExists</strong>(string|integer $idx)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|integer</td>
+                <td>$idx</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_offsetGet">
+        <div class="location">at line 174</div>
+        <code>            public            mixed
+    <strong>offsetGet</strong>(string|integer $idx)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|integer</td>
+                <td>$idx</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>mixed</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_offsetSet">
+        <div class="location">at line 192</div>
+        <code>            public            mixed
+    <strong>offsetSet</strong>(string|integer $idx, mixed $val)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string|integer</td>
+                <td>$idx</td>
+                <td>
+</td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$val</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>mixed</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_offsetUnset">
+        <div class="location">at line 205</div>
+        <code>            public            
+    <strong>offsetUnset</strong>($idx)</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$idx</td>
+                <td>
+</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_get__java">
+        <div class="location">at line 220</div>
+        <code>            public            integer
+    <strong>get__java</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_get__signature">
+        <div class="location">at line 228</div>
+        <code>            public            string
+    <strong>get__signature</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>
+</p>
+        <p>
+</p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td>
+</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

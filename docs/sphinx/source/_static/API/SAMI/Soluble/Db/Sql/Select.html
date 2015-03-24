@@ -38,7 +38,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter = null, null|string|array|<abbr title="Soluble\Db\Sql\TableIdentifier">TableIdentifier</abbr> $table = null)
+                    <a href="#method___construct">__construct</a>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter = null, null|string|array|<abbr title="Zend\Db\Sql\TableIdentifier">TableIdentifier</abbr> $table = null)
                     <p>Constructor</p>
                 </td>
                 <td></td>
@@ -48,7 +48,7 @@
                     <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
                 </td>
                 <td class="last">
-                    <a href="#method_orWhere">orWhere</a>(<abbr title="Soluble\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)
+                    <a href="#method_orWhere">orWhere</a>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)
                     <p>Create an where clause with 'OR'</p>
                 </td>
                 <td></td>
@@ -111,7 +111,7 @@
                         <h3 id="method___construct">
         <div class="location">at line 28</div>
         <code>            public            
-    <strong>__construct</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter = null, null|string|array|<abbr title="Soluble\Db\Sql\TableIdentifier">TableIdentifier</abbr> $table = null)</code>
+    <strong>__construct</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter = null, null|string|array|<abbr title="Zend\Db\Sql\TableIdentifier">TableIdentifier</abbr> $table = null)</code>
     </h3>
     <div class="details">
         <p>Constructor</p>
@@ -128,7 +128,7 @@
 </td>
             </tr>
                     <tr>
-                <td>null|string|array|<abbr title="Soluble\Db\Sql\TableIdentifier">TableIdentifier</abbr></td>
+                <td>null|string|array|<abbr title="Zend\Db\Sql\TableIdentifier">TableIdentifier</abbr></td>
                 <td>$table</td>
                 <td>
 </td>
@@ -142,9 +142,9 @@
     </div>
 
                 <h3 id="method_orWhere">
-        <div class="location">at line 45</div>
+        <div class="location">at line 44</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
-    <strong>orWhere</strong>(<abbr title="Soluble\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)</code>
+    <strong>orWhere</strong>(<abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr> $predicate)</code>
     </h3>
     <div class="details">
         <p>Create an where clause with 'OR'</p>
@@ -155,7 +155,7 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Soluble\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr></td>
+                <td><abbr title="Zend\Db\Sql\Where">Where</abbr>|<a href="http://php.net/Closure"><abbr title="Closure">Closure</abbr></a>|string|array|<abbr title="Soluble\Db\Sql\Predicate\PredicateInterface">PredicateInterface</abbr></td>
                 <td>$predicate</td>
                 <td>
 </td>
@@ -189,7 +189,7 @@
     </div>
 
                 <h3 id="method_prefixedColumns">
-        <div class="location">at line 74</div>
+        <div class="location">at line 73</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
     <strong>prefixedColumns</strong>(array $columns)</code>
     </h3>
@@ -247,7 +247,7 @@ Possible valid states:
     </div>
 
                 <h3 id="method_setDbAdapter">
-        <div class="location">at line 142</div>
+        <div class="location">at line 141</div>
         <code>            public            <a href="../../../Soluble/Db/Sql/Select.html"><abbr title="Soluble\Db\Sql\Select">Select</abbr></a>
     <strong>setDbAdapter</strong>(<abbr title="Zend\Db\Adapter\Adapter">Adapter</abbr> $adapter)</code>
     </h3>
@@ -284,7 +284,7 @@ Possible valid states:
     </div>
 
                 <h3 id="method_getSql">
-        <div class="location">at line 155</div>
+        <div class="location">at line 154</div>
         <code>            public            string
     <strong>getSql</strong>()</code>
     </h3>
@@ -320,7 +320,7 @@ Possible valid states:
     </div>
 
                 <h3 id="method_execute">
-        <div class="location">at line 171</div>
+        <div class="location">at line 170</div>
         <code>            public            <abbr title="Zend\Db\ResultSet\ResultSet">ResultSet</abbr>
     <strong>execute</strong>()</code>
     </h3>
@@ -356,7 +356,7 @@ Possible valid states:
     </div>
 
                 <h3 id="method___toString">
-        <div class="location">at line 190</div>
+        <div class="location">at line 195</div>
         <code>            public            string
     <strong>__toString</strong>()</code>
     </h3>
