@@ -150,7 +150,6 @@ class CSVWriter extends AbstractSendableWriter
     /**
      *
      * @param string $item
-     * @param string $key
      * @return void
      */
     protected function escapeFieldDelimiter(&$item)

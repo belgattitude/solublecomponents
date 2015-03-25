@@ -74,7 +74,8 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
 
     /**
      *
-     * @param Adapter $params
+     * @param Adapter $adapter
+     * @param Select $select
      */
     public function __construct(Adapter $adapter, Select $select = null)
     {

@@ -264,7 +264,8 @@ class ColumnModel
     /**
      * Set column that must be excluded in getData() and getColumns()
      *
-     * @param array|string|ArrayObject $columns column nams to exclude
+     * @param array|string|ArrayObject $excluded_columns column nams to exclude
+     * @param boolean $excluded whether to set exclude to true (default) or false (opposite: include)
      * @throws Exception\InvalidArgumentException
      * @return ColumnModel
      */
@@ -277,8 +278,6 @@ class ColumnModel
         $excluded_columns = array_map('trim', $excluded_columns);
         
         $this->search()->in($excluded_columns)->setExcluded($excluded);
-        
-        
         return $this;
     }
 

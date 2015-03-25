@@ -2,14 +2,12 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Driver;
-use Soluble\Normalist\Metadata;
 
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-
 
 use ArrayObject;
 
@@ -63,12 +61,11 @@ class TableManager
 
     /**
      *
-     * @param Driver\DriverInterface $adapter
-     * @param string $table table name
+     * @param Driver\DriverInterface $driver
      */
     public function __construct(Driver\DriverInterface $driver)
     {
-        $this->localTableCache = new \ArrayObject();
+        $this->localTableCache = new ArrayObject();
         $this->driver = $driver;
         $this->setDbAdapter($driver->getDbAdapter());
 

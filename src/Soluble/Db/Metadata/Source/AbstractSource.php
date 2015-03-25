@@ -66,8 +66,7 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
-     * @return array primary key
+     * @return array primary keys
      */
     abstract public function getPrimaryKeys($table);
 
@@ -95,9 +94,8 @@ abstract class AbstractSource
      * @throws Exception\TableNotFoundException
      *
      * @param string $table
-     * @param string $schema
      *
-     * @return array
+     * @return array relations
      */
     abstract public function getRelations($table);
 

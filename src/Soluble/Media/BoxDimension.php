@@ -17,7 +17,7 @@ class BoxDimension
     /**
      *
      * @param int $width
-     * @param int $heigth
+     * @param int $height
      */
     public function __construct($width = null, $height = null)
     {

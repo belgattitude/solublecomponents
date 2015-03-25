@@ -39,7 +39,7 @@ class Column implements ColumnSettableInterface
      * @param array $properties associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)
      * @throws Exception\InvalidArgumentException
      */
-    function __construct($name, array $properties = null)
+    public function __construct($name, array $properties = null)
     {
         if (!is_string($name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Column name must be a string");
@@ -84,7 +84,7 @@ class Column implements ColumnSettableInterface
      * @throws Exception\InvalidArgumentException when the type is not supported.
      * @return Column
      */
-    function setType($type)
+    public function setType($type)
     {
         if (is_string($type)) {
             $type = ColumnType::createType($type);
@@ -100,7 +100,7 @@ class Column implements ColumnSettableInterface
      *
      * @return AbstractType
      */
-    function getType()
+    public function getType()
     {
         return $this->properties['type'];
     }
@@ -110,7 +110,7 @@ class Column implements ColumnSettableInterface
      * @param FormatterInterface $formatter
      * @return Column
      */
-    function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         $this->properties['formatter'] = $formatter;
         return $this;
@@ -120,7 +120,7 @@ class Column implements ColumnSettableInterface
      *
      * @return FormatterInterface|null
      */
-    function getFormatter()
+    public function getFormatter()
     {
         return $this->properties['formatter'];
     }
@@ -130,7 +130,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $virtual
      * @return Column
      */
-    function setVirtual($virtual = true)
+    public function setVirtual($virtual = true)
     {
         $this->properties['virtual'] = (bool) $virtual;
         return $this;
@@ -140,7 +140,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isVirtual()
+    public function isVirtual()
     {
         return $this->properties['virtual'];
     }
@@ -151,7 +151,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $excluded
      * @return Column
      */
-    function setExcluded($excluded = true)
+    public function setExcluded($excluded = true)
     {
         $this->properties['excluded'] = (bool) $excluded;
         return $this;
@@ -161,7 +161,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isExcluded()
+    public function isExcluded()
     {
         return $this->properties['excluded'];
     }
@@ -171,7 +171,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $editable
      * @return Column
      */
-    function setEditable($editable = true)
+    public function setEditable($editable = true)
     {
         $this->properties['editable'] = (bool) $editable;
         return $this;
@@ -191,7 +191,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $hidden
      * @return Column
      */
-    function setHidden($hidden = true)
+    public function setHidden($hidden = true)
     {
         $this->properties['hidden'] = (bool) $hidden;
         return $this;
@@ -201,7 +201,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isHidden()
+    public function isHidden()
     {
         return (bool) $this->properties['hidden'];
     }
@@ -211,7 +211,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $sortable
      * @return Column
      */
-    function setSortable($sortable = true)
+    public function setSortable($sortable = true)
     {
         $this->properties['sortable'] = (bool) $sortable;
         return $this;
@@ -221,7 +221,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isSortable()
+    public function isSortable()
     {
         return (bool) $this->properties['sortable'];
     }
@@ -231,7 +231,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $groupable
      * @return Column
      */
-    function setGroupable($groupable = true)
+    public function setGroupable($groupable = true)
     {
         $this->properties['groupable'] = (bool) $groupable;
         return $this;
@@ -241,7 +241,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isGroupable()
+    public function isGroupable()
     {
         return (bool) $this->properties['groupable'];
     }
@@ -251,7 +251,7 @@ class Column implements ColumnSettableInterface
      * @param boolean $filterable
      * @return Column
      */
-    function setFilterable($filterable = true)
+    public function setFilterable($filterable = true)
     {
         $this->properties['filterable'] = (bool) $filterable;
         return $this;
@@ -261,7 +261,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isFilterable()
+    public function isFilterable()
     {
         return (bool) $this->properties['filterable'];
     }
@@ -273,7 +273,7 @@ class Column implements ColumnSettableInterface
      * @param float|int|string $width
      * @return Column
      */
-    function setWidth($width)
+    public function setWidth($width)
     {
         if (!is_scalar($width)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . " Width parameter must be scalar.");
@@ -286,7 +286,7 @@ class Column implements ColumnSettableInterface
      *
      * @return float|int|string
      */
-    function getWidth()
+    public function getWidth()
     {
         return $this->properties['width'];
     }
@@ -298,7 +298,7 @@ class Column implements ColumnSettableInterface
      * @param string|null $header
      * @return Column
      */
-    function setHeader($header)
+    public function setHeader($header)
     {
         $this->properties['header'] = $header;
         return $this;
@@ -308,7 +308,7 @@ class Column implements ColumnSettableInterface
      *
      * @return string|null
      */
-    function getHeader()
+    public function getHeader()
     {
         return $this->properties['header'];
     }
@@ -317,7 +317,7 @@ class Column implements ColumnSettableInterface
      *
      * @return array
      */
-    function getProperties()
+    public function getProperties()
     {
         return $this->properties;
     }
@@ -329,7 +329,7 @@ class Column implements ColumnSettableInterface
      * @param array $properties associative array with (header,width,filterable,groupable,sortable,hidden,excluded,editable...)
      * @return Column
      */
-    function setProperties(array $properties)
+    public function setProperties(array $properties)
     {
         foreach ($properties as $key => $value) {
             if (array_key_exists($key, $this->properties)) {
@@ -346,7 +346,7 @@ class Column implements ColumnSettableInterface
      *
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->name;
     }

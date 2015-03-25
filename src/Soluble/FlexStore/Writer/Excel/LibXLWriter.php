@@ -302,7 +302,7 @@ class LibXLWriter extends AbstractSendableWriter
                 }
             } else {
                 $model_type = $column->getType()->getName();
-                $spec['meta_type'] = $model_type;
+                //$spec['meta_type'] = $model_type;
                 if ($model_type == ColumnType::TYPE_INTEGER) {
                     $decimals = 0;
                 }
