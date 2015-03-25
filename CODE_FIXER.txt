@@ -1,0 +1,16 @@
+# fabpot code fixer
+
+./vendor/fabpot/php-cs-fixer/php-cs-fixer fix --dry-run ./src --fixers=visibility 
+./vendor/fabpot/php-cs-fixer/php-cs-fixer fix --dry-run ./src --level=psr2
+
+(remove --dry-run to make it happen for real)
+
+
+# Squizlabs php_code_sniffer
+
+./vendor/squizlabs/php_codesniffer/scripts/phpcs --standard=PSR2 ./src/
+
+Auto fix : 
+
+./vendor/squizlabs/php_codesniffer/scripts/phpcbf --standard=PSR2 ./src/
+
