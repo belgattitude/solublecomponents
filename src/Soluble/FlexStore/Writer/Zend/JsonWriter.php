@@ -30,7 +30,7 @@ class JsonWriter extends AbstractSendableWriter
             // Take store global/default options
             $options = $this->store->getOptions();
             // By default formatters are disabled in JSON
-            $options->getHydrationOptions()->disableFormatters();    
+            $options->getHydrationOptions()->disableFormatters();
         }
         
         

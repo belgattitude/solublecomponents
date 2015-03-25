@@ -279,7 +279,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $currency = $formatter->getCurrencyCode();
                     if ($currency instanceof \Soluble\FlexStore\Formatter\RowColumn) {
                         // TODO better handling of callbacks
-                        $format = function(ExcelBook $book, $currency, $decimals) {
+                        $format = function (ExcelBook $book, $currency, $decimals) {
                             return $this->getCurrencyFormat($book, $currency, $decimals);
                         };
                         $custom_column = $currency->getColumnName();
@@ -290,7 +290,7 @@ class LibXLWriter extends AbstractSendableWriter
                     $unit = $formatter->getUnit();
                     if ($unit instanceof \Soluble\FlexStore\Formatter\RowColumn) {
                         // TODO better handling of callbacks
-                        $format = function(ExcelBook $book, $unit, $decimals) {
+                        $format = function (ExcelBook $book, $unit, $decimals) {
                             return $this->getUnitFormat($book, $unit, $decimals);
                         };
                         $custom_column = $unit->getColumnName();

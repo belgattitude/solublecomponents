@@ -6,3 +6,4 @@ Running code sniffer :
 Auto fix : 
 
 ./vendor/squizlabs/php_codesniffer/scripts/phpcbf --standard=PSR2 ./src/
+

@@ -204,8 +204,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
     protected function getDatatypeMapping()
     {
         $mapping = new ArrayObject(array(
-            'STRING'		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
-            'VAR_STRING'	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+            'STRING'        => array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
+            'VAR_STRING'    => array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
 
 
 

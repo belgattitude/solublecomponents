@@ -162,7 +162,7 @@ class ImageConverter implements ConverterInterface
             $ratio_x = $size->getWidth() / $width;
             $ratio_y = $size->getHeight() / $height;
             $max_ratio = max($ratio_x, $ratio_y);
-            $new_width 	= (int) ($size->getWidth() / $max_ratio);
+            $new_width  = (int) ($size->getWidth() / $max_ratio);
             $new_height = (int) ($size->getHeight() / $max_ratio);
 
             $newSize = new Box($new_width, $new_height);

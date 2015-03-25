@@ -225,9 +225,9 @@ class MysqliMetadataReader extends AbstractMetadataReader
          */
 
         $mapping = new ArrayObject(array(
-            MYSQLI_TYPE_STRING		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
-            MYSQLI_TYPE_CHAR		=> array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
-            MYSQLI_TYPE_VAR_STRING	=> array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+            MYSQLI_TYPE_STRING      => array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
+            MYSQLI_TYPE_CHAR        => array('type' => Column\Type::TYPE_STRING, 'native' => 'CHAR'),
+            MYSQLI_TYPE_VAR_STRING  => array('type' => Column\Type::TYPE_STRING, 'native' => 'VARCHAR'),
 
             MYSQLI_TYPE_ENUM => array('type' => Column\Type::TYPE_STRING, 'native' => 'ENUM'),
 
