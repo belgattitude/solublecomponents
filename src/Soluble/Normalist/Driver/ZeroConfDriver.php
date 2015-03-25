@@ -104,10 +104,7 @@ class ZeroConfDriver implements DriverInterface
             if (!is_scalar($this->params['permissions'])) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
             }
-
         }
-
-
     }
 
 
@@ -235,7 +232,7 @@ class ZeroConfDriver implements DriverInterface
         try {
             $model_definition = $this->getModelsDefinition();
         } catch (Exception\ExceptionInterface $e) {
-// means model definition does not exists
+            // means model definition does not exists
             // lets load it from the current connection
             if ($this->params['schema'] == '') {
                 $schema = null;
@@ -249,7 +246,6 @@ class ZeroConfDriver implements DriverInterface
             $this->saveModelsDefinition($model_definition);
         }
         return new Metadata\NormalistModels($model_definition);
-
     }
 
 
@@ -263,6 +259,5 @@ class ZeroConfDriver implements DriverInterface
     {
         $this->metadata = $metadata;
         return $this;
-
     }
 }

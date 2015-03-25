@@ -40,7 +40,6 @@ class ColumnModel
 
     public function __construct()
     {
-       
         $this->columns = new ArrayObject();
         $this->row_renderers = new ArrayObject();
     }
@@ -126,7 +125,6 @@ class ColumnModel
         }
         
         return $unique;
-        
     }
     
     /**
@@ -171,7 +169,6 @@ class ColumnModel
                 }
             }
             $this->columns->exchangeArray($new_columns);
-            
         } else {
             // Simply append
             $this->columns->offsetSet($name, $column);
@@ -293,7 +290,6 @@ class ColumnModel
      */
     public function includeOnly($include_only_columns, $sort = true)
     {
-        
         if (!is_array($include_only_columns)
                 && !is_string($include_only_columns) && !$include_only_columns instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $include_only_columns param to be array|ArrayObject|string');

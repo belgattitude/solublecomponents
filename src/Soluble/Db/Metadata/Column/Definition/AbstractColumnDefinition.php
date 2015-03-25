@@ -153,7 +153,6 @@ abstract class AbstractColumnDefinition
      */
     public function setSchemaName($schemaName)
     {
-
         if (trim($schemaName) == '') {
             $schemaName = null;
         }
@@ -325,7 +324,6 @@ abstract class AbstractColumnDefinition
     public function getTableAlias()
     {
         return $this->tableAlias;
-
     }
 
     /**
@@ -345,7 +343,6 @@ abstract class AbstractColumnDefinition
     public function getCatalog()
     {
         return $this->catalog;
-
     }
 
 

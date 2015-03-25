@@ -44,7 +44,6 @@ class Relation
      */
     public function getParent(Record $record, $parent_table)
     {
-
         if ($record->getState() == Record::STATE_DELETED) {
             throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
@@ -64,7 +63,5 @@ class Relation
             }
         }
         throw new Exception\RelationNotFoundException(__METHOD__ . ": Cannot find parent relation between table '$tableName' and '$parent_table'");
-
-
     }
 }

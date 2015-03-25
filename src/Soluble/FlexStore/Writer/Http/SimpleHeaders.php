@@ -96,7 +96,6 @@ class SimpleHeaders
         }
         $this->params['content-type-charset'] = $charset;
         return $this;
-        
     }
     
     /**
@@ -160,7 +159,6 @@ class SimpleHeaders
     
     public function getHeaderLines()
     {
-        
         $lines = array();
         if ($this->params['content-type'] !== null) {
             $ct = "Content-Type: " . $this->params['content-type'];

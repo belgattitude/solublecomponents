@@ -125,7 +125,6 @@ class NormalistModels extends Source\AbstractSource
     {
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['columns'];
-
     }
 
 
@@ -145,7 +144,6 @@ class NormalistModels extends Source\AbstractSource
     {
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['foreign_keys'];
-
     }
 
     /**

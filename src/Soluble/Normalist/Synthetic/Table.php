@@ -5,14 +5,12 @@ namespace Soluble\Normalist\Synthetic;
 use Soluble\Normalist\Synthetic\Exception;
 use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
 use Soluble\Db\Sql\Select;
-
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\PreparableSqlInterface;
 use Zend\Db\Sql\SqlInterface;
-
 use ArrayObject;
 
 class Table
@@ -207,8 +205,6 @@ class Table
         $record = $this->record($results[0]);
         $record->setState(Record::STATE_CLEAN);
         return $record;
-
-
     }
 
     /**
@@ -253,7 +249,6 @@ class Table
      */
     public function countBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
-
         $result = $this->select()
                         ->columns(array('count' => new Expression('count(*)')))
                         ->where($predicate, $combination)
@@ -295,7 +290,6 @@ class Table
      */
     public function existsBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
-
         try {
             $select = $this->select()->where($predicate, $combination)
                     ->columns(array('count' => new Expression('count(*)')));
@@ -542,7 +536,6 @@ class Table
 
         try {
             $this->executeStatement($sql_string);
-
         } catch (\Exception $e) {
             $messages = array();
             $ex = $e;
@@ -780,14 +773,14 @@ class Table
         } elseif (is_string($sqlObject)) {
             $statement = $this->tableManager->getDbAdapter()->createStatement($sqlObject);
         } else {
-             //@codeCoverageIgnoreStart
+            //@codeCoverageIgnoreStart
             throw new Exception\InvalidArgumentException(__METHOD__ . ': expects sqlObject to be string or PreparableInterface');
              //@codeCoverageIgnoreEnd
         }
         try {
             $result = $statement->execute();
         } catch (\Exception $e) {
-// In ZF2, PDO_Mysql and MySQLi return different exception,
+            // In ZF2, PDO_Mysql and MySQLi return different exception,
             // attempt to normalize by catching one exception instead
             // of RuntimeException and InvalidQueryException
 
@@ -835,7 +828,6 @@ class Table
      */
     protected function getPrimaryKeyPredicate($id)
     {
-        
         if (!is_scalar($id) && !is_array($id)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": Id must be scalar or array, type " . gettype($id) . " received");
         }
@@ -879,7 +871,6 @@ class Table
             $msg = join(',', array_keys($diff));
             throw new Exception\ColumnNotFoundException(__METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
-
     }
 
     /**
@@ -896,9 +887,6 @@ class Table
         $columnInfo = $this->getColumnsInformation();
         foreach ($data as $column => $value) {
             // checks on types
-
-
         }
-
     }
 }

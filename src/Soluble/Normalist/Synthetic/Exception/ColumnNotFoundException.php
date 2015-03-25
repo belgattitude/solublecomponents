@@ -11,5 +11,4 @@ namespace Soluble\Normalist\Synthetic\Exception;
 
 class ColumnNotFoundException extends \RuntimeException implements SyntheticExceptionInterface
 {
-
 }

@@ -101,7 +101,6 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
      */
     public function format($number, ArrayObject $row = null)
     {
-
         $locale = $this->params['locale'];
         //$formatterId = md5($locale);
         $formatterId = $locale . (string) $this->params['pattern'];

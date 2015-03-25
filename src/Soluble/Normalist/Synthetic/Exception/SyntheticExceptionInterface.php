@@ -11,5 +11,4 @@ namespace Soluble\Normalist\Synthetic\Exception;
 
 interface SyntheticExceptionInterface
 {
-
 };

@@ -6,5 +6,4 @@ use RuntimeException as RE;
 
 class RuntimeException extends RE
 {
-    
 }

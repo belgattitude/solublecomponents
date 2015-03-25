@@ -5,7 +5,6 @@ use Soluble\FlexStore\Metadata\Exception;
 use Soluble\Db\Metadata\Column;
 use Soluble\Db\Metadata\Column\Types;
 use Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException;
-
 use ArrayObject;
 use PDO;
 
@@ -67,7 +66,6 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
      */
     protected function readColumnsMetadata($sql)
     {
-
         $metadata = new ArrayObject();
         $fields = $this->readFields($sql);
 
@@ -122,7 +120,6 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                 $column->setNumericUnsigned(false);
                 $column->setNumericPrecision($field['precision']);
                 $column->setNumericScale($field['len'] - $field['precision'] + 1);
-
             }
 
             if ($column instanceof Column\Definition\StringColumn) {
@@ -138,7 +135,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                 $prev_def = $prev_column->toArray();
                 $curr_def = $column->toArray();
                 if ($prev_def['dataType'] != $curr_def['dataType']
-                    ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']  ) {
+                    ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
                 
@@ -146,11 +143,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                 if ($prev_def['isPrimary']) {
                     $column = $prev_column;
                 }
-                
             }
             $metadata->offsetSet($alias, $column);
-            
-
         }
 
         return $metadata;

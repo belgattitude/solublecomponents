@@ -89,7 +89,6 @@ class LibXLWriter extends AbstractSendableWriter
      */
     public function __construct(StoreInterface $store = null, $options = null)
     {
-        
         $this->currency_formats = new ArrayObject();
         $this->unit_formats = new ArrayObject();
         parent::__construct($store, $options);
@@ -219,7 +218,6 @@ class LibXLWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
-
         if ($options === null) {
             // Take store global/default options
             $options = $this->store->getOptions();
@@ -297,8 +295,6 @@ class LibXLWriter extends AbstractSendableWriter
                     } else {
                         $format = $this->getUnitFormat($book, $unit, $decimals);
                     }
-                    
-                    
                 }
             } else {
                 $model_type = $column->getType()->getName();
@@ -361,7 +357,7 @@ class LibXLWriter extends AbstractSendableWriter
             if ($format === null) {
                 $format = $this->getDefaultTextFormat($book);
             } else {
-/* Not yet supported, waiting php_excel 1.1                
+                /* Not yet supported, waiting php_excel 1.1
                 $format->horizontalAlign($this->getFormatStyle('horizontalAlign'));
                 $format->verticalAlign($this->getFormatStyle('verticalAlign'));
  
@@ -386,10 +382,10 @@ class LibXLWriter extends AbstractSendableWriter
     protected function getDefaultTextFormat(ExcelBook $book)
     {
         $format = $book->addFormat();
-/* Not yet supported, waiting php_excel 1.1                        
+/* Not yet supported, waiting php_excel 1.1
         $format->horizontalAlign($this->getFormatStyle('horizontalFormat'));
         $format->verticalAlign($this->getFormatStyle('verticalFormat'));
- * 
+ *
  */
         return $format;
     }
@@ -485,9 +481,7 @@ class LibXLWriter extends AbstractSendableWriter
                         }
                     }
                 } else {
-                        $sheet->write($row_idx, $col_idx, $value);
-                    
-                    
+                    $sheet->write($row_idx, $col_idx, $value);
                 }
                 $column_max_widths[$name] = max(strlen((string) $value) * $this->column_width_multiplier, $column_max_widths[$name]);
                 $col_idx++;
@@ -531,7 +525,6 @@ class LibXLWriter extends AbstractSendableWriter
                 'verticalAlign' => ExcelFormat::ALIGNV_TOP
         );
         return $styles;
-        
     }
 
     /**

@@ -4,9 +4,7 @@ namespace Soluble\Normalist\Synthetic\ResultSet;
 use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\Record;
 use Soluble\Normalist\Synthetic\Exception;
-
 use Soluble\Db\Sql\Select;
-
 use Iterator;
 use Countable;
 

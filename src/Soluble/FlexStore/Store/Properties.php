@@ -6,6 +6,5 @@ class Properties
 {
     public function __construct()
     {
-        
     }
 }

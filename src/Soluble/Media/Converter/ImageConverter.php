@@ -4,13 +4,10 @@ namespace Soluble\Media\Converter;
 
 use Soluble\Media\BoxDimension;
 use Soluble\Media\Converter\Exception;
-
 use Imagine\Imagick\Imagine as ImagickImagine;
 use Imagine\Gd\Imagine as GdImagine;
-
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Box;
-
 use Zend\Cache\Storage\StorageInterface;
 
 class ImageConverter implements ConverterInterface
@@ -44,7 +41,6 @@ class ImageConverter implements ConverterInterface
         } else {
             $this->setBackend($this->default_backend);
         }
-
     }
 
     /**
@@ -64,7 +60,6 @@ class ImageConverter implements ConverterInterface
         if (!in_array($backend, $this->supported_backends)) {
             $valid_backends = join(',', $this->supported_backends);
             throw new Exception\UnsupportedBackendException(__METHOD__ . " Backend '$backend' is not supported, supported backends are '$valid_backends'''");
-
         }
         $this->backend = $backend;
         return $this;
@@ -103,7 +98,6 @@ class ImageConverter implements ConverterInterface
         } else {
             $binaryContent = $this->generateThumbnail($filename, $box, $format, $quality);
             $this->cacheStorage->setItem($cache_key, $binaryContent);
-
         }
 
         switch ($format) {
@@ -130,7 +124,6 @@ class ImageConverter implements ConverterInterface
         header('Pragma: cache', true);
         echo $binaryContent;
         die();
-
     }
 
     protected function generateThumbnail($filename, BoxDimension $box, $format = null, $quality = null, $strip = true)
@@ -184,7 +177,6 @@ class ImageConverter implements ConverterInterface
 
             //var_dump(get_class($image));die();
             $content = $image->get($format, $options);
-
         } catch (\Exception $e) {
             // ERROR 403 ?
             //var_dump($e);
@@ -192,8 +184,6 @@ class ImageConverter implements ConverterInterface
             throw $e;
         }
         return $content;
-
-
     }
 
 
@@ -207,7 +197,7 @@ class ImageConverter implements ConverterInterface
         if ($backend === null) {
             $backend = $this->backend;
         }
-        switch(strtolower($backend)) {
+        switch (strtolower($backend)) {
             case 'imagick':
                 $imagine = new ImagickImagine();
                 break;

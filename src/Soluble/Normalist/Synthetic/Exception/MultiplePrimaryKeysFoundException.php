@@ -11,5 +11,4 @@ namespace Soluble\Normalist\Synthetic\Exception;
 
 class MultiplePrimaryKeysFoundException extends \RuntimeException implements SyntheticExceptionInterface
 {
-
 }

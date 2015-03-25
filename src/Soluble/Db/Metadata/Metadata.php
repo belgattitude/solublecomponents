@@ -60,7 +60,6 @@ class Metadata
         }
 
         return $source;
-
     }
 
     /**

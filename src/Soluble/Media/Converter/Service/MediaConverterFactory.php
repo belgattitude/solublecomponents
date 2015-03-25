@@ -3,7 +3,6 @@
 namespace Soluble\Media\Converter\Service;
 
 use Soluble\Media\Converter;
-
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

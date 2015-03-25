@@ -23,7 +23,6 @@ class BoxDimension
     {
         $this->setWidth($width);
         $this->setHeight($height);
-
     }
 
 

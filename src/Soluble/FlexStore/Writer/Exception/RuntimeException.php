@@ -6,5 +6,4 @@ namespace Soluble\FlexStore\Writer\Exception;
 
 class RuntimeException extends \RuntimeException
 {
-
 }

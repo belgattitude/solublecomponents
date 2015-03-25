@@ -2,19 +2,14 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
-
 use Soluble\Normalist\Synthetic\Exception;
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
-
-
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\Expression;
-
-
 use ArrayObject;
 
 class TableSearch
@@ -51,7 +46,6 @@ class TableSearch
         $this->select = $select;
         $this->table = $table;
         $this->tableIdentifier = $this->select->getRawState(Select::TABLE);
-
     }
 
     /**
@@ -186,7 +180,6 @@ class TableSearch
      */
     public function join($table, $on, $columns = array())
     {
-
         $prefixed_table = $this->prefixTableJoinCondition($table);
 
 
@@ -206,7 +199,6 @@ class TableSearch
      */
     public function joinLeft($table, $on, $columns = array())
     {
-
         $prefixed_table = $this->prefixTableJoinCondition($table);
         $this->select->join($prefixed_table, $on, $columns, Select::JOIN_LEFT);
         return $this;
@@ -353,6 +345,5 @@ class TableSearch
             $table = $prefixed_table;
         }
         return $table;
-
     }
 }

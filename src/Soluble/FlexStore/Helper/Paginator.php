@@ -42,6 +42,5 @@ class Paginator extends ZendPaginator
         parent::__construct($adapter);
         $this->setItemCountPerPage($limit);
         $this->setCurrentPageNumber(ceil(($offset + 1) / $limit));
-
     }
 }

@@ -2,13 +2,10 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Driver;
-
 use Soluble\Db\Sql\Select;
 use Soluble\Db\Metadata\Source;
-
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-
 use ArrayObject;
 
 class TableManager
@@ -86,7 +83,6 @@ class TableManager
      */
     public function table($table_name)
     {
-
         if (!is_string($table_name)) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a string");
         }
@@ -100,7 +96,6 @@ class TableManager
             $this->localTableCache->offsetSet($table_name, $table);
         }
         return $this->localTableCache->offsetGet($table_name);
-
     }
 
     /**
@@ -217,7 +212,6 @@ class TableManager
      */
     protected function loadDefaultMetadata()
     {
-
         $adapterName = $this->adapter->getPlatform()->getName();
         switch (strtolower($adapterName)) {
             case 'mysql':

@@ -145,7 +145,6 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
      */
     public function getData(Options $options = null)
     {
-
         if ($options === null) {
             $options = $this->getOptions();
         }
@@ -247,7 +246,6 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
      */
     public function loadDefaultColumnModel()
     {
-
         $sql = new Sql($this->adapter);
         $select = clone $this->select;
         $select->limit(0);

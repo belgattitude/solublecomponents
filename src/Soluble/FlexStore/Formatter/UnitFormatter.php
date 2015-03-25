@@ -45,7 +45,6 @@ class UnitFormatter extends NumberFormatter
      */
     public function format($number, ArrayObject $row = null)
     {
-        
         $locale = $this->params['locale'];
 
         //$formatterId = md5($locale);

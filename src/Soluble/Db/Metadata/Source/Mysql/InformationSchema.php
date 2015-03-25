@@ -61,7 +61,6 @@ class InformationSchema extends Source\AbstractSource
             $schema = $adapter->getCurrentSchema();
         }
         $this->setDefaultSchema($schema);
-
     }
 
 
@@ -187,10 +186,8 @@ class InformationSchema extends Source\AbstractSource
      */
     public function getRelations($table)
     {
-
         $this->loadCacheInformation($table);
         return self::$localCache[$this->schema]['tables'][$table]['foreign_keys'];
-
     }
 
     /**
@@ -222,8 +219,6 @@ class InformationSchema extends Source\AbstractSource
      */
     public function getTableConfig($table, $include_options = false)
     {
-
-        
         $schema = $this->schema;
         
         if ($this->useLocalCaching &&
@@ -260,7 +255,6 @@ class InformationSchema extends Source\AbstractSource
      */
     public function getSchemaConfig($include_options = false)
     {
-
         $schema = $this->schema;
         if ($this->useLocalCaching && in_array($schema, self::$fullyCachedSchemas)) {
             return self::$localCache[$schema];
@@ -421,7 +415,6 @@ class InformationSchema extends Source\AbstractSource
             if (in_array($data_type, array('int', 'tinyint', 'mediumint', 'bigint', 'int', 'smallint', 'year'))) {
                 $col_def['unsigned']  = (bool) preg_match('/unsigned/', strtolower($r['column_type']));
                 $col_def['precision'] = $r['numeric_precision'];
-
             } elseif (in_array($data_type, array('real', 'double precision', 'decimal', 'numeric', 'float', 'dec', 'fixed'))) {
                 $col_def['precision'] = $r['numeric_precision'];
                 $col_def['scale']     = $r['numeric_scale'];
@@ -504,7 +497,6 @@ class InformationSchema extends Source\AbstractSource
                     );
                     break;
             }
-
         }
 
         foreach ($references as $referenced_table_name => $refs) {
@@ -518,7 +510,6 @@ class InformationSchema extends Source\AbstractSource
         $array = $config->toArray();
         unset($config);
         return $array;
-
     }
 
     /**
@@ -542,7 +533,6 @@ class InformationSchema extends Source\AbstractSource
         } catch (\Exception $e) {
             // do nothing, silently fallback
         }
-
     }
 
 
@@ -582,7 +572,6 @@ class InformationSchema extends Source\AbstractSource
             // Just in case to check if table exists
             $this->getTableConfig($table);
         }
-
     }
     
     /**
@@ -592,7 +581,6 @@ class InformationSchema extends Source\AbstractSource
      */
     public function clearCacheInformation()
     {
-        
         $schema = $this->schema;
         if (array_key_exists($schema, self::$localCache)) {
             unset(self::$localCache[$schema]);
@@ -600,6 +588,5 @@ class InformationSchema extends Source\AbstractSource
                 unset(self::$fullyCachedSchemas[$key]);
             }
         }
-        
     }
 }

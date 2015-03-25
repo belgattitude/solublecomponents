@@ -22,7 +22,6 @@ abstract class AbstractSendableWriter extends AbstractWriter implements HttpSend
      */
     public function send(SimpleHeaders $headers = null, $die_after = true)
     {
-
         if ($headers === null) {
             $headers = $this->getHttpHeaders();
         }

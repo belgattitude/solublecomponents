@@ -79,7 +79,6 @@ class SimpleXmlWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
-        
         if ($options === null) {
             // Take store global/default options
             $options = $this->store->getOptions();
@@ -138,7 +137,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
                     // assuming php 5.4+
                     $encoded = htmlspecialchars($value, ENT_XML1, $this->options['encoding']);
                 } else {
-                        $encoded = '';
+                    $encoded = '';
 
                     foreach (str_split(utf8_decode(htmlspecialchars($value))) as $char) {
                         $num = ord($char);
@@ -149,7 +148,7 @@ class SimpleXmlWriter extends AbstractSendableWriter
                         }
                     }
                 }
-                    $xml->addChild($key, $encoded);
+                $xml->addChild($key, $encoded);
             }
         }
     }

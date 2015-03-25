@@ -27,7 +27,7 @@ class Converter
      */
     public function createConverter($key, array $params = array())
     {
-        switch(strtolower($key)) {
+        switch (strtolower($key)) {
             case 'image':
                 $converter = new Converter\ImageConverter($params);
                 break;

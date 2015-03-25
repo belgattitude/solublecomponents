@@ -5,7 +5,6 @@ use Soluble\FlexStore\Metadata\Exception;
 use Soluble\Db\Metadata\Column;
 use Soluble\Db\Metadata\Column\Types;
 use Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException;
-
 use ArrayObject;
 
 class MysqliMetadataReader extends AbstractMetadataReader
@@ -49,7 +48,6 @@ class MysqliMetadataReader extends AbstractMetadataReader
      */
     protected function readColumnsMetadata($sql)
     {
-
         $metadata = new ArrayObject();
         $fields = $this->readFields($sql);
         $type_map = $this->getDatatypeMapping();
@@ -145,7 +143,7 @@ class MysqliMetadataReader extends AbstractMetadataReader
                 $prev_def = $prev_column->toArray();
                 $curr_def = $column->toArray();
                 if ($prev_def['dataType'] != $curr_def['dataType']
-                    ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']  ) {
+                    ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
                 
@@ -153,12 +151,10 @@ class MysqliMetadataReader extends AbstractMetadataReader
                 if ($prev_def['isPrimary']) {
                     $column = $prev_column;
                 }
-                
             }
             
 
             $metadata->offsetSet($alias, $column);
-
         }
 
         return $metadata;

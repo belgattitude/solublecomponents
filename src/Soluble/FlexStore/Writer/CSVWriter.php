@@ -40,7 +40,6 @@ class CSVWriter extends AbstractSendableWriter
      */
     public function getData(Options $options = null)
     {
-
         if ($options === null) {
             // Take store global/default options
             $options = $this->store->getOptions();
@@ -78,7 +77,6 @@ class CSVWriter extends AbstractSendableWriter
             $columns = $this->store->getColumnModel()->getColumns();
             $header_line = join($this->options['field_separator'], array_keys((array) $columns));
             $csv .= $header_line . $this->options['line_separator'];
-            
         } else {
             $header_line = join($this->options['field_separator'], array_keys($data[0]));
             $csv .= $header_line . $this->options['line_separator'];

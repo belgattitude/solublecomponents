@@ -40,7 +40,6 @@ class Adodb
                 throw new Exception\UnsupportedDriverException(__METHOD__ . ". Driver '$adoConnectionDriver' not supported");
         }
         return $adapter;
-
     }
 
     /**

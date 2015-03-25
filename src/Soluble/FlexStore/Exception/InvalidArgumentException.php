@@ -6,5 +6,4 @@ namespace Soluble\FlexStore\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
-
 }

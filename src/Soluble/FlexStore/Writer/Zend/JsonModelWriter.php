@@ -20,7 +20,6 @@ class JsonModelWriter extends AbstractWriter
      */
     public function getData(Options $options = null)
     {
-        
         if ($options === null) {
             // Take store global/default options
             $options = $this->store->getOptions();

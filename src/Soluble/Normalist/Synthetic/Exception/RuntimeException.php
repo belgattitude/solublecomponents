@@ -11,5 +11,4 @@ namespace Soluble\Normalist\Synthetic\Exception;
 
 class RuntimeException extends \RuntimeException implements SyntheticExceptionInterface
 {
-
 }

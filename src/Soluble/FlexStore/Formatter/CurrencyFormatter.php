@@ -103,7 +103,6 @@ class CurrencyFormatter extends NumberFormatter
         }
         
         return $value;
-        
     }
 
     /**
@@ -128,7 +127,6 @@ class CurrencyFormatter extends NumberFormatter
             return null;
         }
         return array('value' => $result, 'currency' => $currency);
-        
     }
 
     /**

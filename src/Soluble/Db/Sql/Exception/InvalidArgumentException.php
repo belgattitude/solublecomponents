@@ -6,5 +6,4 @@ use InvalidArgumentException as IAE;
 
 class InvalidArgumentException extends IAE
 {
-    
 }

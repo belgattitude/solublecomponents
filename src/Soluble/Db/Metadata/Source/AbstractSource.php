@@ -141,7 +141,6 @@ abstract class AbstractSource
      */
     public function getTableInformation($table)
     {
-
         $infos = $this->getTablesInformation();
         return $infos[$table];
     }
@@ -157,7 +156,6 @@ abstract class AbstractSource
      */
     public function getTables()
     {
-
         return array_keys($this->getTablesInformation());
     }
 
@@ -241,6 +239,5 @@ abstract class AbstractSource
                 throw new Exception\InvalidArgumentException(__METHOD__ . " Table name must be a valid string or an empty string detected");
             }
         }
-
     }
 }

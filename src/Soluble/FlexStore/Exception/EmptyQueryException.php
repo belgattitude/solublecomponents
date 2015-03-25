@@ -8,5 +8,4 @@ namespace Soluble\FlexStore\Exception;
 
 class EmptyQueryException extends \InvalidArgumentException implements ExceptionInterface
 {
-    
 }

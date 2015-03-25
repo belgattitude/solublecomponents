@@ -104,7 +104,6 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                     $names[] = $alias;
 
                     $cols[$alias] = new Expression(join($identifierSeparator, $quotedParts));
-
                 } else {
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
@@ -113,17 +112,15 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 
                     $cols[$alias] = $column;
                     $names[] = $alias;
-
                 }
             } else {
                 if (in_array($alias, $names)) {
-                     $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
-                     throw new Exception\InvalidArgumentException($msg);
+                    $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";
+                    throw new Exception\InvalidArgumentException($msg);
                 }
 
                 $cols[$alias] = $column;
                 $names[] = $alias;
-
             }
         }
         $this->columns($cols);
@@ -140,7 +137,6 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
      */
     public function setDbAdapter(Adapter $adapter)
     {
-
         $this->adapter = $adapter;
         return $this;
     }
@@ -182,7 +178,6 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         $resultset = new ResultSet();
         $resultset->initialize($result);
         return $resultset;
-        
     }
 
     

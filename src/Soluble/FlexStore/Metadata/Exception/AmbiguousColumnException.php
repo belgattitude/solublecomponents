@@ -6,5 +6,4 @@ namespace Soluble\FlexStore\Metadata\Exception;
 
 class AmbiguousColumnException extends \InvalidArgumentException
 {
-
 }

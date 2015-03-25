@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\ResultSet;
 
 use Soluble\FlexStore\ResultSet\ResultSetInterface;
 use Zend\Db\ResultSet\ResultSet as ZFResultSet;
-
 use Iterator;
 use ArrayObject;
 
@@ -162,7 +161,6 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     public function current()
     {
-
         return $this->zfResultSet->current();
     }
 

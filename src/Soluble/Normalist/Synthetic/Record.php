@@ -2,7 +2,6 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Zend\Db\Sql\Predicate;
-
 use ArrayAccess;
 use ArrayObject;
 
@@ -74,7 +73,6 @@ class Record implements ArrayAccess
      */
     public function delete()
     {
-
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException(__METHOD__ . ": Record has already been deleted in database.");
@@ -103,7 +101,7 @@ class Record implements ArrayAccess
             throw new Exception\LogicException(__METHOD__ . "Record has already been deleted in database.");
         }
 
-        switch($state) {
+        switch ($state) {
             case self::STATE_NEW:
                 // Means insert
                 $new_record = $this->getTable()->insert($this->toArray(), $validate_datatype);
@@ -177,7 +175,6 @@ class Record implements ArrayAccess
      */
     public function toArray()
     {
-
         if ($this->getState() == self::STATE_DELETED) {
             throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
         }
@@ -274,7 +271,6 @@ class Record implements ArrayAccess
         }
 
         return $this;
-
     }
 
 
@@ -289,7 +285,6 @@ class Record implements ArrayAccess
 
     public function __set($field, $value)
     {
-
         $state = $this->getState();
         if ($state == self::STATE_DELETED) {
             throw new Exception\LogicException(__METHOD__ . ": Logic exception, cannot operate on record that was deleted");
@@ -300,7 +295,6 @@ class Record implements ArrayAccess
         if ($state != self::STATE_NEW) {
             $this->setState(self::STATE_DIRTY);
         }
-
     }
 
     /**
@@ -364,7 +358,7 @@ class Record implements ArrayAccess
         foreach ($primary_keys as $column) {
             $pk_value = $this->offsetGet($column);
             if ($pk_value != '') {
-                 $predicate[$column] = $pk_value;
+                $predicate[$column] = $pk_value;
             } else {
                 throw new Exception\UnexpectedValueException(__METHOD__ . ": Cannot find record primary key values. Record has no primary key value set");
             }

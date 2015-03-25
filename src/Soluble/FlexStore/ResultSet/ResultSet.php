@@ -155,7 +155,6 @@ class ResultSet extends AbstractResultSet
      */
     protected function initColumnModelHydration(ArrayObject $row)
     {
-
         $this->hydration_formatters = new ArrayObject();
         $this->hydration_renderers = new ArrayObject();
         $this->hydrated_columns = null;

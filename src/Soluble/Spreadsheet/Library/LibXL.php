@@ -39,7 +39,6 @@ class LibXL
      */
     public function __construct(array $license = null)
     {
-
         if ($license !== null) {
             $this->setLicense($license);
         }
