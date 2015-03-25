@@ -34,7 +34,7 @@ class ColumnModel
     
     /**
      *
-     * @var ArrayObject
+     * @var ArrayObject|null
      */
     protected $metadata;
 
@@ -359,7 +359,7 @@ class ColumnModel
     /**
      *
      * @param ArrayObject $metadata
-     * @return Column
+     * @return ColumnModel
      */
     public function setMetatadata(ArrayObject $metadata)
     {
