@@ -40,7 +40,8 @@
         "phpunit/phpunit": "4.*",
         "phpoffice/phpexcel": "1.8.*",
         "squizlabs/php_codesniffer": "2.*",
-        "symfony/var-dumper": "@stable"
+        "symfony/var-dumper": "@stable",
+        "fabpot/php-cs-fixer": "1.5.*"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",

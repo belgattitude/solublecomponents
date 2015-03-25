@@ -32,7 +32,7 @@ class SimpleHeaders
      */
     protected $params;
     
-    function __construct()
+    public function __construct()
     {
         $this->params = $this->default_params;
     }
@@ -43,7 +43,7 @@ class SimpleHeaders
      * @param string $charset
      * @return SimpleHeaders
      */
-    function setContentType($content_type, $charset = null)
+    public function setContentType($content_type, $charset = null)
     {
         $this->params['content-type'] = $content_type;
         if ($charset !== null) {
@@ -52,7 +52,7 @@ class SimpleHeaders
         return $this;
     }
     
-    function getContentType()
+    public function getContentType()
     {
         return $this->params['content-type'];
     }
@@ -65,7 +65,7 @@ class SimpleHeaders
      * @param string $content_disposition_type by default attachment
      * @return SimpleHeaders
      */
-    function setFilename($filename, $content_disposition_type = 'attachement')
+    public function setFilename($filename, $content_disposition_type = 'attachement')
     {
         $this->params['content-disposition-filename'] = $filename;
         $this->setContentDispositionType($content_disposition_type);
@@ -77,7 +77,7 @@ class SimpleHeaders
      *
      * @return string|null
      */
-    function getFilename()
+    public function getFilename()
     {
         return $this->params['content-disposition-filename'];
     }
@@ -89,7 +89,7 @@ class SimpleHeaders
      * @param string $charset
      * @return SimpleHeaders
      */
-    function setCharset($charset)
+    public function setCharset($charset)
     {
         if ($this->getContentType() == '') {
             throw new Exception\RuntimeException(__METHOD__ . " Content-type must be specified prior to setting charset");
@@ -103,7 +103,7 @@ class SimpleHeaders
      *
      * @return string
      */
-    function getCharset()
+    public function getCharset()
     {
         return $this->params['content-type-charset'];
     }
@@ -116,7 +116,7 @@ class SimpleHeaders
      * @param string $content_disposition_type
      * @return SimpleHeaders
      */
-    function setContentDispositionType($content_disposition_type)
+    public function setContentDispositionType($content_disposition_type)
     {
         if (!in_array($content_disposition_type, $this->disposition_types)) {
             $supported = join(',', $this->disposition_types);
@@ -132,7 +132,7 @@ class SimpleHeaders
      * Return the content disposition type
      * @return string
      */
-    function getContentDispositionType()
+    public function getContentDispositionType()
     {
         return $this->params['content-disposition-type'];
     }
@@ -142,7 +142,7 @@ class SimpleHeaders
      * @param int $length
      * @return SimpleHeaders
      */
-    function setContentLength($length)
+    public function setContentLength($length)
     {
         $this->params['content-length'] = $length;
         return $this;
@@ -152,13 +152,13 @@ class SimpleHeaders
      *
      * @return int
      */
-    function getContentLength()
+    public function getContentLength()
     {
         return $this->params['content-length'];
     }
         
     
-    function getHeaderLines()
+    public function getHeaderLines()
     {
         
         $lines = array();
@@ -191,7 +191,7 @@ class SimpleHeaders
      * @param boolean $replace tells to replace eventual headers
      * @return void
      */
-    function outputHeaders($replace = true)
+    public function outputHeaders($replace = true)
     {
         $lines = $this->getHeaderLines();
         foreach ($lines as $line) {

@@ -71,7 +71,7 @@ class ColumnModel
      *
      * @return ArrayObject
      */
-    function getRowRenderers()
+    public function getRowRenderers()
     {
         return $this->row_renderers;
     }
@@ -84,7 +84,7 @@ class ColumnModel
      * @see self::getUniqueFormatters()
      * @return ArrayObject
      */
-    function getFormatters()
+    public function getFormatters()
     {
         $arr = new ArrayObject();
         foreach ($this->columns as $key => $column) {
@@ -104,7 +104,7 @@ class ColumnModel
      * @see self::getFormatters()
      * @return ArrayObject
      */
-    function getUniqueFormatters($include_excluded_columns = false)
+    public function getUniqueFormatters($include_excluded_columns = false)
     {
         $unique = new ArrayObject();
         
@@ -365,7 +365,7 @@ class ColumnModel
      * @param ArrayObject $metadata
      * @return Column
      */
-    function setMetatadata(ArrayObject $metadata)
+    public function setMetatadata(ArrayObject $metadata)
     {
         $this->metadata = $metadata;
         return $this;
@@ -375,7 +375,7 @@ class ColumnModel
      *
      * @return ArrayObject|null
      */
-    function getMetadata()
+    public function getMetadata()
     {
         return $this->metadata;
     }

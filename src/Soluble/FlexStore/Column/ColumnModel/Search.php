@@ -15,7 +15,7 @@ class Search
      */
     protected $columns;
 
-    function __construct(ArrayObject $columns)
+    public function __construct(ArrayObject $columns)
     {
         $this->columns = $columns;
     }
@@ -24,7 +24,7 @@ class Search
      *
      * @return Result
      */
-    function all()
+    public function all()
     {
         return new Result(array_keys((array) $this->columns), $this->columns);
     }
@@ -34,7 +34,7 @@ class Search
      * @throws Exception\InvalidArgumentException
      * @return Result
      */
-    function notIn(array $columns)
+    public function notIn(array $columns)
     {
         $results = array();
         foreach ($this->columns as $name => $column) {
@@ -49,7 +49,7 @@ class Search
      *
      * @return Result
      */
-    function in(array $columns)
+    public function in(array $columns)
     {
         $results = array();
         foreach ($columns as $column) {
@@ -65,7 +65,7 @@ class Search
      *
      * @return Result
      */
-    function regexp($regexp)
+    public function regexp($regexp)
     {
         $results = array();
         foreach ($this->columns as $name => $column) {
@@ -82,7 +82,7 @@ class Search
      * @param string $type
      * @return Result
      */
-    function findByType($type)
+    public function findByType($type)
     {
         $results = array();
         foreach ($this->columns as $name => $column) {
@@ -97,7 +97,7 @@ class Search
      * Return virtual column (not materialized by the underlying datasource)
      * @return Result
      */
-    function findVirtual()
+    public function findVirtual()
     {
         $results = array();
         foreach ($this->columns as $name => $column) {

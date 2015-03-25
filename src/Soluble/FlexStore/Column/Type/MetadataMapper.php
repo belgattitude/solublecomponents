@@ -13,7 +13,7 @@ use ArrayObject;
 class MetadataMapper
 {
 
-    static protected $mapper = array(
+    protected static $mapper = array(
         MetadataType::TYPE_BIT => ColumnType::TYPE_BIT,
         MetadataType::TYPE_BOOLEAN => ColumnType::TYPE_BOOLEAN,
         MetadataType::TYPE_BLOB => ColumnType::TYPE_BLOB,

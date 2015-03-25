@@ -25,7 +25,7 @@ class Result implements ColumnSettableInterface
      */
     protected $results;
 
-    function __construct(array $results, ArrayObject $columns)
+    public function __construct(array $results, ArrayObject $columns)
     {
         $this->columns = $columns;
         $this->results = $results;
@@ -36,7 +36,7 @@ class Result implements ColumnSettableInterface
      * @param FormatterInterface $formatter
      * @return Result
      */
-    function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setFormatter($formatter);
@@ -51,7 +51,7 @@ class Result implements ColumnSettableInterface
      * @param string|\Soluble\FlexStore\Column\Type\AbstractType $type
      * @return Result
      */
-    function setType($type)
+    public function setType($type)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setType($type);
@@ -65,7 +65,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $virtual
      * @return Result
      */
-    function setVirtual($virtual = true)
+    public function setVirtual($virtual = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setVirtual($virtual);
@@ -78,7 +78,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $excluded
      * @return Result
      */
-    function setExcluded($excluded = true)
+    public function setExcluded($excluded = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setExcluded($excluded);
@@ -91,7 +91,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $editable
      * @return Result
      */
-    function setEditable($editable = true)
+    public function setEditable($editable = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setEditable($editable);
@@ -104,7 +104,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $hidden
      * @return Result
      */
-    function setHidden($hidden = true)
+    public function setHidden($hidden = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setHidden($hidden);
@@ -117,7 +117,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $sortable
      * @return Result
      */
-    function setSortable($sortable = true)
+    public function setSortable($sortable = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setSortable($sortable);
@@ -130,7 +130,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $groupable
      * @return Result
      */
-    function setGroupable($groupable = true)
+    public function setGroupable($groupable = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setGroupable($groupable);
@@ -143,7 +143,7 @@ class Result implements ColumnSettableInterface
      * @param boolean $filterable
      * @return Result
      */
-    function setFilterable($filterable = true)
+    public function setFilterable($filterable = true)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setFilterable($filterable);
@@ -158,7 +158,7 @@ class Result implements ColumnSettableInterface
      * @param float|int|string $width
      * @return Result
      */
-    function setWidth($width)
+    public function setWidth($width)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setWidth($width);
@@ -173,7 +173,7 @@ class Result implements ColumnSettableInterface
      * @param string|null $header
      * @return Result
      */
-    function setHeader($header)
+    public function setHeader($header)
     {
         foreach ($this->results as $name) {
             $this->columns->offsetGet($name)->setHeader($header);
@@ -185,7 +185,7 @@ class Result implements ColumnSettableInterface
      *
      * @return array
      */
-    function toArray()
+    public function toArray()
     {
         return $this->results;
     }

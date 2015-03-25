@@ -4,7 +4,7 @@ namespace Soluble\FlexStore\Store;
 
 class Properties
 {
-    function __construct()
+    public function __construct()
     {
         
     }

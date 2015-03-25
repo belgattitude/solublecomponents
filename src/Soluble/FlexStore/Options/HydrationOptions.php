@@ -24,7 +24,7 @@ class HydrationOptions
     /**
      *
      */
-    function __construct()
+    public function __construct()
     {
         $this->params = $this->default_params;
     }
@@ -34,7 +34,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function disableFormatters()
+    public function disableFormatters()
     {
         $this->params['disable_formatters'] = true;
         return $this;
@@ -45,7 +45,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function enableFormatters()
+    public function enableFormatters()
     {
         $this->params['disable_formatters'] = false;
         return $this;
@@ -56,7 +56,7 @@ class HydrationOptions
      *
      * @return bool
      */
-    function isFormattersEnabled()
+    public function isFormattersEnabled()
     {
         return ($this->params['disable_formatters'] == false);
     }
@@ -66,7 +66,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function disableRenderers()
+    public function disableRenderers()
     {
         $this->params['disable_renderers'] = true;
         return $this;
@@ -77,7 +77,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function enableRenderers()
+    public function enableRenderers()
     {
         $this->params['disable_renderers'] = false;
         return $this;
@@ -88,7 +88,7 @@ class HydrationOptions
      *
      * @return bool
      */
-    function isRenderersEnabled()
+    public function isRenderersEnabled()
     {
         return ($this->params['disable_renderers'] == false);
     }
@@ -99,7 +99,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function disableColumnExclusion()
+    public function disableColumnExclusion()
     {
         $this->params['disable_column_exclusion'] = true;
         return $this;
@@ -110,7 +110,7 @@ class HydrationOptions
      *
      * @return HydrationOptions
      */
-    function enableColumnExclusion()
+    public function enableColumnExclusion()
     {
         $this->params['disable_column_exclusion'] = false;
         return $this;
@@ -121,7 +121,7 @@ class HydrationOptions
      *
      * @return bool
      */
-    function isColumnExclusionEnabled()
+    public function isColumnExclusionEnabled()
     {
         return ($this->params['disable_column_exclusion'] == false);
     }

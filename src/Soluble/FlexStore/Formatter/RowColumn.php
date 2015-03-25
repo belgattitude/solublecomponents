@@ -15,7 +15,7 @@ class RowColumn
      *
      * @param string $column_name
      */
-    function __construct($column_name)
+    public function __construct($column_name)
     {
         $this->column_name = $column_name;
     }
@@ -24,7 +24,7 @@ class RowColumn
      *
      * @return string
      */
-    function getColumnName()
+    public function getColumnName()
     {
         return $this->column_name;
     }

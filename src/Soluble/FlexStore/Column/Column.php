@@ -181,7 +181,7 @@ class Column implements ColumnSettableInterface
      *
      * @return boolean
      */
-    function isEditable()
+    public function isEditable()
     {
         return $this->properties['editable'];
     }

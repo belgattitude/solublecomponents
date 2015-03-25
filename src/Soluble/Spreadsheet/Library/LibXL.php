@@ -15,7 +15,7 @@ class LibXL
      *
      * @var array|null
      */
-    static protected $default_license;
+    protected static $default_license;
 
     /**
      *

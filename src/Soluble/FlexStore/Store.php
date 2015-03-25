@@ -34,7 +34,7 @@ class Store implements StoreInterface
      * Return store search options
      * @return Options
      */
-    function getOptions()
+    public function getOptions()
     {
         return $this->source->getOptions();
     }

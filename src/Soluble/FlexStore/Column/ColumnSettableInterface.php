@@ -13,45 +13,45 @@ interface ColumnSettableInterface
      * @param string|\Soluble\FlexStore\Column\Type\AbstractType $type
      * @throws Exception\InvalidArgumentException when the type is not supported.
      */
-    function setType($type);
+    public function setType($type);
     
     
     /**
      *
      * @param FormatterInterface $formatter
      */
-    function setFormatter(FormatterInterface $formatter);
+    public function setFormatter(FormatterInterface $formatter);
     
     /**
      *
      * @param boolean $excluded
      */
-    function setExcluded($excluded = true);
+    public function setExcluded($excluded = true);
 
     /**
      *
      * @param boolean $virtual
      */
-    function setVirtual($virtual = true);
+    public function setVirtual($virtual = true);
     
     /**
      *
      * @param boolean $editable
      */
-    function setEditable($editable = true);
+    public function setEditable($editable = true);
 
     /**
      *
      * @param boolean $hidden
      */
-    function setHidden($hidden = true);
+    public function setHidden($hidden = true);
     
     
     /**
      *
      * @param boolean $sortable
      */
-    function setSortable($sortable = true);
+    public function setSortable($sortable = true);
 
     
     
@@ -59,14 +59,14 @@ interface ColumnSettableInterface
      *
      * @param boolean $groupable
      */
-    function setGroupable($groupable = true);
+    public function setGroupable($groupable = true);
     
 
     /**
      *
      * @param boolean $filterable
      */
-    function setFilterable($filterable = true);
+    public function setFilterable($filterable = true);
 
     
     /**
@@ -75,7 +75,7 @@ interface ColumnSettableInterface
      * @throws Exception\InvalidArgumentException
      * @param float|int|string $width
      */
-    function setWidth($width);
+    public function setWidth($width);
     
     /**
      * Set table header for this column
@@ -83,5 +83,5 @@ interface ColumnSettableInterface
      * @throws Exception\InvalidArgumentException
      * @param string|null $header
      */
-    function setHeader($header);
+    public function setHeader($header);
 }

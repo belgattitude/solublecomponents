@@ -7,3 +7,5 @@ Auto fix :
 
 ./vendor/squizlabs/php_codesniffer/scripts/phpcbf --standard=PSR2 ./src/
 
+For visibility
+./vendor/fabpot/php-cs-fixer/php-cs-fixer fix ./src --fixers=visibility 

@@ -9,7 +9,7 @@ abstract class AbstractType
     /**
      * @return string
      */
-    abstract function getName();
+    abstract public function getName();
 
     /**
      *

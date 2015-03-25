@@ -13,11 +13,11 @@ interface RowRendererInterface
      * @param ArrayObject
      * @return void
      */
-    function apply(ArrayObject $row);
+    public function apply(ArrayObject $row);
     
     /**
      * Return the list of columns in order to run the renderer
      * @return array
      */
-    function getRequiredColumns();
+    public function getRequiredColumns();
 };
