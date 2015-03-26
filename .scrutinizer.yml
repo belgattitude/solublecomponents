@@ -8,22 +8,69 @@ before_commands:
 tools:
     external_code_coverage: 
         timeout: 1200
+    # https://scrutinizer-ci.com/docs/tools/php/copy-paste-detector/
     php_cpd:
-        excluded_dirs: [vendor, tests, bin, docs]    
-    php_pdepend:
-        excluded_dirs: [vendor, tests, bin, docs]     
-    #php_code_sniffer: true
+        enabled: true
+        command: phpcpd
+        excluded_dirs:
+            - 'bin/*'
+            - 'vendor/*'
+            - 'tests/*'
+            - 'docs/*'            
+    # https://scrutinizer-ci.com/docs/tools/php/pdepend/
     php_pdepend:
         enabled: true
-        configuration_file: null
-        suffixes:
-            - php
-        excluded_dirs: { }
+        command: pdepend
+        excluded_dirs:
+            - bin
+            - vendor
+            - tests
+            - docs
     php_loc: 
         excluded_dirs: [vendor, tests, bin, docs]        
+
+    # https://scrutinizer-ci.com/docs/tools/php/cs-fixer/
     php_cs_fixer:
+        enabled: true
+        command: php-cs-fixer
         config:
             level: psr2
-    php_analyzer: true
-    php_hhvm: false
-    php_mess_detector: true
+        filter:
+            excluded_paths:
+                - 'bin/*'
+                - 'vendor/*'
+                - 'tests/*'
+                - 'docs/*'
+    # https://scrutinizer-ci.com/docs/tools/php/code-sniffer/
+    php_code_sniffer:
+        enabled: true
+        command: phpcs
+        filter:
+            excluded_paths:
+                - 'bin/*'
+                - 'vendor/*'
+                - 'tests/*'
+                - 'docs/*'                
+        config:
+            standard: PSR2
+            
+    # https://scrutinizer-ci.com/docs/tools/php/php-analyzer/
+    php_analyzer:
+        enabled: false
+        filter:
+            excluded_paths:
+                - 'bin/*'
+                - 'vendor/*'
+                - 'tests/*'
+                - 'docs/*'
+    # https://scrutinizer-ci.com/docs/tools/php/mess-detector/
+    php_mess_detector:
+        enabled: true
+        command: phpmd
+        filter:
+            excluded_paths:
+                - 'bin/*'
+                - 'vendor/*'
+                - 'tests/*'
+                - 'docs/*'
+    php_hhvm: false                
