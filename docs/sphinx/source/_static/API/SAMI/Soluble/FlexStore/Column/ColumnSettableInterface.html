@@ -1,173 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="robots" content="index, follow, all" />
-        <title>Soluble\FlexStore\Column\ColumnSettableInterface | Soluble API</title>
-                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
-                            </head>
-        <body id="class">
-            <div class="header">
-        <ul>
-            <li><a href="../../../classes.html">Classes</a></li>
-                            <li><a href="../../../namespaces.html">Namespaces</a></li>
-                        <li><a href="../../../interfaces.html">Interfaces</a></li>
-            <li><a href="../../../traits.html">Traits</a></li>
-            <li><a href="../../../doc-index.html">Index</a></li>
-            
-        </ul>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Soluble\FlexStore\Column\ColumnSettableInterface | Soluble API</title>
 
-        <div id="title">Soluble API</div>
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+    
+    
+    </head>
 
-            <div class="type">Interface</div>
-    <h1><a href="../../../Soluble/FlexStore/Column.html">Soluble\FlexStore\Column</a>\ColumnSettableInterface</h1>
+    <body id="class" data-name="class:Soluble_FlexStore_Column_ColumnSettableInterface" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
     </div>
-        <div class="content">
-                <p>    interface
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Soluble API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">interface</span></li>
+                                                            <li><a href="../../../Soluble.html">Soluble</a></li>
+                                        <li><a href="../../../Soluble/FlexStore.html">FlexStore</a></li>
+                                        <li><a href="../../../Soluble/FlexStore/Column.html">Column</a></li>
+    
+                <li>ColumnSettableInterface</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>ColumnSettableInterface</h1>
+    </div>
+
+    <p>    interface
     <strong>ColumnSettableInterface</strong></p>
 
     
     
     
+    
             <h2>Methods</h2>
 
-            <table>
-                    <tr>
-                <td class="type">
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setType">setType</a>(string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a> $type)
-                    <p>Set column datatype</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Set column datatype</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
-                    <a href="#method_setFormatter">setFormatter</a>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setFormatter">setFormatter</a>(<abbr title="Soluble\FlexStore\Column\Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr> $formatter)
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setExcluded">setExcluded</a>(boolean $excluded = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setVirtual">setVirtual</a>(boolean $virtual = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setEditable">setEditable</a>(boolean $editable = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setHidden">setHidden</a>(boolean $hidden = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setSortable">setSortable</a>(boolean $sortable = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setGroupable">setGroupable</a>(boolean $groupable = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setFilterable">setFilterable</a>(boolean $filterable = true)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setWidth">setWidth</a>(float|int|string $width)
-                    <p>Set recommended width for the column</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Set recommended width for the column</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setHeader">setHeader</a>(string|null $header)
-                    <p>Set table header for this column</p>
-                </td>
-                <td></td>
-            </tr>
-            </table>
+                                            <p>Set table header for this column</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
 
         <h2>Details</h2>
 
-                        <h3 id="method_setType">
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_setType">
         <div class="location">at line 16</div>
-        <code>            public            
+        <code>                    
     <strong>setType</strong>(string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a> $type)</code>
     </h3>
     <div class="details">
-        <p>Set column datatype</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Set column datatype</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string|<a href="../../../Soluble/FlexStore/Column/Type/AbstractType.html"><abbr title="Soluble\FlexStore\Column\Type\AbstractType">AbstractType</abbr></a></td>
                 <td>$type</td>
@@ -180,9 +221,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td><a href="../../../Soluble/FlexStore/Column/Exception/InvalidArgumentException.html"><abbr title="Soluble\FlexStore\Column\Exception\InvalidArgumentException">InvalidArgumentException</abbr></a></td>
                 <td>when the type is not supported.</td>
             </tr>
             </table>
@@ -191,22 +232,20 @@
                     </div>
     </div>
 
-                <h3 id="method_setFormatter">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setFormatter">
         <div class="location">at line 23</div>
-        <code>            public            
-    <strong>setFormatter</strong>(<a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a> $formatter)</code>
+        <code>                    
+    <strong>setFormatter</strong>(<abbr title="Soluble\FlexStore\Column\Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr> $formatter)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../Soluble/FlexStore/Formatter/FormatterInterface.html"><abbr title="Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></a></td>
+                <td><abbr title="Soluble\FlexStore\Column\Soluble\FlexStore\Formatter\FormatterInterface">FormatterInterface</abbr></td>
                 <td>$formatter</td>
                 <td>
 </td>
@@ -219,20 +258,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setExcluded">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setExcluded">
         <div class="location">at line 29</div>
-        <code>            public            
+        <code>                    
     <strong>setExcluded</strong>(boolean $excluded = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$excluded</td>
@@ -247,20 +284,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setVirtual">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setVirtual">
         <div class="location">at line 35</div>
-        <code>            public            
+        <code>                    
     <strong>setVirtual</strong>(boolean $virtual = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$virtual</td>
@@ -275,20 +310,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setEditable">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setEditable">
         <div class="location">at line 41</div>
-        <code>            public            
+        <code>                    
     <strong>setEditable</strong>(boolean $editable = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$editable</td>
@@ -303,20 +336,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setHidden">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setHidden">
         <div class="location">at line 47</div>
-        <code>            public            
+        <code>                    
     <strong>setHidden</strong>(boolean $hidden = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$hidden</td>
@@ -331,20 +362,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setSortable">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSortable">
         <div class="location">at line 54</div>
-        <code>            public            
+        <code>                    
     <strong>setSortable</strong>(boolean $sortable = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$sortable</td>
@@ -359,20 +388,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setGroupable">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setGroupable">
         <div class="location">at line 62</div>
-        <code>            public            
+        <code>                    
     <strong>setGroupable</strong>(boolean $groupable = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$groupable</td>
@@ -387,20 +414,18 @@
                     </div>
     </div>
 
-                <h3 id="method_setFilterable">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setFilterable">
         <div class="location">at line 69</div>
-        <code>            public            
+        <code>                    
     <strong>setFilterable</strong>(boolean $filterable = true)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$filterable</td>
@@ -415,19 +440,20 @@
                     </div>
     </div>
 
-                <h3 id="method_setWidth">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setWidth">
         <div class="location">at line 78</div>
-        <code>            public            
+        <code>                    
     <strong>setWidth</strong>(float|int|string $width)</code>
     </h3>
     <div class="details">
-        <p>Set recommended width for the column</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Set recommended width for the column</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>float|int|string</td>
                 <td>$width</td>
@@ -440,9 +466,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td><a href="../../../Soluble/FlexStore/Column/Exception/InvalidArgumentException.html"><abbr title="Soluble\FlexStore\Column\Exception\InvalidArgumentException">InvalidArgumentException</abbr></a></td>
                 <td>
 </td>
             </tr>
@@ -452,19 +478,20 @@
                     </div>
     </div>
 
-                <h3 id="method_setHeader">
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setHeader">
         <div class="location">at line 86</div>
-        <code>            public            
+        <code>                    
     <strong>setHeader</strong>(string|null $header)</code>
     </h3>
     <div class="details">
-        <p>Set table header for this column</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Set table header for this column</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string|null</td>
                 <td>$header</td>
@@ -477,9 +504,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td><a href="../../../Soluble/FlexStore/Column/Exception/InvalidArgumentException.html"><abbr title="Soluble\FlexStore\Column\Exception\InvalidArgumentException">InvalidArgumentException</abbr></a></td>
                 <td>
 </td>
             </tr>
@@ -489,10 +516,17 @@
                     </div>
     </div>
 
+            </div>
+            </div>
+
     
             </div>
-            <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
     </div>
     </body>
+
 </html>

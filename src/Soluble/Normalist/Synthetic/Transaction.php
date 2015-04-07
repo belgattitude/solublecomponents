@@ -13,11 +13,25 @@ use Zend\Db\Adapter\Adapter;
 
 class Transaction
 {
+    
+    const STATE_NULL = 'null';
+    const STATE_STARTED = 'started';
+    const STATE_ROLLBACKED = 'rollbacked';
+    const STATE_COMMITTED = 'committed';
+    const STATE_ERRORED = 'errored';
+    
     /**
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
      */
     protected $adapter;
+    
+    
+    /**
+     *
+     * @var string state of current transaction
+     */
+    protected $state;
 
 
     /**
@@ -27,6 +41,7 @@ class Transaction
     public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
+        $this->state = self::STATE_NULL;
     }
 
     /**
@@ -38,9 +53,13 @@ class Transaction
     public function start()
     {
         try {
+            if ($this->state == self::STATE_STARTED) {
+                throw new Exception\TransactionException(__METHOD__ . " Starting transaction on an already started one is not permitted.");
+            }
             $this->adapter->getDriver()->getConnection()->beginTransaction();
+            $this->state = self::STATE_STARTED;
         } catch (\Exception $e) {
-            throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot start transaction '{$e->getMessage()}'.");
+            throw new Exception\TransactionException(__METHOD__ . ". Cannot start transaction '{$e->getMessage()}'.");
         }
         return $this;
     }
@@ -55,7 +74,9 @@ class Transaction
     {
         try {
             $this->adapter->getDriver()->getConnection()->commit();
+            $this->state = self::STATE_COMMITTED;
         } catch (\Exception $e) {
+            $this->state = self::STATE_ERRORED;
             throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot commit transaction '{$e->getMessage()}'.");
         }
 
@@ -72,7 +93,9 @@ class Transaction
     {
         try {
             $this->adapter->getDriver()->getConnection()->rollback();
+            $this->state = self::STATE_ROLLBACKED;
         } catch (\Exception $e) {
+            $this->state = self::STATE_ERRORED;
             throw new Exception\TransactionException(__CLASS__ . '::' . __METHOD__ . ". cannot rollback transaction '{$e->getMessage()}'.");
         }
 

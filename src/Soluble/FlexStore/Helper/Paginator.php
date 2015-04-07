@@ -38,7 +38,7 @@ class Paginator extends ZendPaginator
         
 
 
-        $adapter = new \Zend\Paginator\Adapter\Null($totalRows);
+        $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
         parent::__construct($adapter);
         $this->setItemCountPerPage($limit);
         $this->setCurrentPageNumber(ceil(($offset + 1) / $limit));

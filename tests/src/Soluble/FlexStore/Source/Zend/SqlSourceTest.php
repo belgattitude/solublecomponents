@@ -143,11 +143,13 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         
         $source = new SqlSource($this->adapter, $select = new Select());
 
-        $data = $source->getData();
+        $source->getData();
+        
     }
     
     public function testGetQueryString()
     {
+        
         $data = $this->source->getData();
         $sql_string = $this->source->getQueryString();
         $this->assertInternalType('string', $sql_string);

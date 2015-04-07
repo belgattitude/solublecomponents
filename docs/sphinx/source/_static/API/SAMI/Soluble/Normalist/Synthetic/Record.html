@@ -1,36 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="robots" content="index, follow, all" />
-        <title>Soluble\Normalist\Synthetic\Record | Soluble API</title>
-                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
-                            </head>
-        <body id="class">
-            <div class="header">
-        <ul>
-            <li><a href="../../../classes.html">Classes</a></li>
-                            <li><a href="../../../namespaces.html">Namespaces</a></li>
-                        <li><a href="../../../interfaces.html">Interfaces</a></li>
-            <li><a href="../../../traits.html">Traits</a></li>
-            <li><a href="../../../doc-index.html">Index</a></li>
-            
-        </ul>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Soluble\Normalist\Synthetic\Record | Soluble API</title>
 
-        <div id="title">Soluble API</div>
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+    
+    
+    </head>
 
-            <div class="type">Class</div>
-    <h1><a href="../../../Soluble/Normalist/Synthetic.html">Soluble\Normalist\Synthetic</a>\Record</h1>
+    <body id="class" data-name="class:Soluble_Normalist_Synthetic_Record" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
     </div>
-        <div class="content">
-                <p>    class
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Soluble API</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                                                            <li><a href="../../../Soluble.html">Soluble</a></li>
+                                        <li><a href="../../../Soluble/Normalist.html">Normalist</a></li>
+                                        <li><a href="../../../Soluble/Normalist/Synthetic.html">Synthetic</a></li>
+    
+                <li>Record</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>Record</h1>
+    </div>
+
+    <p>    class
     <strong>Record</strong>        implements
         <a href="http://php.net/ArrayAccess"><abbr title="ArrayAccess">ArrayAccess</abbr></a></p>
 
     
+    
             <h2>Constants</h2>
 
-            <table>
+            <table class="table table-condensed">
                     <tr>
                 <td>STATE_NEW</td>
                 <td class="last">
@@ -50,7 +101,8 @@
                     <tr>
                 <td>STATE_DIRTY</td>
                 <td class="last">
-                    <p><em>Means record comes from database but one of its data have been modified</em></p>
+                    <p><em>Means record comes from database
+but one of its data have been modified</em></p>
                     <p>
 </p>
                 </td>
@@ -58,7 +110,8 @@
                     <tr>
                 <td>STATE_CLEAN</td>
                 <td class="last">
-                    <p><em>Means record comes from database but none of its data have been modified</em></p>
+                    <p><em>Means record comes from database
+but none of its data have been modified</em></p>
                     <p>
 </p>
                 </td>
@@ -69,179 +122,162 @@
     
             <h2>Methods</h2>
 
-            <table>
-                    <tr>
-                <td class="type">
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
                     
-                </td>
-                <td class="last">
-                    <a href="#method___construct">__construct</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Soluble\Normalist\Synthetic\Soluble\Normalist\Synthetic\Table">Table</abbr> $table)
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     int
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_delete">delete</a>()
-                    <p>Delte record</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Delte record</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_save">save</a>(boolean $validate_datatype = false)
-                    <p>Save a record in database</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Save a record in database</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setData">setData</a>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data)
-                    <p>Set record data</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Set record data</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     array
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_toArray">toArray</a>()
-                    <p>Return an array version of the record</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Return an array version of the record</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_toJson">toJson</a>()
-                    <p>Return an json version of the record</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Return an json version of the record</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     boolean
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_offsetExists">offsetExists</a>(string $field)
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     mixed
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_offsetGet">offsetGet</a>(string $field)
-                    <p>Get field value</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Get field value</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_offsetSet">offsetSet</a>(string $field, mixed $value)
-                    <p>Set a field</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Set a field</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_offsetUnset">offsetUnset</a>(string $field)
-                    <p>Unset a field</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Unset a field</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     void
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method___set">__set</a>(string $field, mixed $value)
-                    <p>Magic setter</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Magic setter</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     mixed
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method___get">__get</a>(string $field)
-                    <p>Magical getter</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>Magical getter</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_setState">setState</a>(string $state)
-                    <p>For internal use only</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p>For internal use only</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_getState">getState</a>()
-                    <p>
-</p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a>
-                </td>
-                <td class="last">
+                </div>
+                <div class="col-md-8 type">
                     <a href="#method_getTable">getTable</a>()
-                    <p>Return originating table</p>
-                </td>
-                <td></td>
-            </tr>
-            </table>
+                                            <p>Return originating table</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
 
 
         <h2>Details</h2>
 
-                        <h3 id="method___construct">
-        <div class="location">at line 60</div>
-        <code>            public            
-    <strong>__construct</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a> $table)</code>
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at line 59</div>
+        <code>                    
+    <strong>__construct</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data, <abbr title="Soluble\Normalist\Synthetic\Soluble\Normalist\Synthetic\Table">Table</abbr> $table)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
                 <td>$data</td>
@@ -249,7 +285,7 @@
 </td>
             </tr>
                     <tr>
-                <td><a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a></td>
+                <td><abbr title="Soluble\Normalist\Synthetic\Soluble\Normalist\Synthetic\Table">Table</abbr></td>
                 <td>$table</td>
                 <td>
 </td>
@@ -262,20 +298,21 @@
                     </div>
     </div>
 
-                <h3 id="method_delete">
-        <div class="location">at line 75</div>
-        <code>            public            int
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_delete">
+        <div class="location">at line 74</div>
+        <code>                    int
     <strong>delete</strong>()</code>
     </h3>
     <div class="details">
-        <p>Delte record</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Delte record</p>                                </div>
+                <div class="tags">
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>int</td>
             <td>affected rows can be > 1 if triggers ...</td>
@@ -285,9 +322,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>if Record has already been deleted</td>
             </tr>
             </table>
@@ -296,19 +333,20 @@
                     </div>
     </div>
 
-                <h3 id="method_save">
-        <div class="location">at line 99</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save">
+        <div class="location">at line 97</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>save</strong>(boolean $validate_datatype = false)</code>
     </h3>
     <div class="details">
-        <p>Save a record in database</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Save a record in database</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>boolean</td>
                 <td>$validate_datatype</td>
@@ -319,7 +357,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>freshly modified record (from database)</td>
@@ -329,9 +367,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when record has already been deleted</td>
             </tr>
             </table>
@@ -340,19 +378,20 @@
                     </div>
     </div>
 
-                <h3 id="method_setData">
-        <div class="location">at line 156</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setData">
+        <div class="location">at line 154</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>setData</strong>(array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a> $data)</code>
     </h3>
     <div class="details">
-        <p>Set record data</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Set record data</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>array|<a href="http://php.net/ArrayObject"><abbr title="ArrayObject">ArrayObject</abbr></a></td>
                 <td>$data</td>
@@ -364,7 +403,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
@@ -375,13 +414,13 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/InvalidArgumentException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\InvalidArgumentException">InvalidArgumentException</abbr></a></td>
                 <td>when the para</td>
             </tr>
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -390,20 +429,21 @@
                     </div>
     </div>
 
-                <h3 id="method_toArray">
-        <div class="location">at line 178</div>
-        <code>            public            array
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_toArray">
+        <div class="location">at line 176</div>
+        <code>                    array
     <strong>toArray</strong>()</code>
     </h3>
     <div class="details">
-        <p>Return an array version of the record</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Return an array version of the record</p>                                </div>
+                <div class="tags">
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>array</td>
             <td>
@@ -414,9 +454,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -425,20 +465,21 @@
                     </div>
     </div>
 
-                <h3 id="method_toJson">
-        <div class="location">at line 193</div>
-        <code>            public            string
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_toJson">
+        <div class="location">at line 190</div>
+        <code>                    string
     <strong>toJson</strong>()</code>
     </h3>
     <div class="details">
-        <p>Return an json version of the record</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Return an json version of the record</p>                                </div>
+                <div class="tags">
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>string</td>
             <td>
@@ -449,9 +490,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -460,20 +501,18 @@
                     </div>
     </div>
 
-                <h3 id="method_offsetExists">
-        <div class="location">at line 206</div>
-        <code>            public            boolean
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetExists">
+        <div class="location">at line 203</div>
+        <code>                    boolean
     <strong>offsetExists</strong>(string $field)</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -485,7 +524,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>boolean</td>
             <td>
@@ -498,19 +537,20 @@
                     </div>
     </div>
 
-                <h3 id="method_offsetGet">
-        <div class="location">at line 221</div>
-        <code>            public            mixed
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetGet">
+        <div class="location">at line 218</div>
+        <code>                    mixed
     <strong>offsetGet</strong>(string $field)</code>
     </h3>
     <div class="details">
-        <p>Get field value</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Get field value</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -522,7 +562,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>mixed</td>
             <td>
@@ -533,9 +573,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\FieldNotFoundException">FieldNotFoundException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/FieldNotFoundException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\FieldNotFoundException">FieldNotFoundException</abbr></a></td>
                 <td>
 </td>
             </tr>
@@ -545,19 +585,20 @@
                     </div>
     </div>
 
-                <h3 id="method_offsetSet">
-        <div class="location">at line 241</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetSet">
+        <div class="location">at line 238</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>offsetSet</strong>(string $field, mixed $value)</code>
     </h3>
     <div class="details">
-        <p>Set a field</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Set a field</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -575,7 +616,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
@@ -586,9 +627,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -597,19 +638,20 @@
                     </div>
     </div>
 
-                <h3 id="method_offsetUnset">
-        <div class="location">at line 263</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetUnset">
+        <div class="location">at line 260</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>offsetUnset</strong>(string $field)</code>
     </h3>
     <div class="details">
-        <p>Unset a field</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Unset a field</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -621,7 +663,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
@@ -632,9 +674,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -643,19 +685,20 @@
                     </div>
     </div>
 
-                <h3 id="method___set">
-        <div class="location">at line 290</div>
-        <code>            public            void
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___set">
+        <div class="location">at line 286</div>
+        <code>                    void
     <strong>__set</strong>(string $field, mixed $value)</code>
     </h3>
     <div class="details">
-        <p>Magic setter</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Magic setter</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -673,7 +716,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>void</td>
             <td>
@@ -684,9 +727,9 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -695,19 +738,20 @@
                     </div>
     </div>
 
-                <h3 id="method___get">
-        <div class="location">at line 314</div>
-        <code>            public            mixed
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___get">
+        <div class="location">at line 308</div>
+        <code>                    mixed
     <strong>__get</strong>(string $field)</code>
     </h3>
     <div class="details">
-        <p>Magical getter</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Magical getter</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$field</td>
@@ -719,7 +763,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>mixed</td>
             <td>
@@ -730,14 +774,14 @@
             
                             <h4>Exceptions</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Exception\FieldNotFoundException">FieldNotFoundException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/FieldNotFoundException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\FieldNotFoundException">FieldNotFoundException</abbr></a></td>
                 <td>
 </td>
             </tr>
                     <tr>
-                <td><abbr title="Exception\LogicException">LogicException</abbr></td>
+                <td><a href="../../../Soluble/Normalist/Synthetic/Exception/LogicException.html"><abbr title="Soluble\Normalist\Synthetic\Exception\LogicException">LogicException</abbr></a></td>
                 <td>when the record has been deleted</td>
             </tr>
             </table>
@@ -746,19 +790,20 @@
                     </div>
     </div>
 
-                <h3 id="method_setState">
-        <div class="location">at line 335</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setState">
+        <div class="location">at line 329</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a>
     <strong>setState</strong>(string $state)</code>
     </h3>
     <div class="details">
-        <p>For internal use only</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>For internal use only</p>                                </div>
+                <div class="tags">
                             <h4>Parameters</h4>
 
-                    <table>
+                    <table class="table table-condensed">
                     <tr>
                 <td>string</td>
                 <td>$state</td>
@@ -770,7 +815,7 @@
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Record.html"><abbr title="Soluble\Normalist\Synthetic\Record">Record</abbr></a></td>
             <td>
@@ -783,21 +828,19 @@
                     </div>
     </div>
 
-                <h3 id="method_getState">
-        <div class="location">at line 345</div>
-        <code>            public            string
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getState">
+        <div class="location">at line 339</div>
+        <code>                    string
     <strong>getState</strong>()</code>
     </h3>
     <div class="details">
-        <p>
-</p>
-        <p>
-</p>
-        <div class="tags">
+                <div class="tags">
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td>string</td>
             <td>
@@ -810,20 +853,21 @@
                     </div>
     </div>
 
-                <h3 id="method_getTable">
-        <div class="location">at line 379</div>
-        <code>            public            <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a>
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getTable">
+        <div class="location">at line 373</div>
+        <code>                    <a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a>
     <strong>getTable</strong>()</code>
     </h3>
     <div class="details">
-        <p>Return originating table</p>
-        <p>
-</p>
-        <div class="tags">
+                    <div class="method-description">
+                                    <p>Return originating table</p>                                </div>
+                <div class="tags">
             
                             <h4>Return Value</h4>
 
-                    <table>
+                    <table class="table table-condensed">
         <tr>
             <td><a href="../../../Soluble/Normalist/Synthetic/Table.html"><abbr title="Soluble\Normalist\Synthetic\Table">Table</abbr></a></td>
             <td>
@@ -836,10 +880,17 @@
                     </div>
     </div>
 
+            </div>
+            </div>
+
     
             </div>
-            <div id="footer">
-        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
     </div>
     </body>
+
 </html>
