@@ -12,7 +12,6 @@ use Zend\Paginator\Paginator as ZendPaginator;
 class Paginator extends ZendPaginator
 {
 
-
     /**
      *
      * @param integer $totalRows
@@ -35,10 +34,13 @@ class Paginator extends ZendPaginator
         if (!is_int($offset) || $offset < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects offset to be an integer greater than 0');
         }
+
+        if (class_exists('\Zend\Paginator\Adapter\Null')) {
+            $adapter = new \Zend\Paginator\Adapter\Null($totalRows);
+        } else {
+            $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
+        }
         
-
-
-        $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
         parent::__construct($adapter);
         $this->setItemCountPerPage($limit);
         $this->setCurrentPageNumber(ceil(($offset + 1) / $limit));
