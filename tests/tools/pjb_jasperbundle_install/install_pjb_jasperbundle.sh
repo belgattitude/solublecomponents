@@ -11,9 +11,9 @@
 # Edit configuration here
 #
 BASEDIR=$(dirname $0)
-JASPER_VERSION=5.6.1
+JASPER_VERSION=6.0.4
 PJB_VERSION=6.2.1
-MYSQL_JDBC_VERSION=5.1.34
+MYSQL_JDBC_VERSION=5.1.35
 INSTALL_DIR=$BASEDIR/downloads
 DIST_DIR=$BASEDIR/dist/WEB-INF/lib
 WAR_CONFIG_DIR=$BASEDIR/config/JavaBridge
@@ -37,18 +37,18 @@ echo "Download and install Mysql Connector/J"
 MYSQL_JDBC_URL=http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_JDBC_VERSION.zip
 OUTPUT_FILE=$INSTALL_DIR/mysql-connector-java-$MYSQL_JDBC_VERSION.zip
 if [ ! -f $OUTPUT_FILE ]; then
-    mkdir -p $INSTALL_DIR
-    wget $MYSQL_JDBC_URL -O $OUTPUT_FILE
+    mkdir -p $INSTALL_DIR;
+    wget $MYSQL_JDBC_URL -O $OUTPUT_FILE;
 fi
 unzip -o -j $OUTPUT_FILE mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector*.jar -d $DIST_DIR;
 
 # STEP 2 Install Jasper reports jar's
 echo "Download and install jasper reports"
-JASPER_URL="http://downloads.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$JASPER_VERSION/jasperreports-$JASPER_VERSION-project.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fjasperreports%2Ffiles%2Fjasperreports%2FJasperReports%2520$JASPER_VERSION%2F&ts=1415458519&use_mirror=softlayer-ams"
+JASPER_URL="http://downloads.sourceforge.net/project/jasperreports/jasperreports/JasperReports%20$JASPER_VERSION/jasperreports-$JASPER_VERSION-project.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fjasperreports%2Ffiles%2Fjasperreports%2FJasperReports%2520$JASPER_VERSION%2F&ts=1429189828&use_mirror=softlayer-ams"
 OUTPUT_FILE="$INSTALL_DIR/jasperreports-$JASPER_VERSION-project.tar.gz"
 if [ ! -f $OUTPUT_FILE ]; then
     mkdir -p $INSTALL_DIR
-    wget $URL -O $OUTPUT_FILE;
+    wget $JASPER_URL -O $OUTPUT_FILE;
 fi
 tar -zxvf $OUTPUT_FILE --strip-components=2 --directory $DIST_DIR --wildcards "jasperreports-$JASPER_VERSION/lib/*.jar"
 tar -zxvf $OUTPUT_FILE --strip-components=2 --directory $DIST_DIR --wildcards "jasperreports-$JASPER_VERSION/dist/*.jar"

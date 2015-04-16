@@ -45,11 +45,11 @@ class DriverManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateConnection()
     {
         //$this->driverManager->createConnection()
-        $config = \SolubleTestFactories::getDatabaseConfig();
-        $host = $config['hostname'];
-        $db = $config['database'];
-        $user = $config['username'];
-        $password = $config["password"];
+        $config     = \SolubleTestFactories::getDatabaseConfig();
+        $host       = $config['hostname'];
+        $db         = $config['database'];
+        $user       = $config['username'];
+        $password   = $config["password"];
         
         $dsn = "jdbc:mysql://$host/$db?user=$user&password=$password";
         
