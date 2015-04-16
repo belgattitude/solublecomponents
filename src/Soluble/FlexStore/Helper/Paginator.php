@@ -29,16 +29,20 @@ class Paginator extends ZendPaginator
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects limit to be an integer greater than 0');
         }
         if (!is_int($totalRows) || $totalRows < 0) {
-            throw new Exception\InvalidUsageException(__METHOD__ . " expects total rows to be an integer greater than 0");
+            throw new Exception\InvalidUsageException(__METHOD__ . ' expects total rows to be an integer greater than 0');
         }
         if (!is_int($offset) || $offset < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects offset to be an integer greater than 0');
         }
-
-        if (class_exists('\Zend\Paginator\Adapter\Null')) {
+        
+        if (class_exists('\Zend\Paginator\Adapter\NullFill')) {
+            // In ZF 2.4+
+            $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
+        } elseif (class_exists('\Zend\Paginator\Adapter\Null')) {
+            // In ZF < 2.4
             $adapter = new \Zend\Paginator\Adapter\Null($totalRows);
         } else {
-            $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
+            throw new Exception\RuntimeException(__METHOD__ . " Missing Zend\Paginator\Adapter.");
         }
         
         parent::__construct($adapter);

@@ -39,9 +39,15 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
     function testJavaClass()
     {
         $system = PhpJavaBridge::getJavaClass('java.lang.System');
-
+        $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaClass", $system);
+        $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaObject", $system);
         $properties = $system->getProperties();
+        $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaObject", $properties);
+        
+        
         $this->assertEquals("java.util.Properties", $properties->get__signature());
+        $this->assertEquals("java.util.Properties", $properties->getClass()->getName());
+        $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaObject", $properties->getClass());
         
     }
 

@@ -36,9 +36,26 @@ class DriverManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetDriverManager()
     {
         $dm = $this->driverManager->getDriverManager();
-        $this->assertInstanceOf('Soluble\Japha\Bridge\JavaObjectInterface', $dm);
+        $this->assertInstanceOf('Soluble\Japha\Interfaces\JavaObject', $dm);
         $className = Pjb::getDriver()->getClassName($dm);
         $this->assertEquals('java.sql.DriverManager', $className);
+    }
+    
+
+    public function testCreateConnectionThrowsException()
+    {
+        //$this->driverManager->createConnection()
+        $config     = \SolubleTestFactories::getDatabaseConfig();
+        $host       = $config['hostname'];
+        $db         = $config['database'];
+        $user       = $config['username'];
+        $password   = $config["password"];
+        
+        $dsn = "jdbc:mysql://$host/$db?user=$user&password=$password";
+        
+        $conn = $this->driverManager->createConnection($dsn, 'com.nuvolia.jdbc.JDBC4Connection');
+        $className = Pjb::getDriver()->getClassName($conn);
+        $this->assertEquals('com.mysql.jdbc.JDBC4Connection', $className);
     }
     
     
