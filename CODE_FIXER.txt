@@ -1,7 +1,7 @@
 # fabpot code fixer
 
 ./vendor/fabpot/php-cs-fixer/php-cs-fixer fix --dry-run ./src --fixers=visibility 
-./vendor/fabpot/php-cs-fixer/php-cs-fixer fix --dry-run ./src --level=psr2
+./vendor/fabpot/php-cs-fixer/php-cs-fixer fix --dry-run ./src --level=psr2 --verbose
 
 (remove --dry-run to make it happen for real)
 
