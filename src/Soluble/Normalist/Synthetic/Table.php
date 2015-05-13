@@ -36,13 +36,13 @@ class Table
 
     /**
      * Primary key of the table
-     * @var string|integer
+     * @var string|null
      */
     protected $primary_key;
 
     /**
      * Primary keys of the table in case there's a multiple column pk
-     * @var array
+     * @var array|null
      */
     protected $primary_keys;
 
@@ -627,7 +627,7 @@ class Table
      * @throws Exception\ColumnNotFoundException if $ignore_invalid_columns is false and some columns does not exists in table
      *
      * @param array|ArrayObject $data associative array containing initial data
-     * @param boolean $ignore_invalid_column if true will throw an exception if a column does not exists
+     * @param boolean $ignore_invalid_columns if true will throw an exception if a column does not exists
      * @return Record
      */
     public function record($data = array(), $ignore_invalid_columns = true)
@@ -666,7 +666,7 @@ class Table
      */
     public function getPrimaryKeys()
     {
-        if (!$this->primary_keys) {
+        if ($this->primary_keys === null) {
             try {
                 $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
             } catch (\Soluble\Db\Metadata\Exception\NoPrimaryKeyException $e) {
@@ -692,7 +692,7 @@ class Table
      */
     public function getPrimaryKey()
     {
-        if (!$this->primary_key) {
+        if ($this->primary_key === null) {
             $pks = $this->getPrimaryKeys();
             if (count($pks) > 1) {
                 throw new Exception\MultiplePrimaryKeysFoundException(__METHOD__ . ": Error getting unique primary key on table, multiple found on table " . $this->prefixed_table);
