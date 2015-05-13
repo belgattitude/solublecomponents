@@ -41,6 +41,27 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     }
     
 
+    public function testGetSchemaConfigThrowsSchemaNotFoundException()
+    {
+        $this->setExpectedException('Soluble\Db\Metadata\Exception\SchemaNotFoundException');
+        
+        $metadata = new InformationSchema($this->adapter, $schema = "fdgdfgdfgppooaze");
+        
+        $metadata->getSchemaConfig();
+        
+        /*
+        try {
+         $metadata->getSchemaConfig();   
+        } catch(\Exception $e) {
+            echo "\n";
+            echo $e->getTraceAsString();
+            echo $e->getMessage();
+            echo "\n";
+            die('cool');
+        }*/
+        
+    }
+    
     
     public function testConstructThrowsInvalidArgumentException()
     {
@@ -56,14 +77,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $metadata = new InformationSchema($this->adapter, $schema = "   ");
     }
     
-    public function testGetSchemaConfigThrowsSchemaNotFoundException()
-    {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\SchemaNotFoundException');
-        
-        $metadata = new InformationSchema($this->adapter, $schema = "fdgdfgdfgppooaze");
-        $metadata->getSchemaConfig();
-        
-    }
     
     
 

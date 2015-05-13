@@ -163,6 +163,7 @@ class SolubleTestFactories
             'buffer_results' => true
         );
         $mysql_config['charset'] = 'UTF8';
+        
         return $mysql_config;
     }
     

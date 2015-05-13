@@ -220,7 +220,7 @@ class InformationSchema extends Source\AbstractSource
     public function getTableConfig($table, $include_options = false)
     {
         $schema = $this->schema;
-        
+
         if ($this->useLocalCaching &&
                 isset(self::$localCache[$schema]['tables'][$table])) {
             return self::$localCache[$schema]['tables'][$table];
@@ -367,9 +367,12 @@ class InformationSchema extends Source\AbstractSource
         }
         $this->restoreInnoDbStats();
 
+
+
         $references = array();
         $config = new Config(array('tables' => array()), true);
         $tables = $config->offsetGet('tables');
+
 
         foreach ($results as $r) {
             // Setting table information
@@ -506,7 +509,7 @@ class InformationSchema extends Source\AbstractSource
                 $references[$referenced_table_name] = $refs;
             }
         }
-        
+
         $array = $config->toArray();
         unset($config);
         return $array;
@@ -561,7 +564,7 @@ class InformationSchema extends Source\AbstractSource
     {
         $schema = $this->schema;
         $this->checkTableArgument($table);
-        
+
         if (!in_array($schema, self::$fullyCachedSchemas)) {
             if ($table !== null) {
                 $this->getTableConfig($table);
@@ -573,7 +576,7 @@ class InformationSchema extends Source\AbstractSource
             $this->getTableConfig($table);
         }
     }
-    
+
     /**
      * Clear local cache information for the current schema
      *

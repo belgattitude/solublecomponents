@@ -41,7 +41,7 @@
         "phpoffice/phpexcel": "1.8.*",
         "squizlabs/php_codesniffer": "2.*",
         "symfony/var-dumper": "@stable",
-        "fabpot/php-cs-fixer": "1.7.*",
+        "fabpot/php-cs-fixer": "1.*",
         "symfony/var-dumper": "@stable"
 	},
 	"suggest": {
