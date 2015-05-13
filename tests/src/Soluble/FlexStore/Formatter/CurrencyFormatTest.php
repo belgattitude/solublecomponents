@@ -48,7 +48,7 @@ class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
     {
         $f = $this->currencyFormatter;
         $this->assertInternalType('string', $f->getLocale());
-        $this->assertEquals(\Locale::getDefault(), $f->getLocale());
+        $this->assertEquals($f->getLocale(), substr(\Locale::getDefault(), 0, 5));
         $this->assertNull($f->getPattern());
         $this->assertEquals(2, $f->getDecimals());
 

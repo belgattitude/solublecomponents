@@ -202,15 +202,24 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(file_exists($file));
         
         
-        file_put_contents($file, 'invalid php code');
+        $invalid_string = 'invalid serialized code in model definition';
+        if (file_exists($file)) {
+            unlink($file);
+        }
+        $bytes_written = file_put_contents($file, $invalid_string);
+        
+        if ($bytes_written != strlen($invalid_string)) {
+            throw new \Exception(__METHOD__ . " Problem writing file $file for unit tests");
+        }
+        
         $catched = false;
         try {
             $def = $this->driver->getModelsDefinition();
+            
         } catch (Exception\ModelFileCorruptedException $e) {
             $catched = true;
-        }
+        } 
         $this->assertTrue($catched);
-        
         
         // Second test
         unlink($file);

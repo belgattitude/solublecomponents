@@ -133,10 +133,26 @@ class ZeroConfDriver implements DriverInterface
             throw new Exception\ModelFileNotFoundException(__METHOD__ . " Model configuration file '$file' does not exists or not readable");
         }
 
-        $definition = include $file;
-        if (!$definition || !is_array($definition)) {
-            throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' cannot be read");
+        if (defined('HHVM_VERSION')) {
+            // As an 'evil' workaround, waiting for hhvm to comply
+            // see https://github.com/facebook/hhvm/issues/1447
+            $definition = false;
+            $file_content = file_get_contents($file);
+            $file_content = trim(str_replace('<?php', '', $file_content));
+            $file_content = trim(str_replace('return array(', '$definition = array(', $file_content));
+            eval($file_content);
+            
+        } else {
+            $definition = include $file;
         }
+        
+        if (!$definition) {
+            throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' cannot be included");
+        }
+        if (!is_array($definition)) {
+            throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' was included but is not a valid array");
+        }
+        
         return $definition;
     }
 

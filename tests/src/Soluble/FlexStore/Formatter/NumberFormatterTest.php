@@ -11,7 +11,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @var NumberFormatter
      */
-    protected $f;
+    protected $nf;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -46,9 +46,10 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     
     public function testGetSet()
     {
+        
         $f = $this->nf;
         $this->assertInternalType('string', $f->getLocale());
-        $this->assertEquals(\Locale::getDefault(), $f->getLocale());
+        $this->assertEquals($f->getLocale(), substr(\Locale::getDefault(), 0, 5));
         $this->assertNull($f->getPattern());
         $this->assertEquals(2, $f->getDecimals());
         

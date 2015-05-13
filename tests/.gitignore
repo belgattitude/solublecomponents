@@ -1,3 +1,4 @@
 phpunit.xml
+phpunit_hhvm.xml
 logs/
 tools/pjb621

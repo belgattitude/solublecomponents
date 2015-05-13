@@ -48,7 +48,7 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
     {
         $f = $this->uf;
         $this->assertInternalType('string', $f->getLocale());
-        $this->assertEquals(\Locale::getDefault(), $f->getLocale());
+        $this->assertEquals($f->getLocale(), substr(\Locale::getDefault(), 0, 5));
         $this->assertNull($f->getPattern());
         $this->assertNull($f->getUnit());
         $this->assertEquals(2, $f->getDecimals());

@@ -779,6 +779,7 @@ class Table
         }
         try {
             $result = $statement->execute();
+            
         } catch (\Exception $e) {
             // In ZF2, PDO_Mysql and MySQLi return different exception,
             // attempt to normalize by catching one exception instead
