@@ -77,7 +77,7 @@ class Table
 
     /**
      *
-     * @param array|string $table table name
+     * @param string $table table name
      * @param TableManager $tableManager
      *
      * @throws Exception\InvalidArgumentException
@@ -86,8 +86,8 @@ class Table
     {
         $this->tableManager = $tableManager;
         $this->sql = new Sql($tableManager->getDbAdapter());
-        if (!is_string($table)) {
-            throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a string");
+        if (!is_string($table) || trim($table) == '') {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": Table name must be a non-empty string");
         }
 
         $this->table = $table;
@@ -169,7 +169,14 @@ class Table
     public function findOneBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
         $select = $this->select($this->table);
-        $select->where($predicate, $combination);
+
+        try {
+            $select->where($predicate, $combination);
+        } catch (\Zend\Db\Sql\Exception\InvalidArgumentException $e) {
+            $message = "Invalid predicates or combination detected (" . $e->getMessage() . ")";
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": $message");
+        }
+        
         try {
             $results = $select->execute()
                               ->toArray();
@@ -244,16 +251,23 @@ class Table
      *
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
+     * @throws Exception\InvalidArgumentException
      *
      * @return int number of record matching predicates
      */
     public function countBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
-        $result = $this->select()
-                        ->columns(array('count' => new Expression('count(*)')))
-                        ->where($predicate, $combination)
-                        ->execute()
-                        ->toArray();
+        $select = $this->select()
+                        ->columns(array('count' => new Expression('count(*)')));
+        
+        try {
+            $select->where($predicate, $combination);
+        } catch (\Zend\Db\Sql\Exception\InvalidArgumentException $e) {
+            $message = "Invalid predicates or combination detected (" . $e->getMessage() . ")";
+            throw new Exception\InvalidArgumentException(__METHOD__ . ": $message");
+        }
+        
+        $result = $select->execute()->toArray();
 
         return (int) $result[0]['count'];
     }
@@ -328,7 +342,7 @@ class Table
      * @param integer|string|array $id primary key(s) or a Record object
      *
      * @throws Exception\InvalidArgumentException if $id is not valid
-     * @return int the number of affected rows (maybe be greater than 1 with trigger or cascade)
+     * @return integer the number of affected rows (maybe be greater than 1 with triggers or cascade)
      */
     public function delete($id)
     {
@@ -341,7 +355,7 @@ class Table
      * @param  Where|\Closure|string|array|Predicate\PredicateInterface $predicate
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
-     * @return boolean
+     * @return integer the number of affected rows (can be be influenced by triggers or cascade)
      */
     public function deleteBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {

@@ -66,6 +66,21 @@ class TableTest extends \PHPUnit_Framework_TestCase
         
         $table = new Table(array('cool'), $this->tableManager);
     }
+
+    public function testConstructThrowsInvalidArgumentException2()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        
+        $table = new Table('', $this->tableManager);
+    }
+    
+    public function testConstructThrowsInvalidArgumentException3()
+    {
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
+        
+        $table = new Table(" \n", $this->tableManager);
+    }
+
     
     public function testRecord()
     {
