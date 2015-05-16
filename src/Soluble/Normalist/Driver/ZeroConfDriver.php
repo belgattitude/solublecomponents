@@ -85,7 +85,7 @@ class ZeroConfDriver implements DriverInterface
      * Checks model configuration params
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ModelPathNotFoundException
-     * 
+     *
      */
     protected function checkParams()
     {
@@ -111,7 +111,7 @@ class ZeroConfDriver implements DriverInterface
             $path = (string) $this->params['path'];
             throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
         }
-    }  
+    }
     
     
 
