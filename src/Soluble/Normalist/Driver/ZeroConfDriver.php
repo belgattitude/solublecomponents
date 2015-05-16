@@ -74,38 +74,46 @@ class ZeroConfDriver implements DriverInterface
         }
 
         $this->params = array_merge($this->default_options, (array) $params);
+        if ($this->params['path'] == '') {
+            $this->params['path'] = sys_get_temp_dir();
+        }
+        $this->checkParams();
 
+    }
+
+    /**
+     * Checks model configuration params
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\ModelPathNotFoundException
+     * 
+     */
+    protected function checkParams()
+    {
         if (!is_string($this->params['alias']) || trim($this->params['alias']) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["alias"] parameter expects valid string');
         }
-
         if ($this->params['schema'] !== null &&
                 (!is_string($this->params['schema']) || trim($this->params['schema']) == '')) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["schema"] parameter expects valid string');
         }
-
-
         if (!is_scalar($this->params['version']) || trim($this->params['version']) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["version"] parameter expects valid scalar value');
         }
-
-        if ($this->params['path'] == '') {
-            $this->params['path'] = sys_get_temp_dir();
-        } elseif (!is_string($this->params['path']) || trim($this->params['path']) == '') {
+        if (!is_string($this->params['path']) || trim($this->params['path']) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["path"] parameter expects valid string value');
         }
-
-        if (!is_dir($this->params['path'])) {
-            $path = (string) $this->params['path'];
-            throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
-        }
-
         if ($this->params['permissions'] != '') {
             if (!is_scalar($this->params['permissions'])) {
                 throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
             }
         }
-    }
+        if (!is_dir($this->params['path'])) {
+            $path = (string) $this->params['path'];
+            throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
+        }
+    }  
+    
+    
 
 
     /**
