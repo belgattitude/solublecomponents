@@ -4,7 +4,7 @@ languages:
   PHP: true
   Python: false
 exclude_paths:
- - tests/*, 
+ - tests/*
  - vendor/*
  - bin/*
  - docs/*
