@@ -22,6 +22,10 @@ env:
         - ADAPTER=mysqli
         - ADAPTER=pdo_mysql
 
+addons:
+  code_climate:
+    repo_token: 63e13e3327f51604cfaafdc27c10cbefb06f814b305c3e415e0e948ac331f646
+
 before_script:
   - if [[ $HHVM == false ]] ; then pecl install imagick ; fi 
   - mkdir -p tests/tmp/cache 
@@ -78,6 +82,7 @@ after_script:
   - ls build/logs  
   - if [[ $EXTERNAL == true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
   - if [[ $EXTERNAL == true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
+  - if [[ $EXTERNAL == true ]]; then vendor/bin/test-reporter; fi
   - sh -c "which java"
   - sh -c "java -version"
   - ./bin/coveralls -c=./coveralls.yml -v 

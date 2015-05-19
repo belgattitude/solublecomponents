@@ -2,7 +2,7 @@ imports:
     - php
 filter:
     paths: [src/*]
-    excluded_paths: [tests/*, vendor/*, bin/*, docs/*]
+    excluded_paths: [tests/*, vendor/*, bin/*, docs/*, config/*]
 before_commands:
     - 'composer install --dev --prefer-source'    
 tools:

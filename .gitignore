@@ -17,3 +17,4 @@ build/
 /tests/tools/pjb_jasperbundle_install/dist/
 /tests/tools/pjb_jasperbundle_install/downloads/
 /tests/tools/pjb_standalone_install/pjb621/
+/tests/send-codeclimate-coverage.sh

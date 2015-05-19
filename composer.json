@@ -42,7 +42,8 @@
         "squizlabs/php_codesniffer": "2.*",
         "symfony/var-dumper": "@stable",
         "fabpot/php-cs-fixer": "1.*",
-        "symfony/var-dumper": "@stable"
+        "symfony/var-dumper": "@stable",
+        "codeclimate/php-test-reporter": "dev-master"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",
@@ -62,6 +63,6 @@
         "soluble/japha": "self.version"
     },
     "archive": {
-        "exclude": ["tests", "docs", ".travis.yml", ".coveralls.yml", ".scrutinizer.yml", ".php_cs", ".gitignore"]
+        "exclude": ["tests", "docs", ".travis.yml", ".codeclimate.yml", ".coveralls.yml", ".scrutinizer.yml", ".php_cs", ".gitignore"]
     }    
 }
