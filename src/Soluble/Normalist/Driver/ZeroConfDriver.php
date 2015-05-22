@@ -1,4 +1,5 @@
 <?php
+
 namespace Soluble\Normalist\Driver;
 
 use Soluble\Normalist\Driver\Exception;
@@ -14,25 +15,22 @@ class ZeroConfDriver implements DriverInterface
      */
     protected $metadata;
 
-
     /**
      *
      * @var array
      */
     protected $params;
 
-
     /**
      *
      * @var array
      */
     protected $default_options = array(
-       'alias'          => 'default',
-       'path'           => null,
-       'version'        => 'latest',
-       'schema'         => null,
-       'permissions'    => 0666
-
+        'alias' => 'default',
+        'path' => null,
+        'version' => 'latest',
+        'schema' => null,
+        'permissions' => 0666
     );
 
     /**
@@ -40,8 +38,6 @@ class ZeroConfDriver implements DriverInterface
      * @var array
      */
     protected static $metadataCache = array();
-
-
 
     /**
      * Underlying database adapter
@@ -78,7 +74,6 @@ class ZeroConfDriver implements DriverInterface
             $this->params['path'] = sys_get_temp_dir();
         }
         $this->checkParams();
-
     }
 
     /**
@@ -112,9 +107,6 @@ class ZeroConfDriver implements DriverInterface
             throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
         }
     }
-    
-    
-
 
     /**
      * Return models configuration file
@@ -123,7 +115,7 @@ class ZeroConfDriver implements DriverInterface
     public function getModelsConfigFile()
     {
         $o = $this->params;
-        $file =  $o['path'] . DIRECTORY_SEPARATOR . 'normalist_' . $o['alias'] . '-' . $o['version'] . '.php';
+        $file = $o['path'] . DIRECTORY_SEPARATOR . 'normalist_zeroconf_cache_' . $o['alias'] . '_' . $o['version'] . '.php';
         return $file;
     }
 
@@ -149,21 +141,19 @@ class ZeroConfDriver implements DriverInterface
             $file_content = trim(str_replace('<?php', '', $file_content));
             $file_content = trim(str_replace('return array(', '$definition = array(', $file_content));
             eval($file_content);
-            
         } else {
             $definition = include $file;
         }
-        
+
         if (!$definition) {
             throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' cannot be included");
         }
         if (!is_array($definition)) {
             throw new Exception\ModelFileCorruptedException(__METHOD__ . " Model configuration file '$file' was included but is not a valid array");
         }
-        
+
         return $definition;
     }
-
 
     /**
      * Save model definition
@@ -192,9 +182,6 @@ class ZeroConfDriver implements DriverInterface
         }
         return $this;
     }
-
-
-
 
     /**
      * Set underlying database adapter
@@ -236,7 +223,6 @@ class ZeroConfDriver implements DriverInterface
         return self::$metadataCache[$cache_key];
     }
 
-
     /**
      *
      * @return ZeroConfDriver
@@ -272,7 +258,6 @@ class ZeroConfDriver implements DriverInterface
         return new Metadata\NormalistModels($model_definition);
     }
 
-
     /**
      * Set internal metadata reader
      *
@@ -284,4 +269,5 @@ class ZeroConfDriver implements DriverInterface
         $this->metadata = $metadata;
         return $this;
     }
+
 }

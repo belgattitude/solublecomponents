@@ -43,14 +43,17 @@
         "symfony/var-dumper": "@stable",
         "fabpot/php-cs-fixer": "1.*",
         "symfony/var-dumper": "@stable",
-        "codeclimate/php-test-reporter": "dev-master"
+        "codeclimate/php-test-reporter": "dev-master",
+        "pimple/pimple":  "~3.0"
 	},
 	"suggest": {
 		"zendframework/zend-view": "ZF2 integration for FlexStore",
 		"zendframework/zend-json": "ZF2 integration for FlexStore",
 		"zendframework/zend-paginator": "ZF2 integration for FlexStore",
 		"zendframework/zend-eventmanager": "ZF2 integration for eventmanager",
-		"zendframework/zend-servicemanager": "ZF2 integration for services"
+		"zendframework/zend-servicemanager": "ZF2 integration for services",
+        "pimple/pimple":  "Dependency injection container"
+
 	},
 	"autoload": {
 		"psr-4": {"Soluble\\": "src/Soluble/"}

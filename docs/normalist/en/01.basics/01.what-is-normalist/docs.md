@@ -1,17 +1,106 @@
-Normalist ORM
-=============
+---
+title: What is Normalist ?
+taxonomy:
+    category: docs
+---
 
->>> Normalist is an opensource zero configuration ORM for PHP 5.3+.
+Convergent
 
-Introduction
-------------
+>>>> Normalist have been designed to offer a **modern**, **secure**, **mostly automatic** approach to database access for new and especially **existing** projects.
 
-Normalist has been designed to provide an alternative to standard ORM's by allowing models to be dynamically guessed from your database structure, which make them usable without previous definition. Its beautiful API is inspired by Doctrine, Laravel Eloquent and Zend Framework 2, offers simple and intuitive methods to play with your database.
+>>>> The Normalist project was born by questionning why so many 
+
+>>>> 
+
+>>>> Normalist can seen as a middle solution between a full fledged ORM and a query abstraction layer but attempt to provide best of both world.
+>>>> From ORM, Activerecord or TableGateway, Normalist retains models access through SyntheticTables but does not require to define them before.
+
+>>>>  where most interesting features of both solutions are made available through a s    
+>>>> 
+ 
+>>>> Its ambition is to provide and alternative solution between a full fledged ORM and a query abstraction layer 
+>>>> Keep in mind, that its
+>>>> Where it shines is whenever you  
+>>>> Normalist brings some interesting features close to what an ORM, ActiveRecord or TableGateway offers 
+>>>> but definitly avoid sacrifying ease of use and 
+
+
+>>>> Normalist let you access your database in a way an ORM, Active 
+>>>> By secure, Normalist propose a 
+  
+   
+
+in not about being a full fledged ORM, a database or query abstraction layer.
+>>>> without sacryfying   
+>>>> By nature Normalist attempt to provide models database access 
+
+>>>>
+  
+>>>> Its ambition is not to replace ORM, Activerecord or TableGateway-based libraries but plays well with them without    
+  
+- Minimal setup, start coding. 
+ - Database autodiscovery in its veins, you start coding immediatly. 
+
+- Intuitive, elegant and documented API
+ - Well documented API and manual. 
+ - Same familiar API standards accross entire project.
+ - Borrowed method naming from famous project like Laravel Eloquent, Doctrine or Zend Db.
+
+- Reliable, secure and verbose. 
+ - 1000+ unit tests and a goal to 99% coverage for every release.
+ - Transparent **quoting** of variables to automatically prevent sql injections.  
+ - Only Exceptions when errors occurs, no esoteric cause, (very) informative messages. 
+
+- Models or queries ? You choose now or later.
+ - Consider using SyntheticTable to initially develop your CRUD operations. 
+ - Whenever needed refactor expansive calls to abstracted queries for total performance. 
+ - Proven, powerful underlying Zend\Db\Select, Update, Delete and Insert abstracted queries. 
+ - Normalist let you change your mind without making a revolution. Freedom and adaptability.
+ 
+- Dissolve in your past and current ecosystems.  
+ - No need to start a new project or convert an older one. Use Normalist to modernize your project.
+ - Compatibility adapters exists for various database abstraction libraries (ADOdb, PDO, Mysqli...), writing a new one is easy.
+ - Prefer but does not enforce best practices for database design. Normalist supports compound primary keys, alphanumeric and non enforced foreign keys...  
+
+- Mysql/MariaDB friendy.  
+ - Mysql specific `insert on duplicate key` syntax supported.
+ - Native data types detection and support. 
+ - Automatic buffered queries (mysqli/mysqlnd only)
+ 
+- Extensible 
+ - Write your own database driver. 
+
+- Ecosystem, freedom and vendor locking.
+ - Normalist plays very well with heavier, full-featured solutions (Doctrine ORM...), they can be adopted later or used in parrallel. 
+ - Choosing a database layer is a risk, famous frameworks made revolutions to compete, sacrifying backward compatibility, lesser known might disappear. Normalist is no exception to that, but was made with the belief that relying on the excellent Zend\Db component guarantees long term vision. 
+ - Complete refactoring to the Zend component is intentionnaly kept possible for later adoption, but also signifies a lost of Normalist so-easy features and their rewritting      
+ 
+
+   
+
+ 
+ 
+ 3. 
+ 
+ 3. Not so much MySQL, deep connection 
+     
+ 2. Help developer
+ - Exception everywhere with a
+ 2. Comprehensive error reporting
+ - Exception, very detailled  
+ 3. Quality  
+   
+But it shines whenever    
+ 
+Normalist has been designed to offer a modern, bugfree database access across different projects 
+It's feature
 
 ### Features
 
--   Automatic models and synthetic tables
--   Elegant and intuitive API
+
+- Autodiscovery of your tables and models.  
+- Comprehensive error reporting.
+- 
 -   Secure, automatic protection against SQL injections
 -   Comprehensive error reporting
 -   Modernize your existing code
@@ -22,35 +111,6 @@ Normalist has been designed to provide an alternative to standard ORM's by allow
 -   PHP 5.3+ namespaced
 -   MIT licensed
 
-### Requirements
-
-Normalist is written in PHP 5.3 and currently supports MySQL/MariaDb 5.1+ (PDO\_Mysql or MySQLi extensions).
-
-### Installation
-
-The recommended way to install Normalist is through [Composer](https://getcomposer.org/).
-
-```bash
-$ php require soluble/normalist
-```
-
-Or alternatively, add soluble/normalist in your composer.json file as described below
-
-```json
-{
-    "require": {
-        "soluble/normalist": "0.8.*"
-    }
-}
-```
-
-```bash
-$ php composer.phar update
-```
-
-> ##note
->
-> + All dependencies will be automatically downloaded and installed in your vendor project directory.
 
 Usage reference
 ---------------
@@ -89,9 +149,7 @@ $driver = new ZeroConfDriver($adapter, $options);
 $tm = new TableManager($driver);
 ```
 
-> ##note**
->
-> + The list of options supported by the adapter are explaind in the [Zend\Db\Adapter\Adapter](http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html) reference guide. + Depending of your needs, you may adopt different strategies to ensure a unique instance across you project (singleton, service locator...). See also our chapter about third party integration.
+>>>>> The list of options supported by the adapter are explaind in the [Zend\Db\Adapter\Adapter](http://framework.zend.com/manual/2.2/en/modules/zend.db.adapter.html) reference guide. + Depending of your needs, you may adopt different strategies to ensure a unique instance across you project (singleton, service locator...). See also our chapter about third party integration.
 
 ### Synthetic\Table
 

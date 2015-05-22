@@ -68,7 +68,7 @@ class SolubleTestFactories
             // let time for server to start
             
             if (preg_match('/travis/', dirname(__FILE__))) {
-                sleep(5);
+                sleep(8);
             } else {
                 sleep(1);
             }

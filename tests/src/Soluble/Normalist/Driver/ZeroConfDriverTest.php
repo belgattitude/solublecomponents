@@ -42,6 +42,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     {
         
     }
+    
 
     public function testWithOptionalSchema()
     {

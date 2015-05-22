@@ -1,4 +1,5 @@
 <?php
+
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Synthetic\Exception;
@@ -9,13 +10,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     //protected $recordclass = 'ArrayObject';
     protected $recordclass = 'Soluble\Normalist\Synthetic\Record';
-    
+
     /**
      * @var TableManager
      */
     protected $tableManager;
-
-
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -28,13 +27,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
         //$metadata = new Source\MysqlISMetadata($adapter);
         //$metadata->setCache($cache);
         //$metadata = new Source\Mysql\InformationSchema($adapter);
-
         //$this->tableManager = new TableManager($adapter);
         $this->tableManager = \SolubleTestFactories::getTableManager();
         //$this->adapter = $this->tableManager->getDbAdapter();
-        
         //$this->tableManager->setMetadata($metadata);
-
     }
 
     /**
@@ -43,12 +39,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+
         unset($this->tableManager);
-        
     }
-    
-    
+
     public function testGetTableManager()
     {
         $table = $this->tableManager->table('media');
@@ -57,31 +51,28 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->tableManager->metadata(), $tm->metadata());
         $this->assertEquals($this->tableManager, $tm);
     }
-            
-
 
     public function testConstructThrowsInvalidArgumentException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
-        
+
         $table = new Table(array('cool'), $this->tableManager);
     }
 
     public function testConstructThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
-        
+
         $table = new Table('', $this->tableManager);
     }
-    
+
     public function testConstructThrowsInvalidArgumentException3()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
-        
+
         $table = new Table(" \n", $this->tableManager);
     }
 
-    
     public function testRecord()
     {
         $tm = $this->tableManager;
@@ -89,9 +80,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $product->record();
         $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(Record::STATE_NEW, $record->getState());
-        
     }
-    
+
     public function testRecordThrowsColumnNotFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
@@ -100,7 +90,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $product->record(array('invalid_column' => 'value'), false);
         $this->assertInstanceOf($this->recordclass, $record);
     }
-    
 
     public function testRelation()
     {
@@ -108,38 +97,33 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $product = $tm->table('product');
         $relation = $product->relation();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\Table\Relation', $relation);
-        
-        
     }
-    
+
     public function testGetPrimaryKey()
     {
         $medias = $this->tableManager->table('media');
         $pk = $medias->getPrimaryKey();
         $this->assertEquals('media_id', $pk);
-        
+
         // re-run for testing cached version
         $pk = $medias->getPrimaryKey();
         $this->assertEquals('media_id', $pk);
-        
     }
-    
+
     public function testGetColumnsInformation()
     {
         $table = $this->tableManager->table('product_category');
         $columns = $table->getColumnsInformation();
         $expected = array(
-                'category_id','parent_id','reference','slug','title',
-                'description','sort_index','icon_class','lft','rgt',
-                'root','lvl','created_at','updated_at','created_by',
-                'updated_by','legacy_mapping','legacy_synchro_at'
+            'category_id', 'parent_id', 'reference', 'slug', 'title',
+            'description', 'sort_index', 'icon_class', 'lft', 'rgt',
+            'root', 'lvl', 'created_at', 'updated_at', 'created_by',
+            'updated_by', 'legacy_mapping', 'legacy_synchro_at'
         );
         $keys = array_keys($columns);
         $this->assertEquals($expected, $keys);
     }
-    
 
-    
     public function testSelect()
     {
         $select = $this->tableManager->table('product_category')->select();
@@ -156,25 +140,22 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->find(984546465);
         $this->assertFalse($record);
     }
-    
+
     public function testFindOrFail()
     {
         $table = $this->tableManager->table('product_category');
         $record = $table->findOrFail(1);
         $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(1, $record['category_id']);
-
     }
-    
 
-    
     public function testFindThrowsInvalidArgumentException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
         $table = $this->tableManager->table('product_category');
         $record = $table->find(array('cool'));
     }
-    
+
     public function testFindThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -188,16 +169,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = $this->tableManager->table('test_table_with_multipk');
         $record = $table->find(1);
     }
-    
+
     public function testFindThrowsPrimaryKeyNotFoundException()
     {
-        
+
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
         $table = $this->tableManager->table('test_table_without_pk');
-        
+
         $record = $table->find('cool0');
     }
-    
 
     public function testFindOrFailThrowsNotFoundException()
     {
@@ -205,19 +185,18 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = $this->tableManager->table('product_category');
         $record = $table->findOrFail('cool');
     }
-    
+
     public function testFindOneBy()
     {
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneBy(array('category_id' => 12));
         $this->assertInstanceOf($this->recordclass, $record);
- 
+
         $this->assertEquals(12, $record['category_id']);
 
         $record = $table->find(984546465);
         $this->assertFalse($record);
     }
-
 
     public function testFindOneByThrowsColumnNotFoundException()
     {
@@ -232,22 +211,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneBy('count(*) <> media_id');
     }
-    
-    
-    public function testFindOneByThrowsUnexpectedException()
+
+    public function testFindOneByThrowsMultipleMatchesException()
     {
-        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexpectedValueException');
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\MultipleMatchesException');
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneBy(array('sort_index' => 50));
     }
-    
+
     public function testFindOneByOrFail()
     {
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneByOrFail(array('category_id' => 12));
         $this->assertInstanceOf($this->recordclass, $record);
         $this->assertEquals(12, $record['category_id']);
-
     }
 
     public function testFindOneByOrFailThrowsNotFoundException()
@@ -270,15 +247,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneByOrFail('count(*) <> media_id');
     }
-    
-    public function testFindOneByOrFailThrowsUnexpectedException()
+
+    public function testFindOneByOrFailThrowsMultipleMatchesException()
     {
-        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\UnexpectedValueException');
+        $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\MultipleMatchesException');
         $table = $this->tableManager->table('product_category');
         $record = $table->findOneByOrFail(array('sort_index' => 50));
     }
-    
-    
+
     public function testCount()
     {
         $tm = $this->tableManager;
@@ -300,7 +276,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $total_count = $table->count();
         $this->assertEquals($total_count, $matching_count);
     }
-    
+
     public function testExists()
     {
         $table = $this->tableManager->table('product_category');
@@ -316,11 +292,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testExistsThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
-        
+
         $table = $this->tableManager->table('product_category');
-        $exists = $table->exists(array(10,10));
+        $exists = $table->exists(array(10, 10));
     }
-    
+
     public function testExistsBy()
     {
         $pc = $this->tableManager->table('product_category');
@@ -333,19 +309,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('boolean', $exists);
     }
 
-    
-    
     public function testExistsByThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
-        
+
         $table = $this->tableManager->table('media');
-        
-        $exists = $table->existsBy(array('qlskjdlk',10));
-        
+
+        $exists = $table->existsBy(array('qlskjdlk', 10));
     }
-    
-    
+
     public function testSearch()
     {
         $table = $this->tableManager->table('product_category');
@@ -358,18 +330,17 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
         $table = $this->tableManager->table('media');
         $table->insert('cool');
-        
     }
 
     public function testInsertThrowsColumnNotFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
         $table = $this->tableManager->table('media');
-        
+
         $data = array(
-                'media_id' => 10,
-                'column_not_exists' => 1
-               );
+            'media_id' => 10,
+            'column_not_exists' => 1
+        );
         $table->insert($data);
     }
 
@@ -377,31 +348,26 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
         $table = $this->tableManager->table('test_table_without_pk');
-        
+
         $data = array(
-                'test_field' => 20,
-                'test_field2' => 10
-               );
+            'test_field' => 20,
+            'test_field2' => 10
+        );
         $table->insert($data);
     }
-    
-    
 
-    
     public function testInsertThrowsForeignKeyException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ForeignKeyException');
         $table = $this->tableManager->table('media');
         $data = array(
-        
-                'filename'  => 'phpunit_test.pdf',
-                'filemtime' => 111000,
-                'filesize'  => 5000,
-                'container_id' => 212313132132132121
+            'filename' => 'phpunit_test.pdf',
+            'filemtime' => 111000,
+            'filesize' => 5000,
+            'container_id' => 212313132132132121
         );
         $table->insert($data);
     }
-
 
     public function testDelete()
     {
@@ -413,25 +379,24 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($media) {
             $medias->deleteOrFail($media['media_id']);
         }
-        
-        $data   = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
-        $media  = $medias->insert($data);
+
+        $data = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
+        $media = $medias->insert($data);
         $nb = $medias->delete($media['media_id']);
         $this->assertEquals(1, $nb);
-        
+
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
         $stdClass = new \stdClass();
         $medias->delete($stdClass);
     }
-    
-    
+
     public function testFindThrowsInvalidArgumentException5()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
         $medias = $this->tableManager->table('media');
         $medias->find(new \stdClass());
     }
-    
+
     public function testDeleteBy()
     {
         $tm = $this->tableManager;
@@ -446,15 +411,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($record) {
             $ttwuk->deleteBy($multi_key);
         }
-        
+
         $record = $ttwuk->insert($data);
         $this->assertEquals($multi_key['unique_id_1'], $record['unique_id_1']);
         $this->assertEquals($multi_key['unique_id_2'], $record['unique_id_2']);
-        
-        $ttwuk->deleteBy($multi_key);
-        
-        $this->assertFalse($ttwuk->exists($record['id']));
 
+        $ttwuk->deleteBy($multi_key);
+
+        $this->assertFalse($ttwuk->exists($record['id']));
     }
 
     public function testDeleteThrowsInvalidArgumentException()
@@ -463,7 +427,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias = $this->tableManager->table('media');
         $nb = $medias->delete(array('cool'));
     }
-    
+
     public function testDeleteOrFail()
     {
         $medias = $this->tableManager->table('media');
@@ -472,22 +436,19 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
-        $data   = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
-        $media  = $medias->insert($data);
+
+        $data = $this->createMediaRecordData('tobedeleted_phpunit_testdelete');
+        $media = $medias->insert($data);
         $ret = $medias->deleteOrFail($media['media_id']);
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\Table', $ret);
-        
     }
 
-    
     public function testDeleteOrFailThrowsNotFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\NotFoundException');
         $medias = $this->tableManager->table('media');
         $medias->deleteOrFail(987894546561);
     }
-    
 
     public function testInsertThrowsDuplicateEntryException()
     {
@@ -497,17 +458,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $data = array(
-        
-                'filename'  => 'phpunit_test.pdf',
-                'filemtime' => 111000,
-                'filesize'  => 5000,
-                'container_id' => 1,
-                'legacy_mapping' => 'duplicate_key_phpunit'
+            'filename' => 'phpunit_test.pdf',
+            'filemtime' => 111000,
+            'filesize' => 5000,
+            'container_id' => 1,
+            'legacy_mapping' => 'duplicate_key_phpunit'
         );
         $medias->insert($data);
-        
+
         // Will throw the Exception
         $medias->insert($data);
     }
@@ -517,13 +477,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RuntimeException');
         // Testing in non insertable record
         $data = array(
-           'non_insertable_column' => 10
+            'non_insertable_column' => 10
         );
         $ttwt = $this->tableManager->table('test_table_with_trigger');
         $ttwt->insert($data);
-        
     }
-    
+
     public function testInsertThrowsNotNullException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\NotNullException');
@@ -533,19 +492,19 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $data = array('non_null_column' => null);
         $ttwnn->insert($data);
     }
-    
+
     public function testInsert()
     {
         $legacy_mapping = 'phpunit_testInsert';
         $medias = $this->tableManager->table('media');
-        $data   = $this->createMediaRecordData($legacy_mapping);
-        $media  = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
+        $data = $this->createMediaRecordData($legacy_mapping);
+        $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
         if ($media) {
             $medias->delete($media['media_id']);
         }
 
         $data['filename'] = 'my_test_filename';
-        
+
         $media = $medias->insert($data);
         $this->assertEquals($data['filename'], $media['filename']);
 
@@ -556,7 +515,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $data['media_id'] = 999999999;
         $media = $medias->find(999999999);
         if ($media) {
@@ -575,7 +534,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
             'pk_2' => 1,
         );
         $rec = $ttwm->find($multi_key);
-        
+
         if ($rec) {
             $ttwm->delete($multi_key);
         }
@@ -584,7 +543,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('mmmmm', $record['comment']);
         $this->assertEquals('1', $record['pk_1']);
         $this->assertEquals('1', $record['pk_2']);
-         
     }
 
     public function testInsertOnDuplicateKeyWithValidateDataType()
@@ -592,39 +550,34 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
         $data = $this->createMediaRecordData($legacy_mapping);
         $tm = $this->tableManager;
-        
+
         $medias = $tm->table('media');
         $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
 
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'), $validate = true);
         $pk = $record['media_id'];
         $this->assertTrue($medias->exists($pk));
-        
     }
-    
-    
+
     public function testInsertWithValidateDataType()
     {
         $legacy_mapping = 'phpunit_testInsert';
         $medias = $this->tableManager->table('media');
-        $data   = $this->createMediaRecordData($legacy_mapping);
-        $media  = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
+        $data = $this->createMediaRecordData($legacy_mapping);
+        $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
         if ($media) {
             $medias->delete($media['media_id']);
         }
 
         $data['filename'] = 'my_test_filename';
-        
+
         $media = $medias->insert($data, $validate = true);
         $this->assertEquals($data['filename'], $media['filename']);
-
-         
     }
-    
 
     public function testUpdateWithValidateDataType()
     {
@@ -633,16 +586,13 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias = $tm->table('media');
         $data = $this->createMediaRecordData($legacy_mapping);
         $record = $medias->insertOnDuplicateKey($data);
-        
+
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
         $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']), null, $validate = true);
         $this->assertEquals(1, $affectedRows);
-        
-        
     }
-    
-    
+
     public function testUpdate()
     {
         $legacy_mapping = 'phpunit_testUpdate_1';
@@ -650,12 +600,12 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias = $tm->table('media');
         $data = $this->createMediaRecordData($legacy_mapping);
         $record = $medias->insertOnDuplicateKey($data);
-        
+
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
         $affectedRows = $medias->update(array('filename' => 'phpunit'), array('media_id' => $media['media_id']));
         $this->assertEquals(1, $affectedRows);
-        
+
         $new_media = $medias->find($media['media_id']);
 
         $this->assertEquals($new_media['filename'], 'phpunit');
@@ -666,31 +616,31 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $affectedRows = $medias->update(new \ArrayObject(array('filename' => 'phpunit')), array('media_id' => $media['media_id']));
         $this->assertEquals(1, $affectedRows);
-        
+
         $new_media = $medias->find($media['media_id']);
 
         $this->assertEquals($new_media['filename'], 'phpunit');
-        
+
         // test mass update
-        
+
         $affected = $medias->update(array('created_by' => null), true);
         $this->assertEquals(1, $affectedRows);
-        
+
         $tm->transaction()->start();
-        
+
         $affected = $medias->update(array('created_by' => 'unit_rollback'), true);
-        
+
         $results = $medias->search()->limit(10)->where(array('created_by' => 'unit_rollback'))->toArray();
         $this->assertEquals(10, count($results));
         $count = $medias->count();
         $count_matching = $medias->countBy(array('created_by' => 'unit_rollback'));
         $this->assertEquals($count, $count_matching);
-        
+
         $tm->transaction()->rollback();
-        
+
         $count_matching = $medias->countBy(array('created_by' => 'unit_rollback'));
         $this->assertEquals(0, $count_matching);
-        
+
         // On a table with multiple pk
 
         $tm = $this->tableManager;
@@ -714,8 +664,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1', $record['pk_1']);
         $this->assertEquals('1', $record['pk_2']);
         $this->assertEquals('aaaaaa', $record['comment']);
-        
-        
     }
 
     /**
@@ -730,23 +678,21 @@ class TableTest extends \PHPUnit_Framework_TestCase
      * # - UPDATE `test_table_with_non_null` SET `non_null_column` = NULL WHERE `id` = '1000'
      * # MYSQL ACCEPTS !!!!
      *
-    public function testUpdateThrowsNotNullException()
-    {
-        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\NotNullException');
-        $ttwnn = $this->tableManager->table('test_table_with_non_null');
-        $data = array('non_null_column' => 'test');
-        $record = $ttwnn->insert($data);
-        $data = array(
-            'id' => $record['id'],
-            'non_null_column' => null
-        );
+      public function testUpdateThrowsNotNullException()
+      {
+      $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\NotNullException');
+      $ttwnn = $this->tableManager->table('test_table_with_non_null');
+      $data = array('non_null_column' => 'test');
+      $record = $ttwnn->insert($data);
+      $data = array(
+      'id' => $record['id'],
+      'non_null_column' => null
+      );
 
-        $affected = $ttwnn->update($data, array('id' => $record['id']));
+      $affected = $ttwnn->update($data, array('id' => $record['id']));
 
-    }
-    */
-    
-    
+      }
+     */
     public function testUpdateThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -755,32 +701,30 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $medias = $tm->table('media');
         $data = $this->createMediaRecordData($legacy_mapping);
         $record = $medias->insertOnDuplicateKey($data);
-        
+
         $media = $medias->findOneBy(array('legacy_mapping' => $data['legacy_mapping']));
 
         $affectedRows = $medias->update('cool', array('media_id' => $media['media_id']));
-    
     }
-    
-    
+
     public function testInsertOnDuplicateKey()
     {
         $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
         $data = $this->createMediaRecordData($legacy_mapping);
         $tm = $this->tableManager;
-        
+
         $medias = $tm->table('media');
         $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
 
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $pk = $record['media_id'];
         $this->assertTrue($medias->exists($pk));
 
-        
+
         $data['filesize'] = 8888;
         $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $this->assertEquals(8888, $record['filesize']);
@@ -790,9 +734,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $medias->insertOnDuplicateKey($data);
         $this->assertEquals(5000, $record['filesize']);
         $this->assertEquals($pk, $record['media_id']);
-        
+
         // TEsting with primary key set
-        
+
         $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
         $data = $this->createMediaRecordData($legacy_mapping);
         $medias = $tm->table('media');
@@ -801,13 +745,13 @@ class TableTest extends \PHPUnit_Framework_TestCase
             $medias->delete($media['media_id']);
         }
         $media = $medias->insert($data);
-        
+
         $data['media_id'] = $media['media_id'];
         $data['filename'] = 'coolcool';
         $new_media = $medias->insertOnDuplicateKey($data);
         $this->assertEquals('coolcool', $new_media['filename']);
         $this->assertEquals($media['media_id'], $new_media['media_id']);
-        
+
         // Testing with unique constraint
         $ttwuk = $tm->table('test_table_with_unique_key');
         $multi_key = array(
@@ -820,14 +764,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         if ($record) {
             $ttwuk->deleteBy($multi_key);
         }
-        
+
         $record = $ttwuk->insert($data);
-        
+
         $new_record = $ttwuk->insertOnDuplicateKey($data);
         $this->assertEquals($multi_key['unique_id_1'], $new_record['unique_id_1']);
         $this->assertEquals($multi_key['unique_id_2'], $new_record['unique_id_2']);
         $this->assertEquals('cool', $new_record['comment']);
-        
+
         $data['id'] = $new_record['id'];
         $data['comment'] = null;
 
@@ -836,47 +780,38 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($multi_key['unique_id_2'], $new_record['unique_id_2']);
         $this->assertEquals(null, $new_record['comment']);
         $this->assertEquals($data['id'], $new_record['id']);
-        
     }
-    
+
     public function testInsertOnDuplicateKeyThrowsColumnNotFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\ColumnNotFoundException');
-        
+
         $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
         $data = $this->createMediaRecordData($legacy_mapping);
         $tm = $this->tableManager;
-        
+
         $medias = $tm->table('media');
         $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
 
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $data['unexistent_column'] = 'cool';
         $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
-
     }
-    
-    
+
     public function testInsertOnDuplicateKeyThrowsRuntimeException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RuntimeException');
-        
+
         // Testing in non insertable record
         $data = array(
-           'non_insertable_column' => 10
+            'non_insertable_column' => 10
         );
         $ttwt = $this->tableManager->table('test_table_with_trigger');
         $ttwt->insertOnDuplicateKey($data);
-        
-
     }
-    
-
-    
-
 
     public function testAll()
     {
@@ -884,67 +819,49 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $rs = $tm->all();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
         $count = $tm->count();
-        
+
         $this->assertEquals($count, count($rs));
     }
-
-
-
-
-
-
-
 
     public function testGetRelations()
     {
         $relations = $this->tableManager->table('product')->getRelations();
-        
+
         $this->assertInternalType('array', $relations);
         $this->assertArrayHasKey('brand_id', $relations);
         $this->assertArrayHasKey('referenced_column', $relations['unit_id']);
         $this->assertArrayHasKey('referenced_table', $relations['unit_id']);
-        
+
         $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
-        
     }
-
-
-
 
     public function testGetPrimaryKeys()
     {
-        
+
         $tm = $this->tableManager;
         $ttwm = $tm->table('test_table_with_multipk');
         $pks = $ttwm->getPrimaryKeys();
         $this->assertInternalType('array', $pks);
         $this->assertEquals('pk_1', $pks[0]);
         $this->assertEquals('pk_2', $pks[1]);
-        
     }
-    
+
     public function testGetPrimaryKeyThrowsMultiplePrimaryKeysFoundException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\MultiplePrimaryKeysFoundException');
         $tm = $this->tableManager;
         $ttwm = $tm->table('test_table_with_multipk');
         $pks = $ttwm->getPrimaryKey();
-        
     }
 
     public function testGetPrefixedTableName()
     {
-        
+
         $tm = $this->tableManager;
         $ttwm = $tm->table('test_table_with_multipk');
         $name = $ttwm->getPrefixedTableName();
         $this->assertEquals('test_table_with_multipk', $name);
-        
     }
-
-
-
-    
 
     /**
      * Return a media record suitable for database insertion
@@ -956,13 +873,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $container = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'));
         $container_id = $container['container_id'];
 
-        $data  = array(
-            'filename'  => 'phpunit_test.pdf',
+        $data = array(
+            'filename' => 'phpunit_test.pdf',
             'filemtime' => 111000,
-            'filesize'  => 5000,
+            'filesize' => 5000,
             'container_id' => $container_id,
             'legacy_mapping' => $legacy_mapping
         );
         return $data;
     }
+
 }

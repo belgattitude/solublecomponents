@@ -161,7 +161,7 @@ class Table
      * @param  string $combination One of the OP_* constants from Predicate\PredicateSet
      *
      * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
-     * @throws Exception\UnexpectedValueException when more than one record match the predicate
+     * @throws Exception\MultipleMatchesException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
      *
      * @return Record|false
@@ -206,7 +206,7 @@ class Table
             return false;
         }
         if (count($results) > 1) {
-            throw new Exception\UnexpectedValueException(__METHOD__ . ": return more than one record");
+            throw new Exception\MultipleMatchesException(__METHOD__ . ": return more than one record");
         }
 
         $record = $this->record($results[0]);
@@ -222,7 +222,7 @@ class Table
      *
      * @throws Exception\NotFoundException when the record is not found
      * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
-     * @throws Exception\UnexpectedValueException when more than one record match the predicate
+     * @throws Exception\MultipleMatchesException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
      *
      * @return Record
