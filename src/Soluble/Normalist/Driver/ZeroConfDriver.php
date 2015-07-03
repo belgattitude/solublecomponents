@@ -73,13 +73,16 @@ class ZeroConfDriver implements DriverInterface
         if ($this->params['path'] == '') {
             $this->params['path'] = sys_get_temp_dir();
         }
+        if (!is_dir($this->params['path'])) {
+            $path = (string) $this->params['path'];
+            throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
+        }
         $this->checkParams();
     }
 
     /**
      * Checks model configuration params
      * @throws Exception\InvalidArgumentException
-     * @throws Exception\ModelPathNotFoundException
      *
      */
     protected function checkParams()
@@ -97,14 +100,8 @@ class ZeroConfDriver implements DriverInterface
         if (!is_string($this->params['path']) || trim($this->params['path']) == '') {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["path"] parameter expects valid string value');
         }
-        if ($this->params['permissions'] != '') {
-            if (!is_scalar($this->params['permissions'])) {
-                throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
-            }
-        }
-        if (!is_dir($this->params['path'])) {
-            $path = (string) $this->params['path'];
-            throw new Exception\ModelPathNotFoundException(__METHOD__ . " Model directory not found '" . $path . "'");
+        if ($this->params['permissions'] != '' && !is_scalar($this->params['permissions'])) {
+            throw new Exception\InvalidArgumentException(__METHOD__ . ' $params["permission"] parameter expects string|interger|octal value');
         }
     }
 
@@ -269,5 +266,4 @@ class ZeroConfDriver implements DriverInterface
         $this->metadata = $metadata;
         return $this;
     }
-
 }

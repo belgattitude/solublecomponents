@@ -161,6 +161,25 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('unique_legacy_mapping_idx', $unique);
         $this->assertArrayHasKey('unique_reference_idx', $unique);
         $this->assertArrayHasKey('unique_slug_idx', $unique);
+
+        
+        $unique = $this->metadata->getUniqueKeys('product', $include_pk=true);
+        $this->assertInternalType('array', $unique);
+        $this->assertEquals(4, count($unique));
+        $this->assertArrayHasKey('PRIMARY', $unique);
+        $this->assertArrayHasKey('unique_legacy_mapping_idx', $unique);
+        $this->assertArrayHasKey('unique_reference_idx', $unique);
+        $this->assertArrayHasKey('unique_slug_idx', $unique);
+        
+        $unique = $this->metadata->getUniqueKeys('test_table_without_pk');
+        $this->assertInternalType('array', $unique);
+        $this->assertEquals(0, count($unique));
+        
+        // No unqiue contraints, no primary key
+        $unique = $this->metadata->getUniqueKeys('test_table_without_pk', $include_pk=true);
+        $this->assertInternalType('array', $unique);
+        $this->assertEquals(0, count($unique));
+        
         
         
     }

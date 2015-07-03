@@ -52,6 +52,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->tableManager, $tm);
     }
 
+    
     public function testConstructThrowsInvalidArgumentException()
     {
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
@@ -73,6 +74,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $table = new Table(" \n", $this->tableManager);
     }
 
+    
     public function testRecord()
     {
         $tm = $this->tableManager;
@@ -197,6 +199,18 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->find(984546465);
         $this->assertFalse($record);
     }
+    /*
+    public function testFindOneByThrowsZendInvalidArgumentException()
+    {
+        $this->setExpectedException('\Zend\Db\Sql\Exception\InvalidArgumentException');
+        
+        $table = $this->tableManager->table('product_category');
+        $record = $table->findOneBy(1);
+        
+    }
+     * 
+     */
+    
 
     public function testFindOneByThrowsColumnNotFoundException()
     {
@@ -545,23 +559,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1', $record['pk_2']);
     }
 
-    public function testInsertOnDuplicateKeyWithValidateDataType()
-    {
-        $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
-        $data = $this->createMediaRecordData($legacy_mapping);
-        $tm = $this->tableManager;
-
-        $medias = $tm->table('media');
-        $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
-
-        if ($media) {
-            $medias->delete($media['media_id']);
-        }
-
-        $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'), $validate = true);
-        $pk = $record['media_id'];
-        $this->assertTrue($medias->exists($pk));
-    }
 
     public function testInsertWithValidateDataType()
     {
@@ -707,6 +704,25 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $affectedRows = $medias->update('cool', array('media_id' => $media['media_id']));
     }
 
+    
+    public function testInsertOnDuplicateKeyWithValidateDataType()
+    {
+        $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";
+        $data = $this->createMediaRecordData($legacy_mapping);
+        $tm = $this->tableManager;
+
+        $medias = $tm->table('media');
+        $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
+
+        if ($media) {
+            $medias->delete($media['media_id']);
+        }
+        
+        $record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'), $validate = true);
+        $pk = $record['media_id'];
+        $this->assertTrue($medias->exists($pk));
+    }
+    
     public function testInsertOnDuplicateKey()
     {
         $legacy_mapping = "phpunit_testInsertOnDuplicateKeyUpdate";

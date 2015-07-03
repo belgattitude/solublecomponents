@@ -65,23 +65,36 @@ class InformationSchema extends Source\AbstractSource
 
 
     /**
-     * Get unique keys on table
+     * Return all uniques keys defined for a table.
+     *
+     * By default it does not include the primary key, simply set
+     * the $include_primary parameter to true to get it. In this case
+     * the associative key will be 'PRIMARY'.
+     *
+     * If no unique keys can be found returns an empty array
+     *
      *
      * @param string $table table name
-     * @param boolean $include_primary include primary keys in the list
+     * @param boolean $include_primary include primary keys in the list (indexed as PRIMARY)
      * @throws Exception\InvalidArgumentException
      * @throws Exception\ErrorException
-     * @throws Exception\NoPrimaryKeyException
      * @throws Exception\ExceptionInterface
      * @throws Exception\TableNotFoundException
-     * @return array
+     * @return array associative array 'index_name' => ['col1', 'col2'], 'index_name_2' => ['col3']
      */
     public function getUniqueKeys($table, $include_primary = false)
     {
         $this->loadCacheInformation($table);
         $uniques = (array) self::$localCache[$this->schema]['tables'][$table]['unique_keys'];
         if ($include_primary) {
-            //$uniques[] =
+            try {
+                $pks = $this->getPrimaryKeys($table);
+                if (count($pks) > 0) {
+                    $uniques = array_merge($uniques, ['PRIMARY' => $pks]);
+                }
+            } catch (Exception\NoPrimaryKeyException $e) {
+                // Ignore exception
+            }
         }
         return $uniques;
     }

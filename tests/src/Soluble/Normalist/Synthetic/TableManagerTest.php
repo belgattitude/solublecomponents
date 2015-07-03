@@ -55,18 +55,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     }
     
     
-    public function testWithPimpleContainer() 
-    {
-        $container = new \Pimple\Container();
-        $container['adapter'] = function($c) {
-            return $this->adapter;
-        };
-        $container['table_manager'] = function(\Pimple\Container $c) {
-            $driver = new Driver\ZeroConfDriver($c['adapter']);
-            return new TableManager($driver);
-        };
-        $this->assertInstanceOf('Soluble\Normalist\Synthetic\TableManager', $container['table_manager']);
-    }
     
     
     public function testTable()

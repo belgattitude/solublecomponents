@@ -104,7 +104,7 @@ class Table
     {
         return new TableSearch($this->select($table_alias), $this);
     }
-
+    
     /**
      * Return all records in the table
      *
@@ -163,6 +163,7 @@ class Table
      * @throws Exception\ColumnNotFoundException when a column in the predicate does not exists
      * @throws Exception\MultipleMatchesException when more than one record match the predicate
      * @throws Exception\InvalidArgumentException when the predicate is not correct / invalid column
+     * @throws \Zend\Db\Sql\Exception\InvalidArgumentException
      *
      * @return Record|false
      */
@@ -497,8 +498,8 @@ class Table
 
         return $this->findOrFail($id);
     }
-
-
+    
+    
     /**
      * Insert on duplicate key
      *
@@ -517,7 +518,44 @@ class Table
     public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes = false)
     {
         $platform = $this->tableManager->getDbAdapter()->platform;
+/*
+        $unique_keys   = $this->tableManager->metadata()->getUniqueKeys($this->prefixed_table);
+        $unique_keys[]
+        $primary_keys = $this->getPrimaryKeys();
+        
+        $uniques = array_merge(array($unique_keys, 'primary_keys' => $primary_keys));
+        $cols = ['index2', 'index1'];
+        $data = ['index1' => 'coool', 'index2' => 'hello'];
+        
 
+        $unique_found = false;
+        $data_columns = array_keys($data);
+        var_dump($uniques); 
+        while ($cols = array_pop($uniques) && !$unique_found) {
+            
+            var_dump($cols);
+            die();
+            $intersect = array_intersect($cols, $data_columns);
+            $unique_found = ($intersect == $data_columns);
+        }
+
+        dump($intersect);
+        
+        die();
+        $intersect = array_intersect($cols, array_keys($data));
+        dump($intersect);
+        dump($intersect == $cols);
+        die();
+        
+        foreach($unique_keys as $index => $columns) {
+        //    if (array_diff_key($duplicate_exclude, $d))
+            
+        }
+dump($unique_keys);
+dump($primary_keys);
+die();
+ * 
+ */
         $primary = $this->getPrimaryKey();
 
         if ($data instanceof ArrayObject) {
@@ -535,10 +573,16 @@ class Table
 
         $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
-
         $sql_string = $this->sql->getSqlStringForSqlObject($insert);
+        
+        
         $extras = array();
-        $excluded_columns = array_merge($duplicate_exclude, array($primary));
+        
+        /**
+         * No reason to exclude primary key from
+         */
+        //$excluded_columns = array_merge($duplicate_exclude, array($primary));
+        $excluded_columns = $duplicate_exclude;
 
         foreach ($d as $column => $value) {
             if (!in_array($column, $excluded_columns)) {

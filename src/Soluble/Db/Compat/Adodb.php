@@ -9,7 +9,6 @@
 namespace Soluble\Db\Compat;
 
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Adapter\Driver;
 
 class Adodb
 {

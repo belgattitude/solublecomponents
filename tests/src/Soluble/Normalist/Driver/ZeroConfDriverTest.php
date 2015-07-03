@@ -142,7 +142,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         try {
             $options = array('path' => 1);
             $driver = new ZeroConfDriver($this->adapter, $options);
-        } catch (Exception\InvalidArgumentException $e) {
+        } catch (Exception\ModelPathNotFoundException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);

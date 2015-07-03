@@ -340,17 +340,59 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($md['min(filemtime)']->isGroup());
         $this->assertTrue($md['max(filemtime)']->isGroup());
 
-        // WARNING BUGS IN MYSQL (should be true)
-        $this->assertFalse($md['avg(filemtime)']->isGroup());
-        $this->assertFalse($md['avg_time']->isGroup());
-        $this->assertFalse($md['files']->isGroup());
-        $this->assertFalse($md['group_concat(filename)']->isGroup());
-
+        
         // Various type returned by using functions
         $this->assertEquals(Column\Type::TYPE_INTEGER, $md['count_media']->getDatatype());
         $this->assertEquals(Column\Type::TYPE_INTEGER, $md['max_time']->getDatatype());
         $this->assertEquals(Column\Type::TYPE_INTEGER, $md['min_time']->getDatatype());
         $this->assertEquals(Column\Type::TYPE_DECIMAL, $md['avg_time']->getDatatype());
+        
+        
+        // WARNING BUGS IN MYSQL (should be true)
+        
+        $client_info = mysqli_get_client_info();
+        $client_version = mysqli_get_client_version();
+        if (preg_match('/mysqlnd/', strtolower($client_info))) {
+            $mysqli_client = 'mysqlnd';
+        } elseif (preg_match('/mariadb/', strtolower($client_info))) {
+            $mysqli_client = "libmariadb";
+        } else {
+            $mysqli_client = "libmysql";
+        }
+        
+        
+        switch ($mysqli_client) {
+            
+            case 'mysqlnd':
+                // as PHP 5.3 -> 5.6 there's a bug in the
+                // mysqlnd extension... the following assertions
+                // are wrong !!!!
+                
+                //$this->markTestIncomplete("Does not test exevything");
+                
+                $this->assertFalse($md['avg(filemtime)']->isGroup());
+                $this->assertFalse($md['avg_time']->isGroup());
+                $this->assertFalse($md['files']->isGroup());
+                $this->assertFalse($md['group_concat(filename)']->isGroup());
+                
+                
+                break;
+            case 'libmariadb':
+            case 'libmysql':
+            default:
+                
+                //$this->markTestIncomplete("Does not test exevything");
+                $this->assertTrue($md['avg(filemtime)']->isGroup());
+                $this->assertTrue($md['avg_time']->isGroup());
+                
+                // see those cases
+                $this->assertFalse($md['files']->isGroup());
+                $this->assertFalse($md['group_concat(filename)']->isGroup());
+                
+            
+        }
+
+        $this->markTestIncomplete("Warning, test was made on client '$mysqli_client', may differs when using mysqlnd, libmariadb, libmysql");
 
     }
 
