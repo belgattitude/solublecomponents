@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\Writer;
 
 use Soluble\FlexStore\Source\Zend\SqlSource;
 use Soluble\FlexStore\Store;
-
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 
@@ -13,7 +12,6 @@ use Zend\Db\Sql\Expression;
  */
 class CSVWriterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var CSVWriter
      */
@@ -51,7 +49,6 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         
 
         $this->csvWriter = new CSVWriter($this->store);
-        
     }
 
     /**
@@ -116,7 +113,6 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDataLatin1Charset()
     {
-        
         $enclosure = '"';
         $this->csvWriter->setOptions(
             array(
@@ -164,7 +160,6 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
     
     public function testGetDataLatin1CharsetThrowsCharsetException()
     {
-        
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $this->setExpectedException('Soluble\FlexStore\Writer\Exception\CharsetConversionException');
 
@@ -186,14 +181,9 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
                         )
             );
             $data = $writer->getData();
-            
-            
         } else {
             $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
-        
-        
-        
     }
         
 
@@ -283,7 +273,6 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $this->csvWriter->setStore(new Store($this->getSource($select)));
         $data = $this->csvWriter->getData();
         $this->assertContains('alpha\; beta\;', $data);
-
     }
 
     public function testGetDataEnclosureDelimiterWithoutEscape()
@@ -313,7 +302,6 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $data = $this->csvWriter->getData();
 
         $this->assertContains('"alpha; beta;"', $data);
-
     }
     
     
@@ -323,7 +311,5 @@ class CSVWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf("Soluble\FlexStore\Writer\Http\SimpleHeaders", $headers);
         $this->assertEquals('text/csv', $headers->getContentType());
         $this->assertEquals('UTF-8', strtoupper($headers->getCharset()));
-        
-        
     }
 }

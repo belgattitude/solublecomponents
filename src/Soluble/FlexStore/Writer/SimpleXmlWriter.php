@@ -11,7 +11,6 @@ use Soluble\FlexStore\Options;
 
 class SimpleXmlWriter extends AbstractSendableWriter
 {
-
     /**
      *
      * @var SimpleHeaders

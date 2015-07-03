@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\Formatter;
 
 interface FormatterNumberInterface
 {
-    
     /**
      * Set decimals
      *

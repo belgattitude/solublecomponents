@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Formatter;
  */
 class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var NumberFormatter
      */
@@ -28,7 +27,6 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testConstruct()
@@ -46,7 +44,6 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     
     public function testGetSet()
     {
-        
         $f = $this->nf;
         $this->assertInternalType('string', $f->getLocale());
         $this->assertEquals($f->getLocale(), substr(\Locale::getDefault(), 0, 5));
@@ -60,12 +57,10 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
         $this->assertEquals(3, $f->getDecimals());
-
     }
     
     public function testFormat()
     {
-        
         $params = array(
             'locale' => 'fr_FR',
             'pattern' => '#,##0.###',
@@ -90,8 +85,6 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
         $f = new NumberFormatter($params);
         $this->assertEquals('1,123.46', $f->format(1123.4567));
-        
-        
     }
 
     public function testConstructThrowsInvalidArgumentException()

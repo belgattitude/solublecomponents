@@ -13,7 +13,6 @@ use Soluble\Normalist\Synthetic\Exception;
  */
 class ResultSetTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ResultSet
      */
@@ -50,7 +49,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     public function testExecuteIterable()
@@ -61,7 +59,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         foreach ($rs as $idx => $record) {
             $this->assertEquals(0, $idx);
             $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
-            
         }
         //die('cool');
         //$arr = $rs->toArray();
@@ -84,13 +81,10 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $results);
         $decoded = json_decode($results, $assoc = true);
         $this->assertInternalType('array', $decoded);
-        
-        
     }
     
     public function testCurrentWithCompleteRecordDefinition()
     {
-
         $unitTable = $this->tableManager->table('product_unit');
         $select = $unitTable->select();
         $select->columns(array(
@@ -116,25 +110,21 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $resultSet = new ResultSet($select, $unitTable);
         $record = $resultSet->current();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
-        
     }
     
     
     public function testCurrentWithStarRecordDefinition()
     {
-
         $unitTable = $this->tableManager->table('product_unit');
         $select = $unitTable->select();
         $resultSet = new ResultSet($select, $unitTable);
         $record = $resultSet->current();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\Record', $record);
-        
     }
     
 
     public function testCurrentIncompleteRecordDefinitionThrowsLogicException()
     {
-
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
         $unitTable = $this->tableManager->table('product_unit');
         $select = $unitTable->select();
@@ -150,7 +140,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     
     public function testCount()
     {
-        
         $rs = $this->table->search()->limit(10)->execute();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
         $count = $rs->count();
@@ -170,12 +159,10 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         
         // Test countable interface
         $this->assertEquals(10, count($rs));
-
     }
 
     public function testBuffer()
     {
-        
         $rs = $this->table->search()->limit(10)->execute();
         $this->assertInstanceOf('Soluble\Normalist\Synthetic\ResultSet\ResultSet', $rs);
         $rs->buffer();
@@ -198,6 +185,5 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         // Ensure results can be used
         $array = $rs->toArray();
         $this->assertEquals(10, count($array));
-        
     }
 }

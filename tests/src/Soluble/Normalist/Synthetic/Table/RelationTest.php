@@ -6,7 +6,6 @@ use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\TableManager;
 use Soluble\Db\Metadata\Source;
 use Soluble\Db\Metadata\Exception;
-
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Where;
 use \Zend\Db\Sql\Predicate;
@@ -16,7 +15,6 @@ use \Zend\Db\Sql\Predicate;
  */
 class RelationTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var TableManager
      */
@@ -59,7 +57,6 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         
         
         $this->table = $this->tableManager->table('product_category');
-        
     }
 
     /**
@@ -68,12 +65,10 @@ class RelationTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testGetParent()
     {
-        
         $data = $this->createMediaRecordData('phpunit_testGetParent');
         $medias = $this->tableManager->table('media');
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
@@ -81,26 +76,22 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $parent = $medias->relation()->getParent($media, "media_container");
         
         $this->assertEquals($media['container_id'], $parent['container_id']);
-        
     }
 
     
     
     public function testGetParentThrowsRelationNotFoundException()
     {
-        
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RelationNotFoundException');
         $data = $this->createMediaRecordData('phpunit_testGetParent');
         $medias = $this->tableManager->table('media');
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
 
         $parent = $medias->relation()->getParent($media, "product_category");
-        
     }
 
     public function testGetParentThrowsLogicException()
     {
-        
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
         $data = $this->createMediaRecordData('phpunit_testGetParent');
         $medias = $this->tableManager->table('media');
@@ -108,20 +99,17 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $media->delete();
 
         $parent = $medias->relation()->getParent($media, "media_container");
-        
     }
     
     
     public function testGetParentThrowsTableNotFoundException2()
     {
-        
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RelationNotFoundException');
         $data = $this->createMediaRecordData('phpunit_testGetParent');
         $medias = $this->tableManager->table('media');
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
 
         $parent = $medias->relation()->getParent($media, "ptablenotexists");
-        
     }
     
     

@@ -7,15 +7,12 @@ namespace Soluble\FlexStore\Column;
  */
 class ColumnTest extends \PHPUnit_Framework_TestCase
 {
-
-    
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
-        
     }
 
     /**
@@ -24,7 +21,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     public function testGetProperties()
@@ -90,7 +86,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         );
         
         $column = new Column('cool', $properties);
-        
     }
     
     public function setTypeThrowsInvalidArgumentException()
@@ -99,7 +94,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $type = new \stdClass();
         $column = new Column('cool');
         $column->setType($type);
-        
     }
 
     public function testSetPropertiesThrowsInvalidArgumentException2()
@@ -113,7 +107,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         
         $column = new Column('cool');
         $column->setProperties($properties);
-        
     }
     
     
@@ -175,9 +168,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($column->isEditable());
         $column->setEditable(false);
         $this->assertFalse($column->isEditable());
-        
-        
-        
     }
 
 
@@ -185,14 +175,12 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $column = new Column(array('cool'));
-        
     }
 
     public function testConstructThrowsInvalidArgumentException2()
     {
         $this->setExpectedException('Soluble\FlexStore\Column\Exception\InvalidArgumentException');
         $column = new Column(" ");
-        
     }
     
     

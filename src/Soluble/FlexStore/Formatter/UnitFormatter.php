@@ -8,7 +8,6 @@ use ArrayObject;
 
 class UnitFormatter extends NumberFormatter
 {
-
     /**
      *
      * @var string|null

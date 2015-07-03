@@ -13,7 +13,6 @@ use Soluble\FlexStore\Source\Zend\SqlSource;
  */
 class ResultSetTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ResultSet
      */
@@ -97,8 +96,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $store = $this->getStore($select);
         $resultset = $store->getData();
         $this->assertInstanceOf('Soluble\FlexStore\Source\AbstractSource', $resultset->getSource());
-        
-        
     }
 
     public function testGetFieldCount()
@@ -123,8 +120,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         $store = $this->getStore($select);
         $resultset = $store->getData();
         $this->assertEquals(14, $resultset->getFieldCount());
-        
-        
     }
     
     public function testGetTotal()
@@ -157,7 +152,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals(93, $total);
         $this->assertEquals(10, count($resultset));
-        
     }
     
 
@@ -180,7 +174,6 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPaginator()
     {
-        
         $select = new \Zend\Db\Sql\Select();
         $select->from('product_brand');
  

@@ -11,7 +11,6 @@ use ArrayObject;
 
 class Result implements ColumnSettableInterface
 {
-
     /**
      *
      * @var ArrayObject

@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\I18n;
 
 interface LocalizableInterface
 {
-
     /**
      * Get locale
      *

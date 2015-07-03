@@ -7,15 +7,12 @@ namespace Soluble\FlexStore;
  */
 class FormatterTest extends \PHPUnit_Framework_TestCase
 {
-
-
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
-        
     }
 
     /**
@@ -24,7 +21,6 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testCreate()
@@ -45,8 +41,6 @@ class FormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Soluble\FlexStore\Formatter\FormatterInterface', $n);
         $this->assertInstanceOf('Soluble\FlexStore\Formatter\FormatterNumberInterface', $n);
         $this->assertInstanceOf('Soluble\FlexStore\Formatter\NumberFormatter', $n);
-        
-        
     }
     
     public function testCreateThrowsInvalidArgumentException()

@@ -11,7 +11,6 @@ use Soluble\Db\Metadata\Source;
  */
 class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ZeroConfDriver
      */
@@ -40,13 +39,11 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
 
     public function testWithOptionalSchema()
     {
-        
         $schema = $this->adapter->getCurrentSchema();
         $options = array('schema' => $schema);
         $driver = new ZeroConfDriver($this->adapter, $options);
@@ -54,7 +51,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $driver->clearMetadataCache();
         unlink($driver->getModelsConfigFile());
         $md = $driver->getMetadata();
-        
     }
     
     public function testSaveModelDefinition()
@@ -79,7 +75,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         } catch (\Soluble\Normalist\Driver\Exception\ModelFileNotWritableException $e) {
             chmod($file, 0666);
             $catched = true;
-            
         }
         $this->assertTrue($catched);
     }
@@ -103,7 +98,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         } catch (\Soluble\Normalist\Driver\Exception\ModelFileNotWritableException $e) {
             chmod($file, 0666);
             $catched = true;
-            
         }
         $this->assertTrue($catched);
     }
@@ -174,7 +168,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
             $catched=true;
         }
         $this->assertTrue($catched);
-        
     }
     
     
@@ -190,7 +183,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $md = $this->driver->getMetadata();
         $file = $this->driver->getModelsConfigFile();
         $this->assertTrue(file_exists($file));
-        
     }
 
     public function testGetModelsDefinition()
@@ -216,10 +208,9 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $catched = false;
         try {
             $def = $this->driver->getModelsDefinition();
-            
         } catch (Exception\ModelFileCorruptedException $e) {
             $catched = true;
-        } 
+        }
         $this->assertTrue($catched);
         
         // Second test
@@ -238,7 +229,6 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         
         
         //
-        
     }
 
 
@@ -259,12 +249,9 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
 
     public function testSetMetadata()
     {
-        
         $md = new Source\Mysql\InformationSchema($this->adapter);
         $this->driver->clearMetadataCache();
         $this->driver->setMetadata($md);
         $md = $this->driver->getMetadata();
-        
-        
     }
 }

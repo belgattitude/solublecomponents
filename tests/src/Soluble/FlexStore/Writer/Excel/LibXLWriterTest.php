@@ -12,9 +12,6 @@ use Soluble\FlexStore\Formatter;
 
 class LibXLWriterTest extends \PHPUnit_Framework_TestCase
 {
-
-   
-
     /**
      * @var SqlSource
      */
@@ -32,14 +29,12 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-
         if (!extension_loaded('excel')) {
             $this->markTestSkipped(
                 "Excel extension not available."
             );
         } else {
             $this->adapter = \SolubleTestFactories::getDbAdapter();
-
         }
     }
 
@@ -49,7 +44,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTestSource()
     {
-
         $select = new Select($this->adapter);
         $select->from(array('p' => 'product'), array())
                 ->join(array('ppl' => 'product_pricelist'), 'ppl.product_id = p.product_id', array(), Select::JOIN_LEFT)
@@ -97,7 +91,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testColumnModelWithColumnExclusion()
     {
-        
         $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test5.xlsx';
         
         $store = new Store($this->getTestSource());
@@ -215,7 +208,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(number_format(22.00, 2), number_format($i2->getValue(), 2));
         $this->assertTrue("22.00 %" === $i2->getFormattedValue());
         $this->assertEquals('n', $i2->getDataType());
-        
     }
     
     
@@ -224,7 +216,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testColumnModel()
     {
-        
         $output_file = \SolubleTestFactories::getCachePath() . DIRECTORY_SEPARATOR . 'tmp_phpunit_lbxl_test4.xlsx';
         
         $store = new Store($this->getTestSource());
@@ -308,7 +299,6 @@ class LibXLWriterTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals('15:10:59', $q2->getFormattedValue());
         $this->assertEquals('s', $q2->getDataType());
-        
     }
 
      

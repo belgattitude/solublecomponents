@@ -7,7 +7,6 @@ use Soluble\FlexStore\Formatter\FormatterInterface;
 
 class Column implements ColumnSettableInterface
 {
-
     /**
      *
      * @var string

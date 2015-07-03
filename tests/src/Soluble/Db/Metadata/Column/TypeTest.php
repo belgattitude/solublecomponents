@@ -7,7 +7,6 @@ namespace Soluble\Db\Metadata\Column;
  */
 class TypeTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Type
      */
@@ -19,7 +18,6 @@ class TypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        
     }
 
     /**
@@ -28,7 +26,6 @@ class TypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testCreateColumnDefinitionThrowsUnsupportedDatatypeException()

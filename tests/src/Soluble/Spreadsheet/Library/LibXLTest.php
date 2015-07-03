@@ -10,7 +10,6 @@ use ExcelBook;
  */
 class LibXLTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var LibXL
      */
@@ -48,7 +47,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped(
                 "Excel extension not available, skipping getExcelBook"
             );
-            
         } else {
             $valid_license = \SolubleTestFactories::getLibXLLicense();
             
@@ -59,8 +57,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('ExcelBook', $bookXLSX);
             $this->assertInstanceOf('ExcelBook', $bookXLS);
         }
-        
-        
     }
     
 
@@ -69,16 +65,13 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
     {
         $libxl = new LibXL($this->dummy_license);
         $this->assertEquals($this->dummy_license, $libxl->getLicense());
-        
     }
 
     public function testSetLicense()
     {
-        
         $libxl = new LibXL();
         $libxl->setLicense($this->dummy_license);
         $this->assertEquals($this->dummy_license, $libxl->getLicense());
-        
     }
 
     public function testGetExcelBookThrowsInvalidArgumentException()
@@ -87,7 +80,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped(
                 "Excel extension not available, skipping getExcelBook"
             );
-            
         } else {
             $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
             $valid_license = \SolubleTestFactories::getLibXLLicense();
@@ -102,7 +94,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped(
                 "Excel extension not available, skipping getExcelBook"
             );
-            
         } else {
             $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
             $valid_license = \SolubleTestFactories::getLibXLLicense();
@@ -123,7 +114,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\Spreadsheet\Library\Exception\InvalidArgumentException');
         $libxl = new LibXL();
         $libxl->setLicense(array("cool"));
-        
     }
     
     public function testGetDefaultLicense()
@@ -140,7 +130,6 @@ class LibXLTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($this->dummy_license, $libXL2->getDefaultLicense());
         $this->assertEquals($new_license, $libXL2->getLicense());
-        
     }
 
 

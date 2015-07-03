@@ -9,7 +9,6 @@ use Soluble\Japha\Bridge\PhpJavaBridge as Pjb;
  */
 class DriverManagerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var DriverManager
      */
@@ -30,7 +29,6 @@ class DriverManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testGetDriverManager()

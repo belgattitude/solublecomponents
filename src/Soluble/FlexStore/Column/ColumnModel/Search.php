@@ -8,7 +8,6 @@ use ArrayObject;
 
 class Search
 {
-
     /**
      *
      * @var ArrayObject

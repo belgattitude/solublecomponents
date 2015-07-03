@@ -7,7 +7,6 @@ use Soluble\Db\Metadata\Source;
 
 class TableTest extends \PHPUnit_Framework_TestCase
 {
-
     //protected $recordclass = 'ArrayObject';
     protected $recordclass = 'Soluble\Normalist\Synthetic\Record';
 
@@ -39,7 +38,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-
         unset($this->tableManager);
     }
 
@@ -174,7 +172,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testFindThrowsPrimaryKeyNotFoundException()
     {
-
         $this->setExpectedException('\Soluble\Normalist\Synthetic\Exception\PrimaryKeyNotFoundException');
         $table = $this->tableManager->table('test_table_without_pk');
 
@@ -208,7 +205,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $record = $table->findOneBy(1);
         
     }
-     * 
+     *
      */
     
 
@@ -853,7 +850,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPrimaryKeys()
     {
-
         $tm = $this->tableManager;
         $ttwm = $tm->table('test_table_with_multipk');
         $pks = $ttwm->getPrimaryKeys();
@@ -872,7 +868,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPrefixedTableName()
     {
-
         $tm = $this->tableManager;
         $ttwm = $tm->table('test_table_with_multipk');
         $name = $ttwm->getPrefixedTableName();
@@ -898,5 +893,4 @@ class TableTest extends \PHPUnit_Framework_TestCase
         );
         return $data;
     }
-
 }

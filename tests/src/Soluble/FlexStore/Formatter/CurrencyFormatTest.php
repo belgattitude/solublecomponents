@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Formatter;
  */
 class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var CurrencyFormat
      */
@@ -28,7 +27,6 @@ class CurrencyFormatTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testConstruct()

@@ -7,7 +7,6 @@ namespace Soluble\Media\Converter;
  */
 class ImageConverterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ImageConverter
      */
@@ -28,17 +27,14 @@ class ImageConverterTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     public function testConstructWithParams()
     {
-        
         $params = array('backend' => 'randomstring');
         $converter = new ImageConverter($params = array('backend' => 'gd'));
         
         $this->assertInstanceOf('\Soluble\Media\Converter\ImageConverter', $converter);
-        
     }
     
     public function testConstructThrowsUnsupportedBackendException()
@@ -52,14 +48,12 @@ class ImageConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Media\Converter\Exception\UnsupportedBackendException');
         $this->converter->setBackend('not_a_backend');
-
     }
     
     public function testSetBackendThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Media\Converter\Exception\InvalidArgumentException');
         $this->converter->setBackend(array('cool'));
-
     }
     
     

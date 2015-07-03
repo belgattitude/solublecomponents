@@ -11,7 +11,6 @@ use Zend\Paginator\Paginator as ZendPaginator;
 
 class Paginator extends ZendPaginator
 {
-
     /**
      *
      * @param integer $totalRows

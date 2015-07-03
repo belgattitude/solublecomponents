@@ -15,7 +15,6 @@ use ArrayObject;
 
 class Table
 {
-
     /**
      * Table name
      * @var string
@@ -530,7 +529,7 @@ class Table
 
         $unique_found = false;
         $data_columns = array_keys($data);
-        var_dump($uniques); 
+        var_dump($uniques);
         while ($cols = array_pop($uniques) && !$unique_found) {
             
             var_dump($cols);
@@ -554,7 +553,7 @@ class Table
 dump($unique_keys);
 dump($primary_keys);
 die();
- * 
+ *
  */
         $primary = $this->getPrimaryKey();
 
@@ -837,7 +836,6 @@ die();
         }
         try {
             $result = $statement->execute();
-            
         } catch (\Exception $e) {
             // In ZF2, PDO_Mysql and MySQLi return different exception,
             // attempt to normalize by catching one exception instead

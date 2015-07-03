@@ -6,7 +6,6 @@ use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 
 abstract class AbstractSendableWriter extends AbstractWriter implements HttpSendableInterface
 {
-
     /**
      * Return (default) headers for sending store data via http
      * @return \Soluble\FlexStore\Writer\Http\SimpleHeaders

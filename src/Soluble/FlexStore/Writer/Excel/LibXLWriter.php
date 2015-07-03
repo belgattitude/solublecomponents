@@ -15,7 +15,6 @@ use ArrayObject;
 
 class LibXLWriter extends AbstractSendableWriter
 {
-
     /**
      * Cache for currency formats
      * @var ArrayObject

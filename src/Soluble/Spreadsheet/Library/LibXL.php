@@ -7,7 +7,6 @@ use ExcelFormat;
 
 class LibXL
 {
-
     const FILE_FORMAT_XLS = 'xls';
     const FILE_FORMAT_XLSX = 'xlsx';
 

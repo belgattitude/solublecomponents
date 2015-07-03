@@ -17,7 +17,6 @@ use Soluble\FlexStore\Renderer\ClosureRenderer;
  */
 class ColumnModelTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var SqlSource
      */
@@ -35,7 +34,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-
         $this->adapter = \SolubleTestFactories::getDbAdapter();
         $select = new \Zend\Db\Sql\Select();
         $select->from('user');
@@ -53,7 +51,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testRenderer()
@@ -75,7 +72,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $store = new Store($source);
         $cm = $store->getColumnModel();
 
-        $f = function(\ArrayObject $row) {
+        $f = function (\ArrayObject $row) {
             $row['product_id'] = "My product id:" . $row['product_id'];
         };
         $clo = new ClosureRenderer($f);
@@ -111,7 +108,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         
 
 
-        $f = function(\ArrayObject $row) {
+        $f = function (\ArrayObject $row) {
             $row['cool'] = "My cool value is :" . $row['product_id'];
         };
         $clo = new ClosureRenderer($f);
@@ -144,7 +141,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $column = new Column('cool', array('type' => ColumnType::TYPE_STRING));
         $cm->add($column);
 
-        $f2 = function(\ArrayObject $row) {
+        $f2 = function (\ArrayObject $row) {
             if (!$row->offsetExists('pas_cool')) {
                 throw new \Exception("pascool column in row");
             }
@@ -179,7 +176,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $column = new Column('cool', array('type' => ColumnType::TYPE_STRING));
         $cm->add($column);
 
-        $f2 = function(\ArrayObject $row) {
+        $f2 = function (\ArrayObject $row) {
             $row['cool'] = "My cool value is :" . $row['product_id'];
         };
         $clo = new ClosureRenderer($f2);
@@ -192,7 +189,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
     
     public function testSearch()
     {
-
         $source = new SqlSource($this->adapter);
         $select = $source->select();
         $select->from(array('p' => 'product'), array())
@@ -262,7 +258,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
 
     public function testSetFormatter()
     {
-
         $source = new SqlSource($this->adapter);
         $select = $source->select();
         $select->from(array('p' => 'product'), array())
@@ -336,7 +331,7 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $cm->sort(array('picture_url', 'price', 'list_price'));
         $cm->exclude(array('reference'));
 
-        $fct = function(\ArrayObject $row) {
+        $fct = function (\ArrayObject $row) {
             $row['picture_url'] = "http://" . $row['reference'];
         };
         $cm->addRowRenderer(new \Soluble\FlexStore\Renderer\ClosureRenderer($fct));
@@ -402,16 +397,16 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('insert_after', $arr[1]);
         
         
-         $cc2 = new Column('insert_after_end');
-         $cm->add($cc2, 'test', ColumnModel::ADD_COLUMN_AFTER);
-         $arr = array_keys((array) $cm->getColumns());
-         $this->assertEquals('insert_after_end', $arr[count($arr)-1]);
+        $cc2 = new Column('insert_after_end');
+        $cm->add($cc2, 'test', ColumnModel::ADD_COLUMN_AFTER);
+        $arr = array_keys((array) $cm->getColumns());
+        $this->assertEquals('insert_after_end', $arr[count($arr)-1]);
          
          // TEST INSERT BEFORE
          $cc = new Column('insert_before');
-         $cm->add($cc, 'product_id', ColumnModel::ADD_COLUMN_BEFORE);
-         $arr = array_keys((array) $cm->getColumns());
-         $this->assertEquals('insert_before', $arr[0]);
+        $cm->add($cc, 'product_id', ColumnModel::ADD_COLUMN_BEFORE);
+        $arr = array_keys((array) $cm->getColumns());
+        $this->assertEquals('insert_before', $arr[0]);
          
          
          // TEST MODE EXCEPTION
@@ -422,7 +417,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
             $this->assertTrue(true);
         }
-         
     }
     
     public function testSomeInvalidArgumentException()
@@ -477,7 +471,6 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         } catch (\Soluble\FlexStore\Column\Exception\InvalidArgumentException $ex) {
             $this->assertTrue(true);
         }
-        
     }
 
     public function testAddRowRenderer()
@@ -497,11 +490,11 @@ class ColumnModelTest extends \PHPUnit_Framework_TestCase
         $source = new SqlSource($this->adapter, $select);
         $cm = $source->getColumnModel();
 
-        $fct = function(\ArrayObject $row) {
+        $fct = function (\ArrayObject $row) {
             $row['price'] = 200;
         };
 
-        $fct2 = function(\ArrayObject $row) {
+        $fct2 = function (\ArrayObject $row) {
             if ($row['product_id'] == 113) {
                 $row['reference'] = 'MyNEWREF';
             }

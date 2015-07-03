@@ -10,7 +10,6 @@ use ArrayObject;
 
 class ResultSet extends AbstractResultSet
 {
-
     /**
      *
      * @var Paginator

@@ -10,7 +10,6 @@ use Soluble\FlexStore\Options;
 
 interface StoreInterface
 {
-
     /**
      * Return underlying data source
      * @return Source\SourceInterface

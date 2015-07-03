@@ -8,7 +8,6 @@ use Zend\Db\Adapter\Adapter;
 
 class TableManagerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var TableManager
      */
@@ -27,7 +26,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        
         $this->tableManager = \SolubleTestFactories::getTableManager();
         $this->adapter = $this->tableManager->getDbAdapter();
         
@@ -51,7 +49,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $tm = \SolubleTestFactories::getTableManager();
         $metadata = $tm->metadata();
         $this->assertInstanceOf('\Soluble\Db\Metadata\Source\AbstractSource', $metadata);
-        
     }
     
     
@@ -145,8 +142,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
             // TEST with PDO_MYSQL instead
             $this->assertTrue(true);
-            
-            
         } else {
             $catched = false;
             $tm = $this->tableManager;
@@ -158,7 +153,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
                 $tm->transaction()->rollback();
             }
             $this->assertTrue($catched);
-           
         }
     }
     
@@ -182,7 +176,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
                 $catched = true;
             }
             $this->assertFalse($catched, "Mysqli should not throw a transaction exception");
-            
         } else {
             $tm = $this->tableManager;
         }
@@ -214,8 +207,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             $catched = true;
         }
         $this->assertTrue($catched, "Double begin transaction should fail");
-        
-        
     }
     
     public function testRollbackThrowsTransactionException()
@@ -241,7 +232,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = $this->tableManager->getDbAdapter();
         $this->assertInstanceOf('\Zend\Db\Adapter\Adapter', $adapter);
-        
     }
 
     public function testSetTablePrefix()
@@ -249,7 +239,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $tm = \SolubleTestFactories::getTableManager();
         $ret = $tm->setTablePrefix('prefix_');
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableManager', $ret);
-        
     }
 
     public function testGetTablePrefix()
@@ -257,8 +246,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $tm = \SolubleTestFactories::getTableManager();
         $prefix = $tm->setTablePrefix('prefix_')->getTablePrefix();
         $this->assertEquals('prefix_', $prefix);
-        
-        
     }
 
 
@@ -268,7 +255,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $prefixed = $tm->setTablePrefix('prefix_')->getPrefixedTable('cool');
         
         $this->assertEquals('prefix_cool', $prefixed);
-        
     }
 
 
@@ -279,7 +265,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = $this->tableManager->metadata();
         $this->assertInstanceOf('\Soluble\Db\Metadata\Source\AbstractSource', $metadata);
-        
     }
 
     public function testGetMetadataThrowsUnsupportedFeatureException()
@@ -295,8 +280,6 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         
         $tm = \SolubleTestFactories::getTableManager($adapter);
         $metadata = $tm->metadata();
-        
-        
     }
 
 

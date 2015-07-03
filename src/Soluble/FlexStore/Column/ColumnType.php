@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\Column;
 
 class ColumnType
 {
-
     const TYPE_INTEGER  = 'integer';
     const TYPE_DECIMAL  = 'decimal';
     const TYPE_STRING   = 'string';

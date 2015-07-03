@@ -14,7 +14,6 @@ use Zend\Db\Sql\Select;
  */
 class StoreTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      *
      * @var Adapter
@@ -51,12 +50,10 @@ class StoreTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     public function testBehaviour()
     {
-
         $source = new SqlSource($this->adapter);
         $source->select()
                ->from(array('ttt' => 'test_table_types'));
@@ -83,9 +80,6 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $data = $store->getData()->toArray();
         $keys = join(',', array_keys($data[0]));
         $this->assertEquals('test_char_10,test_varbinary_10', $keys);
-        
-
-        
     }
 
     public function testGetOptions()
@@ -97,7 +91,6 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $options->setLimit(2);
         $data = $store->getData()->toArray();
         $this->assertEquals(2, count($data));
-        
     }
     
 
@@ -124,7 +117,6 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $store = new Store($this->source);
         $resultset = $store->getData();
         $this->assertInstanceOf('Soluble\FlexStore\ResultSet\ResultSet', $resultset);
-        
     }
     
     public function testGetColumnModel()

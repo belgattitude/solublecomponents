@@ -11,7 +11,6 @@ use Zend\Db\Sql\Predicate\Expression;
  */
 class SelectTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Select
      */
@@ -39,7 +38,6 @@ class SelectTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     
@@ -65,8 +63,6 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 EOF;
         
         $this->assertEquals(trim($expected), trim($sql));
-        
-        
     }
 
     public function testPrefixedColumnsThrowsInvalidArgumentException()
@@ -173,15 +169,12 @@ EOF;
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
         $this->select->from('user');
         $sql = $this->select->getSql();
-        
     }
 
     public function testToStringThrowsInvalidUsageException()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
         $this->select->from('user')->__toString();
-        
-        
     }
     
 

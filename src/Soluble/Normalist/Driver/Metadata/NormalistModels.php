@@ -6,7 +6,6 @@ use Soluble\Db\Metadata\Exception;
 
 class NormalistModels extends Source\AbstractSource
 {
-
     /**
      * Current class version
      */

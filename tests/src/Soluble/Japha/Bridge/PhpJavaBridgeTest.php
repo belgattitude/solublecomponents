@@ -7,7 +7,6 @@ namespace Soluble\Japha\Bridge;
  */
 class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $pjb;
 
     /**
@@ -25,7 +24,6 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     /**
@@ -36,7 +34,7 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
         PhpJavaBridge::includeBridge(\SolubleTestFactories::getJavaBridgeServerAddress());
     }
     
-    function testJavaClass()
+    public function testJavaClass()
     {
         $system = PhpJavaBridge::getJavaClass('java.lang.System');
         $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaClass", $system);
@@ -48,12 +46,10 @@ class PhpJavaBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("java.util.Properties", $properties->get__signature());
         $this->assertEquals("java.util.Properties", $properties->getClass()->getName());
         $this->assertInstanceOf("\Soluble\Japha\Interfaces\JavaObject", $properties->getClass());
-        
     }
 
-    function testDriverPjb621()
+    public function testDriverPjb621()
     {
-
         $pjb = PhpJavaBridge::getDriver();
 
         $system = $pjb->getJavaClass('java.lang.System');

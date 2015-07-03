@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Column;
  */
 class ColumnTypeTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ColumnType
      */
@@ -28,7 +27,6 @@ class ColumnTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testCreate()
@@ -42,7 +40,6 @@ class ColumnTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(ColumnType::TYPE_DATETIME, ColumnType::createType(ColumnType::TYPE_DATETIME)->getName());
         $this->assertEquals(ColumnType::TYPE_DECIMAL, ColumnType::createType(ColumnType::TYPE_DECIMAL)->getName());
         $this->assertEquals(ColumnType::TYPE_TIME, ColumnType::createType(ColumnType::TYPE_TIME)->getName());
-        
     }
     
     public function testCreateThrowsInvalidArgumentException()
@@ -66,6 +63,5 @@ class ColumnTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue(ColumnType::isSupported(ColumnType::TYPE_BIT));
         $this->assertFalse(ColumnType::isSupported('cool'));
-        
     }
 }

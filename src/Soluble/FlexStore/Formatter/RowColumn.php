@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\Formatter;
 
 class RowColumn
 {
-
     /**
      *
      * @var string

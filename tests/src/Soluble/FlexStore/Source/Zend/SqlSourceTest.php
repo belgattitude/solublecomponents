@@ -11,7 +11,6 @@ use Zend\Db\Sql\Expression;
  */
 class SqlSourceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var SelectSource
      */
@@ -36,7 +35,6 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         $select->from('user');
 
         $this->source = new SqlSource($this->adapter, $select);
-
     }
 
     /**
@@ -53,7 +51,6 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
     {
         $metadata = $this->source->getMetadataReader();
         $this->assertInstanceOf('\Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader', $metadata);
-        
     }
     
     public function testGetColumnModel()
@@ -65,8 +62,6 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         foreach ($columns as $column) {
             $this->assertFalse($column->isVirtual());
         }
-        
-        
     }
     
 
@@ -105,7 +100,6 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         //var_dump($cm);
         //var_dump($select->getRawState());
         //die();
-        
     }
 
     public function testGetData()
@@ -133,23 +127,19 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('user_id', $d2[0]);
         $this->assertArrayHasKey('email', $d2[0]);
         $this->assertEquals($d[0], $d2[0]);
-
     }
     
     public function testGetDataThrowsEmptyQueryException()
     {
-
         $this->setExpectedException('Soluble\FlexStore\Exception\EmptyQueryException');
         
         $source = new SqlSource($this->adapter, $select = new Select());
 
         $source->getData();
-        
     }
     
     public function testGetQueryString()
     {
-        
         $data = $this->source->getData();
         $sql_string = $this->source->getQueryString();
         $this->assertInternalType('string', $sql_string);
@@ -176,6 +166,5 @@ class SqlSourceTest extends \PHPUnit_Framework_TestCase
         $select->from('user');
 
         return new SqlSource($this->adapter, $select);
-        
     }
 }

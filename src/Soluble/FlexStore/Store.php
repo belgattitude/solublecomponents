@@ -14,7 +14,6 @@ use Soluble\FlexStore\ResultSet\ResultSet;
 
 class Store implements StoreInterface
 {
-
     /**
      *
      * @var Source\SourceInterface

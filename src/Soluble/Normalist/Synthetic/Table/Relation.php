@@ -15,7 +15,6 @@ use Soluble\Normalist\Synthetic\Exception;
 
 class Relation
 {
-
     /**
      *
      * @var Table

@@ -6,7 +6,6 @@ use Soluble\FlexStore\Writer\Http\SimpleHeaders;
 
 interface HttpSendableInterface
 {
-    
     /**
      * Return (default) headers for sending store data via http
      * @return \Soluble\FlexStore\Writer\Http\SimpleHeaders

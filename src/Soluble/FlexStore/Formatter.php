@@ -4,7 +4,6 @@ namespace Soluble\FlexStore;
 
 class Formatter
 {
-    
     const FORMATTER_CURRENCY  = 'currency';
     const FORMATTER_NUMBER    = 'number';
     const FORMATTER_UNIT    = 'unit';

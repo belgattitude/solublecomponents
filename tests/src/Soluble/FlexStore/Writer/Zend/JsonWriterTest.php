@@ -10,7 +10,6 @@ use Soluble\FlexStore\Store;
  */
 class JsonWriterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Json
      */
@@ -66,7 +65,6 @@ class JsonWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($d['success']);
         $this->assertEquals($d['total'], count($d['data']));
         $this->assertArrayNotHasKey('query', $d);
-
     }
 
     public function testGetDataWithDebug()
@@ -77,6 +75,5 @@ class JsonWriterTest extends \PHPUnit_Framework_TestCase
         $d = json_decode($data, $assoc = true);
 
         $this->assertArrayHasKey('query', $d);
-
     }
 }

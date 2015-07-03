@@ -9,7 +9,6 @@ use Zend\Db\Adapter\Adapter;
  */
 class InformationSchemaTest extends \PHPUnit_Framework_TestCase
 {
-    
     /**
      *
      * @var Adapter
@@ -37,7 +36,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
 
@@ -51,7 +49,7 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         
         /*
         try {
-         $metadata->getSchemaConfig();   
+         $metadata->getSchemaConfig();
         } catch(\Exception $e) {
             echo "\n";
             echo $e->getTraceAsString();
@@ -59,7 +57,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
             echo "\n";
             die('cool');
         }*/
-        
     }
     
     
@@ -90,10 +87,8 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     
     public function testGetTableConfigThrowsTableNotFoundException()
     {
-        
         $this->setExpectedException('Soluble\Db\Metadata\Exception\TableNotFoundException');
         $config = $this->metadata->getTableConfig('table_unexistent_999');
-   
     }
     
     public function testGetTableConfig()
@@ -110,8 +105,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('brand_id', $config['primary_keys'][0]);
         $this->assertEquals(false, $config['columns']['created_by']['primary']);
         $this->assertEquals(true, $config['columns']['brand_id']['primary']);
-
-
     }
     
     public function testGetRelations()
@@ -139,8 +132,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('indexes', $ti[$table]);
         $this->assertArrayHasKey('primary_keys', $ti[$table]);
         $this->assertArrayHasKey('unique_keys', $ti[$table]);
-        
-        
     }
     
     public function testGetUniqueKeys()
@@ -179,9 +170,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $unique = $this->metadata->getUniqueKeys('test_table_without_pk', $include_pk=true);
         $this->assertInternalType('array', $unique);
         $this->assertEquals(0, count($unique));
-        
-        
-        
     }
     
     
@@ -211,7 +199,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $columns = $this->metadata->getColumns('user');
         $this->assertEquals('user_id', $columns[0]);
         $this->assertEquals('password', $columns[4]);
-        
     }
     
     public function testGetTableInformation()
@@ -230,8 +217,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     
     public function testInnoDbStat()
     {
-        
-        
         $adapter = $this->adapter;
         $this->metadata->clearCacheInformation();
         $sql = "show global variables like 'innodb_stats_on_metadata'";
@@ -248,7 +233,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
             
             $this->metadata->getPrimaryKey('user');
             $adapter->query("set global innodb_stats_on_metadata='OFF'", Adapter::QUERY_MODE_EXECUTE);
-            
         }
     }
      
@@ -257,7 +241,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKey(array('cool'));
-        
     }
     
 
@@ -265,7 +248,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKeys(array('cool'));
-        
     }
     
     
@@ -280,7 +262,6 @@ class InformationSchemaTest extends \PHPUnit_Framework_TestCase
         $keys = $this->metadata->getPrimaryKeys('user');
         $this->assertInternalType('array', $keys);
         $this->assertEquals('user_id', $keys[0]);
-
     }
 
     

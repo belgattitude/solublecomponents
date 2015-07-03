@@ -6,7 +6,6 @@ use Soluble\FlexStore\Options\HydrationOptions;
 
 class Options
 {
-
     /**
      *
      * @var HydrationOptions

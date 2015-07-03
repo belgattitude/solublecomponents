@@ -11,7 +11,6 @@ use DateTime;
  */
 class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Xml
      */
@@ -120,6 +119,5 @@ class SimpleXmlWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('application/xml', $headers->getContentType());
         $this->assertEquals('UTF-8', $headers->getCharset());
         $this->assertEquals('attachement', $headers->getContentDispositionType());
-        
     }
 }

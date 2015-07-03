@@ -10,7 +10,6 @@ use Countable;
 
 class ResultSet implements Iterator, Countable
 {
-
     /**
      *
      * @var \Zend\Db\ResultSet\ResultSet

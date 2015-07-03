@@ -6,7 +6,6 @@ use ArrayObject;
 
 interface FormatterInterface
 {
-
     /**
      * @param array $params
      */

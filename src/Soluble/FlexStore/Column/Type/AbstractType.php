@@ -4,8 +4,6 @@ namespace Soluble\FlexStore\Column\Type;
 
 abstract class AbstractType
 {
-
-
     /**
      * @return string
      */

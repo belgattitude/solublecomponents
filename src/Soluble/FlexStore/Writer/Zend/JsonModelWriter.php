@@ -12,7 +12,6 @@ use Soluble\FlexStore\Writer\AbstractWriter;
 
 class JsonModelWriter extends AbstractWriter
 {
-
     /**
      *
      * @param Options $options

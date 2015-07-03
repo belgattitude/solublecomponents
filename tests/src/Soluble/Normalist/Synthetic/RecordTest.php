@@ -4,7 +4,6 @@ namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Db\Metadata\Source;
 use Soluble\Db\Metadata\Exception;
-
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Where;
 use \Zend\Db\Sql\Predicate;
@@ -14,7 +13,6 @@ use \Zend\Db\Sql\Predicate;
  */
 class RecordTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var TableManager
      */
@@ -73,7 +71,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     /*
     public function testSetDataThrowsFieldNotFoundException()
     {
-        $medias  = $this->tableManager->table('media');        
+        $medias  = $this->tableManager->table('media');
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\FieldNotFoundException');
         $invalid_data = array(
             'coolnotexists' => 'hello'
@@ -99,7 +97,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
         $json = $this->table->find(1)->toJson();
         $this->assertEquals($data, json_decode($json, $assoc = true));
-        
     }
     
     
@@ -114,7 +111,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($table, $returned_table);
         $this->assertNotEquals($this->table, $returned_table);
-        
     }
      
      
@@ -165,8 +161,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bibi', $new_record['legacy_mapping']);
         $this->assertEquals('bibi', $new_record->offsetGet('legacy_mapping'));
         $this->assertEquals('bibi', $new_record->legacy_mapping);
-
-        
     }
     
     
@@ -181,13 +175,12 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $a = $new_record['fieldthatnotexists'];
     }
     
-    function testSetDataThrowsInvalidArgumentException()
+    public function testSetDataThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\InvalidArgumentException');
 
         $stdClass = new \stdClass();
         $record = new Record($stdClass, $this->table);
-        
     }
 
 
@@ -221,14 +214,10 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Record::STATE_DIRTY, $record->getState());
         $new_record = $record->save();
         $this->assertEquals($new_record, $record);
-        
-        
-        
     }
 
     public function testSaveWithNewRecordThrowsDuplicateEntryException()
     {
-
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');
         $medias = $this->tableManager->table('media');
         $data = $this->createMediaRecordData('phpunit_testSave');
@@ -237,12 +226,10 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $record = $medias->record($data);
         $this->assertEquals(Record::STATE_NEW, $record->getState());
         $record->save();
-        
     }
     
     public function testSaveThrowsDuplicateEntryException()
     {
-
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\DuplicateEntryException');
         $medias = $this->tableManager->table('media');
         $data = $this->createMediaRecordData('phpunit_testSave');
@@ -255,7 +242,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $media['legacy_mapping'] = 'phpunit_testSaveDuplicate';
         $media->save();
-        
     }
 
     
@@ -263,8 +249,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
 
     public function testSaveCheckStates()
     {
-
-        
         $medias = $this->tableManager->table('media');
         $data = $this->createMediaRecordData('phpunit_testSaveCheckState');
         $tobedeleted = $medias->findOneBy(array('legacy_mapping' => 'phpunit_testSaveCheckState'));
@@ -296,7 +280,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     
     public function testSaveThrowsUnexpectedValueException()
     {
-
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\UnexpectedValueException');
         $medias = $this->tableManager->table('media');
         $data = $this->createMediaRecordData('phpunit_testSaveCheckState');
@@ -326,7 +309,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Record::STATE_NEW, $record->getState());
         $record->delete();
         $this->assertEquals(Record::STATE_DELETED, $record->getState());
-        
     }
 
     public function testDeleteByRecord()
@@ -352,7 +334,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $data     = $this->createMediaRecordData('phpunit_testLogicExceptionNewRecord');
         $record   = $medias->record($data);
         $record->delete();
-        
     }
     
     public function testDeleteByRecordThrowsLogicException()
@@ -440,7 +421,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         } catch (\Soluble\Normalist\Synthetic\Exception\LogicException $e) {
             $catched=true;
         }
-        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");        
+        $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
         */
         
         // TEST START
@@ -501,15 +482,12 @@ class RecordTest extends \PHPUnit_Framework_TestCase
             $catched=true;
         }
         $this->assertTrue($catched, "LogicExceptionAfterDelete works as expected");
-        
-        
     }
     
 
 
     public function testOffsetExists()
     {
-        
         $medias = $this->table->getTableManager()->table('media');
         $data = $this->createMediaRecordData('phpunit_testOffsetExists');
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
@@ -520,9 +498,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
         $exists = $new_record->offsetExists('media_id');
         $this->assertTrue($exists);
-
-        
-        
     }
 
     public function testOffsetGet()
@@ -562,7 +537,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
 
     public function testOffsetSet()
     {
-        
         $medias = $this->table->getTableManager()->table('media');
         $data = $this->createMediaRecordData('phpunit_test__OffsetGet');
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
@@ -575,7 +549,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bibi', $new_record['legacy_mapping']);
         $this->assertEquals('bibi', $new_record->offsetGet('legacy_mapping'));
         $this->assertEquals('bibi', $new_record->legacy_mapping);
-        
     }
 
     public function testOffsetUnsetTriggerFieldNotFoundException()
@@ -586,7 +559,6 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         $new_record = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $new_record->offsetUnset('legacy_mapping');
         $test = $new_record['legacy_mapping'];
-        
     }
     
     
@@ -605,7 +577,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
     {
         
         $data = $this->createMediaRecordData('phpunit_testGetParent');
-        $medias = $this->table->getTableManager()->table('media');        
+        $medias = $this->table->getTableManager()->table('media');
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
 
         $parent = $media->getParent('media_container');
@@ -618,7 +590,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\RelationNotFoundException');
         $data = $this->createMediaRecordData('phpunit_testGetParent');
-        $medias = $this->table->getTableManager()->table('media');        
+        $medias = $this->table->getTableManager()->table('media');
         $media = $medias->insertOnDuplicateKey($data, array('legacy_mapping'));
         $parent = $media->getParent('product_category');
         

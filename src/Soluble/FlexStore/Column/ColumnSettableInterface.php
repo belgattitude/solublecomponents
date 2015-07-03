@@ -6,8 +6,6 @@ use Soluble\FlexStore\Formatter\FormatterInterface;
 
 interface ColumnSettableInterface
 {
-    
-    
     /**
      * Set column datatype
      * @param string|\Soluble\FlexStore\Column\Type\AbstractType $type

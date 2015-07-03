@@ -9,7 +9,6 @@ use Zend\Config\Writer;
 
 class ZeroConfDriver implements DriverInterface
 {
-
     /**
      * @var Source\AbstractSource
      */

@@ -4,7 +4,6 @@ namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Db\Metadata\Source;
 use Soluble\Db\Metadata\Exception;
-
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Having;
 use Zend\Db\Sql\Predicate;
@@ -15,7 +14,6 @@ use Zend\Db\Sql\Expression;
  */
 class TableSearchTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var TableManager
      */
@@ -54,7 +52,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
         unset($this->tableManager);
         unset($this->table);
     }
@@ -86,7 +83,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
 
     public function testColumns()
     {
-        
         $results = $this->table->search()->columns(array('reference'))->limit(1)->toArray();
         $keys = array_keys($results[0]);
         $this->assertEquals(1, count($keys));
@@ -95,7 +91,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
     
     public function testColumnsAliases()
     {
-        
         $results = $this->table->search()->columns(array('aliased_reference' => 'reference'))->limit(1)->toArray();
         $keys = array_keys($results[0]);
         $this->assertEquals(1, count($keys));
@@ -134,8 +129,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $lastrs2 = $rs2[count($rs2)-1]['reference'];
         
         $this->assertEquals($firstrs1, $lastrs2);
-        
-        
     }
 
 
@@ -275,12 +268,10 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
             }
         }
         $this->assertTrue($test_start);
-        
     }
     
     public function testOrWhere()
     {
-        
         $results = $this->table->search()
                  ->orWhere(
                      array(
@@ -293,7 +284,6 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($results));
         $this->assertEquals('AC', $results[0]['reference']);
         $this->assertEquals('GT', $results[1]['reference']);
-        
     }
     
     public function testWhereWithClosure()
@@ -321,16 +311,14 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         });
         
         $expected = <<<EOF
-            SELECT `user`.* FROM `user` WHERE `email` LIKE '%@example.com' AND `country` IN ('FR', 'US') AND `birth_date` BETWEEN '1970' AND '2001' AND `birth_date` < '1980' AND `birth_date` > '2010' AND `zipcode` IS NOT NULL OR (`name` = 'Bill' OR `last_name` LIKE '%Gates%') AND `first_name` LIKE '%;\'DROP DATABASE\' `DROP TABLE`'                
+            SELECT `user`.* FROM `user` WHERE `email` LIKE '%@example.com' AND `country` IN ('FR', 'US') AND `birth_date` BETWEEN '1970' AND '2001' AND `birth_date` < '1980' AND `birth_date` > '2010' AND `zipcode` IS NOT NULL OR (`name` = 'Bill' OR `last_name` LIKE '%Gates%') AND `first_name` LIKE '%;\'DROP DATABASE\' `DROP TABLE`'
 EOF;
         
         $this->assertEquals(trim($expected), trim($search->getSql()));
-        
     }
 
     public function testJoin()
     {
-        
         $tm = $this->tableManager;
         $search = $tm->table('user')->search('u');
         
@@ -349,14 +337,11 @@ EOF;
 EOF;
         
         $this->assertEquals(trim($expected), trim($sql));
-        
-        
     }
     
 
     public function testJoinRight()
     {
-        
         $tm = $this->tableManager;
         $search = $tm->table('user')->search('u');
         
@@ -375,8 +360,6 @@ EOF;
 EOF;
         
         $this->assertEquals(trim($expected), trim($sql));
-        
-        
     }
     
     public function testJoinLeftWithoutAlias()
@@ -452,7 +435,7 @@ EOF;
             ->where(function (Where $where) {
                 $where->equalTo('post_status', 'publish');
             })
-            ->having(function(Having $having) {
+            ->having(function (Having $having) {
                 $having->greaterThanOrEqualTo('count_comment', 1);
             })
             ->order(
@@ -466,14 +449,12 @@ EOF;
                     'count_comment' => new Expression('COUNT(c.comment_ID)')
                 ));
              
-            $results = $search->execute();
-            $array = $results->toArray();
-            $this->assertEquals(1, $array[0]['post_id']);
+        $results = $search->execute();
+        $array = $results->toArray();
+        $this->assertEquals(1, $array[0]['post_id']);
 
-            $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
-            $results->current();
-        
-        
+        $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\LogicException');
+        $results->current();
     }
     
 
@@ -498,7 +479,6 @@ EOF;
         
         $results = $this->table->search()->limit(10)->toArray();
         $this->assertEquals($results, $decoded);
-        
     }
 
     public function testToArray()

@@ -4,7 +4,6 @@ namespace Soluble\Db\Metadata\Column\Definition;
 
 abstract class AbstractColumnDefinition
 {
-
     /**
      *
      * @var string

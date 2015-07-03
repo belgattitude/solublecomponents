@@ -7,7 +7,6 @@ use Soluble\Normalist\Driver\ZeroConfDriver;
 
 class NormalistModelsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var NormalistModels
      */
@@ -44,7 +43,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     
@@ -76,8 +74,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('indexes', $ti[$table]);
         $this->assertArrayHasKey('primary_keys', $ti[$table]);
         $this->assertArrayHasKey('unique_keys', $ti[$table]);
-        
-        
     }
 /*
     public function testGetIndexesInformationKeys()
@@ -107,8 +103,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('unique_legacy_mapping_idx', $unique);
         $this->assertArrayHasKey('unique_reference_idx', $unique);
         $this->assertArrayHasKey('unique_slug_idx', $unique);
-        
-        
     }
     
     
@@ -131,7 +125,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKey(array('cool'));
-        
     }
     
 
@@ -139,7 +132,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKeys(array('cool'));
-        
     }
     
     
@@ -154,7 +146,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $keys = $this->metadata->getPrimaryKeys('user');
         $this->assertInternalType('array', $keys);
         $this->assertEquals('user_id', $keys[0]);
-
     }
 
     public function testGetColumnsInformation()
@@ -162,7 +153,6 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $columns = $this->metadata->getColumnsInformation('user');
         $this->assertInternalType('array', $columns);
         $this->assertEquals('varchar', $columns['password']['type']);
-
     }
 
     

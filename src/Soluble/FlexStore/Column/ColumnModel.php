@@ -9,7 +9,6 @@ use ArrayObject;
 
 class ColumnModel
 {
-    
     const ADD_COLUMN_AFTER = 'after';
     const ADD_COLUMN_BEFORE = 'before';
     

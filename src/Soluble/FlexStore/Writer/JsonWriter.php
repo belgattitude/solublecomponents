@@ -9,7 +9,6 @@ use Soluble\FlexStore\Options;
 
 class JsonWriter extends AbstractSendableWriter
 {
-
     /**
      *
      * @var SimpleHeaders

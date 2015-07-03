@@ -4,9 +4,8 @@ namespace Soluble\FlexStore\Metadata\Reader;
 
 use Soluble\Db\Metadata\Column;
 
-class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
+class MysqliMetadataSourceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var MysqliMetadataReader
      */
@@ -29,7 +28,6 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         
         $conn = $this->adapter->getDriver()->getConnection()->getResource();
         $this->metadata = new MysqliMetadataReader($conn);
-
     }
 
     /**
@@ -54,7 +52,6 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\InvalidQueryException');
         $sql = "select * from sss";
         $md = $this->metadata->getColumnsMetadata($sql);
-
     }
 
     
@@ -64,7 +61,6 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         $this->metadata->setStaticCache(false);
         $md = $this->metadata->getColumnsMetadata($sql);
         $this->metadata->setStaticCache(true);
-
     }
 
     
@@ -73,12 +69,10 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\AmbiguousColumnException');
         $sql = "select id, test_char_10 as id from test_table_types";
         $md = $this->metadata->getColumnsMetadata($sql);
-
     }
 
     public function testGetColumnsMetadata()
     {
-
         $sql = "select * from test_table_types";
         $md = $this->metadata->getColumnsMetadata($sql);
 
@@ -219,13 +213,11 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($md['test_geometrycollection']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
         $this->assertEquals(null, $md['test_geometrycollection']->getNativeDatatype());
-        
     }
 
 
     public function testGetColumnsMetadataWithDefaults()
     {
-
         $sql = "select * from test_table_with_default";
         $md = $this->metadata->getColumnsMetadata($sql);
 
@@ -234,13 +226,11 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(null, $md['default_5']->getColumnDefault());
             $this->assertEquals(null, $md['default_cool']->getColumnDefault());
             $this->assertEquals(null, $md['default_yes']->getColumnDefault());
-            
         } else {
             $this->assertEquals(5, $md['default_5']->getColumnDefault());
             $this->assertEquals('cool', $md['default_cool']->getColumnDefault());
             $this->assertEquals('yes', $md['default_yes']->getColumnDefault());
         }
-        
     }
 
     public function testGetColumsMetadataMultipleTableFunctions()
@@ -393,7 +383,6 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->markTestIncomplete("Warning, test was made on client '$mysqli_client', may differs when using mysqlnd, libmariadb, libmysql");
-
     }
 
 
@@ -431,10 +420,7 @@ class MysqliMetadataReaderTest extends \PHPUnit_Framework_TestCase
             var_dump($sql);
             var_dump($num_rows);
             $stmt->close();
-
-
         }
-
     }
 
     /**

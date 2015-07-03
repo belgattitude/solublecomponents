@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Writer\Http;
  */
 class SimpleHeadersTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var SimpleHeaders
      */
@@ -28,7 +27,6 @@ class SimpleHeadersTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testAll()
@@ -100,7 +98,6 @@ class SimpleHeadersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Content-Type: application/pdf; charset=utf-8', $lines[0]);
         $this->assertEquals('Content-Disposition: attachement', $lines[1]);
         $this->assertEquals('Content-Length: 10', $lines[2]);
-        
     }
     
     public function testSetCharsetThrowsRuntimeException()

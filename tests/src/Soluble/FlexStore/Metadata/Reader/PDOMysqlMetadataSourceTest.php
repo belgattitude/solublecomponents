@@ -8,9 +8,8 @@ use Zend\Db\Adapter\Adapter;
 /**
  * PDO_MySQL in PHP 5.3 does not return column names
  */
-class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
+class PDOMysqlMetadataSourceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var PDOMysqlMetadataReader
      */
@@ -30,7 +29,6 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
     {
         $driver = 'PDO_Mysql';
         $this->adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
-
     }
     
     /**
@@ -39,16 +37,13 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function getReader($conn)
     {
-        
         return new PDOMysqlMetadataReader($conn);
-        
     }
     
 
 
     public function testConstructThrowsUnsupportedFeatureException()
     {
-        
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
@@ -56,7 +51,6 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertTrue(true);
         }
-        
     }
     
     public function testConstructThrowsUnsupportedDriverException()
@@ -65,21 +59,18 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedFeatureException');
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $metadata = $this->getReader($conn);
-            
         } else {
             $this->setExpectedException('Soluble\FlexStore\Metadata\Exception\UnsupportedDriverException');
             // Fake adapter
             $conn = new \PDO('sqlite::memory:');
             $metadata = $this->getReader($conn);
         }
-        
     }
     
     
     
     public function testGetColumnsMetadata()
     {
-
         if (version_compare(PHP_VERSION, '5.4.0', '>')) {
             $sql = "select * from test_table_types";
             
@@ -231,13 +222,9 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
 
             $this->assertEquals($md['test_geometrycollection']->getDatatype(), Column\Type::TYPE_SPATIAL_GEOMETRY);
             $this->assertEquals(null, $md['test_geometrycollection']->getNativeDatatype());
-            
-
         } else {
             $this->markTestSkipped('Only valid for PHP 5.4+ version');
-            
         }
-
     }
 
     public function testGetColumnsMetadataThrowsAmbiguousColumnException()
@@ -251,7 +238,6 @@ class PDOMysqlMetadataReaderTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->markTestSkipped('Only valid for PHP 5.4+ version');
         }
-
     }
     
     public function testGetColumnsMetadataThrowsEmptyQueryException()

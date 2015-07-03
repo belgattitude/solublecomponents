@@ -13,7 +13,6 @@ use Zend\Db\Adapter\Adapter;
 
 class Transaction
 {
-    
     const STATE_NULL = 'null';
     const STATE_STARTED = 'started';
     const STATE_ROLLBACKED = 'rollbacked';

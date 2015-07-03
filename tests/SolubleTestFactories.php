@@ -36,7 +36,6 @@ class SolubleTestFactories
      */
     public static function startJavaBridgeServer()
     {
-
         if (!self::$javaBridgeServerStarted) {
             // First ensure php java bridge is installed
             $test_dir = dirname(__FILE__);
@@ -146,7 +145,6 @@ class SolubleTestFactories
             self::$_adapter_instances[$key] = new Adapter($mysql_config);
         }
         return self::$_adapter_instances[$key];
-
     }
 
     public static function getDatabaseConfig()
@@ -189,12 +187,11 @@ class SolubleTestFactories
                 'exception_handler' => array('throw_exceptions' => true)
             );
         }
-            $key = md5(serialize($cache_config));
+        $key = md5(serialize($cache_config));
         if (!array_key_exists($key, self::$_cache_instances)) {
             self::$_cache_instances[$key] = StorageFactory::factory($cache_config);
         }
-            return self::$_cache_instances[$key];
-
+        return self::$_cache_instances[$key];
     }
     
     /**
@@ -203,7 +200,6 @@ class SolubleTestFactories
     
     public static function getCachePath()
     {
-        
         $cache_dir = $_SERVER['PHPUNIT_CACHE_DIR'];
         if (!preg_match('/^\//', $cache_dir)) {
             $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . $cache_dir;

@@ -4,7 +4,6 @@ namespace Soluble\FlexStore\Options;
 
 class HydrationOptions
 {
-
     /**
      *
      * @var array

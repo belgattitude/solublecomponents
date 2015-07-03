@@ -7,7 +7,6 @@ namespace Soluble\FlexStore;
  */
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Options
      */
@@ -28,7 +27,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
 
@@ -54,7 +52,6 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         $this->options->unsetLimit();
         $this->assertNull($this->options->getLimit());
         $this->assertFalse($this->options->hasLimit());
-        
     }
     
     public function testSetLimitThrowsInvalidException()

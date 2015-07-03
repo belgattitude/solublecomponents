@@ -8,7 +8,6 @@ use Soluble\Db\Metadata\Source;
 
 class InformationSchema extends Source\AbstractSource
 {
-
     /**
      * Schema name
      * @var string

@@ -10,8 +10,6 @@ use PDO;
 
 class PDOMysqlMetadataReader extends AbstractMetadataReader
 {
-
-
     /**
      * @var PDO
      */

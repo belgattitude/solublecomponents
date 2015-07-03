@@ -7,7 +7,6 @@ use Soluble\Db\Metadata\Column\Exception\UnsupportedDatatypeException;
 
 abstract class AbstractMetadataReader
 {
-
     /**
      * Keep static cache in memory
      * @var boolean

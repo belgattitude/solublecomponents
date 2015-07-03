@@ -7,7 +7,6 @@ namespace Soluble\Media;
  */
 class BoxDimensionTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var BoxDimension
      */
@@ -28,7 +27,6 @@ class BoxDimensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testSetWidth()

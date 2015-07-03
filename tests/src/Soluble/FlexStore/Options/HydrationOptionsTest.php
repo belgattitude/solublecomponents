@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Options;
  */
 class HydrationOptionsTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var HydrationOptions
      */
@@ -28,7 +27,6 @@ class HydrationOptionsTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testAll()
@@ -53,7 +51,5 @@ class HydrationOptionsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($ho->isColumnExclusionEnabled());
         $this->assertTrue($ho->isRenderersEnabled());
         $this->assertTrue($ho->isFormattersEnabled());
-        
-        
     }
 }

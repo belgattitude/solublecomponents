@@ -7,9 +7,6 @@ namespace Soluble\FlexStore\Column\Type;
  */
 class MetadataMapperTest extends \PHPUnit_Framework_TestCase
 {
-
-
-
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -24,7 +21,6 @@ class MetadataMapperTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
     
     public function testGetColumnTypeByMetadataType()
@@ -37,8 +33,6 @@ class MetadataMapperTest extends \PHPUnit_Framework_TestCase
             $this->assertInternalType('string', $type->getName());
             $this->assertTrue(\Soluble\FlexStore\Column\ColumnType::isSupported($type->getName()));
         }
-        
-        
     }
 
     public function testGetColumnTypeByMetadataTypeThrowsInvalidArgumentException()

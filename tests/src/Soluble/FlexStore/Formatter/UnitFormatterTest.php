@@ -7,7 +7,6 @@ namespace Soluble\FlexStore\Formatter;
  */
 class UnitFormatterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var UnitFormatter
      */
@@ -28,7 +27,6 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
 
     public function testConstruct()
@@ -62,12 +60,10 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('zh_CN', $f->getLocale());
         $this->assertEquals('#,##0.###', $f->getPattern());
         $this->assertEquals(3, $f->getDecimals());
-
     }
     
     public function testFormat()
     {
-        
         $params = array(
             'locale' => 'fr_FR',
             'pattern' => '#,##0.###',
@@ -99,7 +95,6 @@ class UnitFormatterTest extends \PHPUnit_Framework_TestCase
         
         // Null values
         $this->assertEquals('0.00 m²', $f->format(null));
-        
     }
 
     public function testConstructThrowsInvalidArgumentException()

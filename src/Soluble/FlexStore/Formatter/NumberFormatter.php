@@ -10,7 +10,6 @@ use NumberFormatter as IntlNumberFormatter;
 
 class NumberFormatter implements FormatterInterface, LocalizableInterface, FormatterNumberInterface
 {
-
     /**
      * Formatter instances
      *

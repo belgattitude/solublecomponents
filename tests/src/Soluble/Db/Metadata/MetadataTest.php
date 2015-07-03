@@ -4,7 +4,6 @@ namespace Soluble\Db\Metadata;
 
 use Soluble\Db\Metadata\Source\AbstractSource;
 use Soluble\Db\Metadata\Source\MysqlISMetadata;
-
 use Zend\Db\Adapter\Adapter;
 
 /**
@@ -12,7 +11,6 @@ use Zend\Db\Adapter\Adapter;
  */
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var Metadata
      */
@@ -27,8 +25,6 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $adapter = \SolubleTestFactories::getDbAdapter();
         
         $this->metadata = new Metadata($adapter);
-        
-        
     }
 
     /**
@@ -37,7 +33,6 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
     }
  
     public function testGetSource()
@@ -53,7 +48,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     }
     
     
-    function testConstructThrowsUnsupportedDriverException()
+    public function testConstructThrowsUnsupportedDriverException()
     {
         $this->setExpectedException('Soluble\Db\Metadata\Exception\UnsupportedDriverException');
         

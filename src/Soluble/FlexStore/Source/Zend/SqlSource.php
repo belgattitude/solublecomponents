@@ -24,7 +24,6 @@ use Soluble\FlexStore\Metadata\Reader as MetadataReader;
 
 class SqlSource extends AbstractSource implements QueryableSourceInterface
 {
-
     /**
      * @var Sql
      */

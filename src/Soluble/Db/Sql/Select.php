@@ -12,7 +12,6 @@ use Zend\Db\ResultSet\ResultSet;
 
 class Select extends ZendDbSqlSelect implements AdapterAwareInterface
 {
-
     /**
      *
      * @var Adapter

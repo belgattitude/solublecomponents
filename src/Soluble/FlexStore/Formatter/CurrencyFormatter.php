@@ -18,7 +18,6 @@ use \NumberFormatter as IntlNumberFormatter;
  */
 class CurrencyFormatter extends NumberFormatter
 {
-
     /**
      *
      * @var string|null

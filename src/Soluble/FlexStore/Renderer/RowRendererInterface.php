@@ -6,7 +6,6 @@ use ArrayObject;
 
 interface RowRendererInterface
 {
-    
     /**
      * Modify row
      *
