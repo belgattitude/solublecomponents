@@ -38,7 +38,8 @@ before_script:
   - sh -c "which php"
   - mysql -e "show databases;" -uroot
   - mysql -e "connect phpunit_soluble_test_db; show tables;" -uroot
-  - composer install --no-interaction --prefer-dist --dev
+  - composer self-update
+  - composer install --no-interaction --prefer-dist
   - mkdir build
   - mkdir -p build/logs
   - mkdir -p tests/logs

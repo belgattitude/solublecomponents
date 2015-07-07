@@ -137,6 +137,7 @@ class ZeroConfDriver implements DriverInterface
             $file_content = trim(str_replace('<?php', '', $file_content));
             $file_content = trim(str_replace('return array(', '$definition = array(', $file_content));
             eval($file_content);
+            
         } else {
             $definition = include $file;
         }
