@@ -89,7 +89,7 @@ class InformationSchema extends Source\AbstractSource
             try {
                 $pks = $this->getPrimaryKeys($table);
                 if (count($pks) > 0) {
-                    $uniques = array_merge($uniques, ['PRIMARY' => $pks]);
+                    $uniques = array_merge($uniques, array('PRIMARY' => $pks));
                 }
             } catch (Exception\NoPrimaryKeyException $e) {
                 // Ignore exception
