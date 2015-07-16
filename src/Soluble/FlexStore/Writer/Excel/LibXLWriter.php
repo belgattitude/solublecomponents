@@ -449,7 +449,10 @@ class LibXLWriter extends AbstractSendableWriter
             $rowHeight = $sheet->rowHeight($row_idx);
             
             foreach ($specs as $name => $spec) {
-                $value = $row[$name];
+                
+                // Row may have no key in the case of customer renderers, 
+                // to prevent notice let's make it to null
+                $value = isset($row[$name]) ? $row[$name] : null;
 
                 if ($spec['format'] !== null) {
                     $format = $spec['format'];
