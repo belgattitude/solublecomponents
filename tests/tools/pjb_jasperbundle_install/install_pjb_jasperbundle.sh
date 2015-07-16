@@ -11,9 +11,9 @@
 # Edit configuration here
 #
 BASEDIR=$(dirname $0)
-JASPER_VERSION=6.0.4
+JASPER_VERSION=6.1.0
 PJB_VERSION=6.2.1
-MYSQL_JDBC_VERSION=5.1.35
+MYSQL_JDBC_VERSION=5.1.36
 INSTALL_DIR=$BASEDIR/downloads
 DIST_DIR=$BASEDIR/dist/WEB-INF/lib
 WAR_CONFIG_DIR=$BASEDIR/config/JavaBridge
@@ -67,7 +67,7 @@ unzip -o -j $OUTPUT_FILE WEB-INF/lib/*.jar -d $DIST_DIR;
 echo "Creating war file"
 cd $DIST_DIR/../../
 echo $PWD
-jar -cvf javabridge-bundle.war *
+jar -cvf javabridge-bundle.war 
 cd -
 
 
