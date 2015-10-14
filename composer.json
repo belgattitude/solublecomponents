@@ -62,8 +62,7 @@
             "Soluble\\FlexStore\\": "src/Soluble/FlexStore",
             "Soluble\\Spreadsheet\\": "src/Soluble/Spreadsheet",
             "Soluble\\Media\\": "src/Soluble/Media",
-            "Soluble\\Imediate\\": "src/Soluble/Imediate",
-            "Soluble\\Japha\\": "src/Soluble/Japha"
+            "Soluble\\Imediate\\": "src/Soluble/Imediate"
         }
     },
     "replace": {
