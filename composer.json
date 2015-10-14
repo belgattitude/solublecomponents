@@ -36,12 +36,9 @@
     "require-dev": {
         "adodb/adodb-php": "5.19",
         "satooshi/php-coveralls": "0.6.*",
-        "sami/sami": "3.*",
-        "phpunit/phpunit": "4.*",
         "phpoffice/phpexcel": "1.8.*",
         "squizlabs/php_codesniffer": "2.*",
         "symfony/var-dumper": "@stable",
-        "fabpot/php-cs-fixer": "1.*",
         "symfony/var-dumper": "@stable",
         "codeclimate/php-test-reporter": "dev-master",
         "pimple/pimple": "~3.0"
