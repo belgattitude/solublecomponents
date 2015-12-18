@@ -3,8 +3,8 @@
 # sudo wget http://get.sensiolabs.org/php-cs-fixer.phar -O /usr/local/bin/php-cs-fixer; sudo chmod +x /usr/local/bin/php-cs-fixer
 
 
-php-cs-fixer/php-cs-fixer fix --dry-run ./src --fixers=visibility 
-php-cs-fixer/php-cs-fixer fix --dry-run ./src --level=psr2 --verbose
+# php-cs-fixer fix --dry-run ./src --fixers=visibility 
+php-cs-fixer fix --dry-run ./src --level=psr2 --verbose
 
 (remove --dry-run to make it happen for real)
 
