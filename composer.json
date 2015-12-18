@@ -39,7 +39,6 @@
         "phpoffice/phpexcel": "1.8.*",
         "squizlabs/php_codesniffer": "2.*",
         "symfony/var-dumper": "@stable",
-        "symfony/var-dumper": "@stable",
         "codeclimate/php-test-reporter": "dev-master",
         "pimple/pimple": "~3.0"
     },
