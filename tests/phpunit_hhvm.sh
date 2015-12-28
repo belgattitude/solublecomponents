@@ -1,2 +1,2 @@
 #!/bin/sh
-hhvm ../vendor/bin/phpunit -c phpunit_hhvm.xml
+hhvm ~/.composer/vendor/bin/phpunit -c phpunit_hhvm.xml
