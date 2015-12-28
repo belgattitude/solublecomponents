@@ -5,7 +5,7 @@ php:
   
 matrix:
     include:
-        - php: 5.3
+        - php: 5.4
           env: EXTERNAL=false ADAPTER=mysqli
         - php: 5.6
           env: EXTERNAL=true ADAPTER=mysqli
