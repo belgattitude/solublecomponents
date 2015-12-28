@@ -3,7 +3,7 @@
 namespace Soluble\Normalist\Driver;
 
 use Soluble\Db\Driver\Exception;
-use Soluble\Db\Metadata\Source;
+use Soluble\Schema\Source;
 use Zend\Db\Adapter\Adapter;
 
 interface DriverInterface

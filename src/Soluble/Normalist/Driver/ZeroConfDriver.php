@@ -3,7 +3,7 @@
 namespace Soluble\Normalist\Driver;
 
 use Soluble\Normalist\Driver\Exception;
-use Soluble\Db\Metadata\Source;
+use Soluble\Schema\Source;
 use Zend\Db\Adapter\Adapter;
 use Zend\Config\Writer;
 
@@ -246,7 +246,8 @@ class ZeroConfDriver implements DriverInterface
             } else {
                 $schema = $this->params['schema'];
             }
-            $md = new Source\Mysql\InformationSchema($this->adapter, $schema);
+            $conn = $this->adapter->getDriver()->getConnection()->getResource();
+            $md = new Source\Mysql\MysqlInformationSchema($conn, $schema);
             $model_definition = $md->getSchemaConfig();
 
             // For later use we save the models definition
