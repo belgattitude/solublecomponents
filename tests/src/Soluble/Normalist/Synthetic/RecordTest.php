@@ -42,7 +42,7 @@ class RecordTest extends \PHPUnit_Framework_TestCase
         //$this->adapter = \SolubleTestFactories::getDbAdapter();
         
         //$cache   = \SolubleTestFactories::getCacheStorage();
-        //$metadata = new Source\Mysql\InformationSchema($this->adapter);
+        //$metadata = new Source\Mysql\MysqlInformationSchema($this->adapter);
         //$metadata->setCache($cache);
         
         //$this->tableManager = new TableManager($this->adapter);

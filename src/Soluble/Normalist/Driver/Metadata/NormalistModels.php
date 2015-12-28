@@ -1,8 +1,8 @@
 <?php
 namespace Soluble\Normalist\Driver\Metadata;
 
-use Soluble\Db\Metadata\Source;
-use Soluble\Db\Metadata\Exception;
+use Soluble\Schema\Source;
+use Soluble\Schema\Exception;
 
 class NormalistModels extends Source\AbstractSource
 {

@@ -3,7 +3,7 @@
 namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Driver;
-use Soluble\Db\Metadata\Source;
+use Soluble\Schema\Source;
 use Zend\Db\Adapter\Adapter;
 
 class TableManagerTest extends \PHPUnit_Framework_TestCase
@@ -285,7 +285,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetMetadata()
     {
-        $metadata = new Source\Mysql\InformationSchema($this->adapter);
+        $metadata = new Source\Mysql\MysqlInformationSchema($this->adapter);
         //$metadata = new Source\MysqlISMetadata($this->adapter);
         $tableManager = \SolubleTestFactories::getTableManager();
         $ret = $tableManager->setMetadata($metadata);

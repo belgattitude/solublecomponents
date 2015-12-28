@@ -4,8 +4,6 @@ namespace Soluble\Normalist\Synthetic\Table;
 
 use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\TableManager;
-use Soluble\Db\Metadata\Source;
-use Soluble\Db\Metadata\Exception;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Where;
 use \Zend\Db\Sql\Predicate;
@@ -47,7 +45,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         
         //$cache   = \SolubleTestFactories::getCacheStorage();
         //$metadata = new Source\MysqlISMetadata($this->adapter);
-        //$metadata = new Source\Mysql\InformationSchema($this->adapter);
+        //$metadata = new Source\Mysql\MysqlInformationSchema($this->adapter);
         //$metadata->setCache($cache);
         
         //$this->tableManager = new TableManager($this->adapter);

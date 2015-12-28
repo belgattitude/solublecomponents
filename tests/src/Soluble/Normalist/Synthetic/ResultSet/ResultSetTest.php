@@ -2,7 +2,7 @@
 
 namespace Soluble\Normalist\Synthetic\ResultSet;
 
-use Soluble\Db\Metadata\Source;
+
 use Soluble\Normalist\Synthetic\Table;
 use Soluble\Normalist\Synthetic\TableManager;
 use Soluble\Normalist\Synthetic\Record;
@@ -26,7 +26,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
         //$cache   = \SolubleTestFactories::getCacheStorage();
-       // $metadata = new Source\Mysql\InformationSchema($adapter);
+       // $metadata = new Source\Mysql\MysqlInformationSchema($adapter);
         /*
         $metadata = new Source\MysqlISMetadata($adapter);
         $metadata->setCache($cache);
