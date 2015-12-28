@@ -115,7 +115,7 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     
     public function testGetPrimaryKeyThrowsMultiplePrimaryKeyException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\MultiplePrimaryKeyException');
+        $this->setExpectedException('Soluble\Schema\Exception\MultiplePrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
     }
       
@@ -123,21 +123,21 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
 
     public function testgetPrimaryKeyThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $this->setExpectedException('Soluble\Schema\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKey(array('cool'));
     }
     
 
     public function testgetPrimaryKeysThrowsInvalidArgumentException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\InvalidArgumentException');
+        $this->setExpectedException('Soluble\Schema\Exception\InvalidArgumentException');
         $primary = $this->metadata->getPrimaryKeys(array('cool'));
     }
     
     
     public function testGetPrimaryKeyThrowsNoPrimaryKeyException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
+        $this->setExpectedException('Soluble\Schema\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_without_pk');
     }
     
@@ -159,7 +159,7 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     
     public function testGetPrimaryKeysThrowsNoPrimaryKeyException()
     {
-        $this->setExpectedException('Soluble\Db\Metadata\Exception\NoPrimaryKeyException');
+        $this->setExpectedException('Soluble\Schema\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKeys('test_table_without_pk');
     }
 }

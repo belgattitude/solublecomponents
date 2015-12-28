@@ -726,10 +726,10 @@ die();
         if ($this->primary_keys === null) {
             try {
                 $this->primary_keys = $this->tableManager->metadata()->getPrimaryKeys($this->prefixed_table);
-            } catch (\Soluble\Schema\Source\Exception\NoPrimaryKeyException $e) {
+            } catch (\Soluble\Schema\Exception\NoPrimaryKeyException $e) {
                 throw new Exception\PrimaryKeyNotFoundException(__METHOD__ . ': ' . $e->getMessage());
             //@codeCoverageIgnoreStart
-            } catch (\Soluble\Schema\Source\Exception\ExceptionInterface $e) {
+            } catch (\Soluble\Schema\Exception\ExceptionInterface $e) {
                 throw new Exception\RuntimeException(__METHOD__ . ": Cannot determine primary key on table " . $this->prefixed_table);
             }
             //@codeCoverageIgnoreEnd

@@ -3,7 +3,7 @@ namespace Soluble\Normalist\Synthetic;
 
 use Soluble\Normalist\Driver;
 use Soluble\Db\Sql\Select;
-use Soluble\Db\Metadata\Source;
+use Soluble\Schema\Source;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use ArrayObject;
