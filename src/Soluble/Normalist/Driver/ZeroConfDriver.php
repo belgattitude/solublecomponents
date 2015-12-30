@@ -248,7 +248,7 @@ class ZeroConfDriver implements DriverInterface
             }
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
             $md = new Source\Mysql\MysqlInformationSchema($conn, $schema);
-            $model_definition = $md->getSchemaConfig();
+            $model_definition = (array) $md->getSchemaConfig();
 
             // For later use we save the models definition
             $this->saveModelsDefinition($model_definition);

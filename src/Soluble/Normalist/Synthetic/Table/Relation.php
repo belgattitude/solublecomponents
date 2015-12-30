@@ -48,7 +48,7 @@ class Relation
         }
 
         $tableName = $this->table->getTableName();
-        $relations = $this->table->getTableManager()->metadata()->getRelations($tableName);
+        $relations = $this->table->getTableManager()->metadata()->getForeignKeys($tableName);
         //$rels = array();
         foreach ($relations as $column => $parent) {
             if ($parent['referenced_table'] == $parent_table) {

@@ -662,13 +662,13 @@ die();
 
 
     /**
-     * Return table relations
+     * Return table relations (foreign keys infos)
      *
      * @return array
      */
     public function getRelations()
     {
-        return $this->tableManager->metadata()->getRelations($this->prefixed_table);
+        return $this->tableManager->metadata()->getForeignKeys($this->prefixed_table);
     }
 
 

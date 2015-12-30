@@ -49,9 +49,9 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
 
     
     
-    public function testGetRelations()
+    public function testGetForeignKeys()
     {
-        $relations = $this->metadata->getRelations('product');
+        $relations = $this->metadata->getForeignKeys('product');
         $this->assertInternalType('array', $relations);
         $this->assertArrayHasKey('brand_id', $relations);
         $this->assertArrayHasKey('referenced_column', $relations['unit_id']);

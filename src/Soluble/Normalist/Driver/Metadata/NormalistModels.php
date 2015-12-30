@@ -128,22 +128,31 @@ class NormalistModels extends Source\AbstractSource
 
 
     /**
-     * Return relations information
-     *
-     * @throws Exception\InvalidArgumentException
-     * @throws Exception\ErrorException
-     * @throws Exception\ExceptionInterface
-     * @throws Exception\TableNotFoundException
-     *
-     * @param string $table
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getRelations($table)
+    public function getForeignKeys($table)
     {
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['foreign_keys'];
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getSchemaConfig()
+    {
+        return $this->model_definition;
+    }
+
+    /**
+     * {@inheritdoc}
+     */    
+    public function getReferences($table)
+    {
+        $this->checkTableArgument($table);
+        return $this->model_definition['tables'][$table]['references'];
+    }
+    
 
     /**
      * Return table informations
