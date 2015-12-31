@@ -135,7 +135,7 @@ class NormalistModels extends Source\AbstractSchemaSource
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['foreign_keys'];
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -146,13 +146,13 @@ class NormalistModels extends Source\AbstractSchemaSource
 
     /**
      * {@inheritdoc}
-     */    
+     */
     public function getReferences($table)
     {
         $this->checkTableArgument($table);
         return $this->model_definition['tables'][$table]['references'];
     }
-    
+
 
     /**
      * Return table informations

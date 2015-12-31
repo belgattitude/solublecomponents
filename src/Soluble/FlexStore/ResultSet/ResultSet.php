@@ -32,7 +32,7 @@ class ResultSet extends AbstractResultSet
      * @var HydrationOptions
      */
     protected $hydrationOptions;
-    
+
     /**
      *
      * @var boolean
@@ -54,8 +54,8 @@ class ResultSet extends AbstractResultSet
      */
     protected $hydrated_columns;
 
-    
-    
+
+
     /**
      * Return source column model
      *
@@ -110,8 +110,8 @@ class ResultSet extends AbstractResultSet
     {
         return $this->hydrationOptions;
     }
-    
-    
+
+
     /**
      *
      * @return Paginator
@@ -206,11 +206,11 @@ class ResultSet extends AbstractResultSet
         if ($row === null) {
             return null;
         }
-        
+
         if (!$this->hydrate_options_initialized) {
             $this->initColumnModelHydration($row);
         }
-        
+
 
         // 1. Row renderers
         foreach ($this->hydration_renderers as $renderer) {
@@ -232,7 +232,7 @@ class ResultSet extends AbstractResultSet
             }
             $row->exchangeArray($d);
         }
-        
+
         if ($this->returnType === self::TYPE_ARRAY) {
             return (array) $row;
         }

@@ -106,7 +106,7 @@ abstract class AbstractSource implements SourceInterface
     {
         return ($this->columnModel !== null);
     }
-    
+
     /**
      * Return column model
      *
@@ -119,7 +119,7 @@ abstract class AbstractSource implements SourceInterface
         }
         return $this->columnModel;
     }
-    
+
     /**
      * Set column model associated with the datasource
      *

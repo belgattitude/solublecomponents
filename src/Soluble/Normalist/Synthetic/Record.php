@@ -134,7 +134,7 @@ class Record implements ArrayAccess
             throw new Exception\LogicException(__METHOD__ . ": Record is not on manageable state.");
              //@codeCoverageIgnoreEnd
         }
-         
+
          */
         $this->setData($new_record->toArray());
         $this->setState(Record::STATE_CLEAN);

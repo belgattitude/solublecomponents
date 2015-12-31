@@ -28,7 +28,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
      * @var Sql
      */
     protected $sql;
-    
+
     /**
      *
      * @var Select
@@ -84,7 +84,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
             $this->setSelect($select);
         }
     }
-    
+
     /**
      * @param Select
      * @return SqlSource
@@ -94,7 +94,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
         $this->select = $select;
         return $this;
     }
-    
+
     /**
      *
      * @return Select
@@ -103,7 +103,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
     {
         return $this->select();
     }
-    
+
     /**
      *
      * @return Select
@@ -115,7 +115,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
         }
         return $this->select;
     }
-    
+
 
     /**
      *
@@ -147,7 +147,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
         if ($options === null) {
             $options = $this->getOptions();
         }
-        
+
         $select = $this->assignOptions(clone $this->getSelect(), $options);
 
 
@@ -284,7 +284,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
                 throw new Exception\UnsupportedFeatureException(__METHOD__ . " Does not support default metadata reader for driver '$class'");
         }
     }
-    
+
     /**
      * Return the query string that was executed
      * @throws Exception\InvalidUsageException

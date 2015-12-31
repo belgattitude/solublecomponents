@@ -73,12 +73,12 @@ abstract class AbstractWriter
     public function save($filename, $charset = null)
     {
         $data = $this->getData();
-        
+
         /*
         if ($charset === null) {
             $charset = $this->options['charset'];
         }
-         
+
         */
         // UTF-8 : file_put_contents("file.txt", "\xEF\xBB\xBF" . $data);
 

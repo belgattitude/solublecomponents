@@ -56,8 +56,8 @@ class UnitFormatter extends NumberFormatter
         if ($number !== null && !is_numeric($number)) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
         }
-        
-        
+
+
         if ($this->unit_column !== null) {
             if (!isset($row[$this->unit_column])) {
                 throw new Exception\RuntimeException(__METHOD__ . " Cannot determine unit code based on column '{$this->unit_column}'.");
@@ -68,11 +68,11 @@ class UnitFormatter extends NumberFormatter
         } else {
             throw new Exception\RuntimeException(__METHOD__ . " Unit code must be set prior to use the UnitFormatter");
         }
-        
+
         if (intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
         }
-        
+
         return $value;
     }
 

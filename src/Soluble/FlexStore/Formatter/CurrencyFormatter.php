@@ -96,11 +96,11 @@ class CurrencyFormatter extends NumberFormatter
                 $this->params['currency_code']
             );
         }
-        
+
         if (intl_is_failure($this->formatters[$formatterId]->getErrorCode())) {
             $this->throwNumberFormatterException($this->formatters[$formatterId], $number);
         }
-        
+
         return $value;
     }
 
@@ -121,7 +121,7 @@ class CurrencyFormatter extends NumberFormatter
         // setting it to null prevent eventual warning
         $currency = null;
         $result = $this->formatters[$formatterId]->parseCurrency($value, $currency);
-        
+
         if ($value === false) {
             return null;
         }

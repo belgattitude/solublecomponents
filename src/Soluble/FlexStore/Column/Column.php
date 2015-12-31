@@ -30,7 +30,7 @@ class Column implements ColumnSettableInterface
         'editable' => false,
         'virtual' => true
     );
-    
+
 
     /**
      * Constructor
@@ -93,7 +93,7 @@ class Column implements ColumnSettableInterface
         $this->properties['type'] = $type;
         return $this;
     }
-    
+
 
     /**
      *
@@ -143,8 +143,8 @@ class Column implements ColumnSettableInterface
     {
         return $this->properties['virtual'];
     }
-    
-    
+
+
     /**
      *
      * @param boolean $excluded

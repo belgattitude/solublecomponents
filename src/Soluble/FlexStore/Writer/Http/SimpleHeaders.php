@@ -6,14 +6,14 @@ class SimpleHeaders
 {
     const DIPOSITION_INLINE = 'inline';
     const DIPOSITION_ATTACHEMENT = 'attachement';
-    
+
     /**
      * Supported disposition types
      * @var array
      */
     protected $disposition_types = array('inline', 'attachement');
-    
-    
+
+
     /**
      *
      * @var array
@@ -25,18 +25,18 @@ class SimpleHeaders
         'content-disposition-type'      => null,
         'content-length'                => null
     );
-    
+
     /**
      *
      * @var array
      */
     protected $params;
-    
+
     public function __construct()
     {
         $this->params = $this->default_params;
     }
-    
+
     /**
      *
      * @param string $content_type
@@ -51,13 +51,13 @@ class SimpleHeaders
         }
         return $this;
     }
-    
+
     public function getContentType()
     {
         return $this->params['content-type'];
     }
-    
-    
+
+
     /**
      * Set the content disposition filename and type
      *
@@ -71,7 +71,7 @@ class SimpleHeaders
         $this->setContentDispositionType($content_disposition_type);
         return $this;
     }
-    
+
     /**
      * Return the content disposition filename
      *
@@ -81,7 +81,7 @@ class SimpleHeaders
     {
         return $this->params['content-disposition-filename'];
     }
-    
+
     /**
      * Set the content type charset
      *
@@ -97,7 +97,7 @@ class SimpleHeaders
         $this->params['content-type-charset'] = $charset;
         return $this;
     }
-    
+
     /**
      *
      * @return string
@@ -106,8 +106,8 @@ class SimpleHeaders
     {
         return $this->params['content-type-charset'];
     }
-    
-    
+
+
     /**
      * Set the preferred content disposition type 'attachement' or 'inline'
      *
@@ -121,12 +121,12 @@ class SimpleHeaders
             $supported = join(',', $this->disposition_types);
             throw new Exception\InvalidArgumentException(__METHOD__ . " Content disposition type '$content_disposition_type' not in supported types: $supported");
         }
-        
+
         $this->params['content-disposition-type'] = $content_disposition_type;
         return $this;
     }
-    
-    
+
+
     /**
      * Return the content disposition type
      * @return string
@@ -135,7 +135,7 @@ class SimpleHeaders
     {
         return $this->params['content-disposition-type'];
     }
-    
+
     /**
      *
      * @param int $length
@@ -146,7 +146,7 @@ class SimpleHeaders
         $this->params['content-length'] = $length;
         return $this;
     }
-    
+
     /**
      *
      * @return int
@@ -155,8 +155,8 @@ class SimpleHeaders
     {
         return $this->params['content-length'];
     }
-        
-    
+
+
     public function getHeaderLines()
     {
         $lines = array();
@@ -167,7 +167,7 @@ class SimpleHeaders
             }
             $lines[] = $ct;
         }
-        
+
         if ($this->params['content-disposition-type'] !== null) {
             $cd = "Content-Disposition: " . $this->params['content-disposition-type'];
             if ($this->params['content-disposition-filename'] !== null) {
@@ -175,14 +175,14 @@ class SimpleHeaders
             }
             $lines[] = $cd;
         }
-        
+
         if ($this->params['content-length'] !== null) {
             $lines[] = "Content-Length: " . $this->params['content-length'];
         }
-        
+
         return $lines;
     }
-    
+
     /**
      * Output the headers (php)
      *

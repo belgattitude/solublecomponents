@@ -46,13 +46,13 @@ class NumberFormatter implements FormatterInterface, LocalizableInterface, Forma
                 __NAMESPACE__
             ));
         }
-        
-        
-        
+
+
+
         // As default locale may include unsupported
         // variants (like 'en_US_POSIX' for example),
         // only the 5 chars will be taken into consideration
-        
+
         $default_locale = Locale::getDefault();
         $this->default_params['locale'] = substr($default_locale, 0, 5);
         $this->setParams($params);

@@ -43,8 +43,8 @@ class CSVWriter extends AbstractSendableWriter
             // Take store global/default options
             $options = $this->store->getOptions();
         }
-        
-        
+
+
 // TODO - TEST database connection charset !!!
 //
 
@@ -65,7 +65,7 @@ class CSVWriter extends AbstractSendableWriter
         $charset = strtoupper($this->options['charset']);
 
         $csv = '';
-        
+
 
         // Get unformatted data when using csv writer
         $options->getHydrationOptions()->disableFormatters();
@@ -108,7 +108,7 @@ class CSVWriter extends AbstractSendableWriter
                     if ($l != '') {
                         $l = @iconv($internal_encoding, $this->options['charset'], $l);
                         //$l = iconv($internal_encoding, $this->options['charset'] . "//TRANSLIT//IGNORE", $l);
-                        
+
                         if ($l === false) {
                             throw new Exception\CharsetConversionException("Cannot convert the charset to '" . $this->options['charset'] . "' from charset '$internal_encoding', value: '$line'.");
                         } else {

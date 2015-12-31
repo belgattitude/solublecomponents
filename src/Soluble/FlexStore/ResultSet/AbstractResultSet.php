@@ -11,7 +11,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
 {
     const TYPE_ARRAYOBJECT = 'arrayobject';
     const TYPE_ARRAY  = 'array';
-    
+
     /**
      * Return type to use when returning an object from the set
      *
@@ -28,8 +28,8 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
         self::TYPE_ARRAYOBJECT,
         self::TYPE_ARRAY,
     );
-    
- 
+
+
 
     /**
      * @var ArrayObject
@@ -43,7 +43,7 @@ abstract class AbstractResultSet implements Iterator, ResultSetInterface
      */
     protected $zfResultSet;
 
-    
+
     /**
      * Constructor
      *

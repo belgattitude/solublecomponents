@@ -103,7 +103,7 @@ class Table
     {
         return new TableSearch($this->select($table_alias), $this);
     }
-    
+
     /**
      * Return all records in the table
      *
@@ -176,7 +176,7 @@ class Table
             $message = "Invalid predicates or combination detected (" . $e->getMessage() . ")";
             throw new Exception\InvalidArgumentException(__METHOD__ . ": $message");
         }
-        
+
         try {
             $results = $select->execute()
                               ->toArray();
@@ -259,14 +259,14 @@ class Table
     {
         $select = $this->select()
                         ->columns(array('count' => new Expression('count(*)')));
-        
+
         try {
             $select->where($predicate, $combination);
         } catch (\Zend\Db\Sql\Exception\InvalidArgumentException $e) {
             $message = "Invalid predicates or combination detected (" . $e->getMessage() . ")";
             throw new Exception\InvalidArgumentException(__METHOD__ . ": $message");
         }
-        
+
         $result = $select->execute()->toArray();
 
         return (int) $result[0]['count'];
@@ -497,8 +497,8 @@ class Table
 
         return $this->findOrFail($id);
     }
-    
-    
+
+
     /**
      * Insert on duplicate key
      *
@@ -521,17 +521,17 @@ class Table
         $unique_keys   = $this->tableManager->metadata()->getUniqueKeys($this->prefixed_table);
         $unique_keys[]
         $primary_keys = $this->getPrimaryKeys();
-        
+
         $uniques = array_merge(array($unique_keys, 'primary_keys' => $primary_keys));
         $cols = ['index2', 'index1'];
         $data = ['index1' => 'coool', 'index2' => 'hello'];
-        
+
 
         $unique_found = false;
         $data_columns = array_keys($data);
         var_dump($uniques);
         while ($cols = array_pop($uniques) && !$unique_found) {
-            
+
             var_dump($cols);
             die();
             $intersect = array_intersect($cols, $data_columns);
@@ -539,16 +539,16 @@ class Table
         }
 
         dump($intersect);
-        
+
         die();
         $intersect = array_intersect($cols, array_keys($data));
         dump($intersect);
         dump($intersect == $cols);
         die();
-        
+
         foreach($unique_keys as $index => $columns) {
         //    if (array_diff_key($duplicate_exclude, $d))
-            
+
         }
 dump($unique_keys);
 dump($primary_keys);
@@ -573,10 +573,10 @@ die();
         $insert = $this->sql->insert($this->prefixed_table);
         $insert->values($d);
         $sql_string = $this->sql->getSqlStringForSqlObject($insert);
-        
-        
+
+
         $extras = array();
-        
+
         /**
          * No reason to exclude primary key from
          */

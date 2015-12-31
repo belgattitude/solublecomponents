@@ -12,14 +12,14 @@ interface ColumnSettableInterface
      * @throws Exception\InvalidArgumentException when the type is not supported.
      */
     public function setType($type);
-    
-    
+
+
     /**
      *
      * @param FormatterInterface $formatter
      */
     public function setFormatter(FormatterInterface $formatter);
-    
+
     /**
      *
      * @param boolean $excluded
@@ -31,7 +31,7 @@ interface ColumnSettableInterface
      * @param boolean $virtual
      */
     public function setVirtual($virtual = true);
-    
+
     /**
      *
      * @param boolean $editable
@@ -43,22 +43,22 @@ interface ColumnSettableInterface
      * @param boolean $hidden
      */
     public function setHidden($hidden = true);
-    
-    
+
+
     /**
      *
      * @param boolean $sortable
      */
     public function setSortable($sortable = true);
 
-    
-    
+
+
     /**
      *
      * @param boolean $groupable
      */
     public function setGroupable($groupable = true);
-    
+
 
     /**
      *
@@ -66,7 +66,7 @@ interface ColumnSettableInterface
      */
     public function setFilterable($filterable = true);
 
-    
+
     /**
      * Set recommended width for the column
      *
@@ -74,7 +74,7 @@ interface ColumnSettableInterface
      * @param float|int|string $width
      */
     public function setWidth($width);
-    
+
     /**
      * Set table header for this column
      *

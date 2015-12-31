@@ -28,7 +28,7 @@ class Result implements ColumnSettableInterface
         $this->columns = $columns;
         $this->results = $results;
     }
-    
+
     /**
      *
      * @param FormatterInterface $formatter
@@ -56,7 +56,7 @@ class Result implements ColumnSettableInterface
         }
         return $this;
     }
-    
+
 
     /**
      *
@@ -70,7 +70,7 @@ class Result implements ColumnSettableInterface
         }
         return $this;
     }
-    
+
     /**
      *
      * @param boolean $excluded

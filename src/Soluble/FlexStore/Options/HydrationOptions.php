@@ -9,7 +9,7 @@ class HydrationOptions
      * @var array
      */
     protected $params = array();
-    
+
     /**
      *
      * @var array

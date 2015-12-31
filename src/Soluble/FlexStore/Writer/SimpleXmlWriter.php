@@ -82,12 +82,12 @@ class SimpleXmlWriter extends AbstractSendableWriter
             // Take store global/default options
             $options = $this->store->getOptions();
         }
-        
-        
+
+
         // Get unformatted data when using xml writer
         $options->getHydrationOptions()->disableFormatters();
-                
-        
+
+
         $data = $this->store->getData($options);
         $bt = $this->options['body_tag'];
         $encoding = $this->options['encoding'];

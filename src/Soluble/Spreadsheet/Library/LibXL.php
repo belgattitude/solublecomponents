@@ -21,7 +21,7 @@ class LibXL
      * @var array|null
      */
     protected $license;
-    
+
     /**
      *
      * @var array

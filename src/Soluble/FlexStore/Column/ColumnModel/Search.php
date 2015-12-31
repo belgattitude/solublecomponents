@@ -91,7 +91,7 @@ class Search
         }
         return new Result($results, $this->columns);
     }
-    
+
     /**
      * Return virtual column (not materialized by the underlying datasource)
      * @return Result

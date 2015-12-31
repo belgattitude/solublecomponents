@@ -52,8 +52,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
     }
 
 
-    
-    
+
+
     /**
      *
      * @param string $sql
@@ -75,8 +75,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
             $tableName = $field['table'];
 
             $datatype = strtoupper($field['native_type']);
-            
-            
+
+
             //@codeCoverageIgnoreStart
             if (!$type_map->offsetExists($datatype)) {
                 throw new UnsupportedDatatypeException("Datatype '$datatype' not yet supported by " . __CLASS__);
@@ -87,8 +87,8 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
 
             $column = Column\Type::createColumnDefinition($datatype['type'], $name, $tableName, $schemaName = null);
             $alias = $field['name'];
-            
-            
+
+
             $column->setAlias($alias);
             $column->setTableAlias($field['table']);
             //$column->setCatalog($field->catalog);
@@ -136,7 +136,7 @@ class PDOMysqlMetadataReader extends AbstractMetadataReader
                     ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
-                
+
                 // If the the previous definition, was a prev_def
                 if ($prev_def['isPrimary']) {
                     $column = $prev_column;

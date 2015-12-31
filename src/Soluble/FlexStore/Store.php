@@ -28,7 +28,7 @@ class Store implements StoreInterface
     {
         $this->source = $source;
     }
-    
+
     /**
      * Return store search options
      * @return Options

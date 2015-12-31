@@ -23,7 +23,7 @@ class JsonModelWriter extends AbstractWriter
             // Take store global/default options
             $options = $this->store->getOptions();
         }
-        
+
         $data = $this->store->getData($options);
         $d = array(
             'success' => true,

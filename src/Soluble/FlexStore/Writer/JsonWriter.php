@@ -14,15 +14,15 @@ class JsonWriter extends AbstractSendableWriter
      * @var SimpleHeaders
      */
     protected $headers;
-    
-    
+
+
     /**
      *
      * @var int|string|null
      */
     protected $request_id;
 
-    
+
     /**
      * Set origin request id
      *
@@ -36,7 +36,7 @@ class JsonWriter extends AbstractSendableWriter
     {
         $this->request_id = $request_id;
     }
-    
+
     /**
      * @param Options $options
      * @return string

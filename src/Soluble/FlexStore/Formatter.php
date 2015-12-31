@@ -17,9 +17,9 @@ class Formatter
         self::FORMATTER_NUMBER    => 'Formatter\NumberFormatter',
         self::FORMATTER_UNIT    => 'Formatter\UnitFormatter',
     );
-    
-    
-    
+
+
+
     /**
      *
      * @param string $formatter_name
@@ -35,7 +35,7 @@ class Formatter
         $class = __NAMESPACE__ . '\\' . self::$formattersMap[strtolower($formatter_name)];
         return new $class($params);
     }
-    
+
     /**
      * Whether a formatter is supported
      *
@@ -46,7 +46,7 @@ class Formatter
     {
         return array_key_exists(strtolower($formatter_name), self::$formattersMap);
     }
-    
+
     /**
      * Return supported formatters
      *

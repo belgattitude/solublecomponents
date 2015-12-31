@@ -11,7 +11,7 @@ interface HttpSendableInterface
      * @return \Soluble\FlexStore\Writer\Http\SimpleHeaders
      */
     public function getHttpHeaders();
-    
+
     /**
      * Send the store data via http
      *

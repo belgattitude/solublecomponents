@@ -11,7 +11,7 @@ class Options
      * @var HydrationOptions
      */
     protected $hydrationOptions;
-    
+
     /**
      *
      * @var integer|null
@@ -24,7 +24,7 @@ class Options
      */
     protected $offset;
 
-    
+
 
     /**
      * Set the (maximum) number of results to return
@@ -91,7 +91,7 @@ class Options
     {
         return $this->offset !== null;
     }
-    
+
     /**
      * Set the offset (the record to start reading when using limit)
      *
@@ -122,7 +122,7 @@ class Options
     {
         return $this->offset;
     }
-    
+
     /**
      * Unset previously set offset
      * @return Options
@@ -132,7 +132,7 @@ class Options
         $this->offset = null;
         return $this;
     }
-    
+
     /**
      *
      * @return HydrationOptions

@@ -33,7 +33,7 @@ class Paginator extends ZendPaginator
         if (!is_int($offset) || $offset < 0) {
             throw new Exception\InvalidUsageException(__METHOD__ . ' expects offset to be an integer greater than 0');
         }
-        
+
         if (class_exists('\Zend\Paginator\Adapter\NullFill')) {
             // In ZF 2.4+
             $adapter = new \Zend\Paginator\Adapter\NullFill($totalRows);
@@ -43,7 +43,7 @@ class Paginator extends ZendPaginator
         } else {
             throw new Exception\RuntimeException(__METHOD__ . " Missing Zend\Paginator\Adapter.");
         }
-        
+
         parent::__construct($adapter);
         $this->setItemCountPerPage($limit);
         $this->setCurrentPageNumber(ceil(($offset + 1) / $limit));

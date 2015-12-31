@@ -27,7 +27,7 @@ class ColumnType
     );
 
 
-    
+
     /**
      *
      * @param string $type_name
@@ -43,7 +43,7 @@ class ColumnType
         $class = __NAMESPACE__ . '\\' . self::$typesMap[strtolower($type_name)];
         return new $class();
     }
-    
+
     /**
      * Whether a type is supported
      *
@@ -54,7 +54,7 @@ class ColumnType
     {
         return array_key_exists(strtolower($type_name), self::$typesMap);
     }
-    
+
     /**
      * Return supported types
      *

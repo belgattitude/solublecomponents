@@ -26,7 +26,7 @@ class LibXLWriter extends AbstractSendableWriter
      * @var ArrayObject
      */
     protected $unit_formats;
-    
+
     /**
      *
      * @var SimpleHeaders
@@ -126,8 +126,8 @@ class LibXLWriter extends AbstractSendableWriter
             } else {
                 $symbol = $currency;
             }
-            
-            
+
+
             $formatString = '#,##0';
 
             if ($decimals > 0) {
@@ -145,7 +145,7 @@ class LibXLWriter extends AbstractSendableWriter
         }
         return $this->currency_formats->offsetGet($id);
     }
-    
+
 
 
     /**
@@ -160,7 +160,7 @@ class LibXLWriter extends AbstractSendableWriter
         $id = "$unit/$decimals";
         if (!$this->unit_formats->offsetExists($id)) {
             $symbol = $unit;
-            
+
             $formatString = '#,##0';
 
             if ($decimals > 0) {
@@ -176,8 +176,8 @@ class LibXLWriter extends AbstractSendableWriter
         }
         return $this->unit_formats->offsetGet($id);
     }
-    
-    
+
+
 
     /**
      *
@@ -224,14 +224,14 @@ class LibXLWriter extends AbstractSendableWriter
 
         // Get unformatted data when using excel writer
         $options->getHydrationOptions()->disableFormatters();
-        
+
         // Some colu
         $options->getHydrationOptions()->disableColumnExclusion();
 
         $book = $this->getExcelBook();
         $this->generateExcel($book, $options);
         //$book->setLocale($locale);
-       
+
         $temp_dir = sys_get_temp_dir();
         if (!is_dir($temp_dir)) {
             throw new \Exception(__METHOD__ . " System temporary directory '$temp_dir' does not exists.");
@@ -240,7 +240,7 @@ class LibXLWriter extends AbstractSendableWriter
         if (!is_writable($temp_dir)) {
             throw new \Exception(__METHOD__ . " System temporary directory '$temp_dir' is not writable.");
         }
-        
+
         $filename = tempnam($temp_dir, 'libxl');
 
         $book->save($filename);
@@ -352,14 +352,14 @@ class LibXLWriter extends AbstractSendableWriter
                         $format = null;
                 }
             }
-            
+
             if ($format === null) {
                 $format = $this->getDefaultTextFormat($book);
             } else {
                 /* Not yet supported, waiting php_excel 1.1
                 $format->horizontalAlign($this->getFormatStyle('horizontalAlign'));
                 $format->verticalAlign($this->getFormatStyle('verticalAlign'));
- 
+
  */
             }
 
@@ -377,7 +377,7 @@ class LibXLWriter extends AbstractSendableWriter
         //var_dump((array) $specs);
         return $specs;
     }
-    
+
     protected function getDefaultTextFormat(ExcelBook $book)
     {
         $format = $book->addFormat();
@@ -438,19 +438,19 @@ class LibXLWriter extends AbstractSendableWriter
         $sheet->splitSheet(1, 0);
 
         // Fill document content
-        
-        
-        
+
+
+
         $data = $this->store->getData($options);
 
         foreach ($data as $idx => $row) {
             $col_idx = 0;
             $row_idx = $idx + 1;
             $rowHeight = $sheet->rowHeight($row_idx);
-            
+
             foreach ($specs as $name => $spec) {
-                
-                // Row may have no key in the case of customer renderers, 
+
+                // Row may have no key in the case of customer renderers,
                 // to prevent notice let's make it to null
                 $value = isset($row[$name]) ? $row[$name] : null;
 
@@ -478,7 +478,7 @@ class LibXLWriter extends AbstractSendableWriter
                                     // More height when one cell contains multiple lines
                                     $sheet->setRowHeight($row_idx, ceil($rowHeight * 1.9));
                                 }
-                                
+
                                 $sheet->write($row_idx, $col_idx, $value, $format);
                         }
                     }
@@ -502,7 +502,7 @@ class LibXLWriter extends AbstractSendableWriter
         return $book;
     }
 
-    
+
     /**
      *
      * @param string $license_name
@@ -512,14 +512,14 @@ class LibXLWriter extends AbstractSendableWriter
     {
         self::$default_license = array('name' => $license_name, 'key' => $license_key);
     }
-    
-    
+
+
     public function getFormatStyle($style)
     {
         $styles = $this->getFormatStyles();
         return $styles[$style];
     }
-    
+
     public function getFormatStyles()
     {
         $styles = array(

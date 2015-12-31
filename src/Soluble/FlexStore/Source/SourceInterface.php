@@ -18,13 +18,13 @@ interface SourceInterface
      * @return \Soluble\FlexStore\Column\ColumnModel
      */
     public function getColumnModel();
-    
+
     /**
      *
      * @return \Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader
      */
     public function getMetadataReader();
-    
+
     /**
      *
      * @return \Soluble\FlexStore\Options

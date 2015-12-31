@@ -18,14 +18,14 @@ class Transaction
     const STATE_ROLLBACKED = 'rollbacked';
     const STATE_COMMITTED = 'committed';
     const STATE_ERRORED = 'errored';
-    
+
     /**
      *
      * @param \Zend\Db\Adapter\Adapter $adapter
      */
     protected $adapter;
-    
-    
+
+
     /**
      *
      * @var string state of current transaction

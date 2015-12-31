@@ -11,7 +11,7 @@ class ColumnModel
 {
     const ADD_COLUMN_AFTER = 'after';
     const ADD_COLUMN_BEFORE = 'before';
-    
+
 
     /**
      *
@@ -30,7 +30,7 @@ class ColumnModel
      * @var ArrayObject
      */
     protected $row_renderers;
-    
+
     /**
      *
      * @var ArrayObject|null
@@ -61,7 +61,7 @@ class ColumnModel
                 throw new Exception\MissingColumnException(__METHOD__ . ": " . $msg);
             }
         }
-        
+
         $this->row_renderers->append($renderer);
     }
 
@@ -92,7 +92,7 @@ class ColumnModel
         }
         return $arr;
     }
-    
+
     /**
      * This method returns unique formatters set in the column model
      * in an ArrayObject
@@ -105,7 +105,7 @@ class ColumnModel
     public function getUniqueFormatters($include_excluded_columns = false)
     {
         $unique = new ArrayObject();
-        
+
         $formatters = $this->getFormatters();
         foreach ($formatters as $column => $formatter) {
             if ($include_excluded_columns || !$this->get($column)->isExcluded()) {
@@ -122,10 +122,10 @@ class ColumnModel
                 }
             }
         }
-        
+
         return $unique;
     }
-    
+
     /**
      * Add a new column to the column model
      *
@@ -144,19 +144,19 @@ class ColumnModel
             $msg = "Cannot add column '$name', it's already present in column model";
             throw new Exception\DuplicateColumnException(__METHOD__ . ': ' . $msg);
         }
-        
+
         if ($after_column !== null) {
             // Test existence of column
             if (!$this->exists($after_column)) {
                 $msg = "Cannot add column '$name' after '$after_column', column does not exists.";
                 throw new Exception\ColumnNotFoundException(__METHOD__ . ': ' . $msg);
             }
-            
+
             if (!in_array($mode, array(self::ADD_COLUMN_BEFORE, self::ADD_COLUMN_AFTER))) {
                 $msg = "Cannot add column '$name', invalid mode specified '$mode'";
                 throw new Exception\InvalidArgumentException(__METHOD__ . ': ' . $msg);
             }
-            
+
             $new_columns = new ArrayObject();
             foreach ($this->columns as $key => $col) {
                 if ($mode == self::ADD_COLUMN_BEFORE && $key == $after_column) {
@@ -192,8 +192,8 @@ class ColumnModel
         }
         return $this->columns->offsetExists($column);
     }
-    
-    
+
+
 
     /**
      * Return column that have been excluded in getData() and getColumns()
@@ -272,12 +272,12 @@ class ColumnModel
         }
         // trim column
         $excluded_columns = array_map('trim', $excluded_columns);
-        
+
         $this->search()->in($excluded_columns)->setExcluded($excluded);
         return $this;
     }
 
-    
+
     /**
      * Exclude all other columns that the one specified
      * Column sort is preserved in getData()
@@ -293,7 +293,7 @@ class ColumnModel
                 && !is_string($include_only_columns) && !$include_only_columns instanceof ArrayObject) {
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $include_only_columns param to be array|ArrayObject|string');
         }
-        
+
         // trim column
         $include_only_columns = array_map('trim', (array) $include_only_columns);
 
@@ -323,7 +323,7 @@ class ColumnModel
         }
         return $arr;
     }
-    
+
     /**
      * Set formatter to specific columns
      *
@@ -339,7 +339,7 @@ class ColumnModel
             throw new Exception\InvalidArgumentException(__METHOD__ . ' Requires $columns param to be array|ArrayObject|string');
         }
         $this->search()->in($columns)->setFormatter($formatter);
-        
+
         return $this;
     }
 
@@ -353,8 +353,8 @@ class ColumnModel
         }
         return $this->search;
     }
-    
-    
+
+
     /**
      *
      * @param ArrayObject $metadata
@@ -365,7 +365,7 @@ class ColumnModel
         $this->metadata = $metadata;
         return $this;
     }
-    
+
     /**
      *
      * @return ArrayObject|null

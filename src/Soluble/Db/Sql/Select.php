@@ -170,7 +170,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         }
         $sql = new Sql($this->adapter);
         $sql_string = $sql->getSqlStringForSqlObject($this);
-        
+
         //return $this->adapter->createStatement($sql_string)->execute();
         //return $this->adapter->query($sql_string, Adapter::QUERY_MODE_EXECUTE);
         $result = $this->adapter->getDriver()->getConnection()->execute($sql_string);
@@ -179,7 +179,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
         return $resultset;
     }
 
-    
+
     /**
      * Return an sql string accordingly to the internat database adapter
      *

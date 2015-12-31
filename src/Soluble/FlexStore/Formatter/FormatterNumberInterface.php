@@ -10,7 +10,7 @@ interface FormatterNumberInterface
      * @param int $decimals
      */
     public function setDecimals($decimals);
-    
+
     /**
      *
      * @return int

@@ -146,13 +146,13 @@ class MysqliMetadataReader extends AbstractMetadataReader
                     ||  $prev_def['nativeDataType'] != $curr_def['nativeDataType']) {
                     throw new Exception\AmbiguousColumnException("Cannot get column metadata, non unique column found '$alias' in query with different definitions.");
                 }
-                
+
                 // If the the previous definition, was a prev_def
                 if ($prev_def['isPrimary']) {
                     $column = $prev_column;
                 }
             }
-            
+
 
             $metadata->offsetSet($alias, $column);
         }
@@ -267,13 +267,13 @@ class MysqliMetadataReader extends AbstractMetadataReader
 
 
 
-            
+
 
             MYSQLI_TYPE_BIT => array('type' => Column\Type::TYPE_BIT, 'native' => 'BIT'),
             //MYSQLI_TYPE_BOOLEAN => array('type' => Column\Type::TYPE_BOOLEAN, 'native' => 'BOOLEAN'),
-            
+
             MYSQLI_TYPE_GEOMETRY => array('type' => Column\Type::TYPE_SPATIAL_GEOMETRY, 'native' => null),
-            
+
 
         ));
 
