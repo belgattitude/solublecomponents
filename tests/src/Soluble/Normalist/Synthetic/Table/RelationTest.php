@@ -45,7 +45,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         
         //$cache   = \SolubleTestFactories::getCacheStorage();
         //$metadata = new Source\MysqlISMetadata($this->adapter);
-        //$metadata = new Source\Mysql\MysqlInformationSchema($this->adapter);
+        //$metadata = new Source\MysqlInformationSchema($this->adapter);
         //$metadata->setCache($cache);
         
         //$this->tableManager = new TableManager($this->adapter);

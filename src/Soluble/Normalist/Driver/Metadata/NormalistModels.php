@@ -4,7 +4,7 @@ namespace Soluble\Normalist\Driver\Metadata;
 use Soluble\Schema\Source;
 use Soluble\Schema\Exception;
 
-class NormalistModels extends Source\AbstractSource
+class NormalistModels extends Source\AbstractSchemaSource
 {
     /**
      * Current class version

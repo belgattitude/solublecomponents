@@ -26,7 +26,7 @@ class ResultSetTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = \SolubleTestFactories::getDbAdapter();
         //$cache   = \SolubleTestFactories::getCacheStorage();
-       // $metadata = new Source\Mysql\MysqlInformationSchema($adapter);
+       // $metadata = new Source\MysqlInformationSchema($adapter);
         /*
         $metadata = new Source\MysqlISMetadata($adapter);
         $metadata->setCache($cache);

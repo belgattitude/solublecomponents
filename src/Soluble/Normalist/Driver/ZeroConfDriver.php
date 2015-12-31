@@ -10,7 +10,7 @@ use Zend\Config\Writer;
 class ZeroConfDriver implements DriverInterface
 {
     /**
-     * @var Source\AbstractSource
+     * @var Source\AbstractSchemaSource
      */
     protected $metadata;
 
@@ -205,7 +205,7 @@ class ZeroConfDriver implements DriverInterface
     /**
      * Get internal metadata reader
      *
-     * @return Source\AbstractSource
+     * @return Source\AbstractSchemaSource
      */
     public function getMetadata()
     {
@@ -247,7 +247,7 @@ class ZeroConfDriver implements DriverInterface
                 $schema = $this->params['schema'];
             }
             $conn = $this->adapter->getDriver()->getConnection()->getResource();
-            $md = new Source\Mysql\MysqlInformationSchema($conn, $schema);
+            $md = new Source\MysqlInformationSchema($conn, $schema);
             $model_definition = (array) $md->getSchemaConfig();
 
             // For later use we save the models definition
@@ -259,10 +259,10 @@ class ZeroConfDriver implements DriverInterface
     /**
      * Set internal metadata reader
      *
-     * @param Source\AbstractSource $metadata
+     * @param Source\AbstractSchemaSource $metadata
      * @return ZeroConfDriver
      */
-    public function setMetadata(Source\AbstractSource $metadata)
+    public function setMetadata(Source\AbstractSchemaSource $metadata)
     {
         $this->metadata = $metadata;
         return $this;

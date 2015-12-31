@@ -250,7 +250,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     public function testSetMetadata()
     {
         $conn = $this->adapter->getDriver()->getConnection()->getResource();
-        $md = new Source\Mysql\MysqlInformationSchema($conn);
+        $md = new Source\MysqlInformationSchema($conn);
         $this->driver->clearMetadataCache();
         $this->driver->setMetadata($md);
         $md = $this->driver->getMetadata();

@@ -48,7 +48,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $tm = \SolubleTestFactories::getTableManager();
         $metadata = $tm->metadata();
-        $this->assertInstanceOf('\Soluble\Schema\Source\AbstractSource', $metadata);
+        $this->assertInstanceOf('\Soluble\Schema\Source\AbstractSchemaSource', $metadata);
     }
     
     
@@ -264,7 +264,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetMetadata()
     {
         $metadata = $this->tableManager->metadata();
-        $this->assertInstanceOf('\Soluble\Schema\Source\AbstractSource', $metadata);
+        $this->assertInstanceOf('\Soluble\Schema\Source\AbstractSchemaSource', $metadata);
     }
 
     public function testGetMetadataThrowsUnsupportedFeatureException()
@@ -286,7 +286,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     public function testSetMetadata()
     {
         $conn = $this->adapter->getDriver()->getConnection()->getResource();
-        $metadata = new Source\Mysql\MysqlInformationSchema($conn);
+        $metadata = new Source\MysqlInformationSchema($conn);
         //$metadata = new Source\MysqlISMetadata($this->adapter);
         $tableManager = \SolubleTestFactories::getTableManager();
         $ret = $tableManager->setMetadata($metadata);

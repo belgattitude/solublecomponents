@@ -18,7 +18,7 @@ class TableManager
 
     /**
      *
-     * @var Source\AbstractSource
+     * @var Source\AbstractSchemaSource
      */
     protected $metadata;
 
@@ -183,7 +183,7 @@ class TableManager
     /**
      * Return a metadata reader
      *
-     * @return Source\AbstractSource
+     * @return Source\AbstractSchemaSource
      */
     public function metadata()
     {
@@ -225,10 +225,10 @@ class TableManager
 
     /**
      *
-     * @param Source\AbstractSource $metadata
+     * @param Source\AbstractSchemaSource $metadata
      * @return TableManager
      */
-    public function setMetadata(Source\AbstractSource $metadata)
+    public function setMetadata(Source\AbstractSchemaSource $metadata)
     {
         $this->metadata = $metadata;
         return $this;

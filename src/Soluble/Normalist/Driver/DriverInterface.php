@@ -28,17 +28,17 @@ interface DriverInterface
     /**
      * Return metadata reader
      *
-     * @return Source\AbstractSource
+     * @return Source\AbstractSchemaSource
      */
     public function getMetadata();
 
     /**
      * Set metadata reader
      *
-     * @param Source\AbstractSource $metadata
+     * @param Source\AbstractSchemaSource $metadata
      * @return DriverInterface
      */
-    public function setMetadata(Source\AbstractSource $metadata);
+    public function setMetadata(Source\AbstractSchemaSource $metadata);
 
     /**
      * Get underlying database adapter

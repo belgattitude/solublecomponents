@@ -35,7 +35,7 @@ class TableSearchTest extends \PHPUnit_Framework_TestCase
         $adapter = \SolubleTestFactories::getDbAdapter();
         $cache   = \SolubleTestFactories::getCacheStorage();
         //$metadata = new Source\MysqlISMetadata($adapter);
-       // $metadata = new Source\Mysql\MysqlInformationSchema($adapter);
+       // $metadata = new Source\MysqlInformationSchema($adapter);
         //$metadata->setCache($cache);
 
         //$this->tableManager = new TableManager($adapter);
