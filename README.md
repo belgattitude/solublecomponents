@@ -14,19 +14,17 @@
 Here's the status of the splitted components
 
 
-Here's the status of the splitted components
-
 ## Integration related components 
 
 | Component     | Description            | Quality | Doc  | Version | 
-| :------------ |:---------------------- |--------:|:--------:|------:|
-| [`soluble-japha`](https://github.com/belgattitude/soluble-japha)   |  Java integration in PHP    | [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/soluble-japha/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/soluble-japha/) <br /> [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/?branch=master) | [API](http://docs.soluble.io/soluble-japha/api/) &#124; [Doc](http://docs.soluble.io/soluble-japha/manual/) | [![Latest Stable Version](https://poser.pugx.org/soluble/japha/v/stable.svg)](https://packagist.org/packages/soluble/japha) |
+| :------------ |:---------------------- |:-------:|:--------:|------:|
+| [`soluble-japha`](https://github.com/belgattitude/soluble-japha)   |  Java integration in PHP    | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/?branch=master) <br/ > [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/soluble-japha/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/soluble-japha/) | [API](http://docs.soluble.io/soluble-japha/api/) &#124; [Doc](http://docs.soluble.io/soluble-japha/manual/) | [![Latest Stable Version](https://poser.pugx.org/soluble/japha/v/stable.svg)](https://packagist.org/packages/soluble/japha) |
 
 
 ## Database related components 
 
 | Component     | Description            | Quality | Doc  | Version | 
-| :------------ |:---------------------- |--------:|:--------:|------:|
+| :------------ |:---------------------- |:-------:|:--------:|------:|
 | [`soluble-schema`](https://github.com/belgattitude/soluble-schema)   |  Database information schema     | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/?branch=master) <br/> [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/soluble-schema/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/soluble-schema/) | [API](http://docs.soluble.io/soluble-schema/api/) &#124; [Doc](http://docs.soluble.io/soluble-schema/manual/) | [![Latest Stable Version](https://poser.pugx.org/soluble/schema/v/stable.svg)](https://packagist.org/packages/soluble/schema) |
 | [`soluble-dbwrapper`](https://github.com/belgattitude/soluble-dbwrapper)   |  Minimalist and modern database wrapper     | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/?branch=master) <br/>[![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/soluble-dbwrapper/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/soluble-dbwrapper/) | [API](http://docs.soluble.io/soluble-dbwrapper/api/) &#124; [Doc](http://docs.soluble.io/soluble-dbwrapper/manual/) | [![Latest Stable Version](https://poser.pugx.org/soluble/dbwrapper/v/stable.svg)](https://packagist.org/packages/soluble/dbwrapper) |
 | [`soluble-sqlmeta`](https://github.com/belgattitude/soluble-sqlmeta)   |  SQL metadata reader   | [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/belgattitude/soluble-flexstore/?branch=master) <br /> [![Code Coverage](https://scrutinizer-ci.com/g/belgattitude/soluble-sqlmeta/badges/coverage.png?s=aaa552f6313a3a50145f0e87b252c84677c22aa9)](https://scrutinizer-ci.com/g/belgattitude/soluble-sqlmeta/) | [API](http://docs.soluble.io/soluble-sqlmeta/api/) &#124; [Doc](http://docs.soluble.io/soluble-sqlmeta/manual/) | [![Latest Stable Version](https://poser.pugx.org/soluble/sqlmeta/v/stable.svg)](https://packagist.org/packages/soluble/sqlmeta) |
