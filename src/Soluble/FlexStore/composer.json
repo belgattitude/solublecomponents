@@ -1,19 +1,20 @@
 {
-	"name": "soluble/flexstore",
-	"description": "FlexStore",
+    "name": "soluble/flexstore",
+    "description": "FlexStore",
     "license": "MIT",
-	"keywords": [
-        "FlexStore",
-        "Query"
+    "keywords": [
+        "flexstore",
+        "sql"
     ],
-	"homepage": "https://github.com/belgattitude/soluble-flexstore",
-	"type": "library",
-	"authors": [
-		{
-			"name": "Sébastien Vanvelthem",
-			"homepage": "http://www.nuvolia.com/"
-		}
-	],
+    "homepage": "http://soluble.io",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Sébastien Vanvelthem",
+            "homepage": "https://github.com/belgattitude",
+            "role": "Lead developer"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Soluble\\FlexStore\\": ""
@@ -21,22 +22,23 @@
     },
     "require": {
         "php": ">=5.3.3",
+        "soluble/metadata": "0.*",
         "soluble/db": "self.version",
         "soluble/spreadsheet": "self.version",
         "ramsey/array_column": "~1.1",
-		"zendframework/zend-stdlib": "2.*",
-		"zendframework/zend-cache": "2.*",
-		"zendframework/zend-json": "2.*",
-		"zendframework/zend-paginator": "2.*",
+        "zendframework/zend-stdlib": "2.*",
+        "zendframework/zend-cache": "2.*",
+        "zendframework/zend-json": "2.*",
+        "zendframework/zend-paginator": "2.*",
         "zendframework/zend-validator": "2.*",
         "zendframework/zend-inputfilter": "2.*"
-        
-    },    
-	"suggest": {
-		"soluble/normalist": "Dynamic ORM",
-		"zendframework/zend-view": "ZF2 integration for FlexStore",
-		"zendframework/zend-eventmanager": "ZF2 integration for eventmanager",
-		"zendframework/zend-servicemanager": "ZF2 integration for services"
-        
-	}
+
+    },
+    "suggest": {
+        "soluble/normalist": "Dynamic ORM",
+        "zendframework/zend-view": "ZF2 integration for FlexStore",
+        "zendframework/zend-eventmanager": "ZF2 integration for eventmanager",
+        "zendframework/zend-servicemanager": "ZF2 integration for services"
+
+    }
 }

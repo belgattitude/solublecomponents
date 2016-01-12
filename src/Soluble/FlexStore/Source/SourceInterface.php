@@ -21,7 +21,7 @@ interface SourceInterface
 
     /**
      *
-     * @return \Soluble\Flexstore\Metadata\Reader\AbstractMetadataReader
+     * @return \Soluble\Metadata\Reader\AbstractMetadataReader
      */
     public function getMetadataReader();
 
