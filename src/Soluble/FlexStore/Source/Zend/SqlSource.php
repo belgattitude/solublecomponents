@@ -277,7 +277,7 @@ class SqlSource extends AbstractSource implements QueryableSourceInterface
         $class = strtolower(get_class($conn));
         switch ($class) {
             case 'pdo':
-                return new MetadataReader\PDOMysqlMetadataReader($conn);
+                return new MetadataReader\PdoMysqlMetadataReader($conn);
             case 'mysqli':
                 return new MetadataReader\MysqliMetadataReader($conn);
             default:
