@@ -6,7 +6,7 @@ use Soluble\FlexStore\Column\Type\AbstractType;
 use Soluble\FlexStore\Column\ColumnType;
 use Soluble\FlexStore\Column\ColumnModel;
 use Soluble\FlexStore\Column\Column;
-use Soluble\Db\Metadata\Column\Type as MetadataType;
+use Soluble\Datatype\Column\Type as MetadataType;
 use Soluble\FlexStore\Column\Exception;
 use ArrayObject;
 

@@ -25,7 +25,7 @@ class MetadataMapperTest extends \PHPUnit_Framework_TestCase
     
     public function testGetColumnTypeByMetadataType()
     {
-        $supported = \Soluble\Db\Metadata\Column\Type::getSupportedTypes();
+        $supported = \Soluble\Datatype\Column\Type::getSupportedTypes();
         $mapper = new MetadataMapper();
         foreach ($supported as $md_type) {
             $type = $mapper->getColumnTypeByMetadataType($md_type);
