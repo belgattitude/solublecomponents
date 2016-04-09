@@ -354,7 +354,7 @@ class Record implements ArrayAccess
     {
         // Get table primary keys
         $primary_keys = $this->getTable()->getPrimaryKeys();
-        $predicate = array();
+        $predicate = [];
         foreach ($primary_keys as $column) {
             $pk_value = $this->offsetGet($column);
             if ($pk_value != '') {

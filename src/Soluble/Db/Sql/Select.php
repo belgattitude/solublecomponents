@@ -73,8 +73,8 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
     {
         $pf = $this->adapter->getPlatform();
         $identifierSeparator = $pf->getIdentifierSeparator();
-        $names = array();
-        $cols = array();
+        $names = [];
+        $cols = [];
         foreach ($columns as $alias => $column) {
             if (is_string($column)) {
                 if (strpos($column, self::SQL_STAR) !== false) {
@@ -83,7 +83,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                 }
                 $parts = explode($identifierSeparator, $column);
                 if (count($parts) > 1) {
-                    $quotedParts = array();
+                    $quotedParts = [];
                     foreach ($parts as $part) {
                         $quotedParts[] = $pf->quoteIdentifier($part);
                     }
@@ -102,7 +102,7 @@ class Select extends ZendDbSqlSelect implements AdapterAwareInterface
                     }
                     $names[] = $alias;
 
-                    $cols[$alias] = new Expression(join($identifierSeparator, $quotedParts));
+                    $cols[$alias] = new Expression(implode($identifierSeparator, $quotedParts));
                 } else {
                     if (in_array($alias, $names)) {
                         $msg = __METHOD__ . ": Invalid argument, multiple columns have the same alias ($alias)";

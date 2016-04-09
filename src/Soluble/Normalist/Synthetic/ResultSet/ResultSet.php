@@ -131,7 +131,7 @@ class ResultSet implements Iterator, Countable
             $record_columns = array_keys((array) $data);
             $matches = array_intersect($data_columns, $record_columns);
             if (count($matches) != count($data_columns)) {
-                $missings = join(',', array_diff($data_columns, $record_columns));
+                $missings = implode(',', array_diff($data_columns, $record_columns));
                 $msg = __METHOD__ . ": Cannot create a Record due to incomplete or aliased column definition (missing: $missings).";
                 $msg .= "Check whether columns have been modified in TableSearch::columns() method, or use an toArray(), toJson()... version of the ResultSet.";
                 throw new Exception\LogicException($msg);

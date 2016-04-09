@@ -2,7 +2,6 @@
 
 namespace Soluble\Normalist\Synthetic;
 
-use Soluble\Normalist\Synthetic\Exception;
 use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
 use Soluble\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
@@ -181,12 +180,12 @@ class Table
             $results = $select->execute()
                               ->toArray();
         } catch (\Exception $e) {
-            $messages = array();
+            $messages = [];
             $ex = $e;
             do {
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
-            $message = join(', ', array_unique($messages));
+            $message = implode(', ', array_unique($messages));
 
             $lmsg = '[' . get_class($e) . '] ' . strtolower($message) . '(code:' . $e->getCode() . ')';
 
@@ -258,7 +257,7 @@ class Table
     public function countBy($predicate, $combination = Predicate\PredicateSet::OP_AND)
     {
         $select = $this->select()
-                        ->columns(array('count' => new Expression('count(*)')));
+                        ->columns(['count' => new Expression('count(*)')]);
 
         try {
             $select->where($predicate, $combination);
@@ -285,7 +284,7 @@ class Table
     public function exists($id)
     {
         $result = $this->select()->where($this->getPrimaryKeyPredicate($id))
-                        ->columns(array('count' => new Expression('count(*)')))
+                        ->columns(['count' => new Expression('count(*)')])
                         ->execute()
                         ->toArray();
 
@@ -306,7 +305,7 @@ class Table
     {
         try {
             $select = $this->select()->where($predicate, $combination)
-                    ->columns(array('count' => new Expression('count(*)')));
+                    ->columns(['count' => new Expression('count(*)')]);
             $result = $select->execute()
                              ->toArray();
         } catch (\Exception $e) {
@@ -330,7 +329,7 @@ class Table
         if ($table_alias === null) {
             $table_spec = $prefixed_table;
         } else {
-            $table_spec = array($table_alias => $prefixed_table);
+            $table_spec = [$table_alias => $prefixed_table];
         }
         $select->from($table_spec);
         return $select;
@@ -483,7 +482,7 @@ class Table
         $nb_pks = count($pks);
         if ($nb_pks > 1) {
             // In multiple keys there should not be autoincrement value
-            $id = array();
+            $id = [];
             foreach ($pks as $pk) {
                 $id[$pk] = $d[$pk];
             }
@@ -514,7 +513,7 @@ class Table
      *
      * @return Record|false
      */
-    public function insertOnDuplicateKey($data, array $duplicate_exclude = array(), $validate_datatypes = false)
+    public function insertOnDuplicateKey($data, array $duplicate_exclude = [], $validate_datatypes = false)
     {
         $platform = $this->tableManager->getDbAdapter()->platform;
 /*
@@ -575,7 +574,7 @@ die();
         $sql_string = $this->sql->getSqlStringForSqlObject($insert);
 
 
-        $extras = array();
+        $extras = [];
 
         /**
          * No reason to exclude primary key from
@@ -589,17 +588,17 @@ die();
                 $extras[] = $platform->quoteIdentifier($column) . ' = ' . $v;
             }
         }
-        $sql_string .= ' on duplicate key update ' . join(',', $extras);
+        $sql_string .= ' on duplicate key update ' . implode(',', $extras);
 
         try {
             $this->executeStatement($sql_string);
         } catch (\Exception $e) {
-            $messages = array();
+            $messages = [];
             $ex = $e;
             do {
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
-            $msg = join(', ', array_unique($messages));
+            $msg = implode(', ', array_unique($messages));
             $message = __METHOD__ . ": failed, $msg [ $sql_string ]";
             throw new Exception\RuntimeException($message);
         }
@@ -635,7 +634,7 @@ die();
                     $intersect = array_intersect($data_columns, $unique_columns);
                     if (count($intersect) == count($unique_columns)) {
                         // Try to see if we can find a record with the key
-                        $conditions = array();
+                        $conditions = [];
                         foreach ($intersect as $key) {
                             $conditions[$key] = $d[$key];
                         }
@@ -687,7 +686,7 @@ die();
      * @param boolean $ignore_invalid_columns if true will throw an exception if a column does not exists
      * @return Record
      */
-    public function record($data = array(), $ignore_invalid_columns = true)
+    public function record($data = [], $ignore_invalid_columns = true)
     {
         if (!$ignore_invalid_columns) {
             $this->checkDataColumns((array) $data);
@@ -841,12 +840,12 @@ die();
             // attempt to normalize by catching one exception instead
             // of RuntimeException and InvalidQueryException
 
-            $messages = array();
+            $messages = [];
             $ex = $e;
             do {
                 $messages[] = $ex->getMessage();
             } while ($ex = $ex->getPrevious());
-            $message = join(', ', array_unique($messages));
+            $message = implode(', ', array_unique($messages));
 
             $lmsg = __METHOD__ . ':' . strtolower($message) . '(code:' . $e->getCode() . ')';
 
@@ -895,10 +894,10 @@ die();
                 $type = gettype($id);
                 throw new Exception\InvalidArgumentException(__METHOD__ . ": invalid primary key value. Table '{$this->table}' has a single primary key '$pk'. Argument must be scalar, '$type' given");
             }
-            $predicate = array($pk => $id);
+            $predicate = [$pk => $id];
         } else {
             if (!is_array($id)) {
-                $pks = join(',', $keys);
+                $pks = implode(',', $keys);
                 $type = gettype($id);
                 throw new Exception\InvalidArgumentException(__METHOD__ . ": invalid primary key value. Table '{$this->table}' has multiple primary keys '$pks'. Argument must be an array, '$type' given");
             }
@@ -907,8 +906,8 @@ die();
             if (count($matched_keys) == count($keys)) {
                 $predicate = $matched_keys;
             } else {
-                $pks = join(',', $keys);
-                $vals = join(',', $matched_keys);
+                $pks = implode(',', $keys);
+                $vals = implode(',', $matched_keys);
                 throw new Exception\InvalidArgumentException(__METHOD__ . ": incomplete primary key value. Table '{$this->table}' has multiple primary keys '$pks', values received '$vals'");
             }
         }
@@ -925,7 +924,7 @@ die();
     {
         $diff = array_diff_key($data, $this->getColumnsInformation());
         if (count($diff) > 0) {
-            $msg = join(',', array_keys($diff));
+            $msg = implode(',', array_keys($diff));
             throw new Exception\ColumnNotFoundException(__METHOD__ . ": some specified columns '$msg' does not exists in table {$this->table}.");
         }
     }

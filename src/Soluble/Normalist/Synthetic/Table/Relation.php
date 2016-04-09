@@ -55,9 +55,9 @@ class Relation
                 // @todo, check the case when
                 // table has many relations to the same parent
                 // we'll have to throw an exception
-                $record = $this->table->getTableManager()->table($parent_table)->findOneBy(array(
+                $record = $this->table->getTableManager()->table($parent_table)->findOneBy([
                     $parent['referenced_column'] => $record->offsetGet($column)
-                ));
+                ]);
                 return $record;
             }
         }

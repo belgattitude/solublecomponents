@@ -79,7 +79,7 @@ class NormalistModels extends Source\AbstractSchemaSource
         $this->checkTableArgument($table);
         $pks = $this->getPrimaryKeys($table);
         if (count($pks) > 1) {
-            $keys = join(',', $pks);
+            $keys = implode(',', $pks);
             throw new Exception\MultiplePrimaryKeyException(__METHOD__ . ". Multiple primary keys found on table '$table':  $keys");
         }
         return $pks[0];

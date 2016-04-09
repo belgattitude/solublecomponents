@@ -1,7 +1,6 @@
 <?php
 namespace Soluble\Media;
 
-use Zend\Db\Adapter\Adapter;
 use Zend\Cache\Storage\StorageInterface;
 
 class Converter
@@ -25,7 +24,7 @@ class Converter
     /**
      * @return Converter\ConverterInterface
      */
-    public function createConverter($key, array $params = array())
+    public function createConverter($key, array $params = [])
     {
         switch (strtolower($key)) {
             case 'image':

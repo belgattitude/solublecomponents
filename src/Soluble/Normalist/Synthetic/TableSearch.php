@@ -1,16 +1,10 @@
 <?php
 namespace Soluble\Normalist\Synthetic;
 
-use Soluble\Normalist\Synthetic\ResultSet\ResultSet;
-use Soluble\Normalist\Synthetic\Exception;
-use Soluble\Db\Sql\Select;
-use Soluble\Db\Metadata\Source;
-use Zend\Db\Adapter\Adapter;
+use Soluble\Normalist\Synthetic\ResultSet\ResultSet; use Soluble\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate;
-use Zend\Db\Sql\Expression;
-use ArrayObject;
 
 class TableSearch
 {
@@ -178,7 +172,7 @@ class TableSearch
      * @param  string|array $columns by default won't retrieve any column from the joined table
      * @return TableSearch
      */
-    public function join($table, $on, $columns = array())
+    public function join($table, $on, $columns = [])
     {
         $prefixed_table = $this->prefixTableJoinCondition($table);
 
@@ -197,7 +191,7 @@ class TableSearch
      * @param  string|array $columns by default won't retrieve any column from the joined table
      * @return TableSearch
      */
-    public function joinLeft($table, $on, $columns = array())
+    public function joinLeft($table, $on, $columns = [])
     {
         $prefixed_table = $this->prefixTableJoinCondition($table);
         $this->select->join($prefixed_table, $on, $columns, Select::JOIN_LEFT);
@@ -214,7 +208,7 @@ class TableSearch
      * @param  string|array $columns by default won't retrieve any column from the joined table
      * @return TableSearch
      */
-    public function joinRight($table, $on, $columns = array())
+    public function joinRight($table, $on, $columns = [])
     {
         $prefixed_table = $this->prefixTableJoinCondition($table);
         $this->select->join($prefixed_table, $on, $columns, Select::JOIN_RIGHT);
@@ -291,7 +285,7 @@ class TableSearch
     public function toArrayColumn($columnKey, $indexKey)
     {
         $select = clone $this->select;
-        $select->reset($select::COLUMNS)->columns(array($columnKey, $indexKey));
+        $select->reset($select::COLUMNS)->columns([$columnKey, $indexKey]);
         return array_column($select->execute()->toArray(), $columnKey, $indexKey);
     }
 
@@ -339,7 +333,7 @@ class TableSearch
         if (is_array($table)) {
             $alias = key($table);
             $prefixed_table = $tm->getPrefixedTable($table[$alias]);
-            $table = array($alias => $prefixed_table);
+            $table = [$alias => $prefixed_table];
         } elseif (is_string($table)) {
             $prefixed_table = $tm->getPrefixedTable($table);
             $table = $prefixed_table;

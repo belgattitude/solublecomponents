@@ -3,7 +3,6 @@
 namespace Soluble\Media\Converter;
 
 use Soluble\Media\BoxDimension;
-use Soluble\Media\Converter\Exception;
 use Imagine\Imagick\Imagine as ImagickImagine;
 use Imagine\Gd\Imagine as GdImagine;
 use Imagine\Image\ImageInterface;
@@ -13,7 +12,7 @@ use Zend\Cache\Storage\StorageInterface;
 class ImageConverter implements ConverterInterface
 {
     protected $default_backend = 'gd';
-    protected $supported_backends = array('gd', 'imagick');
+    protected $supported_backends = ['gd', 'imagick'];
     protected $backend;
 
     protected $default_quality = 90;
@@ -34,7 +33,7 @@ class ImageConverter implements ConverterInterface
      *
      * @param array $params
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         if (array_key_exists('backend', $params)) {
             $this->setBackend($params['backend']);
@@ -58,7 +57,7 @@ class ImageConverter implements ConverterInterface
         }
 
         if (!in_array($backend, $this->supported_backends)) {
-            $valid_backends = join(',', $this->supported_backends);
+            $valid_backends = implode(',', $this->supported_backends);
             throw new Exception\UnsupportedBackendException(__METHOD__ . " Backend '$backend' is not supported, supported backends are '$valid_backends'''");
         }
         $this->backend = $backend;
@@ -167,13 +166,13 @@ class ImageConverter implements ConverterInterface
             //$image->interlace(ImageInterface::INTERLACE_LINE);
 
             $image->resize($newSize, $filter);
-            $options = array(
+            $options = [
                 'quality' => $quality,
                 'flatten' => true,
                 //'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
                 //'resolution-y' => 72,
                 //'resolution-x' => 72,
-            );
+            ];
 
             //var_dump(get_class($image));die();
             $content = $image->get($format, $options);

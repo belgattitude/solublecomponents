@@ -2,7 +2,6 @@
 
 namespace Soluble\Normalist\Driver;
 
-use Soluble\Normalist\Driver\Exception;
 use Soluble\Schema\Source;
 use Zend\Db\Adapter\Adapter;
 use Zend\Config\Writer;
@@ -24,19 +23,19 @@ class ZeroConfDriver implements DriverInterface
      *
      * @var array
      */
-    protected $default_options = array(
+    protected $default_options = [
         'alias' => 'default',
         'path' => null,
         'version' => 'latest',
         'schema' => null,
         'permissions' => 0666
-    );
+    ];
 
     /**
      *
      * @var array
      */
-    protected static $metadataCache = array();
+    protected static $metadataCache = [];
 
     /**
      * Underlying database adapter
@@ -60,7 +59,7 @@ class ZeroConfDriver implements DriverInterface
      * @throws Exception\ModelPathNotFoundException
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct(Adapter $adapter, $params = array())
+    public function __construct(Adapter $adapter, $params = [])
     {
         $this->setDbAdapter($adapter);
 
@@ -137,7 +136,6 @@ class ZeroConfDriver implements DriverInterface
             $file_content = trim(str_replace('<?php', '', $file_content));
             $file_content = trim(str_replace('return array(', '$definition = array(', $file_content));
             eval($file_content);
-
         } else {
             $definition = include $file;
         }
@@ -168,7 +166,7 @@ class ZeroConfDriver implements DriverInterface
 
         //$config = new Config($models_defintion, true);
         $writer = new Writer\PhpArray();
-        $models_definition['normalist'] = array('model_version' => Metadata\NormalistModels::VERSION);
+        $models_definition['normalist'] = ['model_version' => Metadata\NormalistModels::VERSION];
         $writer->toFile($file, $models_definition, $exclusiveLock = true);
         $perms = $this->params['permissions'];
         if ($perms != '') {
@@ -226,7 +224,7 @@ class ZeroConfDriver implements DriverInterface
      */
     public function clearMetadataCache()
     {
-        self::$metadataCache = array();
+        self::$metadataCache = [];
         return $this;
     }
 
