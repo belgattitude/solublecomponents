@@ -11,6 +11,8 @@ matrix:
           env: EXTERNAL=true ADAPTER=mysqli
         - php: 5.6
           env: EXTERNAL=false ADAPTER=pdo_mysql   
+        - php: 7.0
+          env: EXTERNAL=false ADAPTER=mysqli   
     allow_failures:
         - php: hhvm
 
