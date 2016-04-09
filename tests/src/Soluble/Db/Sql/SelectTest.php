@@ -2,7 +2,6 @@
 
 namespace Soluble\Db\Sql;
 
-use Soluble\Db\Metadata\Source;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Predicate\Expression;
 
@@ -39,29 +38,29 @@ class SelectTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
-    
-    
+
+
 
     public function testPrefixedColumns()
     {
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $fluent = $s->prefixedColumns(array(
+        $fluent = $s->prefixedColumns([
             'pc.test2',
             'pb18.test',
             'pc.pb.a',
             'aliased_col1' => new Expression('count(*)'),
             'aliased_col2' => 'pc.col2',
             'aliased_col3' => 'pc.col3',
-            
-        ));
+
+        ]);
         $this->assertInstanceOf('Soluble\Db\Sql\Select', $fluent);
         $sql =  $s->getSql();
-        
+
         $expected = <<<EOF
             SELECT `pc`.`test2` AS `test2`, `pb18`.`test` AS `test`, `pc`.`pb`.`a` AS `a`, count(*) AS `aliased_col1`, `pc`.`col2` AS `aliased_col2`, `pc`.`col3` AS `aliased_col3` FROM `user`
 EOF;
-        
+
         $this->assertEquals(trim($expected), trim($sql));
     }
 
@@ -70,10 +69,10 @@ EOF;
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
+        $s->prefixedColumns([
             'pc.test',
             'pb18.test',
-        ));
+        ]);
     }
 
     public function testPrefixedColumnsThrowsInvalidArgumentException3()
@@ -81,22 +80,22 @@ EOF;
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
+        $s->prefixedColumns([
             '*'
-            
-        ));
+
+        ]);
     }
-    
+
 
     public function testPrefixedColumnsThrowsInvalidArgumentException4()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
+        $s->prefixedColumns([
             'u.*'
-            
-        ));
+
+        ]);
     }
 
     public function testPrefixedColumnsThrowsInvalidArgumentException5()
@@ -104,52 +103,52 @@ EOF;
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
+        $s->prefixedColumns([
             'test' => 'u.*'
-            
-        ));
+
+        ]);
     }
-    
+
     public function testPrefixedColumnsThrowsInvalidArgumentException6()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
-            
+        $s->prefixedColumns([
+
             'test',
             'test' => new Expression('count(*)'),
-            
-        ));
+
+        ]);
     }
-    
+
 
     public function testPrefixedColumnsThrowsInvalidArgumentException7()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
-            
+        $s->prefixedColumns([
+
             'test' => new Expression('count(*)'),
             'test'
-            
-        ));
+
+        ]);
     }
-    
-    
+
+
     public function testPrefixedColumnsThrowsInvalidArgumentException10()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidArgumentException');
         $s = $this->select->setDbAdapter($this->adapter);
         $s->from('user');
-        $s->prefixedColumns(array(
+        $s->prefixedColumns([
             'id' => 'pc18.id',
             'pc.id',
-        ));
+        ]);
     }
 
-    
+
     public function testGetSql()
     {
         $this->select->setDbAdapter($this->adapter)->from('user');
@@ -163,7 +162,7 @@ EOF;
         $sql = $this->select->__toString();
         $this->assertInternalType('string', $sql);
     }
-    
+
     public function testGetSqlThrowsInvalidUsageException()
     {
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
@@ -176,7 +175,7 @@ EOF;
         $this->setExpectedException('Soluble\Db\Sql\Exception\InvalidUsageException');
         $this->select->from('user')->__toString();
     }
-    
+
 
     public function testSetDbAdapter()
     {

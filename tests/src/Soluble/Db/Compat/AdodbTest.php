@@ -37,7 +37,7 @@ class AdodbTest extends \PHPUnit_Framework_TestCase
         $ado = NewADOConnection("mysqli");
         $o = $this->db_options;
         $ado->connect($o['hostname'], $o['username'], $o['password'], $o['database']);
-        
+
         $adapter = Adodb::getAdapter($ado);
         $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $adapter);
         // is 37 will render an iso latin 1 char 'é'
@@ -47,16 +47,16 @@ class AdodbTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($zrows[0]['category_id'], $arows[0]['category_id']);
         $this->assertEquals($zrows[0]['title'], $arows[0]['title']);
     }
-    
+
     public function testGetAdapterWithPDOMySQL()
     {
         $ado = NewADOConnection("pdo");
         $o = $this->db_options;
 
         $ado->connect("mysql:host=" . $o['hostname'], $o['username'], $o['password'], $o['database']);
-        
+
         $adapter = Adodb::getAdapter($ado);
-        
+
         $this->assertInstanceOf('Zend\Db\Adapter\Adapter', $adapter);
         // is 37 will render an iso latin 1 char 'é'
         $sql = "select category_id, title from product_category_translation where id=37";
@@ -65,7 +65,7 @@ class AdodbTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($zrows[0]['category_id'], $arows[0]['category_id']);
         $this->assertEquals($zrows[0]['title'], $arows[0]['title']);
     }
-    
+
     public function testGetAdapterWithThrowsAdoNotConnectedException()
     {
         $this->setExpectedException("Soluble\Db\Compat\Exception\AdoNotConnectedException");
@@ -73,7 +73,7 @@ class AdodbTest extends \PHPUnit_Framework_TestCase
         //$ado->connect("mysql:host=" . $o['hostname'], $o['username'], $o['password'], $o['database']);
         $adapter = Adodb::getAdapter($ado);
     }
-    
+
     public function testGetAdapterWithThrowsAdoNotConnectedException2()
     {
         $this->setExpectedException("Soluble\Db\Compat\Exception\AdoNotConnectedException");
@@ -83,7 +83,7 @@ class AdodbTest extends \PHPUnit_Framework_TestCase
         $adapter = Adodb::getAdapter($ado);
     }
 
-    
+
     public function testGetAdapterWithPostgresThrowsUnsupportedDriverException()
     {
         $this->setExpectedException("Soluble\Db\Compat\Exception\UnsupportedDriverException");

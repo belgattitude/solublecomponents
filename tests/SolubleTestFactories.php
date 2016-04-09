@@ -3,34 +3,33 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Cache\StorageFactory;
 use Soluble\Normalist\Synthetic\TableManager;
 use Soluble\Normalist\Driver;
-use Symfony\Component\Process\Process;
 
 class SolubleTestFactories
 {
     /**
      * @var array
      */
-    protected static $_adapter_instances = array();
+    protected static $_adapter_instances = [];
 
     /**
      * @var array
      */
-    protected static $_cache_instances = array();
-    
-    
-    
+    protected static $_cache_instances = [];
+
+
+
     /**
      *
      * @return array
      */
     public static function getLibXLLicense()
     {
-        return array(
+        return [
                     'name' => $_SERVER['LIBXL_LICENSE_NAME'],
                     'key'  => $_SERVER['LIBXL_LICENSE_KEY']
-            );
+            ];
     }
-    
+
     /**
      *
      * @param Adapter $adapter
@@ -42,11 +41,11 @@ class SolubleTestFactories
         if ($adapter === null) {
             $adapter = self::getDbAdapter();
         }
-        
+
         if ($driver === null) {
-            $options = array(
-                
-            );
+            $options = [
+
+            ];
             $driver = new Driver\ZeroConfDriver($adapter, $options);
         }
         $tm = new TableManager($driver);
@@ -84,22 +83,22 @@ class SolubleTestFactories
 
     public static function getDatabaseConfig()
     {
-        $mysql_config = array();
+        $mysql_config = [];
         $mysql_config['hostname'] = $_SERVER['MYSQL_HOSTNAME'];
         $mysql_config['username'] = $_SERVER['MYSQL_USERNAME'];
         $mysql_config['password'] = $_SERVER['MYSQL_PASSWORD'];
         $mysql_config['database'] = $_SERVER['MYSQL_DATABASE'];
-        $mysql_config['driver_options'] = array(
+        $mysql_config['driver_options'] = [
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
-            );
-        $mysql_config['options'] = array(
+            ];
+        $mysql_config['options'] = [
             'buffer_results' => true
-        );
+        ];
         $mysql_config['charset'] = 'UTF8';
-        
+
         return $mysql_config;
     }
-    
+
     /**
      * @return \Zend\Cache\StorageInterface
      */
@@ -108,19 +107,19 @@ class SolubleTestFactories
         if ($storageFactoryOptions == null) {
             $cache_dir = self::getCachePath();
 
-            $cache_config = array();
+            $cache_config = [];
             $cache_config['adapter'] = 'filesystem';
-            $cache_config['options'] = array(
+            $cache_config['options'] = [
                     'cache_dir' => $cache_dir,
                     'ttl' => 0,
                     'dir_level' => 1,
                     'dir_permission' => 0777,
                     'file_permission' => 0666
 
-                );
-            $cache_config['plugins'] = array(
-                'exception_handler' => array('throw_exceptions' => true)
-            );
+                ];
+            $cache_config['plugins'] = [
+                'exception_handler' => ['throw_exceptions' => true]
+            ];
         }
         $key = md5(serialize($cache_config));
         if (!array_key_exists($key, self::$_cache_instances)) {
@@ -128,11 +127,11 @@ class SolubleTestFactories
         }
         return self::$_cache_instances[$key];
     }
-    
+
     /**
      * @return string
      */
-    
+
     public static function getCachePath()
     {
         $cache_dir = $_SERVER['PHPUNIT_CACHE_DIR'];

@@ -45,10 +45,10 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    
 
-    
-    
+
+
+
     public function testGetForeignKeys()
     {
         $relations = $this->metadata->getForeignKeys('product');
@@ -59,11 +59,11 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('constraint_name', $relations['unit_id']);
     }
 
-    
-    
-    
 
-    
+
+
+
+
     public function testGetTablesInformation()
     {
         $ti = $this->metadata->getTablesInformation();
@@ -88,15 +88,15 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
     public function testGetUniqueKeys()
     {
         $unique = $this->metadata->getUniqueKeys('test_table_with_unique_key');
-        
+
         $this->assertInternalType('array', $unique);
         $this->assertEquals(1, count($unique));
         $this->assertArrayHasKey('unique_id_1', $unique);
         $this->assertInternalType('array', $unique['unique_id_1']);
         $this->assertEquals(2, count($unique['unique_id_1']));
-        $this->assertEquals(array('unique_id_1', 'unique_id_2'), $unique['unique_id_1']);
-        
-        
+        $this->assertEquals(['unique_id_1', 'unique_id_2'], $unique['unique_id_1']);
+
+
         $unique = $this->metadata->getUniqueKeys('product');
         $this->assertInternalType('array', $unique);
         $this->assertEquals(3, count($unique));
@@ -104,43 +104,43 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('unique_reference_idx', $unique);
         $this->assertArrayHasKey('unique_slug_idx', $unique);
     }
-    
-    
+
+
     public function testGetPrimaryKey()
     {
         $primary = $this->metadata->getPrimaryKey('user');
         $this->assertInternalType('string', $primary);
         $this->assertEquals('user_id', $primary);
     }
-    
+
     public function testGetPrimaryKeyThrowsMultiplePrimaryKeyException()
     {
         $this->setExpectedException('Soluble\Schema\Exception\MultiplePrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_with_multipk');
     }
-      
-        
+
+
 
     public function testgetPrimaryKeyThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Schema\Exception\InvalidArgumentException');
-        $primary = $this->metadata->getPrimaryKey(array('cool'));
+        $primary = $this->metadata->getPrimaryKey(['cool']);
     }
-    
+
 
     public function testgetPrimaryKeysThrowsInvalidArgumentException()
     {
         $this->setExpectedException('Soluble\Schema\Exception\InvalidArgumentException');
-        $primary = $this->metadata->getPrimaryKeys(array('cool'));
+        $primary = $this->metadata->getPrimaryKeys(['cool']);
     }
-    
-    
+
+
     public function testGetPrimaryKeyThrowsNoPrimaryKeyException()
     {
         $this->setExpectedException('Soluble\Schema\Exception\NoPrimaryKeyException');
         $primary = $this->metadata->getPrimaryKey('test_table_without_pk');
     }
-    
+
     public function testGetPrimaryKeys()
     {
         $keys = $this->metadata->getPrimaryKeys('user');
@@ -155,8 +155,8 @@ class NormalistModelsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('varchar', $columns['password']['type']);
     }
 
-    
-    
+
+
     public function testGetPrimaryKeysThrowsNoPrimaryKeyException()
     {
         $this->setExpectedException('Soluble\Schema\Exception\NoPrimaryKeyException');

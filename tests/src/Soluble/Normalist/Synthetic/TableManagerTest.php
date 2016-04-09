@@ -28,7 +28,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->tableManager = \SolubleTestFactories::getTableManager();
         $this->adapter = $this->tableManager->getDbAdapter();
-        
+
         //$this->tableManager = new TableManager($this->adapter);
         $this->table = $this->tableManager->table('product_category');
     }
@@ -50,10 +50,10 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $metadata = $tm->metadata();
         $this->assertInstanceOf('\Soluble\Schema\Source\AbstractSchemaSource', $metadata);
     }
-    
-    
-    
-    
+
+
+
+
     public function testTable()
     {
         $medias = $this->tableManager->table('media');
@@ -63,10 +63,10 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     public function testTableThrowsInvalidArgumentException()
     {
         $this->setExpectedException("\Soluble\Normalist\Synthetic\Exception\InvalidArgumentException");
-        $medias = $this->tableManager->table(array('cool'));
+        $medias = $this->tableManager->table(['cool']);
     }
-    
-    
+
+
     public function testTableThrowsTableNotFoundException()
     {
         $this->setExpectedException("\Soluble\Normalist\Synthetic\Exception\TableNotFoundException");
@@ -79,7 +79,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Soluble\Db\Sql\Select', $select);
     }
 
-    
+
     /*
     public function testUpdateThrowsColumnNotFoundException()
     {
@@ -104,33 +104,33 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
 
         $transaction = $tm->transaction();
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\Transaction', $transaction);
-        
-        
+
+
         $legacy_mapping = "phpunit_tablemanager_transaction";
         $data = $this->createMediaRecordData($legacy_mapping);
 
         // Cleanup
         $medias = $tm->table('media');
-        $media = $medias->findOneBy(array('legacy_mapping' => $legacy_mapping));
+        $media = $medias->findOneBy(['legacy_mapping' => $legacy_mapping]);
         if ($media) {
             $medias->delete($media['media_id']);
         }
-        
+
         $tm->transaction()->start();
-        
+
         $m = $medias->insert($data);
         $media_id_rollback = $m['media_id'];
         $this->assertTrue(is_numeric($media_id_rollback));
         $tm->transaction()->rollback();
-        
+
         $this->assertFalse($medias->find($media_id_rollback));
-        
+
         $tm->transaction()->start();
         $m = $medias->insert($data);
         $media_id_commit = $m['media_id'];
         $this->assertTrue(is_numeric($media_id_commit));
         $tm->transaction()->commit();
-        
+
         $this->assertGreaterThanOrEqual($media_id_rollback, $media_id_commit);
         $this->assertTrue($medias->exists($media_id_commit));
         $medias->delete($media_id_commit);
@@ -155,19 +155,19 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($catched);
         }
     }
-    
+
 
     public function testCommitThrowsTransactionException()
     {
         $driver = $this->adapter->getDriver();
-        
+
         if ($driver instanceof \Zend\Db\Adapter\Driver\Mysqli\Mysqli) {
             // testing PDO_MYSQL instead, Mysqli won't throw any exception
             // on invalid commit, rollback, start...
             $driver = 'PDO_Mysql';
             $adapter = \SolubleTestFactories::getDbAdapter(null, $driver);
             $tm = \SolubleTestFactories::getTableManager($adapter);
-            
+
             // test than Mysqli does not throw exception
             $catched = false;
             try {
@@ -179,10 +179,10 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         } else {
             $tm = $this->tableManager;
         }
-        
+
         $catched = false;
-        
-        
+
+
         try {
             $tm->transaction()->commit();
         } catch (Exception\TransactionException $e) {
@@ -208,7 +208,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched, "Double begin transaction should fail");
     }
-    
+
     public function testRollbackThrowsTransactionException()
     {
         $driver = $this->adapter->getDriver();
@@ -227,7 +227,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    
+
     public function testGetDbAdapter()
     {
         $adapter = $this->tableManager->getDbAdapter();
@@ -253,7 +253,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $tm = \SolubleTestFactories::getTableManager();
         $prefixed = $tm->setTablePrefix('prefix_')->getPrefixedTable('cool');
-        
+
         $this->assertEquals('prefix_cool', $prefixed);
     }
 
@@ -271,13 +271,13 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Soluble\Normalist\Synthetic\Exception\UnsupportedFeatureException');
         // Fake adapter
-        
-        $adapter = new Adapter(array(
+
+        $adapter = new Adapter([
             'driver' => 'Pdo_Sqlite',
             'database' => 'path/to/sqlite.db'
-        ));
-        
-        
+        ]);
+
+
         $tm = \SolubleTestFactories::getTableManager($adapter);
         $metadata = $tm->metadata();
     }
@@ -292,7 +292,7 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
         $ret = $tableManager->setMetadata($metadata);
         $this->assertInstanceOf('\Soluble\Normalist\Synthetic\TableManager', $ret);
     }
-    
+
     /**
      * Return a media record suitable for database insertion
      * @return array
@@ -300,15 +300,15 @@ class TableManagerTest extends \PHPUnit_Framework_TestCase
     protected function createMediaRecordData($legacy_mapping = null)
     {
         $tm = $this->tableManager;
-        $container = $tm->table('media_container')->findOneBy(array('reference' => 'PRODUCT_MEDIAS'));
+        $container = $tm->table('media_container')->findOneBy(['reference' => 'PRODUCT_MEDIAS']);
         $container_id = $container['container_id'];
-        $data  = array(
+        $data  = [
             'filename'  => 'phpunit_tablemanager.pdf',
             'filemtime' => 111000,
             'filesize'  => 5000,
             'container_id' => $container_id,
             'legacy_mapping' => $legacy_mapping
-        );
+        ];
         return $data;
     }
 }

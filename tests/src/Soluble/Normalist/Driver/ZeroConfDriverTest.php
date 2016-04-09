@@ -3,7 +3,6 @@
 namespace Soluble\Normalist\Driver;
 
 use Zend\Db\Adapter\Adapter;
-use Soluble\Normalist\Driver\Exception;
 use Soluble\Schema\Source;
 
 /**
@@ -21,7 +20,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
      * @var Adapter
      */
     protected $adapter;
-    
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -40,33 +39,33 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
     }
-    
+
 
     public function testWithOptionalSchema()
     {
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema);
+        $options = ['schema' => $schema];
         $driver = new ZeroConfDriver($this->adapter, $options);
         $md = $driver->getMetadata();
         $driver->clearMetadataCache();
         unlink($driver->getModelsConfigFile());
         $md = $driver->getMetadata();
     }
-    
+
     public function testSaveModelDefinition()
     {
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema);
+        $options = ['schema' => $schema];
         $driver = new ZeroConfDriver($this->adapter, $options);
         // remove eventual config file
         $file = $driver->getModelsConfigFile();
         unlink($file);
         $md = $driver->getMetadata();
         $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
-         
-        
+
+
         //var_dump($file);
-        
+
         $driver->clearMetadataCache();
         chmod($file, 0000);
         $catched = false;
@@ -78,15 +77,15 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);
     }
-    
+
     public function testSaveModelDefinitionWithOctDec()
     {
         $schema = $this->adapter->getCurrentSchema();
-        $options = array('schema' => $schema, 'permissions' => 666);
+        $options = ['schema' => $schema, 'permissions' => 666];
         $driver = new ZeroConfDriver($this->adapter, $options);
         $file = $driver->getModelsConfigFile();
         unlink($file);
-        
+
         $md = $driver->getMetadata();
         $this->assertEquals('0666', substr(sprintf('%o', fileperms($file)), -4));
 
@@ -101,8 +100,8 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertTrue($catched);
     }
-    
-    
+
+
     public function testConstructWithException()
     {
         $catched=false;
@@ -113,64 +112,64 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
             $catched=true;
         }
         $this->assertTrue($catched);
-        
+
         $catched=false;
         try {
-            $options = array('alias' => 1);
+            $options = ['alias' => 1];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
-        
+
         $catched=false;
         try {
-            $options = array('version' => array());
+            $options = ['version' => []];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
-        
+
         $catched=false;
         try {
-            $options = array('path' => 1);
+            $options = ['path' => 1];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\ModelPathNotFoundException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
-        
-        
+
+
         $catched=false;
         try {
-            $options = array('path' => '/usr/qdlkjfkjfkd');
+            $options = ['path' => '/usr/qdlkjfkjfkd'];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\ModelPathNotFoundException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
-        
+
         $catched=false;
         try {
-            $options = array('permissions' => array());
+            $options = ['permissions' => []];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
-        
+
         $catched=false;
         try {
-            $options = array('schema' => array());
+            $options = ['schema' => []];
             $driver = new ZeroConfDriver($this->adapter, $options);
         } catch (Exception\InvalidArgumentException $e) {
             $catched=true;
         }
         $this->assertTrue($catched);
     }
-    
-    
+
+
 
     public function testGetModelsConfigFile()
     {
@@ -193,18 +192,18 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $def = $this->driver->getModelsDefinition();
         $this->assertInternalType('array', $def);
         $this->assertTrue(file_exists($file));
-        
-        
+
+
         $invalid_string = 'invalid serialized code in model definition';
         if (file_exists($file)) {
             unlink($file);
         }
         $bytes_written = file_put_contents($file, $invalid_string);
-        
+
         if ($bytes_written != strlen($invalid_string)) {
             throw new \Exception(__METHOD__ . " Problem writing file $file for unit tests");
         }
-        
+
         $catched = false;
         try {
             $def = $this->driver->getModelsDefinition();
@@ -212,7 +211,7 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
             $catched = true;
         }
         $this->assertTrue($catched);
-        
+
         // Second test
         unlink($file);
         $this->assertFalse(file_exists($file));
@@ -225,9 +224,9 @@ class ZeroConfDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($catched);
         $this->driver->clearMetadataCache();
         $this->driver->getMetadata();
-        
-        
-        
+
+
+
         //
     }
 
