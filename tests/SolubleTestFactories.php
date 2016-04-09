@@ -117,9 +117,10 @@ class SolubleTestFactories
                     'file_permission' => 0666
 
                 ];
+            /*
             $cache_config['plugins'] = [
                 'exception_handler' => ['throw_exceptions' => true]
-            ];
+            ];*/
         }
         $key = md5(serialize($cache_config));
         if (!array_key_exists($key, self::$_cache_instances)) {

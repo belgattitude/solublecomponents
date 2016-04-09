@@ -4,9 +4,7 @@
     "license": "MIT",
     "keywords": [
         "components",
-        "normalist",
-        "flexstore",
-        "db"
+        "normalist"
     ],
     "homepage": "https://github.com/belgattitude/solublecomponents",
     "type": "library",
@@ -19,35 +17,33 @@
     "require": {
         "php": ">=5.4.4",
         
-        "zendframework/zend-db": "2.*",
-        "zendframework/zend-stdlib": "2.*",
-        "zendframework/zend-config": "2.*",
-        "zendframework/zend-cache": "2.*",
-        "zendframework/zend-view": "2.*",
-        "zendframework/zend-json": "2.*",
-        "zendframework/zend-eventmanager": "2.*",
-        "zendframework/zend-servicemanager": "2.*",
-        "zendframework/zend-paginator": "2.*",
-        "zendframework/zend-validator": "2.*",
-        "zendframework/zend-inputfilter": "2.*",
+        "zendframework/zend-db": "~2.4 || ~3.0",
+        "zendframework/zend-stdlib": "~2.4 || ~3.0",
+        "zendframework/zend-config": "~2.4 || ~3.0",
+        "zendframework/zend-cache": "~2.4 || ~3.0",
+        "zendframework/zend-view": "~2.4 || ~3.0",
+        "zendframework/zend-json": "~2.4 || ~3.0",
+        "zendframework/zend-eventmanager": "~2.4 || ~3.0",
+        "zendframework/zend-servicemanager": "~2.4 || ~3.0",
+        "zendframework/zend-paginator": "~2.4 || ~3.0",
+        "zendframework/zend-validator": "~2.4 || ~3.0",
+        "zendframework/zend-inputfilter": "~2.4 || ~3.0",
         "ramsey/array_column": "~1.1",
-        "imagine/imagine": "0.6.*",
-        "soluble/schema": "0.*",
-        "soluble/metadata": "0.*",
-        "soluble/spreadsheet": "0.10.*",
-        "soluble/flexstore": "0.10.*",
+        "imagine/imagine": "~0.6.3",
+        
+        "soluble/schema": "~0.11",
+        "soluble/metadata": "~0.9",
+        "soluble/spreadsheet": "~0.11",
+        "soluble/flexstore": "~0.10",
 
         
         "ext-iconv": "*"
     },
     "require-dev": {
-        "adodb/adodb-php": "5.20.*",
-        "satooshi/php-coveralls": "0.6.*",
+        "adodb/adodb-php": "~5.20.4",
+        "satooshi/php-coveralls": "~1.0",
         "phpoffice/phpexcel": "1.8.*",
-        "squizlabs/php_codesniffer": "2.*",
-        "symfony/var-dumper": "@stable",
-        "codeclimate/php-test-reporter": "dev-master",
-        "pimple/pimple": "~3.0"
+        "symfony/var-dumper": "@stable"
     },
     "suggest": {
         "zendframework/zend-view": "ZF2 integration for FlexStore",
