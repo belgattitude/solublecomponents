@@ -17,7 +17,7 @@
     "require": {
         "php": ">=5.4.4",
         
-        "zendframework/zend-db": "^2.4 || ^3.0",
+        "zendframework/zend-db": "^2.4,!=2.8.0",
         "zendframework/zend-stdlib": "~2.4 || ~3.0",
         "zendframework/zend-config": "~2.4 || ~3.0",
         "zendframework/zend-cache": "~2.4 || ~3.0",
